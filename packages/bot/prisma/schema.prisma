@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  discordId String   @unique
+  servers   Server[] @relation(fields: [serversId], references: [id])
+  serversId String[] @db.ObjectId
+}
+
+enum PermissionBot {
+  public
+  private
+  owner
+}
+
+model Setting {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  privatesServers  String[]
+  ownersServers    String[]
+  discordInviteUrl String
+  cooldown         Int
+}
+
+model Server {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  serverId       String          @unique
+  permissionsBot PermissionBot[]
+  colorCommand   ColorCommand?
+  users          User[]          @relation(fields: [usersId], references: [id])
+  usersId        String[]        @db.ObjectId
+  welcome        WelcomeCommand?
+}
+
+model ColorCommand {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  colors         Color[]
+  pointerId      String
+  rolePermission String?
+  server         Server  @relation(fields: [serverId], references: [serverId])
+  serverId       String  @unique
+}
+
+model Color {
+  id       String       @id @default(auto()) @map("_id") @db.ObjectId
+  server   ColorCommand @relation(fields: [serverId], references: [id])
+  serverId String       @db.ObjectId
+  colorId  String
+  hexColor String
+}
+
+enum SendWelcome {
+  alone_message
+  alone_image
+  all
+  none
+}
+
+model WelcomeCommand {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  server    Server      @relation(fields: [serverId], references: [serverId])
+  serverId  String      @unique
+  message   String
+  image     Json?
+  send      SendWelcome
+  channelId String
+}

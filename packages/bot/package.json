@@ -1,0 +1,40 @@
+{
+  "name": "beatriz-bot",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev:deploy": "ts-node src/deployCommands.ts",
+    "dev:prisma": "npx prisma db push",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "build": "npm run dev:prisma && tsc --build",
+    "start": "node ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.51",
+    "@prisma/client": "5.12.1",
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.4.5",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@vitest/ui": "^1.4.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^17.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "3.1.0",
+    "prisma": "^5.12.1",
+    "ts-node": "10.9.2",
+    "typescript": "^5.4.4",
+    "vitest": "^1.4.0"
+  }
+}
