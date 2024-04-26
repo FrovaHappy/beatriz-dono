@@ -1,8 +1,6 @@
 FROM node:20
 
-RUN mkdir -p /app
-
-COPY . /app
+USER node
 
 WORKDIR /app
 
@@ -12,4 +10,4 @@ RUN npm install
 
 COPY --chown=node:node . .
 
-CMD ["npm", "run", "bot:deploy_docker"]
+CMD npm run bot:deploy_docker
