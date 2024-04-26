@@ -10,4 +10,4 @@ RUN npm install
 
 COPY --chown=node:node . .
 
-CMD ["npm", "run", "bot:deploy_docker"]
+CMD ["cd", "/app", "&&", "npm", "run", "bot:deploy_docker"]
