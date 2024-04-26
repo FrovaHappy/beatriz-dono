@@ -6,7 +6,7 @@
     "node": "20.x"
   },
   "scripts": {
-    "generate_db": "npx prisma db push",
+    "generate_db": "prisma db push",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "dev": "npm run generate_db && nodemon --exec ts-node src/index.ts",
