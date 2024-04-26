@@ -1,14 +1,19 @@
 FROM node:20
 
-USER node
+USER root
+
 ENV NODE_ENV=development
 
-WORKDIR /app
+RUN mkdir -p /app
 
-COPY --chown=node:node package*.json ./
+COPY . /app
 
-RUN npm install
+COPY package*.json .
 
-COPY --chown=node:node . .
+RUN cd /app && npm install
 
-CMD npm run bot:deploy_docker
+
+COPY . .
+
+
+CMD cd /app && npm run bot:deploy_docker
