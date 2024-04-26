@@ -13,7 +13,7 @@
     "bot:generate_db": "npm run generate_db --workspace=packages/bot",
     "bot:deploy_docker": "npm run deploy_docker --workspace=packages/",
     "docker:prod": "docker compose down && docker compose up",
-    "docker:dev": "docker compose down && docker compose -f dev.docker-compose.yml up"
+    "docker:dev": "docker compose down && docker compose -f dev.docker-compose.yml --build up"
   },
   "keywords": [],
   "author": "",
