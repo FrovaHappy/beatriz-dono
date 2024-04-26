@@ -4,10 +4,12 @@ RUN mkdir -p /app
 
 COPY . /app
 
+WORKDIR /app
+
 COPY --chown=node:node package*.json ./
 
 RUN npm install
 
 COPY --chown=node:node . .
 
-CMD ["cd", "/app", "&&", "npm", "run", "bot:deploy_docker"]
+CMD ["npm", "run", "bot:deploy_docker"]
