@@ -1,6 +1,7 @@
 FROM node:20
 
 USER node
+ENV NODE_ENV=development
 
 WORKDIR /app
 
