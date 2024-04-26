@@ -5,6 +5,8 @@ A Bot multipurpose for discord
 ## Contents
 
 * [Init Projects](#init-project)
+  * [Install in Local](#install-in-local)
+  * [Install with Docker](#install-with-docker)
 * [Bot (Backend)](#bot)
   * [Configurations](#configurations)
     * [structures Files](#structures-files)
@@ -22,7 +24,7 @@ then you need to generate the prism types, for that you have this script:
 npm run bot:generate_db
 ```
 
-## Install with Docker
+### Install with Docker
 
 You need [Docker Desktop][docker_desktop] before you can continue with the run.
 
