@@ -1,4 +1,9 @@
 FROM node:20-alpine AS build
+ARG DISCORD_TOKEN 
+ARG DISCORD_CLIENT 
+ARG DISCORD_OWNER
+ARG SETTING
+ARG DATABASE_URL
 WORKDIR /app
 COPY . .
 RUN npm install
@@ -6,6 +11,11 @@ RUN npm run bot:generate_db
 RUN npm run bot:build
 
 FROM node:20-alpine AS production
+ARG DISCORD_TOKEN 
+ARG DISCORD_CLIENT 
+ARG DISCORD_OWNER
+ARG SETTING
+ARG DATABASE_URL
 WORKDIR /app
 COPY package.json /packages/bot/package.json ./
 RUN npm install --omit=dev
