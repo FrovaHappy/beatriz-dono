@@ -6,7 +6,7 @@ interface Font {
 }
 function getFonts(): Font[] {
   const fonts: Font[] = []
-  const folderPath = path.join(__dirname, '../../fonts')
+  const folderPath = path.join('./fonts')
   const fontsFiles = readdirSync(folderPath).filter(
     file => file.endsWith('.ttf') || file.endsWith('.woff') || file.endsWith('.woff2')
   )
