@@ -1,4 +1,6 @@
 services:
   bot:
-    container_name: bot_prod
-    build: .
+    build: 
+      context: .
+      target: production
+    container_name: prod
