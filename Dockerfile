@@ -12,7 +12,6 @@ WORKDIR /app
 COPY package.json /packages/bot/package.json ./
 RUN npm install --omit=dev
 COPY --from=build ./app/packages/bot/dist .
-COPY --from=build ./app/packages/bot/.env .
 COPY --from=build ./app/packages/bot/fonts ./fonts
 COPY --from=build ./app/packages/bot/prisma ./prisma
 RUN npx prisma db push
