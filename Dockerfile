@@ -1,8 +1,4 @@
 FROM node:20-alpine AS build
-ARG DISCORD_TOKEN 
-ARG DISCORD_CLIENT 
-ARG DISCORD_OWNER
-ARG SETTING
 ARG DATABASE_URL
 WORKDIR /app
 COPY . .
@@ -11,10 +7,6 @@ RUN npm run bot:generate_db
 RUN npm run bot:build
 
 FROM node:20-alpine AS production
-ARG DISCORD_TOKEN 
-ARG DISCORD_CLIENT 
-ARG DISCORD_OWNER
-ARG SETTING
 ARG DATABASE_URL
 WORKDIR /app
 COPY package.json /packages/bot/package.json ./
@@ -24,5 +16,4 @@ COPY --from=build ./app/packages/bot/.env .
 COPY --from=build ./app/packages/bot/fonts ./fonts
 COPY --from=build ./app/packages/bot/prisma ./prisma
 RUN npx prisma db push
-RUN cd . && ls -a 
 CMD node index.js
