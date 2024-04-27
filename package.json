@@ -11,7 +11,7 @@
     "bot:build": "npm run build --workspace=packages/bot",
     "bot:start": "npm run start --workspace=packages/bot",
     "bot:generate_db": "npm run generate_db --workspace=packages/bot",
-    "docker:prod": "docker compose down && docker compose up",
+    "docker:prod": "docker compose up --build",
     "docker:dev": "docker compose down && docker compose -f dev.docker-compose.yml --build up"
   },
   "keywords": [],
