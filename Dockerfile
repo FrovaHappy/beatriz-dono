@@ -7,8 +7,7 @@ RUN npm run bot:build
 
 FROM node:20-alpine AS production
 WORKDIR /app
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=production
 COPY package.json /packages/bot/package.json ./
 RUN npm install --omit=dev
 COPY --from=build ./app/packages/bot/dist .
