@@ -3,4 +3,8 @@ services:
     build: 
       context: .
       target: production
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
     container_name: prod
