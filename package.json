@@ -7,11 +7,11 @@
     "packages/*"
   ],
   "scripts": {
-    "bot:dev": "npm run dev --workspace=packages/bot",
+    "bot:dev": "env-cmd -f .env npm run dev --workspace=packages/bot",
     "bot:build": "npm run build --workspace=packages/bot",
     "bot:start": "npm run start --workspace=packages/bot",
     "bot:generate_db": "npm run generate_db --workspace=packages/bot",
-    "docker:prod": "env-cmd -f ./packages/bot/.env --use-shell \"docker compose up --build\"",
+    "docker:prod": "docker compose up --build",
     "docker:dev": "docker compose down && docker compose -f dev.docker-compose.yml --build up"
   },
   "keywords": [],
