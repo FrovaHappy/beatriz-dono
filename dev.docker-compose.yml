@@ -1,10 +1,13 @@
 services:
   bot:
-    container_name: bot_dev
+    container_name: dev
     build: 
       context: .
       dockerfile: dev.Dockerfile
+      args: 
+        - DATABASE_URL:${DATABASE_URL}
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run bot:dev
+    env_file:
+      - .env
