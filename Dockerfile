@@ -8,6 +8,11 @@ RUN npm run bot:build
 
 FROM node:20-alpine AS production
 ARG DATABASE_URL
+ARG DISCORD_TOKEN
+ARG DISCORD_CLIENT
+ARG DISCORD_OWNER
+ARG SETTING
+ENV DATABASE_URL=${DATABASE_URL}
 WORKDIR /app
 COPY package.json /packages/bot/package.json ./
 RUN npm install --omit=dev
