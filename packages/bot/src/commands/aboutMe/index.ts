@@ -1,18 +1,17 @@
 import { Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
-import { BuildCommand } from '../../buildersSchema'
-import { CommandsNames } from '../../enums'
+import BuildCommand from '../../shared/BuildCommand'
 import messageFormatting from '../../shared/messageFormatting'
 import { getSetting } from '../../setting'
 import getI18n, { en, es } from '../../shared/i18n'
-const name = CommandsNames.aboutMe
-export default BuildCommand({
+
+const command = new BuildCommand({
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription(en.aboutMe.buildDescription)
     .setDescriptionLocalization('es-ES', es.aboutMe.buildDescription),
-  name,
+  name: 'about-me',
   scope: 'public',
   ephemeral: true,
+  permissions: [],
   execute: async i => {
     const setting = getSetting()
     const i18n = getI18n(i.locale)
@@ -33,3 +32,5 @@ export default BuildCommand({
     }
   }
 })
+
+export default command

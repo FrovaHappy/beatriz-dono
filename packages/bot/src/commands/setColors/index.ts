@@ -1,14 +1,15 @@
-import { BuildCommand } from '../../buildersSchema'
+import BuildCommand from '../../shared/BuildCommand'
 import { CommandsNames } from '../../enums'
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import db from '../../db'
 import createRole from './createRole'
 import config from '../../config'
 const name = CommandsNames.setColors
-export default BuildCommand({
+export default new BuildCommand({
   cooldown: 30,
   ephemeral: true,
   name,
+  permissions: [],
   scope: 'public',
   data: new SlashCommandBuilder()
     .setName(name)

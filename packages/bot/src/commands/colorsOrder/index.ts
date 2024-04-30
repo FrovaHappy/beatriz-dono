@@ -1,5 +1,5 @@
 import { type RoleResolvable, SlashCommandBuilder, PermissionFlagsBits } from 'discord.js'
-import { BuildCommand } from '../../buildersSchema'
+import BuildCommand from '../../shared/BuildCommand'
 import { CommandsNames } from '../../enums'
 import type { CustomCommandInteraction } from '../../types/InteractionsCreate'
 import db from '../../db'
@@ -9,7 +9,7 @@ interface Positions {
   role: RoleResolvable
 }
 const name = CommandsNames.colorsOrder
-export default BuildCommand({
+export default new BuildCommand({
   data: new SlashCommandBuilder()
     .setName(name)
     .setDescription('Ordena los roles ya creados.')
@@ -17,6 +17,7 @@ export default BuildCommand({
   name,
   ephemeral: true,
   scope: 'public',
+  permissions: [],
   cooldown: 60,
   async execute(i: CustomCommandInteraction) {
     const reqPreviousSetting = {

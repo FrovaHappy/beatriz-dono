@@ -1,6 +1,6 @@
 import { type GuildMember, SlashCommandBuilder, EmbedBuilder, Colors, PermissionFlagsBits } from 'discord.js'
 import { CommandsNames } from '../../enums'
-import { BuildCommand } from '../../buildersSchema'
+import BuildCommand from '../../shared/BuildCommand'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { validateCanvas } from './validate'
@@ -13,11 +13,12 @@ import SendWelcomeWith from '../../shared/sendWelcomeWith'
 import getI18n, { es, en } from '../../shared/i18n'
 
 const name = CommandsNames.setWelcome
-export default BuildCommand({
+export default new BuildCommand({
   cooldown: 0,
   name,
   ephemeral: true,
   scope: 'public',
+  permissions: [],
   data: new SlashCommandBuilder()
     .setName(name)
     .setDescription(en.setWelcome.build.mainDescription)

@@ -1,14 +1,15 @@
-import { BuildCommand } from '../../buildersSchema'
+import BuildCommand from '../../shared/BuildCommand'
 import { CommandsNames } from '../../enums'
 import { Colors, SlashCommandBuilder } from 'discord.js'
 import getI18n, { en, es } from '../../shared/i18n'
 import messageFormatting from '../../shared/messageFormatting'
 import welcome from './welcome'
 const name = CommandsNames.help
-export default BuildCommand({
+export default new BuildCommand({
   name,
   cooldown: 5,
   ephemeral: true,
+  permissions: [],
   data: new SlashCommandBuilder()
     .setName(name)
     .setDescription(en.help.generalDescription)

@@ -1,5 +1,5 @@
 import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
-import { BuildCommand } from '../../buildersSchema'
+import BuildCommand from '../../shared/BuildCommand'
 import { CommandsNames } from '../../enums'
 import COLORS from '../../shared/stackColors'
 import changeToColor from './changeToColor'
@@ -10,13 +10,13 @@ import config from '../../config'
 const name = CommandsNames.colors
 const regexColors = /^#([a-f0-9]{6})$/
 
-export default BuildCommand({
+export default new BuildCommand({
   name,
   ephemeral: true,
   scope: 'public',
+  permissions: [],
   cooldown: 15,
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription('Cambia el color de tu nombre.')
     .addStringOption(strOp =>
       strOp
