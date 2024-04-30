@@ -1,9 +1,11 @@
 import { Collection } from 'discord.js'
 import path from 'node:path'
 import { readdirSync } from 'node:fs'
-import config from './config'
-import { type BaseFileCommand } from './types/BaseFiles'
-export default async function BuildCollection<G, T>(pointFolder: string): Promise<Collection<G, T>> {
+import type BuildCommand from './shared/BuildCommand'
+export default async function BuildCollection<G = string, T = any>(
+  pointFolder: string,
+  Constructor: typeof BuildCommand // TODO: add BuildButtons
+): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
   const foldersPath = path.join(__dirname, pointFolder)
   const folders = ((): string[] | null => {
@@ -20,24 +22,26 @@ export default async function BuildCollection<G, T>(pointFolder: string): Promis
   for (const folder of folders) {
     try {
       const command = require(path.join(foldersPath, folder)).default
-      if (config.validateCommand(command as BaseFileCommand)) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        collection.set(command.name, command)
+      if (command instanceof Constructor) {
+        collection.set(command.name as G, command as T)
       } else {
         commandsError.push(command)
       }
-    } catch (error) {
-      folderError.push(folder)
+    } catch (error: any) {
+      folderError.push({ folder, message: error.message as string })
     }
   }
   console.log(`Scanned ${pointFolder} folders:`)
   console.log(`· ${collection.size} subfolders correctly scanned.`)
   if (folderError.length > 0) {
-    console.log(`· [${folderError.join(', ')}] no valid command structure.`)
+    console.log(
+      `· ${folderError.length} commands with invalid structure:\n`,
+      folderError.map(f => `  ∷ ${f.folder}: ${f.message.replaceAll('\n', '\n     ')}.`).join(', ')
+    )
   }
   if (commandsError.length > 0) {
     console.log(
-      `· [WARNING] The [${commandsError.join(', ')}] commands require the following ${config.commandKeys} properties.`
+      `· [WARNING] The [${commandsError.join(', ')}] commands must be an instance of ${Constructor.className}.`
     )
   }
 
