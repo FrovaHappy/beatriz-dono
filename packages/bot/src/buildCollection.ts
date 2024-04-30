@@ -2,6 +2,7 @@ import { Collection } from 'discord.js'
 import path from 'node:path'
 import { readdirSync } from 'node:fs'
 import config from './config'
+import { type BaseFileCommand } from './types/BaseFiles'
 export default async function BuildCollection<G, T>(pointFolder: string): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
   const foldersPath = path.join(__dirname, pointFolder)
@@ -19,7 +20,8 @@ export default async function BuildCollection<G, T>(pointFolder: string): Promis
   for (const folder of folders) {
     try {
       const command = require(path.join(foldersPath, folder)).default
-      if (config.validateCommand(command)) {
+      if (config.validateCommand(command as BaseFileCommand)) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         collection.set(command.name, command)
       } else {
         commandsError.push(command)

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Colors, EmbedBuilder, PermissionsBitField } from 'discord.js'
 import { type CustomCommandInteraction } from '../../types/InteractionsCreate'
 import messageFormatting from '../../shared/messageFormatting'

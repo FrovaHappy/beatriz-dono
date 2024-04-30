@@ -3,7 +3,6 @@ import { CommandsNames } from '../../enums'
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import db from '../../db'
 import createRole from './createRole'
-import messages from './messages'
 import config from '../../config'
 const name = CommandsNames.setColors
 export default BuildCommand({
@@ -20,7 +19,9 @@ export default BuildCommand({
     const rolePermission = i.options.getRole('role', false)?.id ?? null
 
     if (!i.appPermissions?.has([PermissionFlagsBits.ManageRoles])) {
-      return messages.requiredPermissions
+      return {
+        content: 'manage roles is required'
+      }
     }
     const serverId = i.guildId
     if (!serverId) {
