@@ -1,0 +1,11 @@
+export type CommandNames =
+  | 'test'
+  | 'set-welcome'
+  | 'about-me'
+  | 'ping'
+  | 'colors'
+  | 'set-colors'
+  | 'colors-list'
+  | 'colors-order'
+  | 'colors-remove'
+  | 'help'
