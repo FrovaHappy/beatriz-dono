@@ -1,10 +1,11 @@
 import type { BaseEventInteractionCreate } from './main'
 import type { CustomButtonInteraction, CustomCommandInteraction } from './InteractionsCreate'
-import type { ButtonsNames, CommandsNames } from '../enums'
+import type { ButtonsNames } from '../enums'
+import type { CommandNames } from '@/const/CommandNames'
 import type { InteractionEditReplyOptions } from 'discord.js'
 export interface BaseFileCommand extends BaseEventInteractionCreate {
   data: SlashCommandBuilder
-  name: CommandsNames
+  name: CommandNames
   type: 'command'
   execute: (interaction: CustomCommandInteraction) => Promise<InteractionEditReplyOptions>
 }
