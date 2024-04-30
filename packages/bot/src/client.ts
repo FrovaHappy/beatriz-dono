@@ -5,14 +5,15 @@ import config from './config'
 import type { ClientCustom } from './types/main'
 import BuildCollection from './buildCollection'
 import deployCommand from './deployCommands'
+import BuildCommand from './shared/BuildCommand'
 
 export default async function startClient(): Promise<void> {
   const client: ClientCustom = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
   }) as ClientCustom
 
-  client.commands = await BuildCollection('commands')
-  client.buttons = await BuildCollection('buttons')
+  client.commands = await BuildCollection('commands', BuildCommand)
+  client.buttons = await BuildCollection('buttons', BuildCommand)
   client.cooldowns = new Collection()
 
   await deployCommand(client.commands)
