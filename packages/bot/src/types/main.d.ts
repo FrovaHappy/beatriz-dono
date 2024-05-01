@@ -1,16 +1,16 @@
 import type { Client, Collection, PermissionResolvable } from 'discord.js'
 import { type CommandNames } from '../const/CommandNames'
 import type { BaseFileButton, BaseFileCommand } from './BaseFiles'
-import type { ButtonsNames } from '../enums'
+import type { ButtonNames } from '../const/ButtonNames'
 
 export interface ClientCustom extends Client {
   commands: Collection<CommandNames | string, BaseFileCommand>
   cooldowns: Collection<string, Collection<string, number>>
   buttons: Collection<keyof typeof ButtonsNames | string, BaseFileButton>
 }
-export type OmitScopeOfBaseEventInteraction = Omit<BaseEventInteractionCreate, 'scope'>
+export type Scope = 'public' | 'private' | 'owner'
 export interface BaseEventInteractionCreate {
-  name: CommandNames | ButtonsNames
+  name: CommandNames | ButtonNames
   type: 'command' | 'button'
   scope: 'public' | 'private' | 'owner'
   cooldown?: number
