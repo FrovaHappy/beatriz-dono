@@ -2,9 +2,10 @@ import { Collection } from 'discord.js'
 import path from 'node:path'
 import { readdirSync } from 'node:fs'
 import type BuildCommand from './shared/BuildCommand'
-export default async function BuildCollection<G = string, T = any>(
+import type BuildButton from './shared/BuildButtons'
+export default async function BuildCollection<G, T>(
   pointFolder: string,
-  Constructor: typeof BuildCommand // TODO: add BuildButtons
+  Constructor: typeof BuildCommand | typeof BuildButton
 ): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
   const foldersPath = path.join(__dirname, pointFolder)
