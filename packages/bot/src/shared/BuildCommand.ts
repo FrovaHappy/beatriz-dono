@@ -1,3 +1,4 @@
+import PERMISSIONS_BASE from '@/const/PermissionsBase'
 import { type CustomCommandInteraction } from '@/types/InteractionsCreate'
 import { type BaseEventInteractionCreate } from '@/types/main'
 import { type SlashCommandBuilder, type InteractionEditReplyOptions, type PermissionResolvable } from 'discord.js'
@@ -16,7 +17,7 @@ class BuildCommand implements CommandProps {
   name
   scope
   ephemeral = false
-  permissions = ['AddReactions', 'BanMembers'] as PermissionResolvable[]
+  permissions
   cooldown
   data
   execute
@@ -25,7 +26,7 @@ class BuildCommand implements CommandProps {
     this.scope = props.scope
     this.cooldown = props.cooldown ?? 0
     this.ephemeral = props.ephemeral
-    this.permissions = [...new Set([this.permissions, ...props.permissions])]
+    this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.data = !props.data.name ? props.data.setName!(this.name) : props.data
     this.execute = props.execute
