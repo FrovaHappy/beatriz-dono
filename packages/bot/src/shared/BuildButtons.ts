@@ -1,5 +1,5 @@
 import { type ButtonNames } from '@/const/ButtonNames'
-import PERMISSIONS_BASE from '@/const/PermissionsBase'
+import PERMISSIONS_BASE from '../const/PermissionsBase'
 import {
   type InteractionEditReplyOptions,
   type PermissionResolvable,

@@ -1,5 +1,5 @@
 import { type CommandNames } from '@/const/CommandNames'
-import PERMISSIONS_BASE from '@/const/PermissionsBase'
+import PERMISSIONS_BASE from '../const/PermissionsBase'
 import { type CustomCommandInteraction } from '@/types/InteractionsCreate'
 import { type Scope } from '@/types/main'
 import { type SlashCommandBuilder, type InteractionEditReplyOptions, type PermissionResolvable } from 'discord.js'
