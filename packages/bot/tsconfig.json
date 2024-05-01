@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node16",
     "resolveJsonModule": true,
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals","./src/globals"],
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
