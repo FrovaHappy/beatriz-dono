@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Colors, EmbedBuilder, PermissionsBitField } from 'discord.js'
-import { type CustomCommandInteraction } from '../../types/InteractionsCreate'
+import { type ChatInputCommandInteraction, Colors, EmbedBuilder, PermissionsBitField } from 'discord.js'
 import messageFormatting from '../../shared/messageFormatting'
 import getI18n from '../../shared/i18n'
-import { type BaseFileCommand } from '../../types/BaseFiles'
+import type { Command } from '@/shared/BuildCommand'
 
-export default async function hasPermissionsBot(
-  i: CustomCommandInteraction,
-  command: BaseFileCommand
-): Promise<boolean> {
+export default async function hasPermissionsBot(i: ChatInputCommandInteraction, command: Command): Promise<boolean> {
   const i18n = getI18n(i.locale)
   if (!i.guild?.members.me?.permissions.has(command.permissions)) {
     const arrayPermissions = new PermissionsBitField(command.permissions)

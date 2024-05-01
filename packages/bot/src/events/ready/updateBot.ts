@@ -1,6 +1,6 @@
-import type { ClientCustom } from '../../types/main'
+import { type Client } from 'discord.js'
 
-export default async function updateBot(client: ClientCustom): Promise<void> {
+export default async function updateBot(client: Client): Promise<void> {
   const time = 5 * 60 * 60 * 1000
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   setInterval(async () => {

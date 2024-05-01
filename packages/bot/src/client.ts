@@ -2,20 +2,15 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import config from './config'
-import type { ClientCustom } from './types/main'
 import BuildCollection from './buildCollection'
 import deployCommand from './deployCommands'
 import BuildCommand from './shared/BuildCommand'
 import BuildButton from './shared/BuildButtons'
 
 export default async function startClient(): Promise<void> {
-  const client: ClientCustom = new Client({
+  const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
-  }) as ClientCustom
-
-  client.commands = await BuildCollection('commands', BuildCommand)
-  client.buttons = await BuildCollection('buttons', BuildCommand)
-  client.cooldowns = new Collection()
+  })
 
   globalThis.commands = await BuildCollection('commands', BuildCommand)
   globalThis.buttons = await BuildCollection('buttons', BuildButton)

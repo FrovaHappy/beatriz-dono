@@ -1,8 +1,12 @@
 import { type CommandNames } from '@/const/CommandNames'
 import PERMISSIONS_BASE from '../const/PermissionsBase'
-import { type CustomCommandInteraction } from '@/types/InteractionsCreate'
 import { type Scope } from '@/types/main'
-import { type SlashCommandBuilder, type InteractionEditReplyOptions, type PermissionResolvable } from 'discord.js'
+import type {
+  SlashCommandBuilder,
+  InteractionEditReplyOptions,
+  PermissionResolvable,
+  ChatInputCommandInteraction
+} from 'discord.js'
 
 interface CommandProps {
   name: CommandNames
@@ -10,7 +14,7 @@ interface CommandProps {
   cooldown?: number
   ephemeral?: boolean
   permissions: PermissionResolvable[]
-  execute: (e: CustomCommandInteraction) => Promise<InteractionEditReplyOptions>
+  execute: (e: ChatInputCommandInteraction) => Promise<InteractionEditReplyOptions>
   data: Partial<SlashCommandBuilder>
 }
 /**

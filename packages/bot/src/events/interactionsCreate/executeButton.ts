@@ -1,24 +1,25 @@
+import { type ButtonInteraction } from 'discord.js'
 import isCooldownEnable from '../../isCooldownEnable'
 import createServerDb from '../../shared/createServerDb'
-import type { CustomButtonInteraction } from '../../types/InteractionsCreate'
 import filterOwnerCommands from './filterOwnerCommands'
 
-export default async function executeCommand(interaction: CustomButtonInteraction): Promise<unknown> {
-  const button = interaction.client.buttons.get(interaction.customId)
+export default async function executeCommand(interaction: ButtonInteraction): Promise<unknown> {
+  const button = globalThis.buttons.get(interaction.customId)
   if (!button) {
     console.error(`No command matching ${interaction.customId} was found.`)
     return
   }
+  const { name, cooldown, type } = button
 
   await interaction.deferReply({ ephemeral: button.ephemeral })
 
-  const passFilter = filterOwnerCommands(button.scope, interaction.user.id)
+  const passFilter = filterOwnerCommands('public', interaction.user.id) // TODO: check access to executed commands
   if (!passFilter) return await interaction.editReply({ content: 'only Owner has access to this.. >:(' })
 
   const serverId = interaction.guild?.id
   if (serverId) await createServerDb(serverId)
 
-  const messageCooldown = await isCooldownEnable(interaction, button)
+  const messageCooldown = await isCooldownEnable({ id: interaction.user.id, cooldown, name, type })
   if (messageCooldown) return await interaction.editReply({ content: messageCooldown })
 
   try {
