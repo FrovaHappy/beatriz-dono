@@ -1,14 +1,17 @@
-import { Collection } from 'discord.js'
-import type { BaseEventInteractionCreate } from './types/main'
-import type { CustomBaseInteraction } from './types/InteractionsCreate'
+import { Collection, type Snowflake } from 'discord.js'
 import { getSetting } from './setting'
 type ReturnMessage = string | null
-export default async function isCooldownEnable(
-  interaction: CustomBaseInteraction,
-  command: BaseEventInteractionCreate
-): Promise<ReturnMessage> {
-  const { cooldowns } = interaction.client
-  const cooldownName = `${command.type}-${command.name}`
+
+interface Props {
+  id: Snowflake
+  cooldown: number
+  type: string
+  name: string
+}
+export default async function isCooldownEnable(props: Props): Promise<ReturnMessage> {
+  const { id, cooldown, type, name } = props
+  const { cooldowns } = globalThis
+  const cooldownName = `${type}-${name}`
   if (!cooldowns.has(cooldownName)) {
     cooldowns.set(cooldownName, new Collection())
   }
@@ -18,16 +21,16 @@ export default async function isCooldownEnable(
     const timestamps = cooldowns.get(cooldownName)
     if (!timestamps) throw new Error(`Cannot find ${cooldownName} in cooldowns`)
     const defaultCooldownDuration = getSetting().cooldown
-    const cooldownAmount = (command.cooldown ?? defaultCooldownDuration) * 1000
+    const cooldownAmount = (cooldown ?? defaultCooldownDuration) * 1000
 
-    if (timestamps.has(interaction.user.id)) {
-      const expirationTime = timestamps.get(interaction.user.id) ?? 0 + cooldownAmount
+    if (timestamps.has(id)) {
+      const expirationTime = timestamps.get(id) ?? 0 + cooldownAmount
       const expiredTimestamp = Math.round(expirationTime / 1000)
-      return `Please wait, you are on a cooldown for \`${command.name}\`. You can use it again <t:${expiredTimestamp}:R>.`
+      return `Please wait, you are on a cooldown for \`${name}\`. You can use it again <t:${expiredTimestamp}:R>.`
     }
-    timestamps.set(interaction.user.id, now)
+    timestamps.set(id, now)
     setTimeout(() => {
-      timestamps.delete(interaction.user.id)
+      timestamps.delete(id)
     }, cooldownAmount)
     return null
   } catch (e) {
