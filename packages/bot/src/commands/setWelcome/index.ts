@@ -1,8 +1,6 @@
 import { type GuildMember, SlashCommandBuilder, EmbedBuilder, Colors, PermissionFlagsBits } from 'discord.js'
 import { CommandsNames } from '../../enums'
 import BuildCommand from '../../shared/BuildCommand'
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
 import { validateCanvas } from './validate'
 import { formatZodError } from '../../shared/validate'
 import { SendWelcome } from '@prisma/client'
@@ -11,6 +9,7 @@ import db from '../../db'
 import { stringToJson } from '../../shared/general'
 import SendWelcomeWith from '../../shared/sendWelcomeWith'
 import getI18n, { es, en } from '../../shared/i18n'
+import WELCOME from '../../const/welcome'
 
 const name = CommandsNames.setWelcome
 export default new BuildCommand({
@@ -66,7 +65,6 @@ export default new BuildCommand({
     if (!serverId) return { content: 'error with server id' }
     const imageLength = i.options.getString('image')?.length ?? 0
     const image = stringToJson(i.options.getString('image') ?? '')
-    const imageMock = stringToJson(readFileSync(path.join(__dirname, '../../../mocks/welcome.json'), 'utf-8'))
     const message = i.options.getString('message') ?? i18n.setWelcome.messageDefault
     const channelId = i.options.getChannel('channel', true).id
     const send = i.options.getString('send', true) as SendWelcome
@@ -103,7 +101,7 @@ export default new BuildCommand({
         })
       ],
       ...(await SendWelcomeWith({
-        image: image ?? imageMock,
+        image: image ?? WELCOME,
         message: messageReply,
         member: i.member as GuildMember,
         send
