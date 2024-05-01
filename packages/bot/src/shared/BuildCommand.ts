@@ -1,9 +1,14 @@
+import { type CommandNames } from '@/const/CommandNames'
 import PERMISSIONS_BASE from '@/const/PermissionsBase'
 import { type CustomCommandInteraction } from '@/types/InteractionsCreate'
-import { type BaseEventInteractionCreate } from '@/types/main'
+import { type Scope } from '@/types/main'
 import { type SlashCommandBuilder, type InteractionEditReplyOptions, type PermissionResolvable } from 'discord.js'
 
-interface CommandProps extends BaseEventInteractionCreate {
+interface CommandProps {
+  name: CommandNames
+  scope: Scope
+  cooldown?: number
+  ephemeral?: boolean
   permissions: PermissionResolvable[]
   execute: (e: CustomCommandInteraction) => Promise<InteractionEditReplyOptions>
   data: Partial<SlashCommandBuilder>
@@ -16,23 +21,24 @@ class BuildCommand implements CommandProps {
   type: 'command' = 'command'
   name
   scope
-  ephemeral = false
+  ephemeral
   permissions
   cooldown
   data
   execute
-  constructor(props: Omit<CommandProps, 'type'>) {
+  constructor(props: CommandProps) {
     this.name = props.name
     this.scope = props.scope
     this.cooldown = props.cooldown ?? 0
-    this.ephemeral = props.ephemeral
+    this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.data = !props.data.name ? props.data.setName!(this.name) : props.data
+    this.data = props.data.setName!(this.name)
     this.execute = props.execute
   }
 
   static className = 'BuildCommand'
 }
 
+export type Command = InstanceType<typeof BuildCommand>
 export default BuildCommand
