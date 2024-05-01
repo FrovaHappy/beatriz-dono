@@ -1,15 +1,16 @@
+import { type ChatInputCommandInteraction } from 'discord.js'
 import isCooldownEnable from '../../isCooldownEnable'
 import createServerDb from '../../shared/createServerDb'
-import type { CustomCommandInteraction } from '../../types/InteractionsCreate'
 import filterOwnerCommands from './filterOwnerCommands'
 import hasPermissionsBot from './hasPermissionsBot'
 
-export default async function executeCommand(interaction: CustomCommandInteraction): Promise<unknown> {
-  const command = interaction.client.commands.get(interaction.commandName)
+export default async function executeCommand(interaction: ChatInputCommandInteraction): Promise<unknown> {
+  const command = globalThis.commands.get(interaction.commandName)
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`)
     return
   }
+  const { cooldown, name, type } = command
   if (!(await hasPermissionsBot(interaction, command))) return
 
   await interaction.deferReply({ ephemeral: command.ephemeral })
@@ -20,7 +21,7 @@ export default async function executeCommand(interaction: CustomCommandInteracti
   const serverId = interaction.guild?.id
   if (serverId) await createServerDb(serverId)
 
-  const messageCooldown = await isCooldownEnable(interaction, command)
+  const messageCooldown = await isCooldownEnable({ id: interaction.user.id, cooldown, name, type })
   if (messageCooldown) return await interaction.editReply({ content: messageCooldown })
 
   try {
