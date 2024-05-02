@@ -3,9 +3,10 @@ import path from 'node:path'
 import { readdirSync } from 'node:fs'
 import type BuildCommand from './shared/BuildCommand'
 import type BuildButton from './shared/BuildButtons'
+import type BuildEvent from './shared/BuildEvent'
 export default async function BuildCollection<G, T>(
   pointFolder: string,
-  Constructor: typeof BuildCommand | typeof BuildButton
+  Constructor: typeof BuildCommand | typeof BuildButton | typeof BuildEvent
 ): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
   const foldersPath = path.join(__dirname, pointFolder)
