@@ -1,20 +1,24 @@
-import { type Client, type Events } from 'discord.js'
+import { type Awaitable, type ClientEvents } from 'discord.js'
 
-interface EventProps {
-  name: Events
+interface EventProps<Event extends keyof ClientEvents> {
+  name: Event
   once: boolean
-  execute: (client: Client) => void
+  execute: (...args: ClientEvents[Event]) => Awaitable<void>
 }
-class BuildEvent {
+class BuildEvent<T extends keyof ClientEvents> {
   name
   once
   execute
 
-  constructor(props: EventProps) {
+  constructor(props: EventProps<T>) {
     this.name = props.name
     this.once = props.once
     this.execute = props.execute
   }
+
+  static className = 'BuildEvent'
 }
+
+export default BuildEvent
 
 export type Event = InstanceType<typeof BuildEvent>
