@@ -2,8 +2,10 @@ import { type ButtonInteraction } from 'discord.js'
 import isCooldownEnable from '../../isCooldownEnable'
 import createServerDb from '../../shared/createServerDb'
 import filterOwnerCommands from './filterOwnerCommands'
+import getI18n from '../../shared/i18n'
 
 export default async function executeCommand(interaction: ButtonInteraction): Promise<unknown> {
+  const i18n = getI18n(interaction.locale)
   const button = globalThis.buttons.get(interaction.customId)
   if (!button) {
     console.error(`No command matching ${interaction.customId} was found.`)
@@ -23,7 +25,7 @@ export default async function executeCommand(interaction: ButtonInteraction): Pr
   if (messageCooldown) return await interaction.editReply({ content: messageCooldown })
 
   try {
-    await button.execute(interaction)
+    await button.execute(interaction, i18n)
   } catch (error) {
     console.error(`Error executing ${interaction.customId}`)
     console.error(error)

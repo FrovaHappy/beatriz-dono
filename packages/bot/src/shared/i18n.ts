@@ -1,14 +1,16 @@
 import ES from '../i18n/es.json'
 import EN from '../i18n/en.json'
+import { type Locale } from 'discord.js'
 
-const languages: Record<string, typeof EN> = {
-  en: EN,
-  es: { ...EN, ...ES }
+export type I18n = typeof EN
+
+const languages: Partial<Record<Locale, I18n>> = {
+  'en-US': EN,
+  'es-ES': { ...EN, ...ES }
 }
-export const es = languages.es
-export const en = languages.en
+export const es = languages['es-ES']
+export const en = EN
 
-export default function getI18n(lang: string): typeof EN {
-  lang = lang.slice(0, 2)
-  return languages[lang] ?? languages.en
+export default function getI18n(lang: Locale): I18n {
+  return languages[lang] ?? EN
 }

@@ -3,8 +3,10 @@ import isCooldownEnable from '../../isCooldownEnable'
 import createServerDb from '../../shared/createServerDb'
 import filterOwnerCommands from './filterOwnerCommands'
 import hasPermissionsBot from './hasPermissionsBot'
+import getI18n from '../../shared/i18n'
 
 export default async function executeCommand(interaction: ChatInputCommandInteraction): Promise<unknown> {
+  const i18n = getI18n(interaction.locale)
   const command = globalThis.commands.get(interaction.commandName)
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`)
@@ -25,7 +27,7 @@ export default async function executeCommand(interaction: ChatInputCommandIntera
   if (messageCooldown) return await interaction.editReply({ content: messageCooldown })
 
   try {
-    await interaction.editReply(await command.execute(interaction))
+    await interaction.editReply(await command.execute(interaction, i18n))
   } catch (error) {
     console.error(`Error executing ${interaction.commandName}`)
     console.error(error)
