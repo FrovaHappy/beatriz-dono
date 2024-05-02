@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import ES from '../i18n/es.json'
 import EN from '../i18n/en.json'
 import { type Locale } from 'discord.js'
@@ -8,7 +9,7 @@ const languages: Partial<Record<Locale, I18n>> = {
   'en-US': EN,
   'es-ES': { ...EN, ...ES }
 }
-export const es = languages['es-ES']
+export const es = languages['es-ES']!
 export const en = EN
 
 export default function getI18n(lang: Locale): I18n {
