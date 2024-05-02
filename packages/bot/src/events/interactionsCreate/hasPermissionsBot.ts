@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type ChatInputCommandInteraction, Colors, EmbedBuilder, PermissionsBitField } from 'discord.js'
 import messageFormatting from '../../shared/messageFormatting'
-import getI18n from '../../shared/i18n'
+import getI18n from '../../i18n'
 import type { Command } from '@/shared/BuildCommand'
 
 export default async function hasPermissionsBot(i: ChatInputCommandInteraction, command: Command): Promise<boolean> {

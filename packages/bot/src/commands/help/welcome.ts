@@ -1,10 +1,8 @@
-import getI18n from '../../shared/i18n'
+import { type I18n } from '@/i18n'
 import messageFormatting from '../../shared/messageFormatting'
-import { type CustomCommandInteraction } from '@/types/InteractionsCreate'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function welcome(i: CustomCommandInteraction) {
-  const i18n = getI18n(i.locale)
+export default function welcome(i18n: I18n) {
   return {
     embeds: [
       {

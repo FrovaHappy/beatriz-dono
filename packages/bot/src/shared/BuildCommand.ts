@@ -8,7 +8,7 @@ import type {
   ChatInputCommandInteraction
 } from 'discord.js'
 
-import { type I18n } from './i18n'
+import { type I18n } from '../i18n'
 
 interface CommandProps {
   name: CommandNames

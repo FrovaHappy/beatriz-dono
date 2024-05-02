@@ -8,7 +8,7 @@ import messageFormatting, { userSecuencies } from '../../shared/messageFormattin
 import db from '../../db'
 import { stringToJson } from '../../shared/general'
 import SendWelcomeWith from '../../shared/sendWelcomeWith'
-import getI18n, { es, en } from '../../shared/i18n'
+import getI18n, { es, en } from '../../i18n'
 import WELCOME from '../../const/welcome'
 
 const name = CommandsNames.setWelcome

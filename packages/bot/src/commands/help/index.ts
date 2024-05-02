@@ -1,7 +1,7 @@
 import BuildCommand from '../../shared/BuildCommand'
 import { CommandsNames } from '../../enums'
 import { Colors, SlashCommandBuilder } from 'discord.js'
-import getI18n, { en, es } from '../../shared/i18n'
+import { en, es } from '../../i18n'
 import messageFormatting from '../../shared/messageFormatting'
 import welcome from './welcome'
 const name = CommandsNames.help
@@ -21,11 +21,10 @@ export default new BuildCommand({
         .setDescriptionLocalization('es-ES', es.help.welcomeDescription)
     ),
   scope: 'public',
-  execute: async i => {
+  execute: async (i, i18n) => {
     const subcommand = i.options.getSubcommand(true)
-    const i18n = getI18n(i.locale)
 
-    if (subcommand === 'welcome') return welcome(i)
+    if (subcommand === 'welcome') return welcome(i18n)
 
     return {
       embeds: [

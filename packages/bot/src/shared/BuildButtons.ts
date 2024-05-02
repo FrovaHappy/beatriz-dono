@@ -6,7 +6,7 @@ import {
   type ButtonInteraction,
   type ButtonBuilder
 } from 'discord.js'
-import { type I18n } from './i18n'
+import { type I18n } from '../i18n'
 
 interface ButtonsProps {
   type: 'button'

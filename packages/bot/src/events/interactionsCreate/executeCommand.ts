@@ -3,7 +3,7 @@ import isCooldownEnable from '../../isCooldownEnable'
 import createServerDb from '../../shared/createServerDb'
 import filterOwnerCommands from './filterOwnerCommands'
 import hasPermissionsBot from './hasPermissionsBot'
-import getI18n from '../../shared/i18n'
+import getI18n from '../../i18n'
 
 export default async function executeCommand(interaction: ChatInputCommandInteraction): Promise<unknown> {
   const i18n = getI18n(interaction.locale)

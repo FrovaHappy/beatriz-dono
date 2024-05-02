@@ -2,7 +2,7 @@ import { Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import BuildCommand from '../../shared/BuildCommand'
 import messageFormatting from '../../shared/messageFormatting'
 import { getSetting } from '../../setting'
-import getI18n, { en, es } from '../../shared/i18n'
+import getI18n, { en, es } from '../../i18n'
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()
