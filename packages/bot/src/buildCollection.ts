@@ -1,12 +1,20 @@
 import { Collection } from 'discord.js'
 import path from 'node:path'
 import { readdirSync } from 'node:fs'
-import type BuildCommand from './shared/BuildCommand'
-import type BuildButton from './shared/BuildButtons'
-import type BuildEvent from './shared/BuildEvent'
-export default async function BuildCollection<G, T>(
+
+interface Base<B> {
+  name: B
+}
+
+/**
+ * This function is used to build a collection of Builder from a specified folder.
+ *
+ * @template G - The type of the key in the collection.
+ * @template T - The type of the values in the collection.
+ */
+export default async function BuildCollection<G, T extends Base<G>>(
   pointFolder: string,
-  Constructor: typeof BuildCommand | typeof BuildButton | typeof BuildEvent
+  Constructor: new (...args: any[]) => T
 ): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
   const foldersPath = path.join(__dirname, pointFolder)
@@ -25,7 +33,7 @@ export default async function BuildCollection<G, T>(
     try {
       const command = require(path.join(foldersPath, folder)).default
       if (command instanceof Constructor) {
-        collection.set(command.name as G, command as T)
+        collection.set(command.name, command)
       } else {
         commandsError.push(command)
       }
@@ -42,9 +50,7 @@ export default async function BuildCollection<G, T>(
     )
   }
   if (commandsError.length > 0) {
-    console.log(
-      `· [WARNING] The [${commandsError.join(', ')}] commands must be an instance of ${Constructor.className}.`
-    )
+    console.log(`· [WARNING] The [${commandsError.join(', ')}] commands must be an instance of Constructor.`)
   }
 
   return collection
