@@ -1,12 +1,12 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import BuildCommand from '../../shared/BuildCommand'
-import { CommandsNames } from '../../enums'
 import db from '../../db'
 import validatesRoles from '../shared/validatesRoles'
-const name = CommandsNames.colorsList
+import { CommandNamesKeys } from '../../const/CommandNames'
+
 export default new BuildCommand({
-  data: new SlashCommandBuilder().setName(name).setDescription('lista los colores del servidor.'),
-  name,
+  data: new SlashCommandBuilder().setDescription('lista los colores del servidor.'),
+  name: CommandNamesKeys.colorsList,
   permissions: [],
   scope: 'public',
   ephemeral: true,

@@ -1,18 +1,17 @@
 import BuildCommand from '../../shared/BuildCommand'
-import { CommandsNames } from '../../enums'
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import db from '../../db'
 import createRole from './createRole'
 import config from '../../config'
-const name = CommandsNames.setColors
+import { CommandNamesKeys } from '../../const/CommandNames'
+
 export default new BuildCommand({
   cooldown: 30,
   ephemeral: true,
-  name,
+  name: CommandNamesKeys.colorsSet,
   permissions: [],
   scope: 'public',
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription('Inicia la primera configuración de colores.')
     .addRoleOption(roleOption => roleOption.setName('role').setDescription('rol requerido para /colors'))
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),

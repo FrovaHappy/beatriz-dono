@@ -1,5 +1,4 @@
 import { type GuildMember, SlashCommandBuilder, EmbedBuilder, Colors, PermissionFlagsBits } from 'discord.js'
-import { CommandsNames } from '../../enums'
 import BuildCommand from '../../shared/BuildCommand'
 import { validateCanvas } from './validate'
 import { formatZodError } from '../../shared/validate'
@@ -10,16 +9,15 @@ import { stringToJson } from '../../shared/general'
 import SendWelcomeWith from '../../shared/sendWelcomeWith'
 import getI18n, { es, en } from '../../i18n'
 import WELCOME from '../../const/welcome'
+import { CommandNamesKeys } from '../../const/CommandNames'
 
-const name = CommandsNames.setWelcome
 export default new BuildCommand({
   cooldown: 0,
-  name,
+  name: CommandNamesKeys.welcomeSet,
   ephemeral: true,
   scope: 'public',
   permissions: [],
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription(en.setWelcome.build.mainDescription)
     .setDescriptionLocalization('es-ES', es.setWelcome.build.mainDescription)
     .addChannelOption(op =>

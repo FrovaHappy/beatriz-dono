@@ -3,12 +3,13 @@ import BuildCommand from '../../shared/BuildCommand'
 import messageFormatting from '../../shared/messageFormatting'
 import { getSetting } from '../../setting'
 import getI18n, { en, es } from '../../i18n'
+import { CommandNamesKeys } from '../../const/CommandNames'
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()
     .setDescription(en.aboutMe.buildDescription)
     .setDescriptionLocalization('es-ES', es.aboutMe.buildDescription),
-  name: 'about-me',
+  name: CommandNamesKeys.aboutMe,
   scope: 'public',
   ephemeral: true,
   permissions: [],

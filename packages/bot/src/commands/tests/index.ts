@@ -1,14 +1,14 @@
 import { SlashCommandBuilder } from 'discord.js'
-import { CommandsNames } from '../../enums'
 import BuildCommand from '../../shared/BuildCommand'
-const name = CommandsNames.test
+import { CommandNamesKeys } from '../../const/CommandNames'
+
 export default new BuildCommand({
   cooldown: 60,
-  name,
+  name: CommandNamesKeys.test,
   scope: 'owner',
   permissions: [],
   ephemeral: false,
-  data: new SlashCommandBuilder().setName(name).setDescription('Replies with Pong!'),
+  data: new SlashCommandBuilder().setDescription('Replies with Pong!'),
   async execute(interaction) {
     return { content: 'test!' }
   }

@@ -1,19 +1,17 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import BuildCommand from '../../shared/BuildCommand'
-import { CommandsNames } from '../../enums'
 import actionNoUsages from './actionNoUsages'
 import db from '../../db'
 import validatesRoles from '../shared/validatesRoles'
-const name = CommandsNames.colorsRemove
+import { CommandNamesKeys } from '../../const/CommandNames'
 const enum Actions {
   noUsages = 'no-usages',
   all = 'all',
   selected = 'selected'
 }
 export default new BuildCommand({
-  name,
+  name: CommandNamesKeys.colorsRemove,
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription('Elimina los roles no utilizados por el jugador.')
     .addStringOption(op =>
       op

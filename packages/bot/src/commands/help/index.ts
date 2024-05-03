@@ -1,17 +1,16 @@
 import BuildCommand from '../../shared/BuildCommand'
-import { CommandsNames } from '../../enums'
 import { Colors, SlashCommandBuilder } from 'discord.js'
 import { en, es } from '../../i18n'
 import messageFormatting from '../../shared/messageFormatting'
 import welcome from './welcome'
-const name = CommandsNames.help
+import { CommandNamesKeys } from '../../const/CommandNames'
+
 export default new BuildCommand({
-  name,
+  name: CommandNamesKeys.help,
   cooldown: 5,
   ephemeral: true,
   permissions: [],
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription(en.help.generalDescription)
     .setDescriptionLocalization('es-ES', es.help.generalDescription)
     .addSubcommand(subcommand =>
