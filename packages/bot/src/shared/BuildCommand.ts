@@ -1,4 +1,4 @@
-import { type CommandNames } from '@/const/CommandNames'
+import { COMMAND_NAME, type CommandNames } from '../const/CommandNames'
 import PERMISSIONS_BASE from '../const/PermissionsBase'
 import { type Scope } from '@/types/main'
 import type {
@@ -23,9 +23,9 @@ interface CommandProps {
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional
  */
-class BuildCommand implements CommandProps {
+class BuildCommand {
   type: 'command' = 'command'
-  name
+  name: string
   scope
   ephemeral
   permissions
@@ -33,7 +33,7 @@ class BuildCommand implements CommandProps {
   data
   execute
   constructor(props: CommandProps) {
-    this.name = props.name
+    this.name = COMMAND_NAME[props.name]
     this.scope = props.scope
     this.cooldown = props.cooldown ?? 0
     this.ephemeral = props.ephemeral ?? false

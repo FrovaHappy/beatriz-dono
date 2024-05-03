@@ -1,4 +1,4 @@
-import { type ButtonNames } from '@/const/ButtonNames'
+import { BUTTON_NAME, type ButtonName } from '../const/ButtonNames'
 import PERMISSIONS_BASE from '../const/PermissionsBase'
 import {
   type InteractionEditReplyOptions,
@@ -10,7 +10,7 @@ import { type I18n } from '../i18n'
 
 interface ButtonsProps {
   type: 'button'
-  name: ButtonNames
+  name: ButtonName
   ephemeral?: boolean
   permissions: PermissionResolvable[]
   cooldown?: number
@@ -23,14 +23,14 @@ interface ButtonsProps {
  */
 class BuildButton {
   type: 'button' = 'button'
-  name
+  name: string
   ephemeral
   permissions
   cooldown
   data
   execute
   constructor(props: Omit<ButtonsProps, 'type'>) {
-    this.name = props.name
+    this.name = BUTTON_NAME[props.name]
     this.cooldown = props.cooldown ?? 0
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
