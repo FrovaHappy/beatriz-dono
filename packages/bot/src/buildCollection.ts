@@ -28,29 +28,25 @@ export default async function BuildCollection<G, T extends Base<G>>(
   if (!folders) return collection
 
   const folderError = []
-  const commandsError = []
   for (const folder of folders) {
     try {
       const command = require(path.join(foldersPath, folder)).default
       if (command instanceof Constructor) {
         collection.set(command.name, command)
       } else {
-        commandsError.push(command)
+        throw new Error('The folder/file does not instance of Construct.')
       }
     } catch (error: any) {
       folderError.push({ folder, message: error.message as string })
     }
   }
   console.log(`Scanned ${pointFolder} folders:`)
-  console.log(`· ${collection.size} subfolders correctly scanned.`)
+  console.log(`· ${collection.size} ${pointFolder} correctly scanned.`)
   if (folderError.length > 0) {
     console.log(
-      `· ${folderError.length} commands with invalid structure:\n`,
+      `· ${folderError.length} ${pointFolder} with invalid structure:\n`,
       folderError.map(f => `  ∷ ${f.folder}: ${f.message.replaceAll('\n', '\n     ')}.`).join(', ')
     )
-  }
-  if (commandsError.length > 0) {
-    console.log(`· [WARNING] The [${commandsError.join(', ')}] commands must be an instance of Constructor.`)
   }
 
   return collection
