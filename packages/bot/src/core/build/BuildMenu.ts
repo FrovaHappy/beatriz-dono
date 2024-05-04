@@ -15,6 +15,7 @@ import {
 } from 'discord.js'
 import { type I18n } from '../../i18n'
 import { MENU_NAME, type MenuNames } from '@/const/MenuMames'
+import { type Scope } from '@/types/main'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -42,6 +43,7 @@ type MenuType = keyof Types
 interface MenuProps<T extends MenuType> {
   menuType: T
   name: MenuNames
+  scope?: Scope
   ephemeral?: boolean
   permissions: PermissionResolvable[]
   cooldown?: number
@@ -59,10 +61,12 @@ class BuildMenu<T extends MenuType> {
   permissions
   cooldown
   data
+  scope
   menuType: MenuType
   execute
   constructor(props: MenuProps<T>) {
     this.name = MENU_NAME[props.name]
+    this.scope = props.scope ?? 'owner'
     this.menuType = props.menuType
     this.cooldown = props.cooldown ?? 0
     this.ephemeral = props.ephemeral ?? false

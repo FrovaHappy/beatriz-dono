@@ -7,9 +7,11 @@ import {
   type ButtonBuilder
 } from 'discord.js'
 import { type I18n } from '../../i18n'
+import { type Scope } from '@/types/main'
 
 interface ButtonsProps {
   name: ButtonName
+  scope?: Scope
   ephemeral?: boolean
   permissions: PermissionResolvable[]
   cooldown?: number
@@ -27,17 +29,17 @@ class BuildButton {
   permissions
   cooldown
   data
+  scope
   execute
   constructor(props: Omit<ButtonsProps, 'type'>) {
     this.name = BUTTON_NAME[props.name]
+    this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
   }
-
-  static className = 'BuildButton'
 }
 export type Button = InstanceType<typeof BuildButton>
 export default BuildButton

@@ -12,7 +12,7 @@ import { type I18n } from '../../i18n'
 
 interface CommandProps {
   name: CommandNames
-  scope: Scope
+  scope?: Scope
   cooldown?: number
   ephemeral?: boolean
   permissions: PermissionResolvable[]
@@ -34,7 +34,7 @@ class BuildCommand {
   execute
   constructor(props: CommandProps) {
     this.name = COMMAND_NAME[props.name]
-    this.scope = props.scope
+    this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
