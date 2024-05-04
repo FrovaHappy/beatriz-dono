@@ -6,6 +6,7 @@ interface EventProps<Event extends keyof ClientEvents> {
   execute: (...args: ClientEvents[Event]) => Awaitable<void>
 }
 class BuildEvent<T extends keyof ClientEvents> {
+  type: 'event' = 'event'
   name
   once
   execute
@@ -15,8 +16,6 @@ class BuildEvent<T extends keyof ClientEvents> {
     this.once = props.once
     this.execute = props.execute
   }
-
-  static className = 'BuildEvent'
 }
 
 export default BuildEvent

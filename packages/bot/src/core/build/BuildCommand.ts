@@ -42,8 +42,6 @@ class BuildCommand {
     this.data = props.data.setName!(this.name)
     this.execute = props.execute
   }
-
-  static className = 'BuildCommand'
 }
 
 export type Command = InstanceType<typeof BuildCommand>

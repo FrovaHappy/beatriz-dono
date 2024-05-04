@@ -9,7 +9,6 @@ import {
 import { type I18n } from '../../i18n'
 
 interface ButtonsProps {
-  type: 'button'
   name: ButtonName
   ephemeral?: boolean
   permissions: PermissionResolvable[]
