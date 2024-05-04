@@ -1,5 +1,5 @@
 import { Collection, type Snowflake } from 'discord.js'
-import { getSetting } from './setting'
+import { getSetting } from '../setting'
 type ReturnMessage = string | null
 
 interface Props {

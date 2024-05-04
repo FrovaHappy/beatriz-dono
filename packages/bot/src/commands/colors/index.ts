@@ -1,10 +1,10 @@
 import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
-import BuildCommand from '../../shared/BuildCommand'
+import BuildCommand from '@core/build/BuildCommand'
 import COLORS from '../../shared/stackColors'
 import changeToColor from './changeToColor'
 import removeRoleOfUser from './removeRoleOfUser'
-import db from '../../db'
-import config from '../../config'
+import db from '@core/db'
+import config from '@core/config'
 import { CommandNamesKeys } from '../../const/CommandNames'
 
 const regexColors = /^#([a-f0-9]{6})$/

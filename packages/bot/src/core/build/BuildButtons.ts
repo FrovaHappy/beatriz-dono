@@ -1,12 +1,12 @@
-import { BUTTON_NAME, type ButtonName } from '../const/ButtonNames'
-import PERMISSIONS_BASE from '../const/PermissionsBase'
+import { BUTTON_NAME, type ButtonName } from '../../const/ButtonNames'
+import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import {
   type InteractionEditReplyOptions,
   type PermissionResolvable,
   type ButtonInteraction,
   type ButtonBuilder
 } from 'discord.js'
-import { type I18n } from '../i18n'
+import { type I18n } from '../../i18n'
 
 interface ButtonsProps {
   type: 'button'

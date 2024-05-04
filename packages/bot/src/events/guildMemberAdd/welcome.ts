@@ -1,5 +1,5 @@
 import { type GuildMember } from 'discord.js'
-import db from '../../db'
+import db from '@core/db'
 import SendWelcomeWith from '../../shared/sendWelcomeWith'
 import { userSecuencies } from '../../shared/messageFormatting'
 import WELCOME from '../../const/welcome'

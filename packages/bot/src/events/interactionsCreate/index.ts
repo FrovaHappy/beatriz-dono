@@ -1,7 +1,7 @@
 import { Events } from 'discord.js'
 import executeCommand from './executeCommand'
 import executeButton from './executeButton'
-import BuildEvent from '../../shared/BuildEvent'
+import BuildEvent from '@core/build/BuildEvent'
 export default new BuildEvent({
   name: Events.InteractionCreate,
   once: false,

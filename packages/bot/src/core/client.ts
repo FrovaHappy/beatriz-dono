@@ -1,10 +1,10 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import config from './config'
-import BuildCollection from './buildCollection'
+import BuildCollection from './build/buildCollection'
 import deployCommand from './deployCommands'
-import BuildCommand from './shared/BuildCommand'
-import BuildButton from './shared/BuildButtons'
-import BuildEvent, { type Event } from './shared/BuildEvent'
+import BuildCommand from './build/BuildCommand'
+import BuildButton from './build/BuildButtons'
+import BuildEvent, { type Event } from './build/BuildEvent'
 
 export default async function startClient(): Promise<void> {
   const client = new Client({
@@ -14,6 +14,7 @@ export default async function startClient(): Promise<void> {
   globalThis.commands = await BuildCollection('commands', BuildCommand)
   globalThis.buttons = await BuildCollection('buttons', BuildButton)
   globalThis.cooldowns = new Collection()
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   await deployCommand(globalThis.commands)
 
   const events = await BuildCollection<string, Event>('events', BuildEvent)

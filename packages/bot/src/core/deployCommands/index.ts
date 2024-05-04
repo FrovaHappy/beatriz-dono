@@ -10,7 +10,7 @@ import updateOwner from './updateOwners'
 import { clearForDelete, getForDelete } from '../setting'
 import { deleteServers } from './deleteServers'
 import { type Scope } from '@/types/main'
-import { type Command } from '@/shared/BuildCommand'
+import { type Command } from '../build/BuildCommand'
 
 export const rest = new REST().setToken(config.discordToken)
 

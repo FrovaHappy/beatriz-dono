@@ -1,8 +1,8 @@
-import BuildCommand from '../../shared/BuildCommand'
+import BuildCommand from '@core/build/BuildCommand'
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
-import db from '../../db'
+import db from '@core/db'
 import createRole from './createRole'
-import config from '../../config'
+import config from '@core/config'
 import { CommandNamesKeys } from '../../const/CommandNames'
 
 export default new BuildCommand({

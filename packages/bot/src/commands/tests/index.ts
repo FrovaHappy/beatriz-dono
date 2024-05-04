@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js'
-import BuildCommand from '../../shared/BuildCommand'
+import BuildCommand from '@core/build/BuildCommand'
 import { CommandNamesKeys } from '../../const/CommandNames'
 
 export default new BuildCommand({

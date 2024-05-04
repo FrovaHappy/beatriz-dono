@@ -1,4 +1,4 @@
-import config from '../../config'
+import config from '@core/config'
 
 /**
  * @returns `true` if the commands/buttons have access to execute

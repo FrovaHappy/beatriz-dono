@@ -1,4 +1,4 @@
-import BuildCommand from '../../shared/BuildCommand'
+import BuildCommand from '@core/build/BuildCommand'
 import { Colors, SlashCommandBuilder } from 'discord.js'
 import { en, es } from '../../i18n'
 import messageFormatting from '../../shared/messageFormatting'

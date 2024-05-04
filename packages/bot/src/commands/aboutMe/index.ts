@@ -1,8 +1,7 @@
 import { Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
-import BuildCommand from '../../shared/BuildCommand'
+import BuildCommand from '../../core/build/BuildCommand'
 import messageFormatting from '../../shared/messageFormatting'
-import { getSetting } from '../../setting'
-import getI18n, { en, es } from '../../i18n'
+import { en, es } from '../../i18n'
 import { CommandNamesKeys } from '../../const/CommandNames'
 
 const command = new BuildCommand({
@@ -13,9 +12,7 @@ const command = new BuildCommand({
   scope: 'public',
   ephemeral: true,
   permissions: [],
-  execute: async i => {
-    const setting = getSetting()
-    const i18n = getI18n(i.locale)
+  execute: async (i, i18n) => {
     return {
       embeds: [
         new EmbedBuilder({
@@ -23,7 +20,7 @@ const command = new BuildCommand({
           color: Colors.Purple,
           description: messageFormatting(i18n.aboutMe.responseDescription, {
             slot0: 'https://frovahappy.gitbook.io/beatriz-bot-docs/',
-            slot1: setting.discordInviteUrl,
+            slot1: 'https://discord.app/',
             slot2: 'https://top.gg/bot/971562890702237766',
             slot3: 'https://discordbotlist.com/bots/beatrizdono-beta',
             slot4: 'https://github.com/FrovaHappy/beatriz-bot'

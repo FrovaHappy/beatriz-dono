@@ -1,10 +1,10 @@
 import { type Color } from '@prisma/client'
-import config from '../../config'
-import db from '../../db'
-import type { CustomCommandInteraction } from '../../types/InteractionsCreate'
+import config from '@core/config'
+import db from '@core/db'
+import { type Interaction } from 'discord.js'
 interface Props {
   color: `#${string}`
-  interaction: CustomCommandInteraction
+  interaction: Interaction
   colors: Color[]
   pointerId: string
 }
@@ -13,14 +13,14 @@ interface ReturnData {
   hasSusses: boolean
 }
 export default async function changeToColor({ color, interaction, colors, pointerId }: Props): Promise<ReturnData> {
-  const { guild, client, user, guildId } = interaction
+  const { guild, user, guildId } = interaction
   const coincidence = colors.find(c => c.hexColor === color)
   const role = guild?.roles.cache.find(r => r.id === coincidence?.colorId ?? config.roleUndefined)
   const colorController = guild?.roles.cache.find(r => r.id === pointerId)
 
   if (!colorController) return { hasCreated: false, hasSusses: false }
   if (role) {
-    client.cooldowns.get('command-colors')?.delete(user.id)
+    globalThis.cooldowns.get('command-colors')?.delete(user.id)
     const member = await guild?.members.addRole({ user, role })
     return { hasCreated: false, hasSusses: Boolean(member) }
   } else if (coincidence) {

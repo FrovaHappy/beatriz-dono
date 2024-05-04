@@ -1,12 +1,13 @@
 import { type ButtonInteraction } from 'discord.js'
-import isCooldownEnable from '../../isCooldownEnable'
-import createServerDb from '../../shared/createServerDb'
+import isCooldownEnable from '@core/shared/isCooldownEnable'
+import createServerDb from '@core/shared/createServerDb'
 import filterOwnerCommands from './filterOwnerCommands'
 import getI18n from '../../i18n'
+import { type Button } from '@/core/build/BuildButtons'
 
 export default async function executeCommand(interaction: ButtonInteraction): Promise<unknown> {
   const i18n = getI18n(interaction.locale)
-  const button = globalThis.buttons.get(interaction.customId)
+  const button: Button | undefined = globalThis.buttons.get(interaction.customId)
   if (!button) {
     console.error(`No command matching ${interaction.customId} was found.`)
     return

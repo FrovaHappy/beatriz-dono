@@ -1,6 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
-import BuildCommand from '../../shared/BuildCommand'
-import db from '../../db'
+import BuildCommand from '@core/build/BuildCommand'
+import db from '@core/db'
 import validatesRoles from '../shared/validatesRoles'
 import { CommandNamesKeys } from '../../const/CommandNames'
 

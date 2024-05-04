@@ -17,8 +17,9 @@ export default async function BuildCollection<G, T extends Base<G>>(
   Constructor: new (...args: any[]) => T
 ): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
-  const foldersPath = path.join(__dirname, pointFolder)
+  const foldersPath = path.join(__dirname, '../../', pointFolder)
   const folders = ((): string[] | null => {
+    console.log(`Scanning ${foldersPath} folders:`)
     try {
       return readdirSync(foldersPath)
     } catch (error) {
@@ -29,8 +30,9 @@ export default async function BuildCollection<G, T extends Base<G>>(
 
   const folderError = []
   for (const folder of folders) {
+    const relativePath = path.join(foldersPath, folder)
     try {
-      const command = require(path.join(foldersPath, folder)).default
+      const command = require(relativePath).default
       if (command instanceof Constructor) {
         collection.set(command.name, command)
       } else {
@@ -40,12 +42,11 @@ export default async function BuildCollection<G, T extends Base<G>>(
       folderError.push({ folder, message: error.message as string })
     }
   }
-  console.log(`Scanned ${pointFolder} folders:`)
   console.log(`· ${collection.size} ${pointFolder} correctly scanned.`)
   if (folderError.length > 0) {
     console.log(
       `· ${folderError.length} ${pointFolder} with invalid structure:\n`,
-      folderError.map(f => `  ∷ ${f.folder}: ${f.message.replaceAll('\n', '\n     ')}.`).join(', ')
+      folderError.map(f => `  ∷ ${f.folder}: ${f.message.replaceAll('\n', '\n     ')}.`).join('\n ')
     )
   }
 

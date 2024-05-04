@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { stringToJson } from './shared/general'
+import { stringToJson } from '../shared/general'
 
 export default {
   roleUndefined: '0',

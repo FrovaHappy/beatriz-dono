@@ -18,10 +18,8 @@
     "resolveJsonModule": true,
     "types": ["vitest/globals","./src/globals"],
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
     "baseUrl": "src",
     "paths": {
-      "@/*": ["src/*"]
       "@/*": ["*"],
       "@core/*": ["core/*"]
     }

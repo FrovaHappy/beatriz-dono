@@ -1,5 +1,5 @@
-import { COMMAND_NAME, type CommandNames } from '../const/CommandNames'
-import PERMISSIONS_BASE from '../const/PermissionsBase'
+import { COMMAND_NAME, type CommandNames } from '../../const/CommandNames'
+import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import { type Scope } from '@/types/main'
 import type {
   SlashCommandBuilder,
@@ -8,7 +8,7 @@ import type {
   ChatInputCommandInteraction
 } from 'discord.js'
 
-import { type I18n } from '../i18n'
+import { type I18n } from '../../i18n'
 
 interface CommandProps {
   name: CommandNames

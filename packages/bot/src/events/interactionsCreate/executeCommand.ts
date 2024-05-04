@@ -1,13 +1,14 @@
 import { type ChatInputCommandInteraction } from 'discord.js'
-import isCooldownEnable from '../../isCooldownEnable'
-import createServerDb from '../../shared/createServerDb'
+import isCooldownEnable from '@core/shared/isCooldownEnable'
+import createServerDb from '@core/shared/createServerDb'
 import filterOwnerCommands from './filterOwnerCommands'
 import hasPermissionsBot from './hasPermissionsBot'
 import getI18n from '../../i18n'
+import { type Command } from '@/core/build/BuildCommand'
 
 export default async function executeCommand(interaction: ChatInputCommandInteraction): Promise<unknown> {
   const i18n = getI18n(interaction.locale)
-  const command = globalThis.commands.get(interaction.commandName)
+  const command: Command | undefined = globalThis.commands.get(interaction.commandName)
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`)
     return

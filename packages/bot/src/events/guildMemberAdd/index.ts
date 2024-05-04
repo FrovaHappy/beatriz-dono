@@ -1,7 +1,7 @@
 import { Events } from 'discord.js'
 import welcome from './welcome'
-import createServerDb from '../../shared/createServerDb'
-import BuildEvent from '../../shared/BuildEvent'
+import createServerDb from '@core/shared/createServerDb'
+import BuildEvent from '@core/build/BuildEvent'
 
 export default new BuildEvent({
   name: Events.GuildMemberAdd,

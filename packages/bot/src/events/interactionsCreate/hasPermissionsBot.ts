@@ -2,7 +2,7 @@
 import { type ChatInputCommandInteraction, Colors, EmbedBuilder, PermissionsBitField } from 'discord.js'
 import messageFormatting from '../../shared/messageFormatting'
 import getI18n from '../../i18n'
-import type { Command } from '@/shared/BuildCommand'
+import type { Command } from '@core/build/BuildCommand'
 
 export default async function hasPermissionsBot(i: ChatInputCommandInteraction, command: Command): Promise<boolean> {
   const i18n = getI18n(i.locale)
