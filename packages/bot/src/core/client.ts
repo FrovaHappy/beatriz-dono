@@ -5,6 +5,7 @@ import deployCommand from './deployCommands'
 import BuildCommand from './build/BuildCommand'
 import BuildButton from './build/BuildButtons'
 import BuildEvent, { type Event } from './build/BuildEvent'
+import BuildMenu from './build/BuildMenu'
 
 export default async function startClient(): Promise<void> {
   const client = new Client({
@@ -13,6 +14,7 @@ export default async function startClient(): Promise<void> {
 
   globalThis.commands = await BuildCollection('commands', BuildCommand)
   globalThis.buttons = await BuildCollection('buttons', BuildButton)
+  globalThis.menus = await BuildCollection('menus', BuildMenu)
   globalThis.cooldowns = new Collection()
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   await deployCommand(globalThis.commands)
