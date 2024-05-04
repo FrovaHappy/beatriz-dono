@@ -12,7 +12,7 @@
     "bot:start": "env-cmd npm run start --workspace=packages/bot",
     "bot:generate_db": "env-cmd npm run generate_db --workspace=packages/bot",
     "docker:prod": "docker compose up --build",
-    "docker:dev": "docker compose -f dev.docker-compose.yml  up"
+    "docker:dev": "docker compose -f dev.docker-compose.yml up --build"
   },
   "keywords": [],
   "author": "",
