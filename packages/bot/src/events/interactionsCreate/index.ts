@@ -1,22 +1,55 @@
 import { Events } from 'discord.js'
-import executeCommand from './executeCommand'
-import executeButton from './executeButton'
 import BuildEvent from '@core/build/BuildEvent'
-import executeMenu from './executeMenu'
+import executeRun from './executeRun'
 export default new BuildEvent({
   name: Events.InteractionCreate,
   once: false,
   async execute(interaction) {
     if (interaction.isChatInputCommand()) {
-      await executeCommand(interaction)
+      await executeRun({
+        customNameEmitted: interaction.commandName,
+        type: 'commands',
+        locale: interaction.locale,
+        interaction,
+        deferReply: async () => {
+          await interaction.deferReply()
+        },
+        editReply: async options => {
+          await interaction.editReply(options)
+        }
+      })
+
       return
     }
     if (interaction.isAnySelectMenu()) {
-      await executeMenu(interaction)
+      await executeRun({
+        customNameEmitted: interaction.customId,
+        type: 'menus',
+        locale: interaction.locale,
+        interaction,
+        deferReply: async () => {
+          await interaction.deferReply()
+        },
+        editReply: async options => {
+          await interaction.editReply(options)
+        }
+      })
+
       return
     }
     if (interaction.isButton()) {
-      await executeButton(interaction)
+      await executeRun({
+        customNameEmitted: interaction.customId,
+        type: 'buttons',
+        locale: interaction.locale,
+        interaction,
+        deferReply: async () => {
+          await interaction.deferReply()
+        },
+        editReply: async options => {
+          await interaction.editReply(options)
+        }
+      })
     }
   }
 })
