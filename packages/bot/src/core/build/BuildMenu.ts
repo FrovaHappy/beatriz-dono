@@ -15,7 +15,7 @@ import {
 } from 'discord.js'
 import { type I18n } from '../../i18n'
 import { MENU_NAME, type MenuNames } from '@/const/MenuMames'
-import { type Scope } from '@/types/main'
+import { type EventEmitted, type Scope } from '@/types/main'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -54,9 +54,9 @@ interface MenuProps<T extends MenuType> {
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
  */
-class BuildMenu<T extends MenuType> {
-  type: 'menu' = 'menu'
-  name: string
+class BuildMenu<T extends MenuType> implements EventEmitted<string> {
+  type: 'menus' = 'menus'
+  name
   ephemeral
   permissions
   cooldown

@@ -7,7 +7,7 @@ import {
   type ButtonBuilder
 } from 'discord.js'
 import { type I18n } from '../../i18n'
-import { type Scope } from '@/types/main'
+import { type EventEmitted, type Scope } from '@/types/main'
 
 interface ButtonsProps {
   name: ButtonName
@@ -22,8 +22,8 @@ interface ButtonsProps {
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
  */
-class BuildButton {
-  type: 'button' = 'button'
+class BuildButton implements EventEmitted<string> {
+  type: 'buttons' = 'buttons'
   name: string
   ephemeral
   permissions

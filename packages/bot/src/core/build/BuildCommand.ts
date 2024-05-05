@@ -1,6 +1,6 @@
 import { COMMAND_NAME, type CommandNames } from '../../const/CommandNames'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
-import { type Scope } from '@/types/main'
+import { type EventEmitted, type Scope } from '@/types/main'
 import type {
   SlashCommandBuilder,
   InteractionEditReplyOptions,
@@ -23,8 +23,8 @@ interface CommandProps {
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional
  */
-class BuildCommand {
-  type: 'command' = 'command'
+class BuildCommand implements EventEmitted<string> {
+  type: 'commands' = 'commands'
   name: string
   scope
   ephemeral
