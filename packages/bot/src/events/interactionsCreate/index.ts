@@ -11,11 +11,14 @@ export default new BuildEvent({
         type: 'commands',
         locale: interaction.locale,
         interaction,
-        deferReply: async () => {
-          await interaction.deferReply()
+        deferReply: async options => {
+          await interaction.deferReply(options)
         },
         editReply: async options => {
           await interaction.editReply(options)
+        },
+        reply: async options => {
+          await interaction.reply(options)
         }
       })
 
@@ -27,11 +30,14 @@ export default new BuildEvent({
         type: 'menus',
         locale: interaction.locale,
         interaction,
-        deferReply: async () => {
-          await interaction.deferReply()
+        deferReply: async options => {
+          await interaction.deferReply(options)
         },
         editReply: async options => {
           await interaction.editReply(options)
+        },
+        reply: async options => {
+          await interaction.reply(options)
         }
       })
 
@@ -43,11 +49,14 @@ export default new BuildEvent({
         type: 'buttons',
         locale: interaction.locale,
         interaction,
-        deferReply: async () => {
-          await interaction.deferReply()
+        deferReply: async options => {
+          await interaction.deferReply(options)
         },
         editReply: async options => {
           await interaction.editReply(options)
+        },
+        reply: async options => {
+          await interaction.reply(options)
         }
       })
     }

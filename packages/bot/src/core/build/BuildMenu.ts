@@ -45,10 +45,11 @@ interface MenuProps<T extends MenuType> {
   name: MenuNames
   scope?: Scope
   ephemeral?: boolean
+  defer?: boolean
   permissions: PermissionResolvable[]
   cooldown?: number
   data: Types[T]['builder']
-  execute: (e: Types[T]['interaction'], i18n: I18n) => Promise<InteractionEditReplyOptions>
+  execute: (e: Types[T]['interaction'], i18n: I18n) => Promise<InteractionEditReplyOptions | undefined>
 }
 /**
  * #### Constructor
@@ -58,6 +59,7 @@ class BuildMenu<T extends MenuType> implements EventEmitted<string> {
   type: 'menus' = 'menus'
   name
   ephemeral
+  defer
   permissions
   cooldown
   data
@@ -68,6 +70,7 @@ class BuildMenu<T extends MenuType> implements EventEmitted<string> {
     this.name = MENU_NAME[props.name]
     this.scope = props.scope ?? 'owner'
     this.menuType = props.menuType
+    this.defer = props.defer ?? true
     this.cooldown = props.cooldown ?? 0
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]

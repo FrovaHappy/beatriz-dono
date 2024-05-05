@@ -14,6 +14,7 @@ export default new BuildMenu({
   name: MenuNamesKeys.test,
   permissions: [],
   ephemeral: true,
+  defer: false,
   data: new StringSelectMenuBuilder().setPlaceholder('soy un placeholder').addOptions(
     {
       label: 'Pikachu',
@@ -65,6 +66,5 @@ export default new BuildMenu({
       default:
         break
     }
-    return { content: 'soy la acción del menu' } // es como esta trabajando mis modulo ignóralo
   }
 })

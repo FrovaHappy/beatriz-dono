@@ -15,8 +15,9 @@ interface CommandProps {
   scope?: Scope
   cooldown?: number
   ephemeral?: boolean
+  defer?: boolean
   permissions: PermissionResolvable[]
-  execute: (e: ChatInputCommandInteraction, i18n: I18n) => Promise<InteractionEditReplyOptions>
+  execute: (e: ChatInputCommandInteraction, i18n: I18n) => Promise<InteractionEditReplyOptions | undefined>
   data: Partial<SlashCommandBuilder>
 }
 /**
@@ -27,6 +28,7 @@ class BuildCommand implements EventEmitted<string> {
   type: 'commands' = 'commands'
   name: string
   scope
+  defer
   ephemeral
   permissions
   cooldown
@@ -36,6 +38,7 @@ class BuildCommand implements EventEmitted<string> {
     this.name = COMMAND_NAME[props.name]
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
+    this.defer = props.defer ?? true
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

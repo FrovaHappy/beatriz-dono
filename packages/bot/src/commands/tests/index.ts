@@ -9,7 +9,7 @@ export default new BuildCommand({
   name: CommandNamesKeys.test,
   scope: 'owner',
   permissions: [],
-  ephemeral: false,
+  ephemeral: true,
   data: new SlashCommandBuilder().setDescription('Replies with Pong!'),
   async execute(interaction, i18n) {
     const select: Menu = globalThis.menus.get(MENU_NAME.test)

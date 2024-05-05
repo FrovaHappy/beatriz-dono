@@ -13,10 +13,11 @@ interface ButtonsProps {
   name: ButtonName
   scope?: Scope
   ephemeral?: boolean
+  defer?: boolean
   permissions: PermissionResolvable[]
   cooldown?: number
   data: ButtonBuilder
-  execute: (e: ButtonInteraction, i18n: I18n) => Promise<InteractionEditReplyOptions>
+  execute: (e: ButtonInteraction, i18n: I18n) => Promise<InteractionEditReplyOptions | undefined>
 }
 /**
  * #### Constructor
@@ -28,6 +29,7 @@ class BuildButton implements EventEmitted<string> {
   ephemeral
   permissions
   cooldown
+  defer
   data
   scope
   execute
@@ -35,6 +37,7 @@ class BuildButton implements EventEmitted<string> {
     this.name = BUTTON_NAME[props.name]
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
+    this.defer = props.defer ?? true
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)

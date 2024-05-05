@@ -8,6 +8,7 @@ export interface EventEmitted<Names, Interaction = any> {
   type: Types
   name: Names
   scope: Scope
+  defer: boolean
   cooldown: number
   ephemeral: boolean
   permissions: PermissionResolvable[]
