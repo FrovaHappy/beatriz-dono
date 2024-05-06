@@ -1,20 +1,17 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
-import { BuildCommand } from '../../buildersSchema'
-import { CommandsNames } from '../../enums'
+import BuildCommand from '@core/build/BuildCommand'
 import actionNoUsages from './actionNoUsages'
-import db from '../../db'
-import messages from '../colors/messages'
+import db from '@core/db'
 import validatesRoles from '../shared/validatesRoles'
-const name = CommandsNames.colorsRemove
+import { CommandNames } from '@/const/interactionsNames'
 const enum Actions {
   noUsages = 'no-usages',
   all = 'all',
   selected = 'selected'
 }
-export default BuildCommand({
-  name,
+export default new BuildCommand({
+  name: CommandNames.colorsRemove,
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription('Elimina los roles no utilizados por el jugador.')
     .addStringOption(op =>
       op
@@ -25,6 +22,7 @@ export default BuildCommand({
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
   cooldown: 3 * 60 * 60,
+  permissions: [],
   ephemeral: true,
   scope: 'public',
   async execute(interaction) {
@@ -33,10 +31,10 @@ export default BuildCommand({
       include: { colors: true }
     })
 
-    if (!colorCommand) return messages.requireSettings({ interaction })
+    if (!colorCommand) return { content: 'Requiere configuración' }
 
     const { validColorMain } = validatesRoles(interaction, colorCommand)
-    if (!validColorMain) return messages.requireSettings({ interaction })
+    if (!validColorMain) return { content: 'Requiere configuración' }
     const { colors } = colorCommand
     const action = interaction.options.getString('actions')
     if (action === Actions.noUsages) {

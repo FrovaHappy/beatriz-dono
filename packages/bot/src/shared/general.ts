@@ -6,3 +6,12 @@ export function stringToJson<T = any, G = null>(str: string, df: any = null): T 
     return null as G
   }
 }
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function objWithKeyValueEqual<T extends string | number | symbol>(OBJ: Record<string, unknown>) {
+  const buttonKeys = Object.keys(OBJ) as T[]
+  const obj: Partial<Record<T, T>> = {}
+  for (const key of buttonKeys) {
+    obj[key] = key
+  }
+  return obj as Record<T, T>
+}

@@ -9,7 +9,7 @@
     "generate_db": "npx prisma db push",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "dev": "npm run generate_db && nodemon --exec ts-node src/index.ts",
+    "dev": "npm run generate_db && nodemon -L --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node ./dist/index.js"
   },
@@ -19,21 +19,15 @@
   "dependencies": {
     "@napi-rs/canvas": "^0.1.51",
     "@prisma/client": "^5.13.0",
+    "module-alias": "^2.2.3",
     "discord.js": "^14.12.1",
     "dotenv": "^16.4.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.6.0",
-    "@vitest/ui": "^1.4.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^17.1.0",
-    "eslint-plugin-promise": "^6.1.1",
+    "@types/module-alias": "^2.0.4",
     "nodemon": "3.1.0",
     "prisma": "^5.13.0",
-    "ts-node": "10.9.2",
-    "typescript": "^5.4.4",
-    "vitest": "^1.4.0"
+    "ts-node": "10.9.2"
   }
 }

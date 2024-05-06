@@ -1,13 +1,19 @@
-import { SlashCommandBuilder } from 'discord.js'
-import { CommandsNames } from '../../enums'
-import { BuildCommand } from '../../buildersSchema'
-const name = CommandsNames.test
-export default BuildCommand({
+import { ActionRowBuilder, SlashCommandBuilder, type StringSelectMenuBuilder } from 'discord.js'
+import BuildCommand from '@core/build/BuildCommand'
+import { type Menu } from '@/core/build/BuildMenu'
+import { CommandNames, MenuNames } from '@/const/interactionsNames'
+
+export default new BuildCommand({
   cooldown: 60,
-  name,
+  name: CommandNames.test,
   scope: 'owner',
-  data: new SlashCommandBuilder().setName(name).setDescription('Replies with Pong!'),
-  async execute(interaction) {
-    return { content: 'test!' }
+  permissions: [],
+  ephemeral: true,
+  data: new SlashCommandBuilder().setDescription('Replies with Pong!'),
+  async execute(interaction, i18n) {
+    const select: Menu = globalThis.menus.get(MenuNames.test)
+    console.log(select)
+    const row = new ActionRowBuilder<StringSelectMenuBuilder>({ components: [select.data] })
+    return { content: 'test!', components: [row] }
   }
 })

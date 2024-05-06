@@ -1,35 +1,41 @@
-import { type RoleResolvable, SlashCommandBuilder, type Role, PermissionFlagsBits } from 'discord.js'
-import { BuildCommand } from '../../buildersSchema'
-import { CommandsNames } from '../../enums'
-import type { CustomCommandInteraction } from '../../types/InteractionsCreate'
-import db from '../../db'
+import { type RoleResolvable, SlashCommandBuilder, PermissionFlagsBits } from 'discord.js'
+import BuildCommand from '@core/build/BuildCommand'
+import db from '@core/db'
 import validatesRoles from '../shared/validatesRoles'
-import messages from '../colors/messages'
+import { CommandNames } from '@/const/interactionsNames'
 interface Positions {
   position: number
   role: RoleResolvable
 }
-const name = CommandsNames.colorsOrder
-export default BuildCommand({
+export default new BuildCommand({
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription('Ordena los roles ya creados.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
-  name,
+  name: CommandNames.colorsOrder,
   ephemeral: true,
   scope: 'public',
+  permissions: [],
   cooldown: 60,
-  async execute(i: CustomCommandInteraction) {
+  async execute(i) {
+    const reqPreviousSetting = {
+      embeds: [
+        {
+          title: 'Este Comando Requiere de acciones Previas',
+          description: 'ejecuta el comando `/set-colors` ☕'
+        }
+      ]
+    }
     const colorCommand = await db.colorCommand.findUnique({
       where: { serverId: i.guildId ?? '' },
       include: { colors: true }
     })
-    if (!colorCommand) return messages.requireSettings({ interaction: i })
+    if (!colorCommand) return reqPreviousSetting
     const { validColorMain } = validatesRoles(i, colorCommand)
-    if (!validColorMain) return messages.requireSettings({ interaction: i })
+    if (!validColorMain) return reqPreviousSetting
 
     const { colors, pointerId } = colorCommand
-    const colorMain = i.guild?.roles.cache.find(r => r.id === pointerId) as Role
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const colorMain = i.guild!.roles.cache.find(r => r.id === pointerId)!
     const positions: Positions[] = []
 
     for await (const color of colors) {

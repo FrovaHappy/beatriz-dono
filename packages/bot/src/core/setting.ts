@@ -1,6 +1,6 @@
 import { array, number, object, string } from 'zod'
 import db from './db'
-import { stringToJson } from './shared/general'
+import { stringToJson } from '../shared/general'
 import config from './config'
 
 const settingSchema = object({

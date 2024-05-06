@@ -1,18 +1,17 @@
-import { BuildCommand } from '../../buildersSchema'
-import { CommandsNames } from '../../enums'
+import BuildCommand from '@core/build/BuildCommand'
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
-import db from '../../db'
+import db from '@core/db'
 import createRole from './createRole'
-import messages from './messages'
-import config from '../../config'
-const name = CommandsNames.setColors
-export default BuildCommand({
+import config from '@core/config'
+import { CommandNames } from '@/const/interactionsNames'
+
+export default new BuildCommand({
   cooldown: 30,
   ephemeral: true,
-  name,
+  name: CommandNames.colorsSet,
+  permissions: [],
   scope: 'public',
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription('Inicia la primera configuración de colores.')
     .addRoleOption(roleOption => roleOption.setName('role').setDescription('rol requerido para /colors'))
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
@@ -20,7 +19,9 @@ export default BuildCommand({
     const rolePermission = i.options.getRole('role', false)?.id ?? null
 
     if (!i.appPermissions?.has([PermissionFlagsBits.ManageRoles])) {
-      return messages.requiredPermissions
+      return {
+        content: 'manage roles is required'
+      }
     }
     const serverId = i.guildId
     if (!serverId) {

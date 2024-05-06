@@ -1,7 +1,6 @@
-import type { Role } from 'discord.js'
-import type { CustomCommandInteraction } from '../../types/InteractionsCreate'
+import type { Interaction, Role } from 'discord.js'
 
-export default async function createRole(interaction: CustomCommandInteraction): Promise<Role | null> {
+export default async function createRole(interaction: Interaction): Promise<Role | null> {
   const role = await interaction.guild?.roles
     .create({
       name: `🎨 Controller colors (${interaction.client.user?.username})`,

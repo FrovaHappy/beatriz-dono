@@ -1,10 +1,9 @@
 import type { Color, Prisma } from '@prisma/client'
-import type { CustomCommandInteraction } from '../../types/InteractionsCreate'
-import type { GuildMemberRoleManager } from 'discord.js'
+import type { GuildMemberRoleManager, Interaction } from 'discord.js'
 type ReturnData = Prisma.ColorUncheckedCreateInput
 
 interface Props {
-  interaction: CustomCommandInteraction
+  interaction: Interaction
   colors: Color[]
 }
 export default async function removeRoleOfUser({ interaction, colors }: Props): Promise<ReturnData[] | undefined> {

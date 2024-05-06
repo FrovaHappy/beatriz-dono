@@ -1,25 +1,23 @@
 import { type GuildMember, SlashCommandBuilder, EmbedBuilder, Colors, PermissionFlagsBits } from 'discord.js'
-import { CommandsNames } from '../../enums'
-import { BuildCommand } from '../../buildersSchema'
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
+import BuildCommand from '@core/build/BuildCommand'
 import { validateCanvas } from './validate'
 import { formatZodError } from '../../shared/validate'
 import { SendWelcome } from '@prisma/client'
 import messageFormatting, { userSecuencies } from '../../shared/messageFormatting'
-import db from '../../db'
+import db from '@core/db'
 import { stringToJson } from '../../shared/general'
 import SendWelcomeWith from '../../shared/sendWelcomeWith'
-import getI18n, { es, en } from '../../shared/i18n'
+import getI18n, { es, en } from '../../i18n'
+import WELCOME from '../../const/welcome'
+import { CommandNames } from '@/const/interactionsNames'
 
-const name = CommandsNames.setWelcome
-export default BuildCommand({
+export default new BuildCommand({
   cooldown: 0,
-  name,
+  name: CommandNames.welcomeSet,
   ephemeral: true,
   scope: 'public',
+  permissions: [],
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription(en.setWelcome.build.mainDescription)
     .setDescriptionLocalization('es-ES', es.setWelcome.build.mainDescription)
     .addChannelOption(op =>
@@ -65,7 +63,6 @@ export default BuildCommand({
     if (!serverId) return { content: 'error with server id' }
     const imageLength = i.options.getString('image')?.length ?? 0
     const image = stringToJson(i.options.getString('image') ?? '')
-    const imageMock = stringToJson(readFileSync(path.join(__dirname, '../../../mocks/welcome.json'), 'utf-8'))
     const message = i.options.getString('message') ?? i18n.setWelcome.messageDefault
     const channelId = i.options.getChannel('channel', true).id
     const send = i.options.getString('send', true) as SendWelcome
@@ -102,7 +99,7 @@ export default BuildCommand({
         })
       ],
       ...(await SendWelcomeWith({
-        image: image ?? imageMock,
+        image: image ?? WELCOME,
         message: messageReply,
         member: i.member as GuildMember,
         send

@@ -1,23 +1,24 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
-import { BuildCommand } from '../../buildersSchema'
-import { CommandsNames } from '../../enums'
-import db from '../../db'
+import BuildCommand from '@core/build/BuildCommand'
+import db from '@core/db'
 import validatesRoles from '../shared/validatesRoles'
-import messages from '../colors/messages'
-const name = CommandsNames.colorsList
-export default BuildCommand({
-  data: new SlashCommandBuilder().setName(name).setDescription('lista los colores del servidor.'),
-  name,
+import { CommandNames } from '@/const/interactionsNames'
+
+export default new BuildCommand({
+  data: new SlashCommandBuilder().setDescription('lista los colores del servidor.'),
+  name: CommandNames.colorsList,
+  permissions: [],
   scope: 'public',
+  ephemeral: true,
   async execute(interaction) {
     const colorCommand = await db.colorCommand.findUnique({
       where: { serverId: interaction.guildId ?? '' },
       include: { colors: true }
     })
 
-    if (!colorCommand) return messages.requireSettings({ interaction })
+    if (!colorCommand) return { content: 'Requiere configuración' }
     const { validColorMain } = validatesRoles(interaction, colorCommand)
-    if (!validColorMain) return messages.requireSettings({ interaction })
+    if (!validColorMain) return { content: 'Requiere configuración' }
 
     const colors = colorCommand.colors ?? []
     let colorsUsage = 0

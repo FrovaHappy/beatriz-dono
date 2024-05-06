@@ -1,22 +1,21 @@
 import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
-import { BuildCommand } from '../../buildersSchema'
-import { CommandsNames } from '../../enums'
+import BuildCommand from '@core/build/BuildCommand'
 import COLORS from '../../shared/stackColors'
 import changeToColor from './changeToColor'
 import removeRoleOfUser from './removeRoleOfUser'
-import db from '../../db'
-import config from '../../config'
+import db from '@core/db'
+import config from '@core/config'
+import { CommandNames } from '@/const/interactionsNames'
 
-const name = CommandsNames.colors
 const regexColors = /^#([a-f0-9]{6})$/
 
-export default BuildCommand({
-  name,
+export default new BuildCommand({
+  name: CommandNames.colors,
   ephemeral: true,
   scope: 'public',
+  permissions: [],
   cooldown: 15,
   data: new SlashCommandBuilder()
-    .setName(name)
     .setDescription('Cambia el color de tu nombre.')
     .addStringOption(strOp =>
       strOp

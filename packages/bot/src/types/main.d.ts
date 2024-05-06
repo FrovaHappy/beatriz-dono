@@ -1,18 +1,16 @@
-import type { Client, Collection, BitFieldResolvable } from 'discord.js'
-import type { BaseFileButton, BaseFileCommand } from './BaseFiles'
-import type { ButtonsNames, CommandsNames } from '../enums'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Interaction, type PermissionResolvable } from 'discord.js'
 
-export interface ClientCustom extends Client {
-  commands: Collection<keyof typeof CommandsNames | string, BaseFileCommand>
-  cooldowns: Collection<string, Collection<string, number>>
-  buttons: Collection<keyof typeof ButtonsNames | string, BaseFileButton>
-}
-export type OmitScopeOfBaseEventInteraction = Omit<BaseEventInteractionCreate, 'scope'>
-export interface BaseEventInteractionCreate {
-  name: CommandsNames | ButtonsNames
-  type: 'command' | 'button'
-  scope: 'public' | 'private' | 'owner'
-  cooldown?: number
+export type Scope = 'public' | 'private' | 'owner'
+export type Types = 'menus' | 'commands' | 'buttons' | 'modals'
+
+export interface EventEmitted<Names, Interaction = any> {
+  type: Types
+  name: Names
+  scope: Scope
+  defer: boolean
+  cooldown: number
   ephemeral: boolean
-  permissions: BitFieldResolvable
+  permissions: PermissionResolvable[]
+  execute: (e: Interaction, i18n: I18n) => Promise<InteractionEditReplyOptions>
 }

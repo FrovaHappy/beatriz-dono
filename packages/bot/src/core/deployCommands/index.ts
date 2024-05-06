@@ -1,18 +1,21 @@
-import type { BaseFileCommand } from '../types/BaseFiles'
 import updatePublic from './updatePublic'
 import updatePrivate from './updatePrivate'
 import config from '../config'
-import { REST, type Collection } from 'discord.js'
+import {
+  REST,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody as CommandDataJson,
+  type Collection
+} from 'discord.js'
 import updateOwner from './updateOwners'
 import { clearForDelete, getForDelete } from '../setting'
 import { deleteServers } from './deleteServers'
+import { type Scope } from '@/types/main'
+import { type Command } from '../build/BuildCommand'
 
 export const rest = new REST().setToken(config.discordToken)
 
-async function GetCommands(
-  collection: Collection<string, BaseFileCommand>
-): Promise<Record<'public' | 'private' | 'owner', string[]>> {
-  const commands: Record<BaseFileCommand['scope'], string[]> = {
+async function GetCommands(collection: Collection<string, Command>): Promise<Record<Scope, CommandDataJson[]>> {
+  const commands: Record<Scope, CommandDataJson[]> = {
     owner: [],
     private: [],
     public: []
@@ -22,7 +25,7 @@ async function GetCommands(
   })
   return commands
 }
-export default async function deployCommand(collection: Collection<string, BaseFileCommand>): Promise<void> {
+export default async function deployCommand(collection: Collection<string, Command>): Promise<void> {
   const commands = await GetCommands(collection)
   const commandsReset = [...new Set([...getForDelete()])]
   await updatePublic(commands.public)
