@@ -1,10 +1,10 @@
-import { MenuNamesKeys } from '@/const/MenuMames'
-import { MODAL_NAME } from '@/const/ModalNames'
+import { MenuNames, ModalNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
+import { type Modal } from '@/core/build/BuildModal'
 import { type GuildMember, PermissionsBitField, StringSelectMenuBuilder } from 'discord.js'
 
 export default new BuildMenu({
-  name: MenuNamesKeys.test,
+  name: MenuNames.test,
   permissions: [],
   ephemeral: true,
   defer: false,
@@ -33,8 +33,7 @@ export default new BuildMenu({
         content: 'No eres moderador para usar este comando!'
       }
     }
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const modal = globalThis.modals.get(MODAL_NAME.test)!
+    const modal: Modal = globalThis.modals.get(ModalNames.test)
     switch (value) {
       case 'pikachu':
         // e.channel?.delete()

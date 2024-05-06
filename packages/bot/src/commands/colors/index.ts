@@ -5,12 +5,12 @@ import changeToColor from './changeToColor'
 import removeRoleOfUser from './removeRoleOfUser'
 import db from '@core/db'
 import config from '@core/config'
-import { CommandNamesKeys } from '../../const/CommandNames'
+import { CommandNames } from '@/const/interactionsNames'
 
 const regexColors = /^#([a-f0-9]{6})$/
 
 export default new BuildCommand({
-  name: CommandNamesKeys.colors,
+  name: CommandNames.colors,
   ephemeral: true,
   scope: 'public',
   permissions: [],

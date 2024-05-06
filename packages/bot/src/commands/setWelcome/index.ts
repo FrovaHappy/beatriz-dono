@@ -9,11 +9,11 @@ import { stringToJson } from '../../shared/general'
 import SendWelcomeWith from '../../shared/sendWelcomeWith'
 import getI18n, { es, en } from '../../i18n'
 import WELCOME from '../../const/welcome'
-import { CommandNamesKeys } from '../../const/CommandNames'
+import { CommandNames } from '@/const/interactionsNames'
 
 export default new BuildCommand({
   cooldown: 0,
-  name: CommandNamesKeys.welcomeSet,
+  name: CommandNames.welcomeSet,
   ephemeral: true,
   scope: 'public',
   permissions: [],

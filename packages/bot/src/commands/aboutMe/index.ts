@@ -2,13 +2,13 @@ import { Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import BuildCommand from '../../core/build/BuildCommand'
 import messageFormatting from '../../shared/messageFormatting'
 import { en, es } from '../../i18n'
-import { CommandNamesKeys } from '../../const/CommandNames'
+import { CommandNames } from '@/const/interactionsNames'
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()
     .setDescription(en.aboutMe.buildDescription)
     .setDescriptionLocalization('es-ES', es.aboutMe.buildDescription),
-  name: CommandNamesKeys.aboutMe,
+  name: CommandNames.aboutMe,
   scope: 'public',
   ephemeral: true,
   permissions: [],

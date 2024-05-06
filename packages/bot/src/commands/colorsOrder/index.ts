@@ -2,7 +2,7 @@ import { type RoleResolvable, SlashCommandBuilder, PermissionFlagsBits } from 'd
 import BuildCommand from '@core/build/BuildCommand'
 import db from '@core/db'
 import validatesRoles from '../shared/validatesRoles'
-import { CommandNamesKeys } from '../../const/CommandNames'
+import { CommandNames } from '@/const/interactionsNames'
 interface Positions {
   position: number
   role: RoleResolvable
@@ -11,7 +11,7 @@ export default new BuildCommand({
   data: new SlashCommandBuilder()
     .setDescription('Ordena los roles ya creados.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
-  name: CommandNamesKeys.colorsOrder,
+  name: CommandNames.colorsOrder,
   ephemeral: true,
   scope: 'public',
   permissions: [],

@@ -1,4 +1,3 @@
-import { COMMAND_NAME, type CommandNames } from '../../const/CommandNames'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import { type EventEmitted, type Scope } from '@/types/main'
 import type {
@@ -9,6 +8,7 @@ import type {
 } from 'discord.js'
 
 import { type I18n } from '../../i18n'
+import { type CommandNames } from '@/const/interactionsNames'
 
 interface CommandProps {
   name: CommandNames
@@ -26,7 +26,7 @@ interface CommandProps {
  */
 class BuildCommand implements EventEmitted<string> {
   type: 'commands' = 'commands'
-  name: string
+  name
   scope
   defer
   ephemeral
@@ -35,7 +35,7 @@ class BuildCommand implements EventEmitted<string> {
   data
   execute
   constructor(props: CommandProps) {
-    this.name = COMMAND_NAME[props.name]
+    this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
     this.defer = props.defer ?? true

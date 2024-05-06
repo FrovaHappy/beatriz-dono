@@ -1,4 +1,3 @@
-import { BUTTON_NAME, type ButtonNames } from '../../const/ButtonNames'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import {
   type InteractionEditReplyOptions,
@@ -8,6 +7,7 @@ import {
 } from 'discord.js'
 import { type I18n } from '../../i18n'
 import { type EventEmitted, type Scope } from '@/types/main'
+import { type ButtonNames } from '@/const/interactionsNames'
 
 interface ButtonsProps {
   name: ButtonNames
@@ -25,7 +25,7 @@ interface ButtonsProps {
  */
 class BuildButton implements EventEmitted<string> {
   type: 'buttons' = 'buttons'
-  name: string
+  name
   ephemeral
   permissions
   cooldown
@@ -34,7 +34,7 @@ class BuildButton implements EventEmitted<string> {
   scope
   execute
   constructor(props: Omit<ButtonsProps, 'type'>) {
-    this.name = BUTTON_NAME[props.name]
+    this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
     this.defer = props.defer ?? true

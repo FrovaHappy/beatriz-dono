@@ -3,12 +3,12 @@ import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import db from '@core/db'
 import createRole from './createRole'
 import config from '@core/config'
-import { CommandNamesKeys } from '../../const/CommandNames'
+import { CommandNames } from '@/const/interactionsNames'
 
 export default new BuildCommand({
   cooldown: 30,
   ephemeral: true,
-  name: CommandNamesKeys.colorsSet,
+  name: CommandNames.colorsSet,
   permissions: [],
   scope: 'public',
   data: new SlashCommandBuilder()

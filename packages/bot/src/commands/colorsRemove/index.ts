@@ -3,14 +3,14 @@ import BuildCommand from '@core/build/BuildCommand'
 import actionNoUsages from './actionNoUsages'
 import db from '@core/db'
 import validatesRoles from '../shared/validatesRoles'
-import { CommandNamesKeys } from '../../const/CommandNames'
+import { CommandNames } from '@/const/interactionsNames'
 const enum Actions {
   noUsages = 'no-usages',
   all = 'all',
   selected = 'selected'
 }
 export default new BuildCommand({
-  name: CommandNamesKeys.colorsRemove,
+  name: CommandNames.colorsRemove,
   data: new SlashCommandBuilder()
     .setDescription('Elimina los roles no utilizados por el jugador.')
     .addStringOption(op =>

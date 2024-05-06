@@ -1,9 +1,9 @@
-import { ModalNamesKeys } from '@/const/ModalNames'
+import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
 
 export default new BuildModal({
-  name: ModalNamesKeys.test,
+  name: ModalNames.test,
   permissions: [],
   ephemeral: true,
   cooldown: 0,

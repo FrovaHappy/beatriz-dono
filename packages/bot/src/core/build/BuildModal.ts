@@ -1,4 +1,3 @@
-import { MODAL_NAME, type ModalNames } from '../../const/ModalNames'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import {
   type InteractionEditReplyOptions,
@@ -8,6 +7,7 @@ import {
 } from 'discord.js'
 import { type I18n } from '../../i18n'
 import { type EventEmitted, type Scope } from '@/types/main'
+import { type ModalNames } from '@/const/interactionsNames'
 
 interface ModalsProps {
   name: ModalNames
@@ -34,7 +34,7 @@ class BuildModal implements EventEmitted<string> {
   scope
   execute
   constructor(props: ModalsProps) {
-    this.name = MODAL_NAME[props.name]
+    this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
     this.defer = props.defer ?? true

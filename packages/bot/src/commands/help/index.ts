@@ -3,10 +3,10 @@ import { Colors, SlashCommandBuilder } from 'discord.js'
 import { en, es } from '../../i18n'
 import messageFormatting from '../../shared/messageFormatting'
 import welcome from './welcome'
-import { CommandNamesKeys } from '../../const/CommandNames'
+import { CommandNames } from '@/const/interactionsNames'
 
 export default new BuildCommand({
-  name: CommandNamesKeys.help,
+  name: CommandNames.help,
   cooldown: 5,
   ephemeral: true,
   permissions: [],

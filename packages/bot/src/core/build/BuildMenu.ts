@@ -14,8 +14,8 @@ import {
   type ChannelSelectMenuInteraction
 } from 'discord.js'
 import { type I18n } from '../../i18n'
-import { MENU_NAME, type MenuNames } from '@/const/MenuMames'
 import { type EventEmitted, type Scope } from '@/types/main'
+import { type MenuNames } from '@/const/interactionsNames'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -67,7 +67,7 @@ class BuildMenu<T extends MenuType> implements EventEmitted<string> {
   menuType: MenuType
   execute
   constructor(props: MenuProps<T>) {
-    this.name = MENU_NAME[props.name]
+    this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.menuType = props.menuType
     this.defer = props.defer ?? true
