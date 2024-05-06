@@ -7,7 +7,7 @@ import {
   type PermissionResolvable,
   PermissionsBitField
 } from 'discord.js'
-import messageFormatting from '../../shared/messageFormatting'
+import messageFormatting from '@/shared/messageFormatting'
 import { type I18n } from '@/i18n'
 interface Props {
   i: Interaction

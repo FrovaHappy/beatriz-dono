@@ -10,7 +10,7 @@ export default new BuildCommand({
   permissions: [],
   ephemeral: true,
   data: new SlashCommandBuilder().setDescription('Replies with Pong!'),
-  async execute(interaction, i18n) {
+  async execute() {
     const select: Menu = globalThis.menus.get(MenuNames.test)
     console.log(select)
     const row = new ActionRowBuilder<StringSelectMenuBuilder>({ components: [select.data] })

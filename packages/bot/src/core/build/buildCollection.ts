@@ -17,7 +17,7 @@ export default async function BuildCollection<G, T extends Base<G>>(
   Constructor: new (...args: any[]) => T
 ): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
-  const foldersPath = path.join(__dirname, '../../', pointFolder)
+  const foldersPath = path.join(__dirname, '../../services', pointFolder)
   const folders = ((): string[] | null => {
     console.log(`Scanning ${foldersPath} folders:`)
     try {

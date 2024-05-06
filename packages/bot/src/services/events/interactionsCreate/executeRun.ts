@@ -8,7 +8,7 @@ import isCooldownEnable from '@core/shared/isCooldownEnable'
 import createServerDb from '@core/shared/createServerDb'
 import filterOwnerCommands from './filterOwnerCommands'
 import isPermissionDeniedBot from './isPermissionDeniedBot'
-import getI18n from '../../i18n'
+import getI18n from '@/i18n'
 import { type Types, type EventEmitted } from '@/types/main'
 
 interface InteractionFunction {

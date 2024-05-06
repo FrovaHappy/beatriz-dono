@@ -1,5 +1,5 @@
 import { type I18n } from '@/i18n'
-import messageFormatting from '../../shared/messageFormatting'
+import messageFormatting from '@/shared/messageFormatting'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function welcome(i18n: I18n) {

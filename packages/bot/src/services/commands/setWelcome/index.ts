@@ -1,14 +1,14 @@
 import { type GuildMember, SlashCommandBuilder, EmbedBuilder, Colors, PermissionFlagsBits } from 'discord.js'
 import BuildCommand from '@core/build/BuildCommand'
 import { validateCanvas } from './validate'
-import { formatZodError } from '../../shared/validate'
+import { formatZodError } from '@/shared/validate'
 import { SendWelcome } from '@prisma/client'
-import messageFormatting, { userSecuencies } from '../../shared/messageFormatting'
+import messageFormatting, { userSecuencies } from '@/shared/messageFormatting'
 import db from '@core/db'
-import { stringToJson } from '../../shared/general'
-import SendWelcomeWith from '../../shared/sendWelcomeWith'
-import getI18n, { es, en } from '../../i18n'
-import WELCOME from '../../const/welcome'
+import { stringToJson } from '@/shared/general'
+import SendWelcomeWith from '@/shared/sendWelcomeWith'
+import getI18n, { es, en } from '@/i18n'
+import WELCOME from '@/const/welcome'
 import { CommandNames } from '@/const/interactionsNames'
 
 export default new BuildCommand({
@@ -68,7 +68,7 @@ export default new BuildCommand({
     const send = i.options.getString('send', true) as SendWelcome
 
     const invalidJson = image ? validateCanvas(image) : undefined
-    if (invalidJson ?? imageLength > 0) {
+    if (invalidJson && imageLength > 0) {
       return {
         embeds: [
           new EmbedBuilder({

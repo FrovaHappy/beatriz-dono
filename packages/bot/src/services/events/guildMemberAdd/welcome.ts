@@ -1,8 +1,8 @@
 import { type GuildMember } from 'discord.js'
 import db from '@core/db'
-import SendWelcomeWith from '../../shared/sendWelcomeWith'
-import { userSecuencies } from '../../shared/messageFormatting'
-import WELCOME from '../../const/welcome'
+import SendWelcomeWith from '@/shared/sendWelcomeWith'
+import { userSecuencies } from '@/shared/messageFormatting'
+import WELCOME from '@/const/welcome'
 import { validateCanvas } from '../../commands/setWelcome/validate'
 import { type Canvas } from '@/types/Canvas.types'
 

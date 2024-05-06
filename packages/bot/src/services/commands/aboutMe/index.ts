@@ -1,7 +1,7 @@
 import { Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
-import BuildCommand from '../../core/build/BuildCommand'
-import messageFormatting from '../../shared/messageFormatting'
-import { en, es } from '../../i18n'
+import BuildCommand from '@core/build/BuildCommand'
+import messageFormatting from '@/shared/messageFormatting'
+import { en, es } from '@/i18n'
 import { CommandNames } from '@/const/interactionsNames'
 
 const command = new BuildCommand({

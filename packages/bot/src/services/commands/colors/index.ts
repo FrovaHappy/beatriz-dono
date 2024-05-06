@@ -1,6 +1,6 @@
 import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
 import BuildCommand from '@core/build/BuildCommand'
-import COLORS from '../../shared/stackColors'
+import COLORS from '@/shared/stackColors'
 import changeToColor from './changeToColor'
 import removeRoleOfUser from './removeRoleOfUser'
 import db from '@core/db'

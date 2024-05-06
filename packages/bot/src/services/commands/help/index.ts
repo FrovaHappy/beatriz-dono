@@ -1,7 +1,7 @@
 import BuildCommand from '@core/build/BuildCommand'
 import { Colors, SlashCommandBuilder } from 'discord.js'
-import { en, es } from '../../i18n'
-import messageFormatting from '../../shared/messageFormatting'
+import { en, es } from '@/i18n'
+import messageFormatting from '@/shared/messageFormatting'
 import welcome from './welcome'
 import { CommandNames } from '@/const/interactionsNames'
 
