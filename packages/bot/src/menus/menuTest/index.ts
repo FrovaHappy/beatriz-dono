@@ -1,14 +1,7 @@
 import { MenuNamesKeys } from '@/const/MenuMames'
+import { MODAL_NAME } from '@/const/ModalNames'
 import BuildMenu from '@/core/build/BuildMenu'
-import {
-  ActionRowBuilder,
-  type GuildMember,
-  ModalBuilder,
-  PermissionsBitField,
-  StringSelectMenuBuilder,
-  TextInputBuilder,
-  TextInputStyle
-} from 'discord.js'
+import { type GuildMember, PermissionsBitField, StringSelectMenuBuilder } from 'discord.js'
 
 export default new BuildMenu({
   name: MenuNamesKeys.test,
@@ -40,28 +33,14 @@ export default new BuildMenu({
         content: 'No eres moderador para usar este comando!'
       }
     }
-
-    const modal = new ModalBuilder()
-      .setCustomId('modalSocio')
-      .setTitle('Añadir rol a nuevo socio!')
-      .addComponents(
-        new ActionRowBuilder({
-          components: [
-            new TextInputBuilder()
-              .setCustomId('memberid')
-              .setStyle(TextInputStyle.Paragraph)
-              .setLabel('Ingresa el ID del Usuario!')
-              .setMaxLength(30)
-          ]
-        })
-      )
-
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const modal = globalThis.modals.get(MODAL_NAME.test)!
     switch (value) {
       case 'pikachu':
         // e.channel?.delete()
         break
       case 'bulbasaur':
-        await e.showModal(modal)
+        await e.showModal(modal.data)
         break
       default:
         break
