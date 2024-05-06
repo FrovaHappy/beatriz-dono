@@ -60,5 +60,22 @@ export default new BuildEvent({
         }
       })
     }
+    if (interaction.isModalSubmit()) {
+      await executeRun({
+        customNameEmitted: interaction.customId,
+        type: 'modals',
+        locale: interaction.locale,
+        interaction,
+        deferReply: async options => {
+          await interaction.deferReply(options)
+        },
+        editReply: async options => {
+          await interaction.editReply(options)
+        },
+        reply: async options => {
+          await interaction.reply(options)
+        }
+      })
+    }
   }
 })
