@@ -1,4 +1,4 @@
-import { BUTTON_NAME, type ButtonName } from '../../const/ButtonNames'
+import { BUTTON_NAME, type ButtonNames } from '../../const/ButtonNames'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import {
   type InteractionEditReplyOptions,
@@ -10,7 +10,7 @@ import { type I18n } from '../../i18n'
 import { type EventEmitted, type Scope } from '@/types/main'
 
 interface ButtonsProps {
-  name: ButtonName
+  name: ButtonNames
   scope?: Scope
   ephemeral?: boolean
   defer?: boolean
