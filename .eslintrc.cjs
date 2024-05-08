@@ -1,6 +1,8 @@
 module.exports = {
   overrides: [
     {
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
       env: {
         browser: true,
         es2021: true
@@ -17,11 +19,13 @@ module.exports = {
     },
     {
       env: {
-        node: true
+        node: true,
+        es6: true
       },
-      files: ['vite.config.ts', './packages/bot/cp.js'],
+      files: ['vite.config.ts', './packages/bot/cp.cjs'],
       parserOptions: {
         sourceType: 'script',
+        ecmaVersion: 'latest',
         project: false
       }
     }

@@ -8,7 +8,7 @@
   "scripts": {
     "generate_db": "npx prisma db push",
     "test": "vitest",
-    "cp": "node ./cp.js",
+    "cp": "node ./cp.cjs",
     "test:ui": "vitest --ui",
     "dev": "npm run cp && npm run generate_db && nodemon -L --exec ts-node src/index.ts",
     "build": "npm run cp &&  tsc",
