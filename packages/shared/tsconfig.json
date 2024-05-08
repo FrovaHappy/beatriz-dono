@@ -1,0 +1,27 @@
+{
+  "display": "Node 18",
+  "_version": "18.2.0",
+  "compilerOptions": {
+    "lib": [
+      "es2023",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "target": "es2022",
+    "outDir": "../bot/src",
+    "rootDir": "lib",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+  },
+  "include": [
+    "lib",
+  ],
+  "exclude": [
+    "dist"
+  ]
+}
