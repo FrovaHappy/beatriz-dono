@@ -1,0 +1,19 @@
+.content {
+  width: 23rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  flex-shrink: 0;
+  height: -webkit-fill-available;
+  overflow-x: auto;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  padding: 1.25rem;
+  gap: .625rem;
+  background: var(--color-content);
+  border-radius: var(--border-3x);
+  grid-row: 1/3;
+}
+.title {
+  width: -webkit-fill-available;
+}

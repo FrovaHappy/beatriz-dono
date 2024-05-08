@@ -1,0 +1,100 @@
+#file {
+  display: none;
+}
+@mixin Button($color, $bg) {
+  display: inline-block;
+  border-radius: var(--border-2x);
+  border: none;
+  padding: 0.625rem;
+  height: 3.25rem;
+  aspect-ratio: 1/1;
+  background-color: $bg;
+  color: $color;
+  cursor: pointer;
+}
+.withUrl {
+  display: grid;
+  grid-template-columns: auto 3.25rem;
+  padding: 0.625rem;
+  border: .0625rem solid var(--color-content-hover);
+  border-radius: var(--border-2x);
+  grid-template-rows: repeat(2, 3.25rem);
+  gap: 0.625rem;
+  &__img {
+    grid-row: 1/3;
+    width: -webkit-fill-available;
+    height: 100%;
+    object-fit: contain;
+  }
+  &__edit {
+    @include Button(var(--color-bg), var(--color-text-alt));
+  }
+  &__delete {
+    @include Button(var(--color-bg), var(--color-danger));
+  }
+}
+
+.emptyUrl {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: var(--border-2x);
+  padding: 0.625rem;
+  cursor: pointer;
+  &__icon {
+    height: 3rem;
+    aspect-ratio: 1/1;
+  }
+  color: var(--color-text-alt);
+  border: 0.0625rem dashed var(--color-content-hover);
+}
+@mixin Load($colorBorder) {
+  width: 100%;
+  height: 4rem;
+  grid-column: 1/3;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: var(--border-2x);
+  border: 0.0625rem solid $colorBorder;
+}
+.loading {
+  @include Load(var(--color-content-hover));
+  &__line {
+    height: 0.1875rem;
+    width: 100%;
+    animation: lineAnimate 2.5s infinite ease;
+    align-items: end;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 4rem;
+      border-radius: var(--border-1x);
+      height: 100%;
+      background-color: aqua;
+    }
+  }
+}
+.error {
+  @include Load(var(--color-content-hover));
+  &__line {
+    height: 0.1875rem;
+    width: 100%;
+    animation: lineAnimate 5s infinite ease;
+    align-items: end;
+
+    border-radius: var(--border-1x);
+    background-color: var(--color-danger);
+  }
+}
+
+@keyframes lineAnimate {
+  0% {
+    transform: translateX(-1.875rem);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

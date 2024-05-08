@@ -1,0 +1,68 @@
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: var(--full);
+}
+.countStack{
+  padding: .625rem;
+  height: 2.5rem;
+  border: .0625rem solid var(--color-content-hover);
+  display: flex;
+  gap: .625rem;
+  border-radius: var(--border-2x);
+  text-wrap: nowrap;
+  align-items: center;
+  width: min-content;
+  color: var(--color-text-alt);
+  & svg {
+    height: 100%;
+  }
+}
+.newButton {
+  padding: 0.625rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: var(--border-2x);
+  border: none;
+  background: var(--color-primary);
+  cursor: pointer;
+  height: 3rem;
+  font-size: 90%;
+  & svg {
+    height: 100%;
+  }
+}
+.options {
+  display: none;
+  &__show {
+    position: absolute;
+    top: 3.5rem;
+    left: 0;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-content);
+    overflow: hidden;
+    border-radius: var(--border-2x);
+    & button {
+      height: 2.5rem;
+      border: none;
+      display: flex;
+      padding: 0.625rem;
+      gap: 0.625rem;
+      font-size: 90%;
+      background: none;
+      cursor: pointer;
+      &:hover {
+        background: var(--color-content-hover);
+      }
+      & svg {
+        height: 100%;
+      }
+    }
+  }
+}

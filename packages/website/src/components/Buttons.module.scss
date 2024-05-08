@@ -1,0 +1,14 @@
+.main{
+  display: flex;
+  height: 3rem;
+  padding: .3125rem .625rem;
+  align-items: center;
+  gap: .625rem;
+  font-size: 95%;
+  background-color: var(--color-primary);
+  border-radius: var(--border-2x);
+
+  & svg {
+    height: 100%;
+  }
+}
