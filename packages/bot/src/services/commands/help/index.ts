@@ -1,9 +1,9 @@
 import BuildCommand from '@core/build/BuildCommand'
 import { Colors, SlashCommandBuilder } from 'discord.js'
 import { en, es } from '@/i18n'
-import messageFormatting from '@/shared/messageFormatting'
 import welcome from './welcome'
 import { CommandNames } from '@/const/interactionsNames'
+import formatterText from '@lib/formatterText'
 
 export default new BuildCommand({
   name: CommandNames.help,
@@ -28,8 +28,8 @@ export default new BuildCommand({
     return {
       embeds: [
         {
-          title: messageFormatting(i18n.errorCommand.title, { slot0: subcommand }),
-          description: messageFormatting(i18n.errorCommand.description, { slot0: subcommand }),
+          title: formatterText(i18n.errorCommand.title, { slot0: subcommand }),
+          description: formatterText(i18n.errorCommand.description, { slot0: subcommand }),
           color: Colors.Orange
         }
       ]

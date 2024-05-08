@@ -3,13 +3,14 @@ import BuildCommand from '@core/build/BuildCommand'
 import { validateCanvas } from './validate'
 import { formatZodError } from '@/shared/validate'
 import { SendWelcome } from '@prisma/client'
-import messageFormatting, { userSecuencies } from '@/shared/messageFormatting'
 import db from '@core/db'
 import { stringToJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import getI18n, { es, en } from '@/i18n'
 import WELCOME from '@/const/welcome'
 import { CommandNames } from '@/const/interactionsNames'
+import formatterText from '@lib/formatterText'
+import { formatterUser } from '@/services/shared/formatterUser'
 
 export default new BuildCommand({
   cooldown: 0,
@@ -78,7 +79,7 @@ export default new BuildCommand({
         ]
       }
     }
-    const messageReply = userSecuencies(message, i.member as GuildMember)
+    const messageReply = formatterUser(message, i.user, i.guild.memberCount)
     await db.server.update({
       where: { serverId },
       data: {
@@ -92,7 +93,7 @@ export default new BuildCommand({
         new EmbedBuilder({
           title: i18n.setWelcome.response.title,
           color: Colors.Aqua,
-          description: messageFormatting(i18n.setWelcome.response.description, {
+          description: formatterText(i18n.setWelcome.response.description, {
             slot0: channelId,
             slot1: send
           })

@@ -1,8 +1,8 @@
 import { Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import BuildCommand from '@core/build/BuildCommand'
-import messageFormatting from '@/shared/messageFormatting'
 import { en, es } from '@/i18n'
 import { CommandNames } from '@/const/interactionsNames'
+import formatterText from '@lib/formatterText'
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()
@@ -18,7 +18,7 @@ const command = new BuildCommand({
         new EmbedBuilder({
           title: i18n.aboutMe.title,
           color: Colors.Purple,
-          description: messageFormatting(i18n.aboutMe.responseDescription, {
+          description: formatterText(i18n.aboutMe.responseDescription, {
             slot0: 'https://frovahappy.gitbook.io/beatriz-bot-docs/',
             slot1: 'https://discord.app/',
             slot2: 'https://top.gg/bot/971562890702237766',

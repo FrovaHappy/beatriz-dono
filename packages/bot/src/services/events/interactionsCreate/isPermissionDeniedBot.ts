@@ -7,8 +7,8 @@ import {
   type PermissionResolvable,
   PermissionsBitField
 } from 'discord.js'
-import messageFormatting from '@/shared/messageFormatting'
 import { type I18n } from '@/i18n'
+import formatterText from '@lib/formatterText'
 interface Props {
   i: Interaction
   i18n: I18n
@@ -26,9 +26,9 @@ export default async function isPermissionDeniedBot(props: Props): Promise<Inter
     return {
       embeds: [
         new EmbedBuilder({
-          title: messageFormatting(i18n.general.errorPermissions.title, { slot0: `${customNameEmitted}}` }),
+          title: formatterText(i18n.general.errorPermissions.title, { slot0: `${customNameEmitted}}` }),
           color: Colors.Red,
-          description: messageFormatting(i18n.general.errorPermissions.description, {
+          description: formatterText(i18n.general.errorPermissions.description, {
             slot0: PermissionsRequired,
             slot1: userName ?? 'Bot'
           })

@@ -1,10 +1,10 @@
 import type { Base, Text, TextBase, User } from '@/types/Canvas.types'
-import { userFormatting } from '../formattingText'
+import formatterText from '@lib/formatterText'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function renderText(text: Text, ctx: CanvasRenderingContext2D, user: User, base: Base & TextBase) {
   const { x, y, size, family, weight, limitLetters, content, align, baseline, color } = text
-  let textContent = userFormatting(content, user)
+  let textContent = formatterText(content, {})
   ctx.save()
   ctx.font = `${weight} ${size}px ${family}`
   ctx.textAlign = align
