@@ -8,9 +8,10 @@
   "scripts": {
     "generate_db": "npx prisma db push",
     "test": "vitest",
+    "cp": "node ./cp.js",
     "test:ui": "vitest --ui",
-    "dev": "npm run generate_db && nodemon -L --exec ts-node src/index.ts",
-    "build": "tsc",
+    "dev": "npm run cp && npm run generate_db && nodemon -L --exec ts-node src/index.ts",
+    "build": "npm run cp &&  tsc",
     "start": "node ./dist/index.js"
   },
   "keywords": [],
