@@ -9,7 +9,7 @@
     "module": "node16",
     "target": "es2022",
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDirs": ["src", "../shared"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -18,10 +18,11 @@
     "resolveJsonModule": true,
     "types": ["vitest/globals","./src/globals"],
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"],
-      "@core/*": ["core/*"]
+      "@/*": ["src/*"],
+      "@core/*": ["src/core/*"],
+      "@lib/*": ["../shared/lib/*"],
     }
   },
   "include": [
