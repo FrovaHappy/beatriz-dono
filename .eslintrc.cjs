@@ -19,7 +19,7 @@ module.exports = {
       env: {
         node: true
       },
-      files: ['vite.config.ts'],
+      files: ['vite.config.ts', './packages/bot/cp.js'],
       parserOptions: {
         sourceType: 'script',
         project: false
