@@ -6,11 +6,10 @@ import { type Image, type Text, type Icon, type Layer } from '@/types/Canvas.typ
 import style from './Shapes.module.scss'
 import Shape from './Shape'
 import { useCanvasCtx } from '@/app/context'
-import { addIdOfLayers } from '@/app/canvasParser'
 
 export default function Shapes() {
   const [canvas, setCanvas] = useCanvasCtx()
-  const [list, setList] = useState(addIdOfLayers(canvas).layers)
+  const [list, setList] = useState(canvas.layers)
   useEffect(() => {
     setList(canvas.layers)
     // eslint-disable-next-line react-hooks/exhaustive-deps

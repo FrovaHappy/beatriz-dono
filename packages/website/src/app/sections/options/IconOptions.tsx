@@ -7,7 +7,6 @@ import { HEIGHT, LIMIT_CANVAS, WIDTH_LARGE, WIDTH_SHORT } from '.'
 import useInputNumber from '@/components/useInputNumber'
 import useSelections from '@/components/useSelections'
 import useColorsInput from '@/components/useColorsInput'
-import changedLayers from './changedLayers'
 
 export default function IconOptions({ shape }: { shape: Icon }) {
   const [canvas, setCanvas] = useCanvasCtx()
@@ -92,9 +91,7 @@ export default function IconOptions({ shape }: { shape: Icon }) {
       shape: options.shape[0]?.id ?? 'circle'
     }
 
-    const c = changedLayers(canvas, s)
-    if (c) setCanvas(JSON.parse(JSON.stringify(c)))
-
+    setCanvas(canvas, s)
     setShapeModify(s)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, values)

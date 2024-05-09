@@ -15,7 +15,7 @@ export default function GeneralOptions() {
     min: 0,
     max: LIMIT_CANVAS,
     height: HEIGHT,
-    width: WIDTH_SHORT,
+    width: WIDTH_SHORT
   })
   const [width, widthInput] = useInputNumber({
     title: 'w',
@@ -24,7 +24,7 @@ export default function GeneralOptions() {
     min: 0,
     max: LIMIT_CANVAS,
     height: HEIGHT,
-    width: WIDTH_SHORT,
+    width: WIDTH_SHORT
   })
   const [background, backgroundInput] = useColorsInput({
     title: 'background',
@@ -37,7 +37,7 @@ export default function GeneralOptions() {
     canvas.height = height
     canvas.width = width
     canvas.color = background !== '#000000' ? background : undefined
-    setCanvas(JSON.parse(JSON.stringify(canvas)))
+    setCanvas({ ...canvas })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [background, height, width])
 

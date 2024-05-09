@@ -17,7 +17,7 @@ export default function useStatus(
         return
       }
       setStatus('finished')
-      setUrl(link)
+      setUrl(link as string)
     }
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useLink().catch(() => {
