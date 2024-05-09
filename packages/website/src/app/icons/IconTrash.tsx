@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 interface Props extends React.SVGProps<SVGSVGElement> {}
 export default function IconTrash(props: Props) {
@@ -19,5 +19,5 @@ export default function IconTrash(props: Props) {
       <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
       <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
     </svg>
-  );
+  )
 }

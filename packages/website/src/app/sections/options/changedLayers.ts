@@ -1,4 +1,4 @@
-import { Canvas, Layer } from '@/types/Canvas.types'
+import { type Canvas, type Layer } from '@/types/Canvas.types'
 
 function changedLayers(canvas: Canvas, s: Layer) {
   const c = JSON.stringify(canvas)

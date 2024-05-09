@@ -1,4 +1,4 @@
-import { Base, Layer, Text, TextBase, User, Image, Icon } from '@/types/Canvas.types'
+import { type Base, type Layer, type Text, type TextBase, type User, type Image, type Icon } from '@/types/Canvas.types'
 import { renderText } from './renderText'
 import { renderImage } from './renderImage'
 import { renderIcon } from './renderIcon'

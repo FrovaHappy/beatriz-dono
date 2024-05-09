@@ -5,8 +5,8 @@ import style from './Selections.module.scss'
 import inputStyle from './Input.module.scss'
 import IconChevronDown from '@/app/icons/IconChevronDown'
 import { calculatePercents } from '@/utils/getPadding'
-import MaskInput, { OptionsMaskInput } from './MaskInput'
-import { InputExport } from '@/types/types'
+import MaskInput, { type OptionsMaskInput } from './MaskInput'
+import { type InputExport } from '@/types/types'
 
 interface Options<T> {
   id: T
@@ -16,7 +16,7 @@ interface Options<T> {
 }
 interface Props<T> extends OptionsMaskInput {
   idSelect: T
-  values: Options<T>[]
+  values: Array<Options<T>>
 }
 
 export default function useSelections<T = string>(props: Props<T>): InputExport<Options<T> | undefined> {
@@ -33,7 +33,7 @@ export default function useSelections<T = string>(props: Props<T>): InputExport<
     flexShrink: '0'
   }
   const Select = (
-    <MaskInput options={{ height, width, title }} onClick={() => setShow(!show)}>
+    <MaskInput options={{ height, width, title }} onClick={() => { setShow(!show) }}>
       {Icon ? <Icon style={ICONS_STYLE} /> : undefined}
       <span className={inputStyle.props}>{value?.title ?? 'selecciona...'}</span>
       <IconChevronDown style={ICONS_STYLE} />
@@ -44,7 +44,7 @@ export default function useSelections<T = string>(props: Props<T>): InputExport<
           return (
             <div
               key={v.id as string}
-              onClick={() => setValue(v)}
+              onClick={() => { setValue(v) }}
               className={`${inputStyle.props} ${style.value} ${value?.id === v.id ? style['value--active'] : ''}`}
               style={{ height, fontFamily: v.fontFamily }}>
               {IconItem ? <IconItem style={ICONS_STYLE} /> : undefined}

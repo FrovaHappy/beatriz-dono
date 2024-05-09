@@ -1,11 +1,11 @@
-"use client";
-import getBase64 from "@/utils/getBase64";
-export type UploadStatus = "uploading" | "finished" | "error";
+'use client'
+import getBase64 from '@/utils/getBase64'
+export type UploadStatus = 'uploading' | 'finished' | 'error'
 
 export async function useUpload(file: File | null) {
   if (!file) return
   let base64Img = await getBase64(file)
-  if (typeof base64Img == 'string') {
+  if (typeof base64Img === 'string') {
     base64Img = base64Img.replace(/^data:.+base64,/, '')
   }
   const result = await fetch('/api/upload', {

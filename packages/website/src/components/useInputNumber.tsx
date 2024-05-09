@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import inputStyle from './Input.module.scss'
-import { InputExport } from '@/types/types'
-import MaskInput, { OptionsMaskInput } from './MaskInput'
+import { type InputExport } from '@/types/types'
+import MaskInput, { type OptionsMaskInput } from './MaskInput'
 import useSetterTimeOut from './useSetterTimeOut'
 type Value = string | null
 

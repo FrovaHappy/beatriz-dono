@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { State } from '@/types/types'
+import { type State } from '@/types/types'
 import { useEffect, useState } from 'react'
 
 interface Props<T> {
   time?: number
   value: T
   defaultValue: T
-  setValue(value: T): void
+  setValue: (value: T) => void
   deps?: any[]
 }
 export default function useSetterTimeOut<T = any>({ value, setValue, time = 100, deps = [], defaultValue }: Props<T>) {

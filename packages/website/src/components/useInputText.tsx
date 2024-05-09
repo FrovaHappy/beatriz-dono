@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from 'react'
 import inputStyle from './Input.module.scss'
-import MaskInput, { OptionsMaskInput } from './MaskInput'
+import MaskInput, { type OptionsMaskInput } from './MaskInput'
 import useSetterTimeOut from './useSetterTimeOut'
 type Value = string | undefined
-type Reg = {
+interface Reg {
   regex: RegExp
   msg: string
 }
@@ -21,7 +21,7 @@ export default function useInputText(props: TextInputProps) {
   const [valueTimeout, setValueTimeout] = useSetterTimeOut<Value>({
     value,
     setValue,
-    defaultValue: defaultValue
+    defaultValue
   })
   const [msgError, setMsgError] = useState<Value>(undefined)
 
@@ -41,7 +41,7 @@ export default function useInputText(props: TextInputProps) {
   }
   const onBlur: React.FocusEventHandler<HTMLInputElement> = e => {
     e.preventDefault()
-    if (e.target.value === '') e.target.value = defaultValue || ''
+    if (e.target.value === '') e.target.value = defaultValue ?? ''
   }
 
   const Component = (

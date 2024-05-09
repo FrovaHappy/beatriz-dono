@@ -1,5 +1,5 @@
 import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
-import { Text, Image, Icon } from '@/types/Canvas.types'
+import { type Text, type Image, type Icon } from '@/types/Canvas.types'
 import defaultValue from './defaultsValues'
 import style from './index.module.scss'
 import { useState } from 'react'
@@ -31,7 +31,7 @@ export default function NewShape() {
         {canvas.layers.length} / 10 <IconStack />
       </span>
 
-      <button className={style.newButton} onClick={() => setShow(!show)}>
+      <button className={style.newButton} onClick={() => { setShow(!show) }}>
         <IconPlaylistAdd />
         new Shape
       </button>

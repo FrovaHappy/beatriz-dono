@@ -1,4 +1,4 @@
-import { Base, Text, TextBase, User } from '@/types/Canvas.types'
+import { type Base, type Text, type TextBase, type User } from '@/types/Canvas.types'
 import { userFormatting } from '../formattingText'
 
 export function renderText(text: Text, ctx: CanvasRenderingContext2D, user: User, base: Base & TextBase) {
@@ -11,9 +11,11 @@ export function renderText(text: Text, ctx: CanvasRenderingContext2D, user: User
   ctx.fillStyle = color ?? 'transparent'
 
   let lengthLetters = ctx.measureText(textContent)
-  while (limitLetters < lengthLetters.width && limitLetters !== 0) {
-    textContent = textContent.slice(0, -1)
-    lengthLetters = ctx.measureText(textContent)
+  if (limitLetters > 0) {
+    while (limitLetters < lengthLetters.width) {
+      textContent = textContent.slice(0, -1)
+      lengthLetters = ctx.measureText(textContent)
+    }
   }
 
   ctx.fillText(textContent, x, y)

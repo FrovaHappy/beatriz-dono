@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 interface Props extends React.SVGProps<SVGSVGElement> {}
 export default function IconTextResize(props: Props) {
@@ -24,5 +24,5 @@ export default function IconTextResize(props: Props) {
       <path d="M10 10h4" />
       <path d="M12 14v-4" />
     </svg>
-  );
+  )
 }

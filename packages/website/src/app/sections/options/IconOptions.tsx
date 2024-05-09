@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
 import style from './index.module.scss'
-import { Icon, Layer, Shapes } from '@/types/Canvas.types'
+import { type Icon, type Layer, type Shapes } from '@/types/Canvas.types'
 import { cloneElement, useEffect } from 'react'
 import { HEIGHT, LIMIT_CANVAS, WIDTH_LARGE, WIDTH_SHORT } from '.'
 import useInputNumber from '@/components/useInputNumber'
@@ -14,7 +14,7 @@ export default function IconOptions({ shape }: { shape: Icon }) {
   const [, setShapeModify] = useShapeModifyCtx()
 
   const options = {
-    title_dimensions: [, <h3 className={style.title}> Dimensiones </h3>],
+    title_dimensions: [undefined, <h3 className={style.title}> Dimensiones </h3>],
     x: useInputNumber({
       defaultValue: `${shape.x}`,
       height: HEIGHT,
@@ -55,7 +55,7 @@ export default function IconOptions({ shape }: { shape: Icon }) {
       min: 0,
       max: LIMIT_CANVAS
     }),
-    title_text: [, <h3 className={style.title}> Texto </h3>],
+    title_text: [undefined, <h3 className={style.title}> Texto </h3>],
     shape: useSelections<Shapes>({
       idSelect: shape.shape,
       height: HEIGHT,

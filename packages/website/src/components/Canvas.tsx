@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCanvasCtx } from '@/app/context'
-import { User } from '@/types/Canvas.types'
+import { type User } from '@/types/Canvas.types'
 import renderCanvas from '@/utils/renderCanvas'
-import { CSSProperties, useEffect, useMemo, useRef } from 'react'
+import { type CSSProperties, useEffect, useMemo, useRef } from 'react'
 const USER: User = {
   id: '2378364956435',
   username: 'pedro_224',
@@ -10,12 +10,12 @@ const USER: User = {
   count: 13,
   avatar: 'https://imgur.com/GCcsX8J.png'
 }
-function loadImage(path: string) {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
+async function loadImage(path: string) {
+  return await new Promise<HTMLImageElement>((resolve, reject) => {
     const img = new Image()
     img.src = path
-    img.onload = () => resolve(img)
-    img.onerror = () => reject(img)
+    img.onload = () => { resolve(img) }
+    img.onerror = () => { reject(img) }
   })
 }
 const BackgroundTransparent =

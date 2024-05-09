@@ -1,54 +1,54 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import style from "./Shape.module.scss";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import IconAt from "@/app/icons/IconAt";
-import IconPhoto from "@/app/icons/IconPhoto";
-import IconTextResize from "@/app/icons/IconTextResize";
-import IconUserSquare from "@/app/icons/IconUserSquare";
-import IconIconsOff from "@/app/icons/IconIconsOff";
-import { useCanvasCtx, useShapeModifyCtx } from "@/app/context";
-import IconTrash from "@/app/icons/IconTrash";
-import useDeleteShape from "./useDeleteShape";
+'use client'
+import style from './Shape.module.scss'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import IconAt from '@/app/icons/IconAt'
+import IconPhoto from '@/app/icons/IconPhoto'
+import IconTextResize from '@/app/icons/IconTextResize'
+import IconUserSquare from '@/app/icons/IconUserSquare'
+import IconIconsOff from '@/app/icons/IconIconsOff'
+import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
+import IconTrash from '@/app/icons/IconTrash'
+import useDeleteShape from './useDeleteShape'
 
 interface Props {
-  icon: "image" | "text" | "name" | "icon" | string;
-  id: number;
-  title: string;
-  image?: string;
+  icon: 'image' | 'text' | 'name' | 'icon' | string
+  id: number
+  title: string
+  image?: string
 }
 const icons: Record<
-  string,
-  (p: React.SVGProps<SVGSVGElement>) => React.JSX.Element
+string,
+(p: React.SVGProps<SVGSVGElement>) => React.JSX.Element
 > = {
   image: IconPhoto,
   icon: IconUserSquare,
   text: IconTextResize,
   name: IconAt,
-};
+}
 export default function Shape({ image, icon, title, id }: Props) {
-  const [shape, setShape] = useShapeModifyCtx();
-  const [canvas] = useCanvasCtx();
+  const [shape, setShape] = useShapeModifyCtx()
+  const [canvas] = useCanvasCtx()
   const onClickSelect = () => {
-    const layer = canvas.layers.find((l) => l.id === id);
-    if (!layer) return;
+    const layer = canvas.layers.find((l) => l.id === id)
+    if (!layer) return
     if (shape?.id === layer.id) {
-      setShape(null);
+      setShape(null)
     } else {
-      setShape(JSON.parse(JSON.stringify(layer)));
+      setShape(JSON.parse(JSON.stringify(layer)))
     }
-  };
-  const onClick = useDeleteShape(id);
+  }
+  const onClick = useDeleteShape(id)
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+    useSortable({ id })
   const imgDefault =
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
   const dndStyle = {
     transform: CSS.Transform.toString(transform),
     transition,
-  };
-  const Icon = icons[icon] ?? IconIconsOff;
+  }
+  const Icon = icons[icon] ?? IconIconsOff
   return (
     <li
       style={dndStyle}
@@ -57,7 +57,7 @@ export default function Shape({ image, icon, title, id }: Props) {
       {...listeners}
       onMouseUp={onClickSelect}
       className={`${style.shape} ${
-        shape?.id === id ? style.shape__select : ""
+        shape?.id === id ? style.shape__select : ''
       }`}
     >
       <Icon className={style.shape__icon} />
@@ -71,5 +71,5 @@ export default function Shape({ image, icon, title, id }: Props) {
         <IconTrash />
       </button>
     </li>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 interface Props extends React.SVGProps<SVGSVGElement> {}
 export default function IconStack(props: Props) {
@@ -16,5 +16,5 @@ export default function IconStack(props: Props) {
       <path d="M12 6l-8 4l8 4l8 -4l-8 -4" />
       <path d="M4 14l8 4l8 -4" />
     </svg>
-  );
+  )
 }

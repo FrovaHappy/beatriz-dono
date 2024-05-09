@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 interface Props extends React.SVGProps<SVGSVGElement> {}
 export default function IconIconsOff(props: Props) {
@@ -20,5 +20,5 @@ export default function IconIconsOff(props: Props) {
       <path d="M18 14h3v3m0 4h-7v-7" />
       <path d="M3 3l18 18" />
     </svg>
-  );
+  )
 }

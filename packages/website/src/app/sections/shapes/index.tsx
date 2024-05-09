@@ -1,11 +1,11 @@
 'use client'
-import { DndContext, DragEndEvent, closestCenter, MeasuringStrategy } from '@dnd-kit/core'
+import { DndContext, type DragEndEvent, closestCenter } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import React, { useEffect, useState } from 'react'
-import { Image, Text, Icon, Layer } from '@/types/Canvas.types'
+import { type Image, type Text, type Icon, type Layer } from '@/types/Canvas.types'
 import style from './Shapes.module.scss'
 import Shape from './Shape'
-import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
+import { useCanvasCtx } from '@/app/context'
 import { addIdOfLayers } from '@/app/canvasParser'
 
 export default function Shapes() {
@@ -48,7 +48,7 @@ export default function Shapes() {
               }
             }
             const img = (shape as Layer<Image>).img ?? undefined
-            return <Shape key={shape.id} id={shape.id} icon={shape.type!} title={title()} image={img} />
+            return <Shape key={shape.id} id={shape.id} icon={shape.type} title={title()} image={img} />
           })}
         </SortableContext>
       </ul>

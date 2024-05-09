@@ -3,7 +3,7 @@ import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
 import useInputNumber from '@/components/useInputNumber'
 import useInputText from '@/components/useInputText'
 import useSelections from '@/components/useSelections'
-import { Layer, Text } from '@/types/Canvas.types'
+import { type Layer, type Text } from '@/types/Canvas.types'
 import { cloneElement, useEffect } from 'react'
 import style from './index.module.scss'
 import useColorsInput from '@/components/useColorsInput'
@@ -14,7 +14,7 @@ export default function TextOptions({ shape }: { shape: Text }) {
   const [, setShapeModify] = useShapeModifyCtx()
 
   const options = {
-    title_dimensions: [, <h3 className={style.title}> Dimensiones </h3>],
+    title_dimensions: [undefined, <h3 className={style.title}> Dimensiones </h3>],
     x: useInputNumber({
       defaultValue: `${shape.x}`,
       height: HEIGHT,
@@ -35,7 +35,7 @@ export default function TextOptions({ shape }: { shape: Text }) {
       min: 0,
       max: LIMIT_CANVAS
     }),
-    title_text: [, <h3 className={style.title}> Texto </h3>],
+    title_text: [undefined, <h3 className={style.title}> Texto </h3>],
     content: useInputText({
       defaultValue: shape.content,
       height: HEIGHT,

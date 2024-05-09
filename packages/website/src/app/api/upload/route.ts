@@ -1,10 +1,10 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from 'next/server'
 export async function POST(req: NextRequest) {
   const { image } = await req.json()
   const clientImgur = process.env.IMGUR_CLIENT
   if (!clientImgur) return NextResponse.json({ message: 'Not Imgur Client config' })
   const fd = new FormData()
-  fd.append('image', image)
+  fd.append('image', image as string | Blob)
   fd.append('type', 'base64')
   const response = await fetch('https://api.imgur.com/3/image', {
     method: 'POST',

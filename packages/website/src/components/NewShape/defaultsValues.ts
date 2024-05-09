@@ -1,4 +1,4 @@
-import { Icon, Text, Image } from '@/types/Canvas.types'
+import { type Icon, type Text, type Image } from '@/types/Canvas.types'
 
 const TEXT: Text = {
   type: 'text',

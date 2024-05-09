@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import style from "./switch.module.scss";
-import { calculatePercents } from "@/utils/getPadding";
+import { useState } from 'react'
+import style from './switch.module.scss'
+import { calculatePercents } from '@/utils/getPadding'
 interface Props {
-  state?: boolean;
-  height?: `${number}px` | `${number}rem`;
+  state?: boolean
+  height?: `${number}px` | `${number}rem`
 }
-export default function useSwitch({ state = false, height = "2rem" }: Props) {
-  const [value, setValue] = useState(state);
+export default function useSwitch({ state = false, height = '2rem' }: Props) {
+  const [value, setValue] = useState(state)
 
   const Button = (
     <div
@@ -21,7 +21,7 @@ export default function useSwitch({ state = false, height = "2rem" }: Props) {
     >
       <input
         type="checkbox"
-        onClick={() => setValue(!value)}
+        onClick={() => { setValue(!value) }}
         defaultChecked={state}
         className={style.checkbox}
         id="checkbox"
@@ -33,7 +33,7 @@ export default function useSwitch({ state = false, height = "2rem" }: Props) {
         ></span>
       </label>
     </div>
-  );
+  )
 
-  return [value, Button];
+  return [value, Button]
 }

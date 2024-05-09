@@ -1,7 +1,7 @@
 import { useCanvasCtx } from '@/app/context'
 import IconCode from '@/app/icons/IconCode'
 import Buttons from '@/components/Buttons'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 function GenerateJson() {
   const [canvas] = useCanvasCtx()

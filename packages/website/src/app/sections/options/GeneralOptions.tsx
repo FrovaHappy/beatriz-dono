@@ -1,31 +1,31 @@
-import { useCanvasCtx } from "@/app/context";
-import useColorsInput from "@/components/useColorsInput";
-import useInputNumber from "@/components/useInputNumber";
-import { useEffect } from "react";
-import { HEIGHT, LIMIT_CANVAS, WIDTH_SHORT } from ".";
-import style from "./index.module.scss";
+import { useCanvasCtx } from '@/app/context'
+import useColorsInput from '@/components/useColorsInput'
+import useInputNumber from '@/components/useInputNumber'
+import { useEffect } from 'react'
+import { HEIGHT, LIMIT_CANVAS, WIDTH_SHORT } from '.'
+import style from './index.module.scss'
 
 export default function GeneralOptions() {
-  const [canvas, setCanvas] = useCanvasCtx();
+  const [canvas, setCanvas] = useCanvasCtx()
 
   const [height, heightInput] = useInputNumber({
-    title: "h",
+    title: 'h',
     defaultValue: `${canvas.height}`,
     step: 1,
     min: 0,
     max: LIMIT_CANVAS,
     height: HEIGHT,
     width: WIDTH_SHORT,
-  });
+  })
   const [width, widthInput] = useInputNumber({
-    title: "w",
+    title: 'w',
     defaultValue: `${canvas.width}`,
     step: 1,
     min: 0,
     max: LIMIT_CANVAS,
     height: HEIGHT,
     width: WIDTH_SHORT,
-  });
+  })
   const [background, backgroundInput] = useColorsInput({
     title: 'background',
     defaultValue: canvas.color,
@@ -48,5 +48,5 @@ export default function GeneralOptions() {
       {widthInput}
       {backgroundInput}
     </>
-  );
+  )
 }

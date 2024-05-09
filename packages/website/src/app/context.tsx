@@ -1,8 +1,8 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from 'react'
 import welcome from './welcome.json'
-import { Canvas, Layer } from '@/types/Canvas.types'
-import { State } from '@/types/types'
+import { type Canvas, type Layer } from '@/types/Canvas.types'
+import { type State } from '@/types/types'
 import { getFonts } from '@/utils/getFonts'
 
 const HomeContext = createContext<State<Canvas> | null>(null)

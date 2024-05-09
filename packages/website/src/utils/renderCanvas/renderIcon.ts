@@ -1,5 +1,4 @@
-import { Base, Image, TextBase, User, Icon } from '@/types/Canvas.types'
-import { userFormatting } from '../formattingText'
+import { type Base, type TextBase, type Icon } from '@/types/Canvas.types'
 const iconsImgs = ['https://imgur.com/hqaBgS5.png', 'https://imgur.com/CXJuNlC.png', 'https://imgur.com/OD8Bngd.png']
 const shapes = {
   circle: 'M 1000,500 A 500,500 0 0 1 500,1000 500,500 0 0 1 0,500 500,500 0 0 1 500,0 500,500 0 0 1 1000,500 Z',

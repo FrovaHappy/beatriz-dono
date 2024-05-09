@@ -1,4 +1,4 @@
-import { Base, Image, TextBase } from '@/types/Canvas.types'
+import { type Base, type Image, type TextBase } from '@/types/Canvas.types'
 
 export async function renderImage(
   image: Image,
