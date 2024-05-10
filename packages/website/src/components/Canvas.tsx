@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCanvasCtx } from '@/app/context'
-import { type User } from '@/types/Canvas.types'
-import renderCanvas from '@/utils/renderCanvas'
+import renderCanvas from '@lib/renderCanvas'
 import { type CSSProperties, useEffect, useMemo, useRef } from 'react'
-const USER: User = {
+const USER = {
   id: '2378364956435',
   username: 'pedro_224',
   globalName: 'Pedro Editor',
-  count: 13,
+  count: '13',
   avatar: 'https://imgur.com/GCcsX8J.png'
 }
 async function loadImage(path: string) {
