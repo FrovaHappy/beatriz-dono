@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from 'react'
 import inputStyle from './Input.module.scss'
 import MaskInput, { type OptionsMaskInput } from './MaskInput'

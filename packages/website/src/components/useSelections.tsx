@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import React, { useEffect, useState } from 'react'
 import style from './Selections.module.scss'
@@ -33,7 +32,11 @@ export default function useSelections<T = string>(props: Props<T>): InputExport<
     flexShrink: '0'
   }
   const Select = (
-    <MaskInput options={{ height, width, title }} onClick={() => { setShow(!show) }}>
+    <MaskInput
+      options={{ height, width, title }}
+      onClick={() => {
+        setShow(!show)
+      }}>
       {Icon ? <Icon style={ICONS_STYLE} /> : undefined}
       <span className={inputStyle.props}>{value?.title ?? 'selecciona...'}</span>
       <IconChevronDown style={ICONS_STYLE} />
@@ -44,7 +47,9 @@ export default function useSelections<T = string>(props: Props<T>): InputExport<
           return (
             <div
               key={v.id as string}
-              onClick={() => { setValue(v) }}
+              onClick={() => {
+                setValue(v)
+              }}
               className={`${inputStyle.props} ${style.value} ${value?.id === v.id ? style['value--active'] : ''}`}
               style={{ height, fontFamily: v.fontFamily }}>
               {IconItem ? <IconItem style={ICONS_STYLE} /> : undefined}

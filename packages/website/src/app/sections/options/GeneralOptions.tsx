@@ -38,7 +38,6 @@ export default function GeneralOptions() {
     canvas.width = width
     canvas.color = background !== '#000000' ? background : undefined
     setCanvas({ ...canvas })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [background, height, width])
 
   return (

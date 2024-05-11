@@ -7,7 +7,6 @@ import IconTrash from '@/app/icons/IconTrash'
 
 const TYPE_OF = 'image/png, image/jpeg'
 
-/* eslint-disable @next/next/no-img-element */
 type Url = string | undefined
 interface Props {
   defaultValue: Url
@@ -74,8 +73,6 @@ export default function UploadImage({ defaultValue, width }: Props): InputExport
     setTimeout(() => {
       setStatus('finished')
     }, 5000)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
   if (status === 'error') {
     const Component = (

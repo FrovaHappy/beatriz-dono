@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
 import useInputNumber from '@/components/useInputNumber'
 import useInputText from '@/components/useInputText'
@@ -150,7 +149,6 @@ export default function TextOptions({ shape }: { shape: Text }) {
 
     setCanvas(canvas, s)
     setShapeModify(s)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, values)
 
   return <>{components.map((c, i) => cloneElement(c, { key: i }))}</>

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 import style from './Shape.module.scss'
 import { useSortable } from '@dnd-kit/sortable'

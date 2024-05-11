@@ -19,11 +19,9 @@ export default function useStatus(
       setStatus('finished')
       setUrl(link as string)
     }
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useLink().catch(() => {
       setStatus('error')
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
   return [status, setStatus] satisfies State<UploadStatus>
 }

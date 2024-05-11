@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { type State } from '@/types/types'
 import { useEffect, useState } from 'react'
 

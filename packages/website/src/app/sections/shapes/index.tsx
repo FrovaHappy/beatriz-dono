@@ -12,7 +12,6 @@ export default function Shapes() {
   const [list, setList] = useState(canvas.layers)
   useEffect(() => {
     setList(canvas.layers)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas])
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
