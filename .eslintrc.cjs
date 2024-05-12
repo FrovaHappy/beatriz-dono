@@ -31,7 +31,7 @@ module.exports = {
         node: true,
         es6: true
       },
-      files: ['vite.config.ts', './packages/bot/cp.cjs'],
+      files: ['vite.config.ts', './packages/*/cp.cjs'],
       parserOptions: {
         sourceType: 'script',
         ecmaVersion: 'latest',
