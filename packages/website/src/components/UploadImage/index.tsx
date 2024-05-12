@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { type InputExport } from '@/types/types'
 import useStatus from './useStatusUpload'
-import IconPencil from '@/app/icons/IconPencil'
+import IconPencil from '@icons/IconPencil'
 import style from './index.module.scss'
-import IconTrash from '@/app/icons/IconTrash'
+import IconTrash from '@icons/IconTrash'
 
 const TYPE_OF = 'image/png, image/jpeg'
 

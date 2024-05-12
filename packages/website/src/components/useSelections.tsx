@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import style from './Selections.module.scss'
 import inputStyle from './Input.module.scss'
-import IconChevronDown from '@/app/icons/IconChevronDown'
+import IconChevronDown from '@icons/IconChevronDown'
 import { calculatePercents } from '@/utils/getPadding'
 import MaskInput, { type OptionsMaskInput } from './MaskInput'
 import { type InputExport } from '@/types/types'

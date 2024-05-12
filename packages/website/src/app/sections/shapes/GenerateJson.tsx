@@ -1,5 +1,5 @@
 import { useCanvasCtx } from '@/app/context'
-import IconCode from '@/app/icons/IconCode'
+import IconCode from '@icons/IconCode'
 import Buttons from '@/components/Buttons'
 import React from 'react'
 

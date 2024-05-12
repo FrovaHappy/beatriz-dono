@@ -3,11 +3,11 @@ import { type Text, type Image, type Icon } from '@/types/Canvas.types'
 import defaultValue from './defaultsValues'
 import style from './index.module.scss'
 import { useState } from 'react'
-import IconPlaylistAdd from '@/app/icons/IconPlaylistAdd'
-import IconTextResize from '@/app/icons/IconTextResize'
-import IconPhoto from '@/app/icons/IconPhoto'
-import IconUserSquare from '@/app/icons/IconUserSquare'
-import IconStack from '@/app/icons/IconStack'
+import IconPlaylistAdd from '@icons/IconPlaylistAdd'
+import IconTextResize from '@icons/IconTextResize'
+import IconPhoto from '@icons/IconPhoto'
+import IconUserSquare from '@icons/IconUserSquare'
+import IconStack from '@icons/IconStack'
 
 export default function NewShape() {
   const [show, setShow] = useState(false)
