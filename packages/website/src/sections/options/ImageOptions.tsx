@@ -3,9 +3,9 @@ import style from './index.module.scss'
 import { type Image, type Layer } from '@/types/Canvas.types'
 import { cloneElement, useEffect } from 'react'
 import { HEIGHT, LIMIT_CANVAS, WIDTH_LARGE, WIDTH_SHORT } from '.'
-import useInputNumber from '@/components/useInputNumber'
+import useInputNumber from '@ui/useInputNumber'
 import UploadImage from '@/components/UploadImage'
-import useColorsInput from '@/components/useColorsInput'
+import useColorsInput from '@ui/useColorsInput'
 
 export default function ImageOptions({ shape }: { shape: Image }) {
   const [canvas, setCanvas] = useCanvasCtx()

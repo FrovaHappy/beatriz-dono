@@ -1,6 +1,6 @@
 import { useCanvasCtx } from '@/app/context'
-import useColorsInput from '@/components/useColorsInput'
-import useInputNumber from '@/components/useInputNumber'
+import useColorsInput from '@ui/useColorsInput'
+import useInputNumber from '@ui/useInputNumber'
 import { useEffect } from 'react'
 import { HEIGHT, LIMIT_CANVAS, WIDTH_SHORT } from '.'
 import style from './index.module.scss'

@@ -1,11 +1,11 @@
 import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
-import useInputNumber from '@/components/useInputNumber'
-import useInputText from '@/components/useInputText'
-import useSelections from '@/components/useSelections'
+import useInputNumber from '@ui/useInputNumber'
+import useInputText from '@ui/useInputText'
+import useSelections from '@ui/useSelections'
 import { type Layer, type Text } from '@/types/Canvas.types'
 import { cloneElement, useEffect } from 'react'
 import style from './index.module.scss'
-import useColorsInput from '@/components/useColorsInput'
+import useColorsInput from '@ui/useColorsInput'
 import { HEIGHT, LIMIT_CANVAS, WIDTH_LARGE, WIDTH_SHORT } from '.'
 export default function TextOptions({ shape }: { shape: Text }) {
   const [canvas, setCanvas] = useCanvasCtx()

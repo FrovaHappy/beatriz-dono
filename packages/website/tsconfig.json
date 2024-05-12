@@ -22,6 +22,8 @@
       "@/*": ["src/*"],
       "@type/*": ["../shared/types/*"],
       "@lib/*": ["src/_lib/*"],
+      "@ui/*": ["src/components/UI/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@icons/*": ["src/icons/*"]
     }
   },

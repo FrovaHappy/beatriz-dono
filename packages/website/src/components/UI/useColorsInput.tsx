@@ -1,7 +1,7 @@
 import { type InputExport } from '@/types/types'
 import { useState } from 'react'
 import MaskInput, { type OptionsMaskInput } from './MaskInput'
-import useSetterTimeOut from './useSetterTimeOut'
+import useSetterTimeOut from '@hooks/useSetterTimeOut'
 type Value = string | undefined
 interface Props extends OptionsMaskInput {
   defaultValue?: string

@@ -1,6 +1,6 @@
 import { useCanvasCtx } from '@/app/context'
 import IconCode from '@icons/IconCode'
-import Buttons from '@/components/Buttons'
+import Buttons from '@ui/useButton'
 import React from 'react'
 
 function GenerateJson() {

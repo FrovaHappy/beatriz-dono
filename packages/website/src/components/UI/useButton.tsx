@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import style from './Buttons.module.scss'
+import style from './useButton.module.scss'
 interface Props {
   value?: boolean
   text: string
