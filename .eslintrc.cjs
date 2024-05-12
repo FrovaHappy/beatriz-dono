@@ -17,6 +17,7 @@ module.exports = {
         '@typescript-eslint/space-before-function-paren': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/prefer-promise-reject-errors': 'off',
+        '@typescript-eslint/triple-slash-reference': 'off',
         '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
         '@typescript-eslint/no-misused-promises': [
           'error',
