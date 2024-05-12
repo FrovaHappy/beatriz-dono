@@ -22,8 +22,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@core/*": ["src/core/*"],
-      "@lib/*": ["../shared/lib/*"]
-    }
+      "@lib/*": ["../shared/lib/*"],
+      "@type/*": ["../shared/types/*"],    }
   },
   "include": [
     "src",
