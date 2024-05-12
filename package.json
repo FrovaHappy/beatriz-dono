@@ -11,6 +11,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "cp": "npm run cp --workspaces",
+    "website:dev": "npm run dev --workspace=packages/website",
     "bot:dev": "env-cmd npm run dev --workspace=packages/bot",
     "bot:build": "env-cmd npm run build --workspace=packages/bot",
     "bot:start": "env-cmd npm run start --workspace=packages/bot",
