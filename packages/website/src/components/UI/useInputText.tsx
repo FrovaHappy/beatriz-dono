@@ -54,7 +54,7 @@ export default function useInputText(props: TextInputProps) {
         onBlur={onBlur}
       />
 
-      {msgError ? <span className={inputStyle.error}>{msgError}</span> : undefined}
+      {!msgError || <span className={inputStyle.error}>{msgError}</span>}
     </MaskInput>
   )
   return [value, Component] as [value: Value, select: JSX.Element]

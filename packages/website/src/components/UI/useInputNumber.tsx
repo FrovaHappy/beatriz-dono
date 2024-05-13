@@ -53,7 +53,7 @@ export default function useInputNumber(props: Props): InputExport<number> {
         onChange={onChange}
         onBlur={onBlur}
       />
-      {msgError ? <span className={inputStyle.error}>{msgError}</span> : undefined}
+      {!msgError || <span className={inputStyle.error}>{msgError}</span>}
     </MaskInput>
   )
   return [parseFloat(value ?? ''), Component]

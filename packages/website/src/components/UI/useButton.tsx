@@ -16,7 +16,7 @@ export default function Buttons(props: Props) {
   }
   const Button = (
     <button onClick={onClick} className={style.main}>
-      {Icon ? <Icon /> : undefined}
+      {!Icon || <Icon />}
       {text}
     </button>
   )

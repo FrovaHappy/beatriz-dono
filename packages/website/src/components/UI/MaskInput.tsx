@@ -24,7 +24,7 @@ export default function MaskInput({ options, children, className, style, ...prop
         ...style
       }}
       {...props}>
-      {title ?? (
+      {!title || (
         <>
           <span className={inputStyle.title}>{title}</span>
           <span className={inputStyle['title--line']} />
