@@ -1,5 +1,4 @@
 import { type Base, type TextBase, type Icon } from '@type/Canvas'
-const iconsImgs = ['https://imgur.com/hqaBgS5.png', 'https://imgur.com/CXJuNlC.png', 'https://imgur.com/OD8Bngd.png']
 const shapes = {
   circle: 'M 1000,500 A 500,500 0 0 1 500,1000 500,500 0 0 1 0,500 500,500 0 0 1 500,0 500,500 0 0 1 1000,500 Z',
   square: 'M 0,0 H 1000 V 1000 H 0 Z',
@@ -17,9 +16,8 @@ export async function renderIcon(
   ctx: CanvasRenderingContext2D,
   base: Base & TextBase,
   Path2DInstance: typeof Path2D,
-  loadImage: (k: string) => Promise<HTMLImageElement>
+  img: HTMLImageElement
 ) {
-  const index = Math.floor(Math.random() * iconsImgs.length)
   const { x, y, height, width, color, shape } = image
   const path = new Path2DInstance(shapes[shape])
   const scale = (v: number) => (v * 1) / 1000
@@ -29,7 +27,7 @@ export async function renderIcon(
   ctx.clip(path)
   ctx.fillStyle = color ?? 'transparent'
   ctx.fillRect(0, 0, 1000, 1000)
-  ctx.drawImage(await loadImage(iconsImgs[index]), 0, 0, 1000, 1000)
+  ctx.drawImage(img, 0, 0, 1000, 1000)
 
   ctx.restore()
 }

@@ -3,13 +3,13 @@ import { renderText } from './renderText'
 import { renderImage } from './renderImage'
 import { renderIcon } from './renderIcon'
 
-export default async function renderCanvas(
+export default function renderCanvas(
   layers: Layer[],
   base: Base & TextBase,
   user: User,
   ctx: CanvasRenderingContext2D,
   Path2DInstance: typeof Path2D,
-  loadImage: (path: string) => Promise<HTMLImageElement>
+  images: Record<string, HTMLImageElement>
 ) {
   ctx.clearRect(0, 0, base.width, base.height)
   ctx.save()
@@ -24,10 +24,10 @@ export default async function renderCanvas(
         renderText(layer as Text, ctx, user, base)
         break
       case 'image':
-        await renderImage(layer as Image, ctx, base, loadImage)
+        renderImage(layer as Image, ctx, base, images[layer.id])
         break
       case 'icon':
-        await renderIcon(layer as Icon, ctx, base, Path2DInstance, loadImage)
+        renderIcon(layer as Icon, ctx, base, Path2DInstance, images[layer.id])
         break
     }
   }
