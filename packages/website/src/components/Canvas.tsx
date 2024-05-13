@@ -1,5 +1,6 @@
 import { useCanvasCtx } from '@/app/context'
 import renderCanvas from '@lib/renderCanvas'
+import type { Image, Layer } from '@type/Canvas'
 import { type CSSProperties, useEffect, useMemo, useRef } from 'react'
 const USER = {
   id: '2378364956435',
@@ -36,7 +37,16 @@ export default function Canvas() {
     if (!ctx) return
     const { layers, ...base } = canvas
     const wait = async () => {
-      await renderCanvas(layers, base, USER, ctx, Path2D, loadImage)
+      const images: Record<string, HTMLImageElement> = {}
+      for (const l of layers) {
+        if (l.type === 'image') {
+          images[l.id] = await loadImage((l as Layer<Image>).img ?? '')
+        }
+        if (l.type === 'icon') {
+          images[l.id] = await loadImage(USER.avatar)
+        }
+      }
+      renderCanvas(layers, base, USER, ctx, Path2D, images)
     }
     wait()
   }, [canvas])
