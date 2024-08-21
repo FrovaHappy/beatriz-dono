@@ -1,9 +1,13 @@
 import BuildCommand from '@core/build/BuildCommand'
 import { Colors, SlashCommandBuilder } from 'discord.js'
-import { en, es } from '@/i18n'
+import { getI18n, langs } from '@/i18n'
 import welcome from './welcome'
 import { CommandNames } from '@/const/interactionsNames'
 import formatterText from '@lib/formatterText'
+
+const i18nsArray = langs(CommandNames.help)
+
+const en = i18nsArray[0][1]
 
 export default new BuildCommand({
   name: CommandNames.help,
@@ -11,20 +15,27 @@ export default new BuildCommand({
   ephemeral: true,
   permissions: [],
   data: new SlashCommandBuilder()
-    .setDescription(en.help.generalDescription)
-    .setDescriptionLocalization('es-ES', es.help.generalDescription)
+    .setNameLocalizations({
+      ...i18nsArray.reduce((acc, [lang, i18n]) => ({ ...acc, [lang]: i18n.title }), {})
+    })
+    .setDescription(en.description)
+    .setDescriptionLocalizations({
+      ...i18nsArray.reduce((acc, [lang, i18n]) => ({ ...acc, [lang]: i18n.title }), {})
+    })
     .addSubcommand(subcommand =>
       subcommand
         .setName('welcome')
-        .setDescription(en.help.welcomeDescription)
-        .setDescriptionLocalization('es-ES', es.help.welcomeDescription)
+        .setDescription(en.options.welcome)
+        .setDescriptionLocalizations({
+          ...i18nsArray.reduce((acc, [lang, i18n]) => ({ ...acc, [lang]: i18n.options.welcome }), {})
+        })
     ),
   scope: 'public',
-  execute: async (i, i18n) => {
+  execute: async i => {
     const subcommand = i.options.getSubcommand(true)
 
-    if (subcommand === 'welcome') return welcome(i18n)
-
+    if (subcommand === 'welcome') return welcome(i.locale)
+    const i18n = getI18n(i.locale, 'general')
     return {
       embeds: [
         {

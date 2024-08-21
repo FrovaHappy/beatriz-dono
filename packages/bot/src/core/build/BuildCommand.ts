@@ -7,7 +7,6 @@ import type {
   ChatInputCommandInteraction
 } from 'discord.js'
 
-import { type I18n } from '../../i18n'
 import { type CommandNames } from '@/const/interactionsNames'
 
 interface CommandProps {
@@ -17,7 +16,7 @@ interface CommandProps {
   ephemeral?: boolean
   defer?: boolean
   permissions: PermissionResolvable[]
-  execute: (e: ChatInputCommandInteraction, i18n: I18n) => Promise<InteractionEditReplyOptions | undefined>
+  execute: (e: ChatInputCommandInteraction) => Promise<InteractionEditReplyOptions | undefined>
   data: Partial<SlashCommandBuilder>
 }
 /**

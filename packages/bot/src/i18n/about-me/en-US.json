@@ -1,0 +1,8 @@
+{
+  "title": "About Me",
+  "description": "Get information about the bot.",
+  "response": {
+    "title": "About Me",
+    "description": "I'm a multi-purpose bot looking to solve the most common problems on a server.\n Here you will find more resources about me in our [documentation](<slot_0>).\n### Social Media:\n* [join Discord](<slot_1>)\n* [Vote me on Top.gg](<slot_2>)\n* [Vote me on Discord Bot List](<slot_3>)\n* [Help us on Github](<slot_4>)\n"
+  }
+}

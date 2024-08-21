@@ -5,7 +5,6 @@ import {
   type ButtonInteraction,
   type ButtonBuilder
 } from 'discord.js'
-import { type I18n } from '../../i18n'
 import { type EventEmitted, type Scope } from '@/types/main'
 import { type ButtonNames } from '@/const/interactionsNames'
 
@@ -17,7 +16,7 @@ interface ButtonsProps {
   permissions: PermissionResolvable[]
   cooldown?: number
   data: ButtonBuilder
-  execute: (e: ButtonInteraction, i18n: I18n) => Promise<InteractionEditReplyOptions | undefined>
+  execute: (e: ButtonInteraction) => Promise<InteractionEditReplyOptions | undefined>
 }
 /**
  * #### Constructor

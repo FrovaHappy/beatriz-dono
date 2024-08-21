@@ -1,0 +1,17 @@
+{
+  "title": "Colors",
+  "description": "Get the colors of the bot.",
+  "options": {
+    "hex-color": "Add a color to your name.",
+    "hex-custom": "Custom color. Format #FFFFFF"
+  },
+  "embed": {
+    "title": "Colors",
+    "description": [
+      "The colors of the bot are:",
+      "```      {hexColor}    ```",
+      "You can add a color to your name with the command:"
+      
+    ]
+  }
+}

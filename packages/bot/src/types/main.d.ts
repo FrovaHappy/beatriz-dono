@@ -12,5 +12,5 @@ export interface EventEmitted<Names, Interaction = any> {
   cooldown: number
   ephemeral: boolean
   permissions: PermissionResolvable[]
-  execute: (e: Interaction, i18n: I18n) => Promise<InteractionEditReplyOptions>
+  execute: (e: Interaction) => Promise<InteractionEditReplyOptions>
 }

@@ -13,7 +13,6 @@ import {
   type MentionableSelectMenuInteraction,
   type ChannelSelectMenuInteraction
 } from 'discord.js'
-import { type I18n } from '../../i18n'
 import { type EventEmitted, type Scope } from '@/types/main'
 import { type MenuNames } from '@/const/interactionsNames'
 interface Types {
@@ -49,7 +48,7 @@ interface MenuProps<T extends MenuType> {
   permissions: PermissionResolvable[]
   cooldown?: number
   data: Types[T]['builder']
-  execute: (e: Types[T]['interaction'], i18n: I18n) => Promise<InteractionEditReplyOptions | undefined>
+  execute: (e: Types[T]['interaction']) => Promise<InteractionEditReplyOptions | undefined>
 }
 /**
  * #### Constructor

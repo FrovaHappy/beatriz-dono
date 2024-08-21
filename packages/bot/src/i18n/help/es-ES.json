@@ -1,0 +1,11 @@
+{
+  "title": "ayuda",
+  "description": "Obtenga toda la ayuda sobre su bot.",
+  "options": {
+    "welcome": "Ayuda sobre la configuración del comando de bienvenida."
+  },
+  "welcomeEmbed": {
+    "title": "Aquí están los recursos del comando /setWelcome",
+    "description": "Estos recursos te ayudarán a entender mejor el comando:\n* [Documentación del comando](<slot_0>)\n* [Generar imagen](<slot_1>)"
+  }
+}

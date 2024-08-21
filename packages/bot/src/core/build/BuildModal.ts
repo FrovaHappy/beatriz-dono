@@ -5,7 +5,6 @@ import {
   type ModalSubmitInteraction,
   type ModalBuilder
 } from 'discord.js'
-import { type I18n } from '../../i18n'
 import { type EventEmitted, type Scope } from '@/types/main'
 import { type ModalNames } from '@/const/interactionsNames'
 
@@ -17,7 +16,7 @@ interface ModalsProps {
   permissions: PermissionResolvable[]
   cooldown?: number
   data: ModalBuilder
-  execute: (e: ModalSubmitInteraction, i18n: I18n) => Promise<InteractionEditReplyOptions | undefined>
+  execute: (e: ModalSubmitInteraction) => Promise<InteractionEditReplyOptions | undefined>
 }
 /**
  * #### Constructor

@@ -6,11 +6,14 @@ import { SendWelcome } from '@prisma/client'
 import db from '@core/db'
 import { stringToJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
-import getI18n, { es, en } from '@/i18n'
+import { getI18n, langs } from '@/i18n'
 import WELCOME from '@lib/welcome'
 import { CommandNames } from '@/const/interactionsNames'
 import formatterText from '@lib/formatterText'
 import { formatterUser } from '@/services/shared/formatterUser'
+
+const i18nsArray = langs(CommandNames.welcomeSet)
+const en = i18nsArray[0][1]
 
 export default new BuildCommand({
   cooldown: 0,
@@ -19,20 +22,26 @@ export default new BuildCommand({
   scope: 'public',
   permissions: [],
   data: new SlashCommandBuilder()
-    .setDescription(en.setWelcome.build.mainDescription)
-    .setDescriptionLocalization('es-ES', es.setWelcome.build.mainDescription)
+    .setDescription(en.description)
+    .setDescriptionLocalizations({
+      ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.description }), {})
+    })
     .addChannelOption(op =>
       op
         .setName('channel')
-        .setDescription(en.setWelcome.build.channelDescription)
-        .setDescriptionLocalization('es-ES', es.setWelcome.build.channelDescription)
+        .setDescription(en.options.channel)
+        .setDescriptionLocalizations({
+          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.channel }), {})
+        })
         .setRequired(true)
     )
     .addStringOption(op =>
       op
         .setName('send')
-        .setDescription(en.setWelcome.build.sendDescription)
-        .setDescriptionLocalization('es-ES', es.setWelcome.build.sendDescription)
+        .setDescription(en.options.send)
+        .setDescriptionLocalizations({
+          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.send }), {})
+        })
         .addChoices(
           { name: 'All', value: SendWelcome.all },
           { name: 'alone message', value: SendWelcome.alone_message },
@@ -44,27 +53,31 @@ export default new BuildCommand({
     .addStringOption(op =>
       op
         .setName('message')
-        .setDescription(en.setWelcome.build.messageDescription)
-        .setDescriptionLocalization('es-ES', es.setWelcome.build.messageDescription)
+        .setDescription(en.options.message)
+        .setDescriptionLocalizations({
+          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.message }), {})
+        })
         .setRequired(false)
     )
     .addStringOption(op =>
       op
         .setName('image')
-        .setDescription(en.setWelcome.build.imageDescription)
-        .setDescriptionLocalization('es-ES', es.setWelcome.build.imageDescription)
+        .setDescription(en.options.image)
+        .setDescriptionLocalizations({
+          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.image }), {})
+        })
         .setRequired(false)
     )
     .setDefaultMemberPermissions(
       PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageMessages
     ),
   async execute(i) {
-    const i18n = getI18n(i.locale)
+    const i18n = getI18n(i.locale, CommandNames.welcomeSet)
     const serverId = i.guild?.id
     if (!serverId) return { content: 'error with server id' }
     const imageLength = i.options.getString('image')?.length ?? 0
     const image = stringToJson(i.options.getString('image') ?? '')
-    const message = i.options.getString('message') ?? i18n.setWelcome.messageDefault
+    const message = i.options.getString('message') ?? i18n.messageDefault
     const channelId = i.options.getChannel('channel', true).id
     const send = i.options.getString('send', true) as SendWelcome
 
@@ -73,8 +86,8 @@ export default new BuildCommand({
       return {
         embeds: [
           new EmbedBuilder({
-            title: i18n.setWelcome.errorValidation.title,
-            description: `${i18n.setWelcome.errorValidation.description}\n${formatZodError(invalidJson)}`
+            title: i18n.errorValidation.title,
+            description: `${i18n.errorValidation.description}\n${formatZodError(invalidJson)}`
           })
         ]
       }
@@ -91,9 +104,9 @@ export default new BuildCommand({
     return {
       embeds: [
         new EmbedBuilder({
-          title: i18n.setWelcome.response.title,
+          title: i18n.response.title,
           color: Colors.Aqua,
-          description: formatterText(i18n.setWelcome.response.description, {
+          description: formatterText(i18n.response.description, {
             slot0: channelId,
             slot1: send
           })
