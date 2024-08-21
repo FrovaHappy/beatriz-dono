@@ -1,6 +1,7 @@
 import { Collection } from 'discord.js'
 import path from 'node:path'
 import { readdirSync } from 'node:fs'
+import pc from 'picocolors'
 
 interface Base<B> {
   name: B
@@ -17,15 +18,19 @@ export default async function BuildCollection<G, T extends Base<G>>(
   Constructor: new (...args: any[]) => T
 ): Promise<Collection<G, T>> {
   const collection = new Collection<G, T>()
+  const ignoredFolders = ['.gitkeep', 'shared', '.js', '.ts']
   const foldersPath = path.join(__dirname, '../../services', pointFolder)
+
+  console.log(`Scanning '/services/${pc.green(`${pointFolder}`)}' folders:`)
+  console.log(pc.yellow(`· ◬ The files/folders ${ignoredFolders.join(', ')} that are in the root will be ignored.`))
+
   const folders = ((): string[] | null => {
-    console.log(`Scanning ${foldersPath} folders:`)
     try {
       return readdirSync(foldersPath)
     } catch (error) {
       return null
     }
-  })()
+  })()?.filter(f => ignoredFolders.every(ex => !f.endsWith(ex)))
   if (!folders) return collection
 
   const folderError = []
@@ -46,7 +51,7 @@ export default async function BuildCollection<G, T extends Base<G>>(
   if (folderError.length > 0) {
     console.log(
       `· ${folderError.length} ${pointFolder} with invalid structure:\n`,
-      folderError.map(f => `  ∷ ${f.folder}: ${f.message.replaceAll('\n', '\n     ')}.`).join('\n ')
+      folderError.map(f => `  ∷ ${pc.bold(f.folder)}: ${pc.red(f.message.replaceAll('\n', '\n     '))}`).join('\n ')
     )
   }
 
