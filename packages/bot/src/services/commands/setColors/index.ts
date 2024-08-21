@@ -2,7 +2,6 @@ import BuildCommand from '@core/build/BuildCommand'
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import db from '@core/db'
 import createRole from './createRole'
-import config from '@core/config'
 import { CommandNames } from '@/const/interactionsNames'
 
 export default new BuildCommand({
@@ -32,7 +31,7 @@ export default new BuildCommand({
         where: { serverId }
       })) ?? {}
 
-    const role = i.guild?.roles.cache.find(r => r.id === pointerId ?? config.roleUndefined) ?? (await createRole(i))
+    const role = i.guild?.roles.cache.find(r => r.id === pointerId) ?? (await createRole(i))
 
     if (!role) return { content: 'no se pudo crear/encontrar el role' }
     await db.colorCommand.upsert({

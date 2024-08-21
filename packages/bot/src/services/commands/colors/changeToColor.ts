@@ -1,5 +1,4 @@
 import { type Color } from '@prisma/client'
-import config from '@core/config'
 import db from '@core/db'
 import { type Interaction } from 'discord.js'
 interface Props {
@@ -15,7 +14,7 @@ interface ReturnData {
 export default async function changeToColor({ color, interaction, colors, pointerId }: Props): Promise<ReturnData> {
   const { guild, user, guildId } = interaction
   const coincidence = colors.find(c => c.hexColor === color)
-  const role = guild?.roles.cache.find(r => r.id === coincidence?.colorId ?? config.roleUndefined)
+  const role = guild?.roles.cache.find(r => r.id === coincidence?.colorId)
   const colorController = guild?.roles.cache.find(r => r.id === pointerId)
 
   if (!colorController) return { hasCreated: false, hasSusses: false }
