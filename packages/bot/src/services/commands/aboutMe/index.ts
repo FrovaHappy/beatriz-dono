@@ -8,7 +8,10 @@ const i18nsArray = langs(CommandNames.aboutMe)
 const en = i18nsArray[0][1]
 
 const command = new BuildCommand({
-  data: new SlashCommandBuilder().setDescription(en.description).setDescriptionLocalizations({
+  data: new SlashCommandBuilder()
+    .setNameLocalizations({ ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.name }), {}) })
+    .setDescription(en.description)
+    .setDescriptionLocalizations({
     ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.description }), {})
   }),
   name: CommandNames.aboutMe,
