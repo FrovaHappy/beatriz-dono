@@ -1,4 +1,4 @@
-import { Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
+import { SlashCommandBuilder, resolveColor } from 'discord.js'
 import BuildCommand from '@core/build/BuildCommand'
 import { getI18n, langs } from '@/i18n'
 import { CommandNames } from '@/const/interactionsNames'
@@ -23,17 +23,17 @@ const command = new BuildCommand({
     const i18n = getI18n(i.locale, CommandNames.aboutMe)
     return {
       embeds: [
-        new EmbedBuilder({
+        {
           title: i18n.response.title,
-          color: Colors.Purple,
+          color: resolveColor('#e6a7a7'),
           description: formatterText(i18n.response.description, {
-            slot0: links.docs,
-            slot1: links['discord-invite'],
-            slot2: links.topgg,
-            slot3: links.botlist,
-            slot4: links.github
+            userName: i.user.username,
+            slot0: links['discord-invite'],
+            slot1: links.topgg,
+            slot2: links.botlist,
+            slot3: links.github
           })
-        })
+        }
       ]
     }
   }

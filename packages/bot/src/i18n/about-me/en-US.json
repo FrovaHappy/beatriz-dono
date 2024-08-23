@@ -1,8 +1,8 @@
 {
   "name": "about-me",
-  "description": "Get information about the bot.",
+  "description": "Get information about me.",
   "response": {
-    "title": "About Me",
-    "description": "I'm a multi-purpose bot looking to solve the most common problems on a server.\n Here you will find more resources about me in our [documentation](<slot_0>).\n### Social Media:\n* [join Discord](<slot_1>)\n* [Vote me on Top.gg](<slot_2>)\n* [Vote me on Discord Bot List](<slot_3>)\n* [Help us on Github](<slot_4>)\n"
+    "title": " About Me <:kannawave:1275989866794192897>",
+    "description": "✨👋 Hi <user_name>!\nI'm your friendly multipurpose bot, here to assist you with everything from welcoming new members to customizing your server with cool commands like color changes. 🎨\n\nLet's make this server amazing together! 🌟\n\n<a:sparkles:1275991218383224832> [Join Our Discord Community](<slot_0>)\n<:heart:1275997495704686713> [Show Some Love and Vote on Top.gg](<slot_1>)\n<a:sparkles:1275991218383224832> [Vote on Discord Bot List](<slot_2>)\n<:heart:1275997495704686713> [Contribute on GitHub](<slot_3>)"
   }
 }
