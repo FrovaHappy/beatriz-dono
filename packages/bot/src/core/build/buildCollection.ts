@@ -1,10 +1,26 @@
 import { Collection } from 'discord.js'
 import path from 'node:path'
+import process from 'node:process'
 import { readdirSync } from 'node:fs'
 import pc from 'picocolors'
 
 interface Base<B> {
   name: B
+}
+const ignoredFolders = ['.gitkeep', 'shared', '.js', '.ts']
+
+interface BuildCollectionProps<G, T extends Base<G>> {
+  srcFolder: string
+  subFolders?: string
+  Constructor: new (...args: any[]) => T
+}
+
+function getFiles(path: string): string[] {
+  try {
+    return readdirSync(path).filter(f => ignoredFolders.every(ex => !f.endsWith(ex)))
+  } catch (error) {
+    return []
+  }
 }
 
 /**
@@ -13,45 +29,50 @@ interface Base<B> {
  * @template G - The type of the key in the collection.
  * @template T - The type of the values in the collection.
  */
-export default async function BuildCollection<G, T extends Base<G>>(
-  pointFolder: string,
-  Constructor: new (...args: any[]) => T
-): Promise<Collection<G, T>> {
+export default async function BuildCollection<G, T extends Base<G>>(props: BuildCollectionProps<G, T>) {
+  const { srcFolder, subFolders, Constructor } = props
   const collection = new Collection<G, T>()
-  const ignoredFolders = ['.gitkeep', 'shared', '.js', '.ts']
-  const foldersPath = path.join(__dirname, '../../services', pointFolder)
+  const mainFoldersPath = path.join(process.cwd(), 'src', srcFolder)
+  // eslint-disable-next-line @typescript-eslint/member-delimiter-style
+  const errorFiles: Array<{ folder: string; message: string }> = []
 
-  console.log(`Scanning '/services/${pc.green(`${pointFolder}`)}' folders:`)
+  console.log(`Scanning '/${pc.green(`${subFolders ? `${srcFolder}/*/${subFolders}` : srcFolder}`)}' folders:`)
   console.log(pc.yellow(`· ◬ The files/folders ${ignoredFolders.join(', ')} that are in the root will be ignored.`))
+  const mainFolders = getFiles(mainFoldersPath)
+  if (mainFolders.length === 0) return collection
 
-  const folders = ((): string[] | null => {
+  const insertToCollection = (dir: string) => {
     try {
-      return readdirSync(foldersPath)
-    } catch (error) {
-      return null
-    }
-  })()?.filter(f => ignoredFolders.every(ex => !f.endsWith(ex)))
-  if (!folders) return collection
-
-  const folderError = []
-  for (const folder of folders) {
-    const relativePath = path.join(foldersPath, folder)
-    try {
-      const command = require(relativePath).default
-      if (command instanceof Constructor) {
-        collection.set(command.name, command)
+      const service = require(dir).default
+      if (service instanceof Constructor) {
+        collection.set(service.name, service)
       } else {
         throw new Error('The folder/file does not instance of Construct.')
       }
     } catch (error: any) {
-      folderError.push({ folder, message: error.message as string })
+      errorFiles.push({ folder: dir, message: error.message })
     }
   }
-  console.log(`· ${collection.size} ${pointFolder} correctly scanned.`)
-  if (folderError.length > 0) {
+  if (!subFolders) {
+    mainFolders.forEach(filename => insertToCollection(path.join(mainFoldersPath, filename)))
+  } else {
+    const subFoldersPath: string[] = []
+    mainFolders.forEach(mainFolder => subFoldersPath.push(path.join(mainFoldersPath, mainFolder, subFolders)))
+
+    subFoldersPath.forEach(subPath => {
+      const subFoldersFiles = getFiles(subPath)
+      subFoldersFiles.forEach(file => {
+        const filePath = path.join(subPath, file)
+        insertToCollection(filePath)
+      })
+    })
+  }
+
+  console.log(`· ${collection.size} ${subFolders ?? srcFolder} correctly scanned.`)
+  if (errorFiles.length > 0) {
     console.log(
-      `· ${folderError.length} ${pointFolder} with invalid structure:\n`,
-      folderError.map(f => `  ∷ ${pc.bold(f.folder)}: ${pc.red(f.message.replaceAll('\n', '\n     '))}`).join('\n ')
+      `· ${errorFiles.length} ${subFolders ?? srcFolder} with invalid structure:\n`,
+      errorFiles.map(f => `  ∷ ${pc.bold(f.folder)}: ${pc.red(f.message.replaceAll('\n', '\n     '))}`).join('\n ')
     )
   }
 

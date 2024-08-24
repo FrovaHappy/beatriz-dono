@@ -13,15 +13,19 @@ export default async function startClient(): Promise<void> {
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
   })
 
-  globalThis.commands = await BuildCollection('commands', BuildCommand)
-  globalThis.buttons = await BuildCollection('buttons', BuildButton)
-  globalThis.menus = await BuildCollection('menus', BuildMenu)
-  globalThis.modals = await BuildCollection('modals', BuildModal)
+  globalThis.commands = await BuildCollection({
+    srcFolder: 'services',
+    subFolders: 'commands',
+    Constructor: BuildCommand
+  })
+  globalThis.buttons = await BuildCollection({ srcFolder: 'services', subFolders: 'buttons', Constructor: BuildButton })
+  globalThis.menus = await BuildCollection({ srcFolder: 'services', subFolders: 'menus', Constructor: BuildMenu })
+  globalThis.modals = await BuildCollection({ srcFolder: 'services', subFolders: 'modals', Constructor: BuildModal })
   globalThis.cooldowns = new Collection()
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   await deployCommand(globalThis.commands)
 
-  const events = await BuildCollection<string, Event>('events', BuildEvent)
+  const events = await BuildCollection<string, Event>({ srcFolder: 'events', Constructor: BuildEvent })
 
   events.forEach(event => {
     if (event.once) {

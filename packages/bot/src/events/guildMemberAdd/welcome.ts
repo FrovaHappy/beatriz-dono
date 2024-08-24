@@ -2,7 +2,7 @@ import { type GuildMember } from 'discord.js'
 import db from '@core/db'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import WELCOME from '@lib/welcome'
-import { validateCanvas } from '../../commands/setWelcome/validate'
+import { validateCanvas } from '../../services/setWelcome/commands/main/validate'
 import { type Canvas } from '@/types/Canvas.types'
 import { formatterUser } from '@/services/shared/formatterUser'
 export default async function welcome(member: GuildMember): Promise<void> {
