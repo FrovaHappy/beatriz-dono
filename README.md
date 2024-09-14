@@ -48,19 +48,27 @@ this command is for testing the Dockerfile configurations
 
 #### Structures Files
 
+> [!WARNING]
+> the structure of the project to be changed, this can change in the future.
+
 The project bot have the following structure directory and files for valid modules
 
 ``` js
-📦src
- ┣ 📂buttons
- ┃ ┣ 📂someButton
- ┃ ┃ ┗ 📜index.ts //  for a button valid require of subfolder/index.ts (*) 
- ┣ 📂commands
- ┃ ┣ 📂someCommand
- ┃ ┃ ┗ 📜index.ts //  for a command valid require of subfolder/index.ts (*)
- ┣ 📂events
- ┃ ┗ 📜someEvent.ts // 🙀 currently it works like this, but this will change in the future.  
+📦services
+ ┗ 📂colors // name of the service 
+   ┣ 📂buttons 
+   ┣ 📂menus
+   ┣ 📂modals
+   ┣ 📂buttons
+   ┗ 📂commands
+     ┗ 📂main/index.ts // in the file index.ts you can define the command, use main as reference to the main command
+📦events
+ ┗ 📂someEvent/index.ts // the events will follow with the same structure.
 ```
+
+> [!INFO]
+> the next name files/directories are reserved and cannot be executed.
+> `/shared`, `.gitkeep`, `someFile.ts` and `someFile.js`.
 
 However, these files require a defined export to be taken as valid.
 
