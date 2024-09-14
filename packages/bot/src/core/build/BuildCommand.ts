@@ -4,7 +4,8 @@ import type {
   SlashCommandBuilder,
   InteractionEditReplyOptions,
   PermissionResolvable,
-  ChatInputCommandInteraction
+  ChatInputCommandInteraction,
+  SlashCommandOptionsOnlyBuilder
 } from 'discord.js'
 
 import { type CommandNames } from '@/const/interactionsNames'
@@ -17,7 +18,7 @@ interface CommandProps {
   defer?: boolean
   permissions: PermissionResolvable[]
   execute: (e: ChatInputCommandInteraction) => Promise<InteractionEditReplyOptions | undefined>
-  data: Partial<SlashCommandBuilder>
+  data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder
 }
 /**
  * #### Constructor
@@ -41,7 +42,7 @@ class BuildCommand implements EventEmitted<string> {
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.data = props.data.setName!(this.name)
+    this.data = props.data.setName(this.name)
     this.execute = props.execute
   }
 }
