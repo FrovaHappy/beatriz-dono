@@ -12,11 +12,12 @@ export const enum CommandNames {
 }
 
 export const enum ButtonNames {
-  test = 'button-test'
+  setting = 'setting',
+  removeColor = 'remove-color'
 }
 export const enum ModalNames {
-  test = 'modal-test'
+  editColorDefault = 'edit-color-default'
 }
 export const enum MenuNames {
-  test = 'menu-test'
+  colorDefault = 'color-default'
 }
