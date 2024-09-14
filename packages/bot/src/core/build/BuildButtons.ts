@@ -21,6 +21,7 @@ interface ButtonsProps {
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
+ * * `permissions`: The permissions that the bot needs to run the command.
  */
 class BuildButton implements EventEmitted<string> {
   type: 'buttons' = 'buttons'
