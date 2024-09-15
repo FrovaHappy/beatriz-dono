@@ -1,6 +1,5 @@
 import updatePublic from './updatePublic'
 import updatePrivate from './updatePrivate'
-import config from '../config'
 import {
   REST,
   type RESTPostAPIChatInputApplicationCommandsJSONBody as CommandDataJson,
@@ -11,7 +10,7 @@ import { clearForDelete, getForDelete } from '../setting'
 import { deleteServers } from './deleteServers'
 import { type Scope } from '@/types/main'
 import { type Command } from '../build/BuildCommand'
-
+const { config } = globalThis
 export const rest = new REST().setToken(config.discordToken)
 
 async function GetCommands(collection: Collection<string, Command>): Promise<Record<Scope, CommandDataJson[]>> {

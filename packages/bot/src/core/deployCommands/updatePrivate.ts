@@ -1,7 +1,7 @@
 import { REST, Routes } from 'discord.js'
-import config from '../config'
 import { getSetting } from '../setting'
 
+const { config } = globalThis
 const rest = new REST().setToken(config.discordToken)
 
 export default async function updatePrivate(commands: any[]): Promise<void> {

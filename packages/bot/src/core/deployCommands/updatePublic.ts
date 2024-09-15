@@ -1,6 +1,6 @@
 import { REST, Routes } from 'discord.js'
-import config from '../config'
 
+const { config } = globalThis
 const rest = new REST().setToken(config.discordToken)
 
 export default async function updatePublic(commands: any[]): Promise<void> {

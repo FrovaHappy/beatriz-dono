@@ -1,8 +1,8 @@
-import config from '../config'
 import { Routes } from 'discord.js'
 import { rest } from '.'
 
 export const deleteServers = async (guildsIds: string[]): Promise<void> => {
+  const { config } = globalThis
   console.log(`\nCleared ${guildsIds.length} servers...`)
   for (const guildId of guildsIds) {
     try {

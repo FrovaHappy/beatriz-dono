@@ -1,10 +1,17 @@
 import 'dotenv/config'
-import { stringToJson } from '../shared/general'
+import { type Setting } from '@prisma/client'
 
-export default {
-  roleUndefined: '0',
-  discordToken: process.env.DISCORD_TOKEN ?? '',
-  discordClient: process.env.DISCORD_CLIENT ?? '',
-  discordOwner: stringToJson<string[], string[]>(process.env.DISCORD_OWNER ?? '[]'),
-  setting: process.env.SETTING
+const settingDb: Omit<Setting, 'id'> = {
+  cooldown: parseInt(process.env.COOLDOWNS_DEFAULT ?? '5'),
+  privatesServers: [],
+  ownersServers: [],
+  discordInviteUrl: ''
 }
+const env = {
+  discordToken: process.env.DISCORD_TOKEN ?? '',
+  discordClient: process.env.DISCORD_CLIENT ?? ''
+}
+
+const config = { ...settingDb, ...env }
+export type Config = typeof config
+globalThis.config = config
