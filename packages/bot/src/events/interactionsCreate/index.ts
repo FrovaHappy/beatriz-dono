@@ -1,6 +1,7 @@
 import { Events } from 'discord.js'
 import BuildEvent from '@core/build/BuildEvent'
 import executeRun from './executeRun'
+import BuildModal from '@/core/build/BuildModal'
 export default new BuildEvent({
   name: Events.InteractionCreate,
   once: false,
@@ -30,14 +31,13 @@ export default new BuildEvent({
         type: 'menus',
         locale: interaction.locale,
         interaction,
-        deferReply: async options => {
-          await interaction.deferReply(options)
-        },
+        deferReply: async options => {},
         editReply: async options => {
-          await interaction.editReply(options)
+          await interaction.update(options)
         },
         reply: async options => {
-          await interaction.reply(options)
+          const { ephemeral, flags, ...op } = options
+          await interaction.update(op)
         }
       })
 
@@ -61,21 +61,7 @@ export default new BuildEvent({
       })
     }
     if (interaction.isModalSubmit()) {
-      await executeRun({
-        customNameEmitted: interaction.customId,
-        type: 'modals',
-        locale: interaction.locale,
-        interaction,
-        deferReply: async options => {
-          await interaction.deferReply(options)
-        },
-        editReply: async options => {
-          await interaction.editReply(options)
-        },
-        reply: async options => {
-          await interaction.reply(options)
-        }
-      })
+      await BuildModal.runInteraction(interaction)
     }
   }
 })
