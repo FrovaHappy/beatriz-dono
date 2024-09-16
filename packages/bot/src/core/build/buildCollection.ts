@@ -14,10 +14,13 @@ interface BuildCollectionProps<G, T extends Base<G>> {
   subFolders?: string
   Constructor: new (...args: any[]) => T
 }
-
+const containIgnoredFolders = new Set<string>()
 function getFiles(path: string): string[] {
   try {
-    return readdirSync(path).filter(f => ignoredFolders.every(ex => !f.endsWith(ex)))
+    const files = readdirSync(path)
+    const filesFiltered = files.filter(f => ignoredFolders.every(ex => !f.endsWith(ex)))
+    files.filter(f => ignoredFolders.includes(f)).forEach(f => containIgnoredFolders.add(f))
+    return filesFiltered
   } catch (error) {
     return []
   }
@@ -37,7 +40,7 @@ export default async function BuildCollection<G, T extends Base<G>>(props: Build
   const errorFiles: Array<{ folder: string; message: string }> = []
 
   console.log(`Scanning '/${pc.green(`${subFolders ? `${srcFolder}/*/${subFolders}` : srcFolder}`)}' folders:`)
-  console.log(pc.yellow(`· ◬ The files/folders ${ignoredFolders.join(', ')} that are in the root will be ignored.`))
+
   const mainFolders = getFiles(mainFoldersPath)
   if (mainFolders.length === 0) return collection
 
@@ -53,6 +56,7 @@ export default async function BuildCollection<G, T extends Base<G>>(props: Build
       errorFiles.push({ folder: dir, message: error.message })
     }
   }
+  // scan the /src/events/<event>/index.ts folder if not /src/events/<groupEvent>/<event>/<event>/index.ts
   if (!subFolders) {
     mainFolders.forEach(filename => insertToCollection(path.join(mainFoldersPath, filename)))
   } else {
@@ -67,12 +71,30 @@ export default async function BuildCollection<G, T extends Base<G>>(props: Build
       })
     })
   }
-
+  if (containIgnoredFolders.size > 0) {
+    console.log(
+      `· ${pc.yellow('[‼ warn]')} The files/folders has been ignored: ${pc.yellow(
+        [...containIgnoredFolders].join(', ')
+      )}.`
+    )
+  }
   console.log(`· ${collection.size} ${subFolders ?? srcFolder} correctly scanned.`)
   if (errorFiles.length > 0) {
+    const destructuredErrorFiles = (path: string) => {
+      const paths = path.split(/[\\/]+/)
+      if (subFolders) return `${subFolders} → ${paths.at(-3)} → ${paths.at(-1)}`
+      return paths.at(-1)
+    }
     console.log(
       `· ${errorFiles.length} ${subFolders ?? srcFolder} with invalid structure:\n`,
-      errorFiles.map(f => `  ∷ ${pc.bold(f.folder)}: ${pc.red(f.message.replaceAll('\n', '\n     '))}`).join('\n ')
+      errorFiles
+        .map(
+          f =>
+            `  ∷ ${pc.bold(destructuredErrorFiles(f.folder))}:\n     · folder: ${f.folder} ${pc.red(
+              f.message.replaceAll('\n', '\n     ')
+            )}`
+        )
+        .join('\n ')
     )
   }
 
