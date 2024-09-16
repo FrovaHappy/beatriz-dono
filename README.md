@@ -33,9 +33,20 @@ this command is for testing the Dockerfile configurations
 
 ## Bot
 
-### Configurations
+### Environment Variables
 
-#### Structures Files
+```bash
+DISCORD_TOKEN = 'your discord token'
+DISCORD_CLIENT = 'your discord client'
+DISCORD_INVITE_URL = 'https://discord.gg/your-invite-url'
+
+PRIVATES_SERVERS = '["342443455343334912", "443664366665643264"]' // add your private servers ids base, keep in mind that this is handled from db
+OWNERS_SERVERS = '["342443455343334912"]' // this also is handled from db
+COOLDOWNS_DEFAULT = '5' // in seconds
+DATABASE_URL = 'mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority' // add your mongodb url
+```
+
+### Structures Files
 
 > [!WARNING]
 > the structure of the project to be changed, this can change in the future.
@@ -61,7 +72,7 @@ The project bot have the following structure directory and files for valid modul
 
 However, these files require a defined export to be taken as valid.
 
-#### Command File
+### Command File
 
 This is a example of a command file:
 
