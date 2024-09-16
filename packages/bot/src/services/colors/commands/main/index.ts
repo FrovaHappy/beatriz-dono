@@ -1,11 +1,11 @@
-import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { ActionRowBuilder, type GuildMemberRoleManager, SlashCommandBuilder, StringSelectMenuBuilder } from 'discord.js'
 import BuildCommand from '@core/build/BuildCommand'
-import COLORS from '@/shared/stackColors'
-import changeToColor from './changeToColor'
-import removeRoleOfUser from './removeRoleOfUser'
-import db from '@core/db'
-import config from '@core/config'
-import { CommandNames } from '@/const/interactionsNames'
+import { ButtonNames, CommandNames, MenuNames, ModalNames } from '@/const/interactionsNames'
+import createColorRole from '../../shared/createColorRole'
+import fetchColorCommand from '../../shared/fetchColorCommand'
+import removeRoles from '../../shared/removeRoles'
+import { type EditColorDefault } from '../../modals/editColorDefault'
 
 const regexColors = /^#([a-f0-9]{6})$/
 
@@ -16,56 +16,61 @@ export default new BuildCommand({
   permissions: [],
   cooldown: 15,
   data: new SlashCommandBuilder()
-    .setDescription('Cambia el color de tu nombre.')
+    .setDescription('Personaliza el color de tu nickname con un color personalizado.')
     .addStringOption(strOp =>
-      strOp
-        .setName('hex-color')
-        .setDescription('agrega un color a tu nombre.')
-        .setRequired(true)
-        .addChoices(
-          { name: 'none', value: '#none' },
-          ...COLORS.map(strOp => {
-            return { name: strOp.name, value: strOp.hexColor }
-          })
-        )
-    )
-    .addStringOption(strOp =>
-      strOp.setName('hex-custom').setDescription('color personalizado. Formato #FFFFFF').setMinLength(7).setMaxLength(7)
+      strOp.setName('color').setDescription('cambia el color de tu nickname, el formato es #RRGGBB')
     ),
-  async execute(interaction) {
-    const colorCommand = await db.colorCommand.findUnique({
-      where: { serverId: interaction.guildId ?? '' },
-      include: { colors: true }
-    })
-    if (!colorCommand) return { content: 'Requiere configuración' }
+  execute: async i => {
+    const { guildId } = i
+    const roles = i.guild?.roles.cache
+    if (!guildId) return { content: 'No se encontró el guild' }
+    const { buttons, modals, menus } = globalThis
 
-    const hexColor = interaction.options.getString('hex-color', true) as `#${string}`
-    const hexCustom = interaction.options.getString('hex-custom', false)?.trim().toLowerCase() as `#${string}`
-    const { colors, pointerId, rolePermission } = colorCommand
-    await removeRoleOfUser({ interaction, colors: colorCommand.colors })
+    const { colorPointerId, colors, colorsDefault } = await fetchColorCommand(guildId, roles)
 
-    if (!hexCustom) {
-      if (hexColor === '#none') return { content: 'role quitado' }
-      const { hasSusses } = await changeToColor({ color: hexColor, interaction, colors, pointerId })
-      if (!hasSusses) return { content: 'servicie Error' }
-      return { content: `color cambiado ${hexColor}` }
-    }
-    if (!regexColors.test(hexCustom)) {
-      return { content: `color invalido ${hexColor}` }
-    }
-    if (rolePermission) {
-      const isRolePermission = (interaction.member?.roles as GuildMemberRoleManager).cache.has(
-        rolePermission ?? config.roleUndefined
-      )
-      if (!isRolePermission) {
-        return { content: 'requiere /set-color' }
+    const colorDefaultFunc = () => {
+      if (colorsDefault) {
+        return new StringSelectMenuBuilder({
+          customId: MenuNames.colorDefault,
+          placeholder: 'Selecciona un color'
+        }).addOptions(
+          ...(colorsDefault as EditColorDefault).values.map(color => ({ label: color.label, value: color.hexcolor }))
+        )
       }
+      return menus.get(MenuNames.colorDefault).data
     }
-    if (hexCustom === '#000000') {
-      return { content: `color invalido ${hexColor}` }
+
+    const components = [
+      new ActionRowBuilder<any>().addComponents(
+        buttons.get(ButtonNames.setting).data,
+        buttons.get(ButtonNames.removeColor).data
+      ),
+      new ActionRowBuilder<any>().addComponents(colorDefaultFunc()),
+      new ActionRowBuilder<any>().addComponents(modals.get(ModalNames.editColorDefault).data)
+    ]
+
+    if (!colorPointerId) return { content: 'el comando no está configurado', components }
+
+    const colorCustom = i.options.getString('color')?.toLowerCase()
+
+    if (colorCustom) {
+      if (!regexColors.test(colorCustom)) return { content: 'El color no es correcto' }
+      await removeRoles(roles, colors, i)
+      const colorRole = await createColorRole({
+        hexColor: colorCustom as `#${string}`,
+        guildId,
+        colors,
+        colorPointerId,
+        i
+      })
+      if (!colorRole) return { content: 'No se pudo crear el rol', components }
+      // eslint-disable-next-line space-unary-ops
+      await (i.member?.roles as GuildMemberRoleManager).add(colorRole)
+      const position = roles?.get(colorPointerId)?.rawPosition ?? 0
+      await i.guild?.roles.setPosition(colorRole.id, position)
+      return { content: `El color de tu nickname se ha cambiado a <@&${colorRole.id}>`, components }
     }
-    const { hasSusses } = await changeToColor({ color: hexCustom, interaction, colors, pointerId })
-    if (!hasSusses) return { content: 'servicie Error' }
-    return { content: `color cambiado ${hexColor}` }
+
+    return { content: 'menu de colores', components }
   }
 })
