@@ -5,7 +5,8 @@ import type {
   InteractionEditReplyOptions,
   PermissionResolvable,
   ChatInputCommandInteraction,
-  SlashCommandOptionsOnlyBuilder
+  SlashCommandOptionsOnlyBuilder,
+  SlashCommandSubcommandsOnlyBuilder
 } from 'discord.js'
 
 import { type CommandNames } from '@/const/interactionsNames'
@@ -18,7 +19,7 @@ interface CommandProps {
   defer?: boolean
   permissions: PermissionResolvable[]
   execute: (e: ChatInputCommandInteraction) => Promise<InteractionEditReplyOptions | undefined>
-  data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder
+  data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder
 }
 /**
  * #### Constructor
