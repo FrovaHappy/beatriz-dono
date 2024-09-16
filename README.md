@@ -35,6 +35,8 @@ this command is for testing the Dockerfile configurations
 
 ### Environment Variables
 
+The configurations are accessed through the thisGlobal.config object.
+
 ```bash
 DISCORD_TOKEN = 'your discord token'
 DISCORD_CLIENT = 'your discord client'
