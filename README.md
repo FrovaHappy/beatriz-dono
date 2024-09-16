@@ -2,17 +2,6 @@
 
 A Bot multipurpose for discord
 
-## Contents
-
-* [Init Projects](#init-project)
-  * [Install in Local](#install-in-local)
-  * [Install with Docker](#install-with-docker)
-* [Bot (Backend)](#bot)
-  * [Configurations](#configurations)
-    * [structures Files](#structures-files)
-    * [Command File](#command-file)
-* [Website](#website)
-
 ## Init Project
 
 ### Install in Local
