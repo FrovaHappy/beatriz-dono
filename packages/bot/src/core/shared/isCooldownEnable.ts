@@ -1,5 +1,4 @@
 import { Collection, type Snowflake } from 'discord.js'
-import { getSetting } from '../setting'
 type ReturnMessage = string | null
 
 interface Props {
@@ -8,9 +7,10 @@ interface Props {
   type: string
   name: string
 }
+/** @deprecated */
 export default async function isCooldownEnable(props: Props): Promise<ReturnMessage> {
   const { id, cooldown, type, name } = props
-  const { cooldowns } = globalThis
+  const { cooldowns, config } = globalThis
   const cooldownName = `${type}-${name}`
   if (!cooldowns.has(cooldownName)) {
     cooldowns.set(cooldownName, new Collection())
@@ -20,8 +20,7 @@ export default async function isCooldownEnable(props: Props): Promise<ReturnMess
   try {
     const timestamps = cooldowns.get(cooldownName)
     if (!timestamps) throw new Error(`Cannot find ${cooldownName} in cooldowns`)
-    const defaultCooldownDuration = getSetting().cooldown
-    const cooldownAmount = (cooldown ?? defaultCooldownDuration) * 1000
+    const cooldownAmount = (cooldown ?? config.cooldown) * 1000
 
     if (timestamps.has(id)) {
       const expirationTime = timestamps.get(id) ?? 0 + cooldownAmount

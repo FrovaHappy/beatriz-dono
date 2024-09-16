@@ -1,5 +1,4 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
-import config from './config'
 import BuildCollection from './build/buildCollection'
 import deployCommand from './deployCommands'
 import BuildCommand from './build/BuildCommand'
@@ -9,6 +8,7 @@ import BuildMenu from './build/BuildMenu'
 import BuildModal from './build/BuildModal'
 
 export default async function startClient(): Promise<void> {
+  const { config } = globalThis
   const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
   })

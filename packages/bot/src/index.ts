@@ -1,8 +1,10 @@
 import './paths'
 import './core/config'
 import startClient from './core/client'
-import { upsertSetting } from './core/setting'
-;(async () => {
-  await upsertSetting({})
+import { setSetting } from './core/db'
+
+const run = async () => {
+  await setSetting({})
   await startClient()
-})()
+}
+run()
