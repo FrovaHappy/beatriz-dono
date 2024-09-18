@@ -38,14 +38,20 @@ this command is for testing the Dockerfile configurations
 The configurations are accessed through the thisGlobal.config object.
 
 ```bash
+# Bot Requieres
 DISCORD_TOKEN = 'your discord token'
 DISCORD_CLIENT = 'your discord client'
 DISCORD_INVITE_URL = 'https://discord.gg/your-invite-url'
+DATABASE_URL = 'mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority' // add your mongodb url
 
+# Bot Optionals
 PRIVATES_SERVERS = '["342443455343334912", "443664366665643264"]' // add your private servers ids base, keep in mind that this is handled from db
 OWNERS_SERVERS = '["342443455343334912"]' // this also is handled from db
 COOLDOWNS_DEFAULT = '5' // in seconds
-DATABASE_URL = 'mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority' // add your mongodb url
+
+# Website Requieres
+IMGUR_CLIENT= 'your imgur client'
+IMGUR_KEY= 'your imgur key'
 ```
 
 ### Structures Files
