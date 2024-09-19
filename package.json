@@ -7,7 +7,9 @@
     "packages/*"
   ],
   "scripts": {
-    "lint" : "eslint .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:watch": "nodemon --watch . --ext ts,js,cjs,mjs,json --exec 'npm run lint:fix'",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "cp": "npm run cp --workspaces",
@@ -40,6 +42,8 @@
     "env-cmd": "^10.1.0",
     "eslint": "^8.57.0",
     "eslint-config-love": "^47.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "nodemon": "^3.1.5",
     "typescript": "^5.4.5",
     "vitest": "^1.5.2"
   }
