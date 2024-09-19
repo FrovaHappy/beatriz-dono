@@ -2,20 +2,12 @@ import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import {
   type PermissionResolvable,
   type ModalSubmitInteraction,
-  type ModalBuilder,
-  type InteractionReplyOptions
+  type ModalBuilder
 } from 'discord.js'
-import { type Scope } from '@/types/main'
+import { type MessageOptions, type Scope } from '@/types/main'
 import { type ModalNames } from '@/const/interactionsNames'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import isCooldownEnable from './shared/isCooldownEnable'
-
-interface MessageOptions {
-  content?: InteractionReplyOptions['content']
-  embeds?: InteractionReplyOptions['embeds']
-  components?: InteractionReplyOptions['components']
-  files?: InteractionReplyOptions['files']
-}
 
 interface ModalsProps {
   name: ModalNames

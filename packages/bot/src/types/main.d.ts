@@ -14,3 +14,10 @@ export interface EventEmitted<Names, Interaction = any> {
   permissions: PermissionResolvable[]
   execute: (e: Interaction) => Promise<InteractionEditReplyOptions>
 }
+
+export interface MessageOptions {
+  content?: InteractionReplyOptions['content']
+  embeds?: InteractionReplyOptions['embeds']
+  components?: InteractionReplyOptions['components']
+  files?: InteractionReplyOptions['files']
+}
