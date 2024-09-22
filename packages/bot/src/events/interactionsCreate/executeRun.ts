@@ -6,7 +6,7 @@ import {
 } from 'discord.js'
 import isCooldownEnable from '@core/shared/isCooldownEnable'
 import createServerDb from '@core/shared/createServerDb'
-import filterOwnerCommands from './filterOwnerCommands'
+// import filterOwnerCommands from './filterOwnerCommands'
 import isPermissionDeniedBot from './isPermissionDeniedBot'
 import { type Types, type EventEmitted } from '@/types/main'
 
@@ -26,7 +26,7 @@ interface EventInteraction {
 }
 async function BuildMessage(props: Props & EventInteraction): Promise<InteractionEditReplyOptions | undefined> {
   const { customNameEmitted, interaction, type, eventInteraction } = props
-  const { cooldown, name, permissions, scope, execute } = eventInteraction
+  const { cooldown, name, permissions, execute } = eventInteraction
 
   const messagePermissionDenied = await isPermissionDeniedBot({
     i: interaction,
@@ -35,8 +35,9 @@ async function BuildMessage(props: Props & EventInteraction): Promise<Interactio
   })
   if (messagePermissionDenied) return messagePermissionDenied
 
-  const passFilter = filterOwnerCommands(scope, interaction.user.id)
-  if (!passFilter) return { content: 'only Owner has access to this.. >:(' }
+  // ALERT: this is not working
+  // const passFilter = filterOwnerCommands(scope, interaction.user.id)
+  // if (!passFilter) return { content: 'only Owner has access to this.. >:(' }
 
   const serverId = interaction.guild?.id
   if (serverId) await createServerDb(serverId)
