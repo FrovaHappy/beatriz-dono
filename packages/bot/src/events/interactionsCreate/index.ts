@@ -2,6 +2,7 @@ import { Events } from 'discord.js'
 import BuildEvent from '@core/build/BuildEvent'
 import executeRun from './executeRun'
 import BuildModal from '@/core/build/BuildModal'
+import BuildButton from '@/core/build/BuildButtons'
 export default new BuildEvent({
   name: Events.InteractionCreate,
   once: false,
@@ -44,21 +45,7 @@ export default new BuildEvent({
       return
     }
     if (interaction.isButton()) {
-      await executeRun({
-        customNameEmitted: interaction.customId,
-        type: 'buttons',
-        locale: interaction.locale,
-        interaction,
-        deferReply: async options => {
-          await interaction.deferReply(options)
-        },
-        editReply: async options => {
-          await interaction.editReply(options)
-        },
-        reply: async options => {
-          await interaction.reply(options)
-        }
-      })
+      await BuildButton.runInteraction(interaction)
     }
     if (interaction.isModalSubmit()) {
       await BuildModal.runInteraction(interaction)
