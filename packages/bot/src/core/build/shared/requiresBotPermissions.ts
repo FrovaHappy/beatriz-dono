@@ -12,7 +12,7 @@ export default function requiresBotPermissions(props: Props) {
 
   const permissionsCurrent = new PermissionsBitField(bot.permissions).toArray()
 
-  if (bot.permissions.has(permissions)) {
+  if (!bot.permissions.has(permissions)) {
     const permissionsRequired = new PermissionsBitField(permissions)
       .toArray()
       .filter(p => !permissionsCurrent.some(pc => pc === p))
