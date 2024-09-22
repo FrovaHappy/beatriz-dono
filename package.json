@@ -30,10 +30,11 @@
     "semi": false,
     "trailingComma": "none",
     "endOfLine": "crlf",
+    "parser": "typescript",
     "tabWidth": 2,
-    "useTabs": false,
-    "rangeEnd": 1
+    "useTabs": false
   },
+  "endOnLine": "crlf",
   "author": "",
   "license": "ISC",
   "devDependencies": {
