@@ -13,7 +13,8 @@ export const enum CommandNames {
 
 export const enum ButtonNames {
   setting = 'setting',
-  removeColor = 'remove-color'
+  removeColor = 'remove-color',
+  editColorDefault = 'edit-color-default'
 }
 export const enum ModalNames {
   editColorDefault = 'edit-color-default'
