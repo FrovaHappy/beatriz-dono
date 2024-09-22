@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { ActionRowBuilder, type GuildMemberRoleManager, SlashCommandBuilder, StringSelectMenuBuilder } from 'discord.js'
 import BuildCommand from '@core/build/BuildCommand'
-import { ButtonNames, CommandNames, MenuNames, ModalNames } from '@/const/interactionsNames'
+import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
 import createColorRole from '../../shared/createColorRole'
 import fetchColorCommand from '../../shared/fetchColorCommand'
 import removeRoles from '../../shared/removeRoles'
@@ -24,7 +24,7 @@ export default new BuildCommand({
     const { guildId } = i
     const roles = i.guild?.roles.cache
     if (!guildId) return { content: 'No se encontró el guild' }
-    const { buttons, modals, menus } = globalThis
+    const { buttons, menus } = globalThis
 
     const { colorPointerId, colors, colorsDefault } = await fetchColorCommand(guildId, roles)
 
@@ -34,7 +34,7 @@ export default new BuildCommand({
           customId: MenuNames.colorDefault,
           placeholder: 'Selecciona un color'
         }).addOptions(
-          ...(colorsDefault as EditColorDefault).values.map(color => ({ label: color.label, value: color.hexcolor }))
+          ...(colorsDefault as unknown as EditColorDefault).values.map(color => ({ label: color.label, value: color.hexcolor }))
         )
       }
       return menus.get(MenuNames.colorDefault).data
@@ -43,10 +43,10 @@ export default new BuildCommand({
     const components = [
       new ActionRowBuilder<any>().addComponents(
         buttons.get(ButtonNames.setting).data,
-        buttons.get(ButtonNames.removeColor).data
+        buttons.get(ButtonNames.removeColor).data,
+        buttons.get(ButtonNames.editColorDefault).data
       ),
-      new ActionRowBuilder<any>().addComponents(colorDefaultFunc()),
-      new ActionRowBuilder<any>().addComponents(modals.get(ModalNames.editColorDefault).data)
+      new ActionRowBuilder<any>().addComponents(colorDefaultFunc())
     ]
 
     if (!colorPointerId) return { content: 'el comando no está configurado', components }
