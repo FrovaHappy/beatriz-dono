@@ -8,14 +8,8 @@ const COLORS_PLACEHOLDER = `
 {
   "version": "v1",
   "values": [
-    {
-      "hexcolor": "#000000",
-      "label": "Black"
-    },
-    {
-      "hexcolor": "#ffffff",
-      "label": "White"
-    }
+    { "hexcolor": "#000000", "label": "Black" },
+    { "hexcolor": "#ffffff", "label": "White" }
   ]
 }
 `
