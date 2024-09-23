@@ -1,6 +1,5 @@
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import {
-  type InteractionEditReplyOptions,
   type PermissionResolvable,
   type StringSelectMenuBuilder,
   type UserSelectMenuBuilder,
@@ -11,10 +10,13 @@ import {
   type UserSelectMenuInteraction,
   type RoleSelectMenuInteraction,
   type MentionableSelectMenuInteraction,
-  type ChannelSelectMenuInteraction
+  type ChannelSelectMenuInteraction,
+  type AnySelectMenuInteraction
 } from 'discord.js'
-import { type EventEmitted, type Scope } from '@/types/main'
+import { type MessageOptions, type Scope, type Resolve } from '@/types/main'
 import { type MenuNames } from '@/const/interactionsNames'
+import requiresBotPermissions from './shared/requiresBotPermissions'
+import isCooldownEnable from './shared/isCooldownEnable'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -39,43 +41,75 @@ interface Types {
 }
 
 type MenuType = keyof Types
-interface MenuProps<T extends MenuType> {
-  menuType: T
-  name: MenuNames
-  scope?: Scope
-  ephemeral?: boolean
-  defer?: boolean
-  permissions: PermissionResolvable[]
-  cooldown?: number
-  data: Types[T]['builder']
-  execute: (e: Types[T]['interaction']) => Promise<InteractionEditReplyOptions | undefined>
-}
+
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
  */
-class BuildMenu<T extends MenuType> implements EventEmitted<string> {
+class BuildMenu<T extends MenuType> {
   type: 'menus' = 'menus'
-  name
-  ephemeral
-  defer
-  permissions
-  cooldown
-  data
-  scope
+  name: MenuNames
+  ephemeral: boolean
+  permissions: PermissionResolvable[]
+  cooldown: number
+  data: Types[T]['builder']
+  scope: Scope
+  resolve: Resolve
   menuType: MenuType
-  execute
-  constructor(props: MenuProps<T>) {
+  execute: (e: Types[T]['interaction']) => Promise<MessageOptions | undefined>
+  constructor(props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data' | 'permissions' | 'menuType'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.menuType = props.menuType
-    this.defer = props.defer ?? true
     this.cooldown = props.cooldown ?? 0
+    this.resolve = props.resolve ?? 'reply'
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
   }
+
+  static async runInteraction(i: AnySelectMenuInteraction) {
+    const menu: Menu = globalThis.menus.get(i.customId)
+    if (!menu) return { content: 'No se encontró el menu' }
+
+    const messageRequirePermissionsBot = requiresBotPermissions({
+      permissions: menu.permissions,
+      bot: i.guild?.members.me,
+      nameInteraction: i.customId,
+      type: 'menu'
+    })
+    const messageCooldown = isCooldownEnable({
+      id: i.user.id,
+      cooldown: menu.cooldown,
+      name: menu.name,
+      type: 'menu'
+    })
+
+    const getMessage = async () => {
+      if (messageRequirePermissionsBot) return messageRequirePermissionsBot
+      if (messageCooldown) return { content: messageCooldown }
+
+      try {
+        return await menu.execute(i)
+      } catch (error) {
+        console.error(error)
+        return { content: `Error executing ${menu.name}` }
+      }
+    }
+
+    try {
+      if (menu.resolve === 'defer') await i.deferReply({ ephemeral: menu.ephemeral })
+      const message = await getMessage()
+      if (!message) return
+      if (menu.resolve === 'defer') return await i.editReply(message)
+      return await i.reply(message)
+    } catch (error) {
+      console.error(error)
+      return { content: `Error executing ${menu.name}` }
+    }
+  }
 }
+
 export type Menu = InstanceType<typeof BuildMenu>
 export default BuildMenu
