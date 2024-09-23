@@ -1,6 +1,6 @@
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import { type PermissionResolvable, type ButtonInteraction, type ButtonBuilder } from 'discord.js'
-import { type Resolve, type MessageOptions, type Scope } from '@/types/main'
+import { type MessageOptions, type Scope, type ResolveWithUpdate } from '@/types/main'
 import { type ButtonNames } from '@/const/interactionsNames'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import isCooldownEnable from './shared/isCooldownEnable'
@@ -23,7 +23,7 @@ class BuildButton {
   cooldown: number
   data: ButtonBuilder
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
-  resolve: Resolve
+  resolve: ResolveWithUpdate
 
   constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'permissions'>) {
     this.name = props.name

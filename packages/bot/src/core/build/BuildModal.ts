@@ -14,7 +14,7 @@ class BuildModal {
   name: ModalNames
   scope: Scope
   ephemeral: boolean
-  resolve: Omit<Resolve, 'update'>
+  resolve: Resolve
   permissions: PermissionResolvable[]
   cooldown: number
   data: ModalBuilder
