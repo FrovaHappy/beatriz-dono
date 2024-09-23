@@ -1,45 +1,31 @@
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
-import {
-  type PermissionResolvable,
-  type ModalSubmitInteraction,
-  type ModalBuilder
-} from 'discord.js'
-import { type MessageOptions, type Scope } from '@/types/main'
+import { type PermissionResolvable, type ModalSubmitInteraction, type ModalBuilder } from 'discord.js'
+import { type Resolve, type MessageOptions, type Scope } from '@/types/main'
 import { type ModalNames } from '@/const/interactionsNames'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import isCooldownEnable from './shared/isCooldownEnable'
 
-interface ModalsProps {
-  name: ModalNames
-  scope?: Scope
-  ephemeral?: boolean
-  defer?: boolean
-  permissions: PermissionResolvable[]
-  cooldown?: number
-  data: ModalBuilder
-  update?: boolean
-  execute: (e: ModalSubmitInteraction) => Promise<MessageOptions>
-}
 /**
  * #### Constructor
  * * ` data `: The modalBuilder.customId(name) not is required.
  * * ` update `: If is true, the message where the event was triggered will be updated, otherwise it will send a new message.
  */
 class BuildModal {
-  name: string
-  ephemeral
-  permissions
-  cooldown
-  update
-  data
-  scope
-  execute
-  constructor(props: ModalsProps) {
+  name: ModalNames
+  scope: Scope
+  ephemeral: boolean
+  resolve: Omit<Resolve, 'update'>
+  permissions: PermissionResolvable[]
+  cooldown: number
+  data: ModalBuilder
+  execute: (e: ModalSubmitInteraction) => Promise<MessageOptions>
+
+  constructor(props: Partial<BuildModal> & Pick<BuildModal, 'name' | 'execute' | 'data' | 'permissions'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
-    this.cooldown = props.cooldown
+    this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
-    this.update = props.update ?? false
+    this.resolve = props.resolve ?? 'reply'
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
@@ -76,10 +62,11 @@ class BuildModal {
     }
 
     try {
+      if (modal.resolve === 'defer') await i.deferReply({ ephemeral: modal.ephemeral })
+
       const message = await getMessage()
-      if (modal.update) {
-        return await i.message?.edit(message)
-      }
+      if (!message) return
+      if (modal.resolve === 'defer') return await i.editReply(message)
       return await i.reply(message)
     } catch (error) {
       console.error(error)
