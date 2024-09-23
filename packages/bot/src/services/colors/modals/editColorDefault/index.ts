@@ -38,6 +38,7 @@ const rows = new ActionRowBuilder<TextInputBuilder>().addComponents(textEdit)
 export default new BuildModal({
   name: ModalNames.editColorDefault,
   ephemeral: true,
+  resolve: 'defer',
   data: new ModalBuilder({ title: 'Edit Color Default' }).addComponents(rows),
   permissions: [],
   async execute(i) {

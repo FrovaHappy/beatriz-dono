@@ -7,6 +7,7 @@ import removeRoles from '../../shared/removeRoles'
 export default new BuildButton({
   name: ButtonNames.removeColor,
   permissions: [],
+  resolve: 'update',
   data: new ButtonBuilder().setLabel('Eliminar color').setStyle(ButtonStyle.Secondary),
   async execute(i) {
     const { guildId } = i

@@ -1,6 +1,6 @@
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import { type PermissionResolvable, type ButtonInteraction, type ButtonBuilder } from 'discord.js'
-import { type MessageOptions, type Scope } from '@/types/main'
+import { type Resolve, type MessageOptions, type Scope } from '@/types/main'
 import { type ButtonNames } from '@/const/interactionsNames'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import isCooldownEnable from './shared/isCooldownEnable'
@@ -9,28 +9,30 @@ import hasAccessForScope from './shared/hasAccessForScope'
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
  * * `permissions`: The permissions that the bot needs to run the command.
+ * * `resolve`: The resolve of the interaction, can be `reply`, `defer` or `update`.
+ *   - `reply`: Sends a new message reply, use this mode when you create the modal and do not return anything.
+ *   - `defer`: Sends a new async message reply. (incompatible with Modals)
+ *   - `update`: The interaction will be updated. (incompatible with Modals)
  */
 class BuildButton {
   type = 'buttons'
   name: ButtonNames
   scope: Scope
   ephemeral: boolean
-  defer: boolean
   permissions: PermissionResolvable[]
   cooldown: number
   data: ButtonBuilder
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
-  update: boolean
+  resolve: Resolve
 
   constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'permissions'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
-    this.cooldown = props.cooldown ?? 0
-    this.defer = props.defer ?? true
+    this.resolve = props.resolve ?? 'reply'
+    this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)
-    this.update = props.update ?? false
     this.execute = props.execute
   }
 
@@ -70,13 +72,13 @@ class BuildButton {
     }
 
     try {
-      if (button.defer && !button.update) await i.deferReply({ ephemeral: button.ephemeral })
+      if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
+
       const message = await getMessage()
-
       if (!message) return
-      if (button.update) return await i.message?.edit(message)
-      if (button.defer) await i.editReply(message)
 
+      if (button.resolve === 'update') return await i.update(message)
+      if (button.resolve === 'defer') return await i.editReply(message)
       return await i.reply(message)
     } catch (error) {
       console.error(error)
