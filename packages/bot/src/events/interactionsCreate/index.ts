@@ -3,6 +3,7 @@ import BuildEvent from '@core/build/BuildEvent'
 import executeRun from './executeRun'
 import BuildModal from '@/core/build/BuildModal'
 import BuildButton from '@/core/build/BuildButtons'
+import BuildMenu from '@/core/build/BuildMenu'
 export default new BuildEvent({
   name: Events.InteractionCreate,
   once: false,
@@ -27,22 +28,7 @@ export default new BuildEvent({
       return
     }
     if (interaction.isAnySelectMenu()) {
-      await executeRun({
-        customNameEmitted: interaction.customId,
-        type: 'menus',
-        locale: interaction.locale,
-        interaction,
-        deferReply: async options => {},
-        editReply: async options => {
-          await interaction.update(options)
-        },
-        reply: async options => {
-          const { ephemeral, flags, ...op } = options
-          await interaction.update(op)
-        }
-      })
-
-      return
+      await BuildMenu.runInteraction(interaction)
     }
     if (interaction.isButton()) {
       await BuildButton.runInteraction(interaction)
