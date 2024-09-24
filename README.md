@@ -74,34 +74,162 @@ The project bot have the following structure directory and files for valid modul
  ┗ 📂someEvent/index.ts // the events will follow with the same structure.
 ```
 
-> [!INFO]
+> [!NOTE]
 > the next name files/directories are reserved and cannot be executed.
 > `/shared`, `.gitkeep`, `someFile.ts` and `someFile.js`.
 
 However, these files require a defined export to be taken as valid.
 
-### Command File
+## Builders Schema
 
-This is a example of a command file:
+The Builders Schema is a class that is used to build the commands, buttons, menus, modals, and events.
+
+> [!NOTE]
+> the property ` name ` is added forcefully to ` data ` property. this is for have a consistent with the Collections.
+In the case of Button how customId and Command how name for example.
+
+### How to use a BuildCommand
 
 ```typescript
-/* index.ts*/
-
 import { SlashCommandBuilder } from 'discord.js'
-import { CommandsNames } from '../../enums'
-import { BuildCommand } from '../../buildersSchema'
+import { BuildCommand } from '@core/build/BuildCommand'
+import { CommandsNames } from '@/const/interactionsNames'
 
-const name = CommandsNames.nameCommand
-
-export default BuildCommand({
-  cooldown: 60,
-  name,
+export default new BuildCommand({
+  // Optional
   scope: 'owner',
-  data: new SlashCommandBuilder().setName(name).setDescription('some Description'),
+  cooldown: 60, // default is declared in the config file
+  ephemeral: false,
+  resolve: 'reply',
+
+  // Required
+  name: CommandsNames.hello,
+  permissions: [], // use asome permissions how for example ['SendMessages', 'SendStickers', ...] for default
+  data: new SlashCommandBuilder().setDescription('some Description'),
   async execute(interaction) {
-    return { content: 'Hello! Im command 🎁' }
+    return { content: 'Hello! Im command 🎁' } as MessageOptions | undefined // see types/main.d.ts
   }
-}) satisfies BaseFileCommand
+})
+```
+
+### How to use a BuildButton
+
+```typescript
+import { ButtonBuilder, ButtonStyle } from 'discord.js'
+import { BuildButton } from '@core/build/BuildButton'
+import { ButtonNames } from '@/const/interactionsNames'
+
+export default new BuildButton({
+  // Optional
+  scope: 'owner',
+  cooldown: 60, // default is declared in the config file
+  ephemeral: false,
+  resolve: 'reply',
+
+  // Required
+  name: ButtonNames.hello,
+  permissions: [], // use asome permissions how for example ['SendMessages', 'SendStickers', ...] for default
+  data: new ButtonBuilder().setLabel('some Label').setStyle(ButtonStyle.Primary),
+  async execute(interaction) {
+    return { content: 'Hello! Im button 🎁' } as MessageOptions | undefined // see types/main.d.ts
+  }
+})
+```
+
+### How to use a BuildMenu
+
+```typescript
+import { StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js'
+import { BuildMenu } from '@core/build/BuildMenu'
+import { MenuNames } from '@/const/interactionsNames'
+
+export default new BuildMenu({
+  // Optional
+  scope: 'owner',
+  cooldown: 60, // default is declared in the config file
+  ephemeral: false,
+  resolve: 'reply',
+
+  // Required
+  name: MenuNames.hello,
+  permissions: [], // use asome permissions how for example ['SendMessages', 'SendStickers', ...] for default
+  menuType: 'string', // string, user, role, mentionable, channels
+  data: new StringSelectMenuBuilder({
+    placeholder: 'some Placeholder'
+  }).addOptions(
+    new StringSelectMenuOptionBuilder().setValue('value').setLabel('label').setEmoji('🎁')
+  ),
+  async execute(interaction) {
+    return { content: 'Hello! Im menu 🎁' } as MessageOptions | undefined // see types/main.d.ts
+  }
+})
+```
+
+### How to use a BuildModal
+
+> [!WARNING]
+> Is required to use an BuildButton for execute the  interaction of the modal, and this not has that return a MessageOptions type.
+
+```typescript
+/* button.ts*/
+import { ButtonBuilder, ButtonStyle } from 'discord.js'
+import { BuildButton } from '@core/build/BuildButton'
+import { ButtonNames, ModalNames } from '@/const/interactionsNames'
+
+export default new BuildButton({
+  name: ButtonNames.hello,
+  permissions: [], // use asome permissions how for example ['SendMessages', 'SendStickers', ...] for default
+  data: new ButtonBuilder().setLabel('some Label').setStyle(ButtonStyle.Primary),
+  async execute(interaction) {
+    const modal = globalThis.modals.get(ModalNames.hello)
+
+    interaction.showModal(modal.data)
+    // don't executed nothing from this point
+  }
+
+
+/* Modal.ts*/
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder } from 'discord.js'
+import { BuildModal } from '@core/build/BuildModal'
+import { ModalNames } from '@/const/interactionsNames'
+
+export default new BuildModal({
+  // Optional
+  scope: 'owner',
+  cooldown: 60, // default is declared in the config file
+  ephemeral: false,
+  resolve: 'reply',
+
+  // Required
+  name: ModalNames.hello,
+  permissions: [], // use asome permissions how for example ['SendMessages', 'SendStickers', ...] for default
+  data: new ModalBuilder({ title: 'some Title' }).addComponents(new ActionRowBuilder<TextInputBuilder>().addComponents(textEdit)),
+  async execute(interaction) {
+    return { content: 'Hello! Im modal 🎁' } as MessageOptions | undefined // see types/main.d.ts
+  }
+})
+```
+
+### How to use a BuildEvent
+
+```typescript
+import { BuildEvent } from '@core/build/BuildEvent'
+import { Events } from 'discord.js'
+
+export default new BuildEvent({
+  // Optional
+  scope: 'owner',
+  cooldown: 60, // default is declared in the config file
+  ephemeral: false,
+  resolve: 'reply',
+
+  // Required
+  name: Events.InteractionCreate,
+  once: false,
+  async execute(interaction) {
+    // handle interaction here...
+  }
+})
 ```
 
 ## Website
