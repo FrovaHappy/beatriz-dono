@@ -80,7 +80,7 @@ The project bot have the following structure directory and files for valid modul
 
 However, these files require a defined export to be taken as valid.
 
-## Builders Schema
+### Builders Schema
 
 The Builders Schema is a class that is used to build the commands, buttons, menus, modals, and events.
 
@@ -88,7 +88,7 @@ The Builders Schema is a class that is used to build the commands, buttons, menu
 > the property ` name ` is added forcefully to ` data ` property. this is for have a consistent with the Collections.
 In the case of Button how customId and Command how name for example.
 
-### How to use a BuildCommand
+#### How to use a BuildCommand
 
 ```typescript
 import { SlashCommandBuilder } from 'discord.js'
@@ -112,7 +112,7 @@ export default new BuildCommand({
 })
 ```
 
-### How to use a BuildButton
+#### How to use a BuildButton
 
 ```typescript
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
@@ -136,7 +136,7 @@ export default new BuildButton({
 })
 ```
 
-### How to use a BuildMenu
+#### How to use a BuildMenu
 
 ```typescript
 import { StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js'
@@ -165,7 +165,7 @@ export default new BuildMenu({
 })
 ```
 
-### How to use a BuildModal
+#### How to use a BuildModal
 
 > [!WARNING]
 > Is required to use an BuildButton for execute the  interaction of the modal, and this not has that return a MessageOptions type.
@@ -210,7 +210,7 @@ export default new BuildModal({
 })
 ```
 
-### How to use a BuildEvent
+#### How to use a BuildEvent
 
 ```typescript
 import { BuildEvent } from '@core/build/BuildEvent'
