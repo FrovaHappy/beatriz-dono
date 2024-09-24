@@ -9,7 +9,7 @@ import fetchColorCommand from '../../shared/fetchColorCommand'
 export default new BuildMenu({
   name: MenuNames.colorDefault,
   menuType: 'string',
-  resolve: 'reply',
+  resolve: 'defer',
   permissions: [],
   data: new StringSelectMenuBuilder({
     placeholder: 'Selecciona un color'
