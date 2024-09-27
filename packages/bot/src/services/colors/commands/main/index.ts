@@ -1,11 +1,11 @@
+import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
+import BuildCommand from '@core/build/BuildCommand'
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { ActionRowBuilder, type GuildMemberRoleManager, SlashCommandBuilder, StringSelectMenuBuilder } from 'discord.js'
-import BuildCommand from '@core/build/BuildCommand'
-import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
+import type { EditColorDefault } from '../../modals/editColorDefault'
 import createColorRole from '../../shared/createColorRole'
 import fetchColorCommand from '../../shared/fetchColorCommand'
 import removeRoles from '../../shared/removeRoles'
-import { type EditColorDefault } from '../../modals/editColorDefault'
 
 const regexColors = /^#([a-f0-9]{6})$/
 
@@ -34,7 +34,10 @@ export default new BuildCommand({
           customId: MenuNames.colorDefault,
           placeholder: 'Selecciona un color'
         }).addOptions(
-          ...(colorsDefault as unknown as EditColorDefault).values.map(color => ({ label: color.label, value: color.hexcolor }))
+          ...(colorsDefault as unknown as EditColorDefault).values.map(color => ({
+            label: color.label,
+            value: color.hexcolor
+          }))
         )
       }
       return menus.get(MenuNames.colorDefault).data

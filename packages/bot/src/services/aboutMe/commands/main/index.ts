@@ -1,9 +1,9 @@
-import { SlashCommandBuilder, resolveColor } from 'discord.js'
-import BuildCommand from '@core/build/BuildCommand'
-import { getI18n, langs } from '@/i18n'
 import { CommandNames } from '@/const/interactionsNames'
-import formatterText from '@lib/formatterText'
 import links from '@/const/links.json'
+import { getI18n, langs } from '@/i18n'
+import BuildCommand from '@core/build/BuildCommand'
+import formatterText from '@lib/formatterText'
+import { SlashCommandBuilder, resolveColor } from 'discord.js'
 
 const i18nsArray = langs(CommandNames.aboutMe)
 const en = i18nsArray[0][1]

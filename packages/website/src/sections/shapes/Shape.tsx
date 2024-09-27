@@ -1,16 +1,16 @@
 'use client'
-import style from './Shape.module.scss'
+import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
+import { jsonClone } from '@/utils/utils'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import IconAt from '@icons/IconAt'
+import IconIconsOff from '@icons/IconIconsOff'
 import IconPhoto from '@icons/IconPhoto'
 import IconTextResize from '@icons/IconTextResize'
-import IconUserSquare from '@icons/IconUserSquare'
-import IconIconsOff from '@icons/IconIconsOff'
-import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
 import IconTrash from '@icons/IconTrash'
+import IconUserSquare from '@icons/IconUserSquare'
+import style from './Shape.module.scss'
 import useDeleteShape from './useDeleteShape'
-import { jsonClone } from '@/utils/utils'
 
 interface Props {
   icon: 'image' | 'text' | 'name' | 'icon' | string
@@ -52,11 +52,12 @@ export default function Shape({ image, icon, title, id }: Props) {
       {...attributes}
       {...listeners}
       onMouseUp={onClickSelect}
-      className={`${style.shape} ${shape?.id === id ? style.shape__select : ''}`}>
+      className={`${style.shape} ${shape?.id === id ? style.shape__select : ''}`}
+    >
       <Icon className={style.shape__icon} />
       <h3 className={style.shape__title}>{title}</h3>
       <img src={image ?? imgDefault} alt='imagen del la capa' className={style.shape__image} />
-      <button className={style.shape__trash} onMouseUp={onClick}>
+      <button type='button' className={style.shape__trash} onMouseUp={onClick}>
         <IconTrash />
       </button>
     </li>

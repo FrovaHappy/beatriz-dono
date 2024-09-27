@@ -1,12 +1,12 @@
+import type { Scope } from '@/types/main'
 import {
-  REST,
-  type RESTPostAPIChatInputApplicationCommandsJSONBody as CommandDataJson,
   type Collection,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody as CommandDataJson,
+  REST,
   Routes
 } from 'discord.js'
-import { type Scope } from '@/types/main'
-import { type Command } from './build/BuildCommand'
 import pc from 'picocolors'
+import type { Command } from './build/BuildCommand'
 
 export const rest = new REST().setToken(config.discordToken)
 

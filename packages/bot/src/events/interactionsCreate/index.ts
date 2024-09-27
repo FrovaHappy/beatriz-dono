@@ -1,9 +1,9 @@
-import { Events } from 'discord.js'
-import BuildEvent from '@core/build/BuildEvent'
-import BuildModal from '@/core/build/BuildModal'
 import BuildButton from '@/core/build/BuildButtons'
-import BuildMenu from '@/core/build/BuildMenu'
 import BuildCommand from '@/core/build/BuildCommand'
+import BuildMenu from '@/core/build/BuildMenu'
+import BuildModal from '@/core/build/BuildModal'
+import BuildEvent from '@core/build/BuildEvent'
+import { Events } from 'discord.js'
 export default new BuildEvent({
   name: Events.InteractionCreate,
   once: false,

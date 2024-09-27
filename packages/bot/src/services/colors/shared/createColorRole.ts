@@ -1,5 +1,5 @@
 import db from '@/core/db'
-import { type Color } from '@prisma/client'
+import type { Color } from '@prisma/client'
 import { type ChatInputCommandInteraction, resolveColor } from 'discord.js'
 
 interface CreateColorRoleProps<T> {

@@ -4,10 +4,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'imgur.com',
+        hostname: 'imgur.com'
       }
-    ],
-  },
-};
+    ]
+  }
+}
 
-export default nextConfig;
+export default nextConfig

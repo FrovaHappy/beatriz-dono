@@ -1,7 +1,7 @@
-import { Events } from 'discord.js'
-import updateBot from './updateBot'
 import BuildEvent from '@core/build/BuildEvent'
+import { Events } from 'discord.js'
 import pc from 'picocolors'
+import updateBot from './updateBot'
 
 const messageReady = (user: string | undefined): string => pc.bgGreen(`\n Ready! Logged in as ${pc.bold(user)} 🎉 `)
 export default new BuildEvent({

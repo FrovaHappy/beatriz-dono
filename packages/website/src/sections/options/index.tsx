@@ -1,10 +1,10 @@
 import { useShapeModifyCtx } from '@/app/context'
-import TextOptions from './TextOptions'
-import { type HtmlHTMLAttributes, type PropsWithChildren } from 'react'
-import style from './index.module.scss'
+import type { HtmlHTMLAttributes, PropsWithChildren } from 'react'
 import GeneralOptions from './GeneralOptions'
-import ImageOptions from './ImageOptions'
 import IconOptions from './IconOptions'
+import ImageOptions from './ImageOptions'
+import TextOptions from './TextOptions'
+import style from './index.module.scss'
 
 export const LIMIT_CANVAS = 1024
 export const WIDTH_LARGE = '19.5rem'

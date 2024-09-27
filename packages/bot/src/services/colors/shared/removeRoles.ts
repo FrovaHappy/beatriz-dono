@@ -1,4 +1,4 @@
-import { type Color } from '@prisma/client'
+import type { Color } from '@prisma/client'
 import { Collection, type GuildMemberRoleManager, type Role } from 'discord.js'
 
 export default async function removeRoles(roles: Collection<string, Role> | undefined, colors: Color[], i: any) {

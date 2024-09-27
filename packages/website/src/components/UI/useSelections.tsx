@@ -1,11 +1,12 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import style from './Selections.module.scss'
-import inputStyle from './Input.module.scss'
-import IconChevronDown from '@icons/IconChevronDown'
+import type { InputExport } from '@/types/types'
 import { calculatePercents } from '@/utils/getPadding'
+import IconChevronDown from '@icons/IconChevronDown'
+import type React from 'react'
+import { useEffect, useState } from 'react'
+import inputStyle from './Input.module.scss'
 import MaskInput, { type OptionsMaskInput } from './MaskInput'
-import { type InputExport } from '@/types/types'
+import style from './Selections.module.scss'
 
 interface Options<T> {
   id: T
@@ -36,7 +37,8 @@ export default function useSelections<T = string>(props: Props<T>): InputExport<
       options={{ height, width, title }}
       onClick={() => {
         setShow(!show)
-      }}>
+      }}
+    >
       {Icon ? <Icon style={ICONS_STYLE} /> : undefined}
       <span className={inputStyle.props}>{value?.title ?? 'selecciona...'}</span>
       <IconChevronDown style={ICONS_STYLE} />
@@ -47,11 +49,12 @@ export default function useSelections<T = string>(props: Props<T>): InputExport<
           return (
             <div
               key={v.id as string}
-              onClick={() => {
+              onKeyUp={() => {
                 setValue(v)
               }}
               className={`${inputStyle.props} ${style.value} ${value?.id === v.id ? style['value--active'] : ''}`}
-              style={{ height, fontFamily: v.fontFamily }}>
+              style={{ height, fontFamily: v.fontFamily }}
+            >
               {IconItem ? <IconItem style={ICONS_STYLE} /> : undefined}
               {v.title}
             </div>

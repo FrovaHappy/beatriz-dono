@@ -1,4 +1,4 @@
-import { type PermissionResolvable } from 'discord.js'
+import type { PermissionResolvable } from 'discord.js'
 
 const PERMISSIONS_BASE: PermissionResolvable[] = [
   'SendMessages',

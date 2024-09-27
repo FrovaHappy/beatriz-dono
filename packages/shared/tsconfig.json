@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2023",
-      "DOM"
-    ],
+    "lib": ["es2023", "DOM"],
     "module": "ESNext",
     "target": "es2022",
     "strict": true,
@@ -15,14 +12,9 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-    "@type/*": ["types/*"]
+      "@type/*": ["types/*"]
     }
   },
-  "include": [
-    "lib",
-    "types"
-  ],
-  "exclude": [
-    "dist"
-  ]
+  "include": ["lib", "types"],
+  "exclude": ["dist"]
 }

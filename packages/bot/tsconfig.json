@@ -2,10 +2,7 @@
   "display": "Node 18",
   "_version": "18.2.0",
   "compilerOptions": {
-    "lib": [
-      "es2023",
-      "DOM"
-    ],
+    "lib": ["es2023", "DOM"],
     "module": "node16",
     "target": "es2022",
     "outDir": "dist",
@@ -16,20 +13,16 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node16",
     "resolveJsonModule": true,
-    "types": ["vitest/globals","./src/globals"],
+    "types": ["vitest/globals", "./src/globals"],
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@core/*": ["src/core/*"],
       "@lib/*": ["../shared/lib/*"],
-      "@type/*": ["../shared/types/*"],    }
+      "@type/*": ["../shared/types/*"]
+    }
   },
-  "include": [
-    "src",
-    "fonts"
-  ],
-  "exclude": [
-    "dist"
-  ]
+  "include": ["src", "fonts"],
+  "exclude": ["dist"]
 }

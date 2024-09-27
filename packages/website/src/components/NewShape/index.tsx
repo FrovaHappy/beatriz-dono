@@ -1,13 +1,13 @@
 import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
-import { type Text, type Image, type Icon } from '@/types/Canvas.types'
+import type { Icon, Image, Text } from '@/types/Canvas.types'
+import IconPhoto from '@icons/IconPhoto'
+import IconPlaylistAdd from '@icons/IconPlaylistAdd'
+import IconStack from '@icons/IconStack'
+import IconTextResize from '@icons/IconTextResize'
+import IconUserSquare from '@icons/IconUserSquare'
+import { useState } from 'react'
 import defaultValue from './defaultsValues'
 import style from './index.module.scss'
-import { useState } from 'react'
-import IconPlaylistAdd from '@icons/IconPlaylistAdd'
-import IconTextResize from '@icons/IconTextResize'
-import IconPhoto from '@icons/IconPhoto'
-import IconUserSquare from '@icons/IconUserSquare'
-import IconStack from '@icons/IconStack'
 
 export default function NewShape() {
   const [show, setShow] = useState(false)
@@ -31,19 +31,25 @@ export default function NewShape() {
         {canvas.layers.length} / 10 <IconStack />
       </span>
 
-      <button className={style.newButton} onClick={() => { setShow(!show) }}>
+      <button
+        type='button'
+        className={style.newButton}
+        onClick={() => {
+          setShow(!show)
+        }}
+      >
         <IconPlaylistAdd />
         new Shape
       </button>
       <div className={showOptions}>
-        <button onClick={onClick(defaultValue.TEXT)}>
+        <button type='button' onClick={onClick(defaultValue.TEXT)}>
           <IconTextResize />
           text
         </button>
-        <button onClick={onClick(defaultValue.IMAGE)}>
+        <button type='button' onClick={onClick(defaultValue.IMAGE)}>
           <IconPhoto /> image
         </button>
-        <button onClick={onClick(defaultValue.ICON)}>
+        <button type='button' onClick={onClick(defaultValue.ICON)}>
           <IconUserSquare />
           icon
         </button>

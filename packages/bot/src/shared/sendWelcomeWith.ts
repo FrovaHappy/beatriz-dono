@@ -1,7 +1,7 @@
+import type { Canvas } from '@/types/Canvas.types'
 import { SendWelcome } from '@prisma/client'
-import { type GuildMember } from 'discord.js'
+import type { GuildMember } from 'discord.js'
 import buildWelcomeImage from './buildWelcomeImage'
-import { type Canvas } from '@/types/Canvas.types'
 interface Props {
   message: string
   image: Canvas

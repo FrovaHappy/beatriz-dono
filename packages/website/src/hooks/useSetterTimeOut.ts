@@ -1,4 +1,4 @@
-import { type State } from '@/types/types'
+import type { State } from '@/types/types'
 import { useEffect, useState } from 'react'
 
 interface Props<T> {

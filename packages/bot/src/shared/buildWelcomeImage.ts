@@ -1,11 +1,11 @@
-import { GlobalFonts, createCanvas, Path2D as Path, loadImage } from '@napi-rs/canvas'
-import { AttachmentBuilder, type GuildMember } from 'discord.js'
 import links from '@/const/links.json'
+import { GlobalFonts, Path2D as Path, createCanvas, loadImage } from '@napi-rs/canvas'
+import { AttachmentBuilder, type GuildMember } from 'discord.js'
 
+import type { Canvas, Image, Layer } from '@/types/Canvas.types'
+import renderCanvas from '@lib/renderCanvas'
 // load Fonts
 import fonts from './fonts'
-import renderCanvas from '@lib/renderCanvas'
-import type { Canvas, Layer, Image } from '@/types/Canvas.types'
 for (const font of fonts) {
   GlobalFonts.registerFromPath(font.patch, font.nameAlias)
 }

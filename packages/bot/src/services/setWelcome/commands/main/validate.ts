@@ -1,6 +1,6 @@
-import type { Text, Image, Icon, Canvas, Layer } from '@/types/Canvas.types'
-import { type ZodType, any, array, literal, number, object, string, union } from 'zod'
 import validate from '@/shared/validate'
+import type { Canvas, Icon, Image, Layer, Text } from '@/types/Canvas.types'
+import { type ZodType, any, array, literal, number, object, string, union } from 'zod'
 const LIMIT_NUMBER = 1024
 const URL_IMAGE = /^https:\/\/(imgur.com|media.discordapp.net)\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)$/
 const COLOR = string()

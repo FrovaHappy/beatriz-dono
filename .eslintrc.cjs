@@ -7,7 +7,7 @@ module.exports = {
         browser: true,
         es2021: true
       },
-      extends: [ 'prettier','love'],
+      extends: ['prettier', 'love'],
       files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
       rules: {
         '@typescript-eslint/comma-dangle': 'off',

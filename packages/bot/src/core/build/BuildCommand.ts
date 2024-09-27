@@ -1,22 +1,22 @@
-import PERMISSIONS_BASE from '../../const/PermissionsBase'
-import { type MessageOptions, type Resolve, type Scope } from '@/types/main'
-import {
-  type SlashCommandBuilder,
-  type PermissionResolvable,
-  type ChatInputCommandInteraction,
-  type SlashCommandOptionsOnlyBuilder,
-  type SlashCommandSubcommandsOnlyBuilder,
+import type { MessageOptions, Resolve, Scope } from '@/types/main'
+import type {
+  ChatInputCommandInteraction,
+  PermissionResolvable,
+  SlashCommandBuilder,
+  SlashCommandOptionsOnlyBuilder,
+  SlashCommandSubcommandsOnlyBuilder
 } from 'discord.js'
+import PERMISSIONS_BASE from '../../const/PermissionsBase'
 
-import { type CommandNames } from '@/const/interactionsNames'
-import requiresBotPermissions from './shared/requiresBotPermissions'
+import type { CommandNames } from '@/const/interactionsNames'
 import isCooldownEnable from './shared/isCooldownEnable'
+import requiresBotPermissions from './shared/requiresBotPermissions'
 /**
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional
  */
 class BuildCommand {
-  type: 'commands' = 'commands'
+  type = 'commands' as const
   name: CommandNames
   scope: Scope
   ephemeral: boolean
@@ -32,7 +32,6 @@ class BuildCommand {
     this.resolve = props.resolve ?? 'reply'
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.data = props.data.setName(this.name)
     this.execute = props.execute
   }

@@ -1,4 +1,4 @@
-import { type Base, type Text, type TextBase, type User } from '@type/Canvas'
+import type { Base, Text, TextBase, User } from '@type/Canvas'
 import formatterText from '../formatterText'
 
 export function renderText(text: Text, ctx: CanvasRenderingContext2D, user: User, base: Base & TextBase) {

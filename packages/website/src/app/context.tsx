@@ -1,9 +1,9 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { type Canvas, type Layer } from '@/types/Canvas.types'
-import { type State } from '@/types/types'
+import type { Canvas, Layer } from '@/types/Canvas.types'
+import type { State } from '@/types/types'
 import { getFonts } from '@/utils/getFonts'
 import { jsonParse } from '@/utils/utils'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 const HomeContext = createContext<State<Canvas> | null>(null)
 const ShapeModifyContext = createContext<State<Layer | null> | null>(null)

@@ -1,7 +1,7 @@
-import { Collection } from 'discord.js'
+import { readdirSync } from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import { readdirSync } from 'node:fs'
+import { Collection } from 'discord.js'
 import pc from 'picocolors'
 
 interface Base<B> {

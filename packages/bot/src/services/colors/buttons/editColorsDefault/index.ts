@@ -1,6 +1,6 @@
 import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
-import { type Modal } from '@/core/build/BuildModal'
+import type { Modal } from '@/core/build/BuildModal'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default new BuildButton({

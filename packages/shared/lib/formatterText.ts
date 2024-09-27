@@ -22,7 +22,8 @@ export type UserRules = typeof userRules
 export type InternalRules = typeof internalRules
 type Rules = UserRules & InternalRules
 
-export default function formatterText(str: string, formats: Partial<Rules>): string {
+export default function formatterText(strToFormat: string, formats: Partial<Rules>): string {
+  let str = strToFormat
   const formatsKeys = Object.keys(formats) as Array<keyof Rules>
   for (const fk of formatsKeys) {
     str = str.replaceAll(rules[fk], formats[fk] ?? '')

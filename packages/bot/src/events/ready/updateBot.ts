@@ -1,4 +1,4 @@
-import { type Client } from 'discord.js'
+import type { Client } from 'discord.js'
 
 export default async function updateBot(client: Client): Promise<void> {
   const time = 5 * 60 * 60 * 1000

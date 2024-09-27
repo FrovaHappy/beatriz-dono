@@ -1,8 +1,8 @@
 import 'dotenv/config'
-import { type Setting } from '@prisma/client'
+import type { Setting } from '@prisma/client'
 
 const settingDb: Omit<Setting, 'id'> = {
-  cooldown: parseInt(process.env.COOLDOWNS_DEFAULT ?? '5'),
+  cooldown: Number.parseInt(process.env.COOLDOWNS_DEFAULT ?? '5'),
   privatesServers: JSON.parse(process.env.PRIVATES_SERVERS ?? '[]') ?? [],
   ownersServers: JSON.parse(process.env.OWNERS_SERVERS ?? '[]') ?? [],
   discordInviteUrl: process.env.DISCORD_INVITE_URL ?? 'https://discord.gg/'

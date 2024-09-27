@@ -1,7 +1,7 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { getI18n } from '@/i18n'
 import formatterText from '@lib/formatterText'
-import { type Locale } from 'discord.js'
+import type { Locale } from 'discord.js'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function welcome(l: Locale) {

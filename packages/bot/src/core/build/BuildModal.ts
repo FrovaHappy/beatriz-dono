@@ -1,9 +1,9 @@
+import type { ModalNames } from '@/const/interactionsNames'
+import type { MessageOptions, Resolve, Scope } from '@/types/main'
+import type { ModalBuilder, ModalSubmitInteraction, PermissionResolvable } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
-import { type PermissionResolvable, type ModalSubmitInteraction, type ModalBuilder } from 'discord.js'
-import { type Resolve, type MessageOptions, type Scope } from '@/types/main'
-import { type ModalNames } from '@/const/interactionsNames'
-import requiresBotPermissions from './shared/requiresBotPermissions'
 import isCooldownEnable from './shared/isCooldownEnable'
+import requiresBotPermissions from './shared/requiresBotPermissions'
 
 /**
  * #### Constructor

@@ -1,5 +1,5 @@
 import db from '@/core/db'
-import { type Collection, type Role } from 'discord.js'
+import type { Collection, Role } from 'discord.js'
 
 /**
  * This function is used to fetch the color command from the database.

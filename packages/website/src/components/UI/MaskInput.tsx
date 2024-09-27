@@ -1,7 +1,7 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 
-import inputStyle from './Input.module.scss'
 import { calculatePercents } from '@/utils/getPadding'
+import inputStyle from './Input.module.scss'
 export interface OptionsMaskInput {
   title?: string
   height?: `${number}px` | `${number}rem`
@@ -23,7 +23,8 @@ export default function MaskInput({ options, children, className, style, ...prop
         fontSize: calculatePercents(height, 0.45),
         ...style
       }}
-      {...props}>
+      {...props}
+    >
       {!title || (
         <>
           <span className={inputStyle.title}>{title}</span>

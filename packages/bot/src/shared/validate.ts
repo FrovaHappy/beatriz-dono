@@ -1,4 +1,4 @@
-import { ZodError, type ZodType, type ZodIssue, type ZodObject } from 'zod'
+import { ZodError, type ZodIssue, type ZodObject, type ZodType } from 'zod'
 interface DataError {
   issues: ZodIssue[]
   type?: string

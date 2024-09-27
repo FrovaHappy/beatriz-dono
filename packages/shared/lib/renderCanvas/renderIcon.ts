@@ -1,4 +1,4 @@
-import { type Base, type TextBase, type Icon } from '@type/Canvas'
+import type { Base, Icon, TextBase } from '@type/Canvas'
 const shapes = {
   circle: 'M 1000,500 A 500,500 0 0 1 500,1000 500,500 0 0 1 0,500 500,500 0 0 1 500,0 500,500 0 0 1 1000,500 Z',
   square: 'M 0,0 H 1000 V 1000 H 0 Z',

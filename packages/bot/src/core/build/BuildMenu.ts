@@ -1,22 +1,22 @@
-import PERMISSIONS_BASE from '../../const/PermissionsBase'
-import {
-  type PermissionResolvable,
-  type StringSelectMenuBuilder,
-  type UserSelectMenuBuilder,
-  type RoleSelectMenuBuilder,
-  type MentionableSelectMenuBuilder,
-  type ChannelSelectMenuBuilder,
-  type StringSelectMenuInteraction,
-  type UserSelectMenuInteraction,
-  type RoleSelectMenuInteraction,
-  type MentionableSelectMenuInteraction,
-  type ChannelSelectMenuInteraction,
-  type AnySelectMenuInteraction
+import type { MenuNames } from '@/const/interactionsNames'
+import type { MessageOptions, Resolve, Scope } from '@/types/main'
+import type {
+  AnySelectMenuInteraction,
+  ChannelSelectMenuBuilder,
+  ChannelSelectMenuInteraction,
+  MentionableSelectMenuBuilder,
+  MentionableSelectMenuInteraction,
+  PermissionResolvable,
+  RoleSelectMenuBuilder,
+  RoleSelectMenuInteraction,
+  StringSelectMenuBuilder,
+  StringSelectMenuInteraction,
+  UserSelectMenuBuilder,
+  UserSelectMenuInteraction
 } from 'discord.js'
-import { type MessageOptions, type Scope, type Resolve } from '@/types/main'
-import { type MenuNames } from '@/const/interactionsNames'
-import requiresBotPermissions from './shared/requiresBotPermissions'
+import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import isCooldownEnable from './shared/isCooldownEnable'
+import requiresBotPermissions from './shared/requiresBotPermissions'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -47,7 +47,7 @@ type MenuType = keyof Types
  * * ` data `: The buttonBuilder.customId(name) not is required.
  */
 class BuildMenu<T extends MenuType> {
-  type: 'menus' = 'menus'
+  type = 'menus' as const
   name: MenuNames
   ephemeral: boolean
   permissions: PermissionResolvable[]
@@ -57,7 +57,9 @@ class BuildMenu<T extends MenuType> {
   resolve: Resolve
   menuType: MenuType
   execute: (e: Types[T]['interaction']) => Promise<MessageOptions | undefined>
-  constructor(props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data' | 'permissions' | 'menuType'>) {
+  constructor(
+    props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data' | 'permissions' | 'menuType'>
+  ) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.menuType = props.menuType

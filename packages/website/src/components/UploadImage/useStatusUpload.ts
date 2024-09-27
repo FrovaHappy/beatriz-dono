@@ -1,11 +1,8 @@
+import type { State } from '@/types/types'
 import { useEffect, useState } from 'react'
 import { type UploadStatus, useUpload } from './useUpload'
-import { type State } from '@/types/types'
 
-export default function useStatus(
-  setUrl: (k: string) => void,
-  file: File | null
-) {
+export default function useStatus(setUrl: (k: string) => void, file: File | null) {
   const [status, setStatus] = useState<UploadStatus>('finished')
   useEffect(() => {
     if (file === null) return

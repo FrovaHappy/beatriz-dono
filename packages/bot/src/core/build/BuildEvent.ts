@@ -1,4 +1,4 @@
-import { type Awaitable, type ClientEvents } from 'discord.js'
+import type { Awaitable, ClientEvents } from 'discord.js'
 
 interface EventProps<Event extends keyof ClientEvents> {
   name: Event
@@ -6,7 +6,7 @@ interface EventProps<Event extends keyof ClientEvents> {
   execute: (...args: ClientEvents[Event]) => Awaitable<void>
 }
 class BuildEvent<T extends keyof ClientEvents> {
-  type: 'event' = 'event'
+  type = 'event' as const
   name
   once
   execute

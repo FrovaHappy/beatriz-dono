@@ -1,7 +1,7 @@
+import useSetterTimeOut from '@hooks/useSetterTimeOut'
 import { useState } from 'react'
 import inputStyle from './Input.module.scss'
 import MaskInput, { type OptionsMaskInput } from './MaskInput'
-import useSetterTimeOut from '@hooks/useSetterTimeOut'
 type Value = string | undefined
 interface Reg {
   regex: RegExp

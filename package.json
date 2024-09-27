@@ -3,13 +3,10 @@
   "version": "1.0.0",
   "description": "A Bot multipurpose for discord",
   "main": "index.js",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:watch": "nodemon --watch . --ext ts,js,cjs,mjs,json --exec 'npm run lint:fix'",
+    "lint": "npx @biomejs/biome check --write --diagnostic-level=error",
+    "lint:watch": "nodemon --watch . --ext ts,js,cjs,mjs,json --exec 'npm run lint'",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "cp": "npm run cp --workspaces",
@@ -38,6 +35,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@biomejs/biome": "1.9.2",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@vitest/ui": "^1.5.2",
     "env-cmd": "^10.1.0",

@@ -1,18 +1,24 @@
 import { useCanvasCtx, useShapeModifyCtx } from '@/app/context'
-import style from './index.module.scss'
-import { type Icon, type Layer, type Shapes } from '@/types/Canvas.types'
-import { cloneElement, useEffect } from 'react'
-import { HEIGHT, LIMIT_CANVAS, WIDTH_LARGE, WIDTH_SHORT } from '.'
+import type { Icon, Layer, Shapes } from '@/types/Canvas.types'
+import useColorsInput from '@ui/useColorsInput'
 import useInputNumber from '@ui/useInputNumber'
 import useSelections from '@ui/useSelections'
-import useColorsInput from '@ui/useColorsInput'
+import { cloneElement, useEffect } from 'react'
+import { HEIGHT, LIMIT_CANVAS, WIDTH_LARGE, WIDTH_SHORT } from '.'
+import style from './index.module.scss'
 
 export default function IconOptions({ shape }: { shape: Icon }) {
   const [canvas, setCanvas] = useCanvasCtx()
   const [, setShapeModify] = useShapeModifyCtx()
 
   const options = {
-    title_dimensions: [undefined, <h3 className={style.title}> Dimensiones </h3>],
+    title_dimensions: [
+      undefined,
+      <h3 key={0} className={style.title}>
+        {' '}
+        Dimensiones{' '}
+      </h3>
+    ],
     x: useInputNumber({
       defaultValue: `${shape.x}`,
       height: HEIGHT,
@@ -53,7 +59,13 @@ export default function IconOptions({ shape }: { shape: Icon }) {
       min: 0,
       max: LIMIT_CANVAS
     }),
-    title_text: [undefined, <h3 className={style.title}> Texto </h3>],
+    title_text: [
+      undefined,
+      <h3 key={0} className={style.title}>
+        {' '}
+        Texto{' '}
+      </h3>
+    ],
     shape: useSelections<Shapes>({
       idSelect: shape.shape,
       height: HEIGHT,
@@ -94,5 +106,5 @@ export default function IconOptions({ shape }: { shape: Icon }) {
     setShapeModify(s)
   }, values)
 
-  return <>{components.map((c, i) => cloneElement(c, { key: i }))}</>
+  return <>{components.map((c, i) => cloneElement(c, { key: c.key }))}</>
 }

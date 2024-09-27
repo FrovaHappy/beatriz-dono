@@ -1,4 +1,4 @@
-import { type Scope } from '@/types/main'
+import type { Scope } from '@/types/main'
 
 export default function hasAccessForScope(scope: Scope, guildId: string): boolean {
   const { config } = globalThis

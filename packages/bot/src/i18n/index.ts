@@ -4,8 +4,8 @@
 import { Locale } from 'discord.js'
 import type { I18n, I18nKeys } from './types'
 
-import { readdirSync, readFileSync } from 'fs'
-import { join } from 'path'
+import { readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 
 const commandFolders = readdirSync(join(__dirname, './')).filter(f =>
   ['.ts', '.js', '.json'].every(e => !f.endsWith(e))

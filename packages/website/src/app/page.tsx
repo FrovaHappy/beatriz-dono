@@ -1,11 +1,11 @@
 'use client'
-import styles from './page.module.scss'
-import Shapes from '../sections/shapes'
-import HomeContext from './context'
-import Options from '../sections/options'
-import NewShape from '@/components/NewShape'
 import Canvas from '@/components/Canvas'
+import NewShape from '@/components/NewShape'
+import Options from '../sections/options'
+import Shapes from '../sections/shapes'
 import GenerateJson from '../sections/shapes/GenerateJson'
+import HomeContext from './context'
+import styles from './page.module.scss'
 export default function Home() {
   return (
     <HomeContext>

@@ -22,7 +22,8 @@ function GenerateJson() {
         position: 'absolute',
         bottom: '25px',
         right: '25px'
-      }}>
+      }}
+    >
       {Button}
     </span>
   )

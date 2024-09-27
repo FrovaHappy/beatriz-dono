@@ -1,7 +1,7 @@
-import { type Base, type Layer, type Text, type TextBase, type User, type Image, type Icon } from '@type/Canvas'
-import { renderText } from './renderText'
-import { renderImage } from './renderImage'
+import type { Base, Icon, Image, Layer, Text, TextBase, User } from '@type/Canvas'
 import { renderIcon } from './renderIcon'
+import { renderImage } from './renderImage'
+import { renderText } from './renderText'
 
 export default function renderCanvas(
   layers: Layer[],

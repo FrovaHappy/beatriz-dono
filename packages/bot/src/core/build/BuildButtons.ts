@@ -1,10 +1,10 @@
+import type { ButtonNames } from '@/const/interactionsNames'
+import type { MessageOptions, ResolveWithUpdate, Scope } from '@/types/main'
+import type { ButtonBuilder, ButtonInteraction, PermissionResolvable } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
-import { type PermissionResolvable, type ButtonInteraction, type ButtonBuilder } from 'discord.js'
-import { type MessageOptions, type Scope, type ResolveWithUpdate } from '@/types/main'
-import { type ButtonNames } from '@/const/interactionsNames'
-import requiresBotPermissions from './shared/requiresBotPermissions'
-import isCooldownEnable from './shared/isCooldownEnable'
 import hasAccessForScope from './shared/hasAccessForScope'
+import isCooldownEnable from './shared/isCooldownEnable'
+import requiresBotPermissions from './shared/requiresBotPermissions'
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.

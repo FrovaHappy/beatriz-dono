@@ -2,7 +2,7 @@
 type StringUnits = `${number}px` | `${number}rem`
 const getUnitValue = (s: StringUnits) => {
   const unit = s.includes('px') ? 'px' : 'rem'
-  const value = parseInt(s.replace(unit, ''))
+  const value = Number.parseInt(s.replace(unit, ''))
   return { unit, value }
 }
 export function getPadding(s: StringUnits) {
@@ -18,10 +18,10 @@ export function getFontSize(s: StringUnits) {
 }
 export function getHeightIcons(s: StringUnits) {
   const { unit, value } = getUnitValue(s)
-  const height = value * 0.70
+  const height = value * 0.7
   return `${height}${unit}`
 }
-export function calculatePercents (s: StringUnits, percents: number) {
+export function calculatePercents(s: StringUnits, percents: number) {
   const { unit, value } = getUnitValue(s)
   const fontSize = value * percents
   return `${fontSize}${unit}`

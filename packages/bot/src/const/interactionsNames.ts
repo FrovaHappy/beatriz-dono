@@ -1,4 +1,4 @@
-export const enum CommandNames {
+export enum CommandNames {
   colors = 'colors',
   colorsList = 'colors-list',
   colorsOrder = 'colors-order',
@@ -11,14 +11,14 @@ export const enum CommandNames {
   welcomeSet = 'welcome-set'
 }
 
-export const enum ButtonNames {
+export enum ButtonNames {
   setting = 'setting',
   removeColor = 'remove-color',
   editColorDefault = 'edit-color-default'
 }
-export const enum ModalNames {
+export enum ModalNames {
   editColorDefault = 'edit-color-default'
 }
-export const enum MenuNames {
+export enum MenuNames {
   colorDefault = 'color-default'
 }

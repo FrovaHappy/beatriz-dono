@@ -1,9 +1,9 @@
-import BuildCommand from '@core/build/BuildCommand'
-import { Colors, SlashCommandBuilder } from 'discord.js'
-import { getI18n, langs } from '@/i18n'
-import welcome from './welcome'
 import { CommandNames } from '@/const/interactionsNames'
+import { getI18n, langs } from '@/i18n'
+import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@lib/formatterText'
+import { Colors, SlashCommandBuilder } from 'discord.js'
+import welcome from './welcome'
 
 const i18nsArray = langs(CommandNames.help)
 

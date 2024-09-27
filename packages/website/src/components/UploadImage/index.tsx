@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import { type InputExport } from '@/types/types'
-import useStatus from './useStatusUpload'
+import type { InputExport } from '@/types/types'
 import IconPencil from '@icons/IconPencil'
-import style from './index.module.scss'
 import IconTrash from '@icons/IconTrash'
+import { useEffect, useState } from 'react'
+import style from './index.module.scss'
+import useStatus from './useStatusUpload'
 
 const TYPE_OF = 'image/png, image/jpeg'
 
@@ -21,16 +21,18 @@ interface WithUrlProps {
 function WithUrl({ url, onChange, width, setUrl }: WithUrlProps) {
   return (
     <div className={style.withUrl} style={{ width }}>
-      <img src={url} alt='image upload' className={style.withUrl__img} />
+      <img src={url} alt='upload' className={style.withUrl__img} />
       <input id={style.file} type='file' maxLength={1} onChange={onChange} />
       <label htmlFor={style.file} className={style.withUrl__edit} typeof={TYPE_OF}>
         <IconPencil />
       </label>
       <button
+        type='button'
         className={style.withUrl__delete}
         onClick={() => {
           setUrl(undefined)
-        }}>
+        }}
+      >
         <IconTrash />
       </button>
     </div>
@@ -77,7 +79,7 @@ export default function UploadImage({ defaultValue, width }: Props): InputExport
   if (status === 'error') {
     const Component = (
       <div className={style.error}>
-        <span></span>
+        <span />
         <p>A ocurrido un error</p>
         <div className={style.error__line} />
       </div>
@@ -89,7 +91,7 @@ export default function UploadImage({ defaultValue, width }: Props): InputExport
   if (status === 'uploading') {
     const Component = (
       <div className={style.loading}>
-        <span></span>
+        <span />
         <p>Subiendo archivo</p>
         <div className={style.loading__line} />
       </div>

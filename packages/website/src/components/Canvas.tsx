@@ -51,5 +51,5 @@ export default function Canvas() {
     wait()
   }, [canvas])
 
-  return useMemo(() => <canvas ref={ref} height={canvas.height} style={style} width={canvas.width}></canvas>, [])
+  return useMemo(() => <canvas ref={ref} height={canvas.height} style={style} width={canvas.width} />, [])
 }

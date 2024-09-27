@@ -1,8 +1,8 @@
 import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
+import db from '@/core/db'
 import { ActionRowBuilder, ComponentType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
 import z, { ZodError } from 'zod'
-import db from '@/core/db'
 
 const COLORS_PLACEHOLDER = `
 {
@@ -55,7 +55,7 @@ export default new BuildModal({
       jsonColors = { version: version ?? currentVersion, values }
     } catch (error) {
       if (error instanceof ZodError) {
-        return { content: 'Error en el json: ' + JSON.stringify(error.errors) }
+        return { content: `Error en el json: ${JSON.stringify(error.errors)}` }
       }
       return { content: 'El json no es valido' }
     }

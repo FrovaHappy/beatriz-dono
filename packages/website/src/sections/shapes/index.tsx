@@ -1,11 +1,11 @@
 'use client'
-import { DndContext, type DragEndEvent, closestCenter } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
-import React, { useEffect, useState } from 'react'
-import { type Image, type Text, type Icon, type Layer } from '@/types/Canvas.types'
-import style from './Shapes.module.scss'
-import Shape from './Shape'
 import { useCanvasCtx } from '@/app/context'
+import type { Icon, Image, Layer, Text } from '@/types/Canvas.types'
+import { DndContext, type DragEndEvent, closestCenter } from '@dnd-kit/core'
+import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import React, { useEffect, useState } from 'react'
+import Shape from './Shape'
+import style from './Shapes.module.scss'
 
 export default function Shapes() {
   const [canvas, setCanvas] = useCanvasCtx()

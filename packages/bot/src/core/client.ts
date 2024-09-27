@@ -1,11 +1,11 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
-import BuildCollection from './build/buildCollection'
-import deployCommand from './deployCommands'
-import BuildCommand from './build/BuildCommand'
 import BuildButton from './build/BuildButtons'
+import BuildCommand from './build/BuildCommand'
 import BuildEvent, { type Event } from './build/BuildEvent'
 import BuildMenu from './build/BuildMenu'
 import BuildModal from './build/BuildModal'
+import BuildCollection from './build/buildCollection'
+import deployCommand from './deployCommands'
 
 export default async function startClient(): Promise<void> {
   const { config } = globalThis

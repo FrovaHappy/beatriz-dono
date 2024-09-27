@@ -1,4 +1,4 @@
-import { type Canvas } from '@type/Canvas'
+import type { Canvas } from '@type/Canvas'
 
 const WELCOME: Canvas = {
   height: 250,

@@ -1,7 +1,7 @@
-import { ActionRowBuilder, SlashCommandBuilder, type StringSelectMenuBuilder } from 'discord.js'
-import BuildCommand from '@core/build/BuildCommand'
-import { type Menu } from '@/core/build/BuildMenu'
 import { CommandNames, MenuNames } from '@/const/interactionsNames'
+import type { Menu } from '@/core/build/BuildMenu'
+import BuildCommand from '@core/build/BuildCommand'
+import { ActionRowBuilder, SlashCommandBuilder, type StringSelectMenuBuilder } from 'discord.js'
 
 export default new BuildCommand({
   cooldown: 60,
@@ -16,5 +16,4 @@ export default new BuildCommand({
     const row = new ActionRowBuilder<StringSelectMenuBuilder>({ components: [select.data] })
     return { content: 'test!', components: [row] }
   }
-
 })

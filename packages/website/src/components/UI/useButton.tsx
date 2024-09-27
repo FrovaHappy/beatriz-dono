@@ -15,7 +15,7 @@ export default function Buttons(props: Props) {
     callback()
   }
   const Button = (
-    <button onClick={onClick} className={style.main}>
+    <button type='button' onClick={onClick} className={style.main}>
       {!Icon || <Icon />}
       {text}
     </button>
