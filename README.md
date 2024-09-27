@@ -54,6 +54,40 @@ IMGUR_CLIENT= 'your imgur client'
 IMGUR_KEY= 'your imgur key'
 ```
 
+### Add I18n Languages
+
+#### Added a new language
+
+First you have to add the language to the i18n folder, then you have to add the language to the services folder.
+
+```js
+📦i18ns
+ ┗ 📂colors // name of the service
+   ┣ en-US.json // file main, this is required.
+   ┣ es-ES.json
+   ┗ pt-BR.json
+```
+
+And add type in the i18n/types.d.ts. use the interactionsNames as key reference.
+
+```typescript
+... // other types
+import type color from './colors/en-US.json'
+import CommandNames from '@/const/interactionsNames'
+
+export interface I18n {
+  ... // other types
+  CommandNames.colors: typeof color
+}
+```
+
+#### How use the i18n
+
+You have the `getI18n` function to get the i18n, and the `getI18nCollection` to get all the i18n.
+
+* The `getI18nCollection` return an array with the language and the i18n, with the type `Array<[Locate, I18n[InteractionNames]]>`.
+* The `getI18n` return the i18n with the type `I18n[InteractionNames]`.
+
 ### Structures Files
 
 > [!WARNING]
