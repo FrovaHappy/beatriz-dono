@@ -5,7 +5,7 @@ import type { Locale } from 'discord.js'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function welcome(l: Locale) {
-  const i18n = getI18n<CommandNames.help>(l, CommandNames.help)
+  const i18n = getI18n(l, CommandNames.help)
   return {
     embeds: [
       {

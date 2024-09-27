@@ -1,12 +1,12 @@
 import { CommandNames } from '@/const/interactionsNames'
 import links from '@/const/links.json'
-import { getI18n, langs } from '@/i18n'
+import { getI18n, getI18nCollection } from '@/i18n'
 import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@lib/formatterText'
-import { SlashCommandBuilder, resolveColor } from 'discord.js'
+import { Locale, SlashCommandBuilder, resolveColor } from 'discord.js'
 
-const i18nsArray = langs(CommandNames.aboutMe)
-const en = i18nsArray[0][1]
+const en = getI18n(Locale.EnglishUS, CommandNames.aboutMe)
+const i18nsArray = getI18nCollection(CommandNames.aboutMe)
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()

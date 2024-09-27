@@ -6,14 +6,12 @@ import type general from './general/en-US.json'
 import type help from './help/en-US.json'
 import type setWelcome from './welcome-set/en-US.json'
 
-export const I18nd = {
-  general,
-  [CommandNames.colors]: colors,
-  [CommandNames.aboutMe]: aboutMe,
-  [CommandNames.welcomeSet]: setWelcome,
-  [CommandNames.help]: help
+export interface I18n {
+  general: typeof general
+  [CommandNames.colors]: typeof colors
+  [CommandNames.aboutMe]: typeof aboutMe
+  [CommandNames.welcomeSet]: typeof setWelcome
+  [CommandNames.help]: typeof help
 }
 
-export type I18nKeys = keyof typeof I18nd
-
-export type I18n = typeof I18nd
+export type I18nKeys = keyof I18n

@@ -1,13 +1,13 @@
 import { CommandNames } from '@/const/interactionsNames'
-import { getI18n, langs } from '@/i18n'
+import { getI18n, getI18nCollection } from '@/i18n'
 import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@lib/formatterText'
-import { Colors, SlashCommandBuilder } from 'discord.js'
+import { Colors, Locale, SlashCommandBuilder } from 'discord.js'
 import welcome from './welcome'
 
-const i18nsArray = langs(CommandNames.help)
+const i18nsArray = getI18nCollection(CommandNames.help)
 
-const en = i18nsArray[0][1]
+const en = getI18n(Locale.EnglishUS, CommandNames.help)
 
 export default new BuildCommand({
   name: CommandNames.help,

@@ -1,5 +1,5 @@
 import { CommandNames } from '@/const/interactionsNames'
-import { getI18n, langs } from '@/i18n'
+import { getI18n, getI18nCollection } from '@/i18n'
 import { formatterUser } from '@/services/shared/formatterUser'
 import { stringToJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
@@ -9,11 +9,11 @@ import db from '@core/db'
 import formatterText from '@lib/formatterText'
 import WELCOME from '@lib/welcome'
 import { SendWelcome } from '@prisma/client'
-import { Colors, EmbedBuilder, type GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import { Colors, EmbedBuilder, type GuildMember, Locale, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { validateCanvas } from './validate'
 
-const i18nsArray = langs(CommandNames.welcomeSet)
-const en = i18nsArray[0][1]
+const i18nsArray = getI18nCollection(CommandNames.welcomeSet)
+const en = getI18n(Locale.EnglishUS, CommandNames.welcomeSet)
 
 export default new BuildCommand({
   cooldown: 0,
