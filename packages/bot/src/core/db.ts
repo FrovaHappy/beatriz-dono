@@ -11,7 +11,13 @@ export async function setSetting(data: Partial<Setting>) {
         cooldown: data.cooldown ?? config.cooldown,
         privatesServers: data.privatesServers ?? config.privatesServers,
         ownersServers: data.ownersServers ?? config.ownersServers,
-        discordInviteUrl: data.discordInviteUrl ?? config.discordInviteUrl
+        linkDiscord: data.linkDiscord ?? config.linkDiscord,
+        linkGithub: data.linkGithub ?? config.linkGithub,
+        linkDocumentation: data.linkDocumentation ?? config.linkDocumentation,
+        linkWebsite: data.linkWebsite ?? config.linkWebsite,
+        linkKofi: data.linkKofi ?? config.linkKofi,
+        linkTopgg: data.linkTopgg ?? config.linkTopgg,
+        linkBotList: data.linkBotList ?? config.linkBotList
       }
     })
   } else {
@@ -21,11 +27,21 @@ export async function setSetting(data: Partial<Setting>) {
         cooldown: data.cooldown ?? setting.cooldown ?? config.cooldown,
         privatesServers: data.privatesServers ?? setting.privatesServers ?? config.privatesServers,
         ownersServers: data.ownersServers ?? setting.ownersServers ?? config.ownersServers,
-        discordInviteUrl: data.discordInviteUrl ?? setting.discordInviteUrl ?? config.discordInviteUrl
+        linkDiscord: data.linkDiscord ?? setting.linkDiscord ?? config.linkDiscord,
+        linkGithub: data.linkGithub ?? setting.linkGithub ?? config.linkGithub,
+        linkDocumentation: data.linkDocumentation ?? setting.linkDocumentation ?? config.linkDocumentation,
+        linkWebsite: data.linkWebsite ?? setting.linkWebsite ?? config.linkWebsite,
+        linkKofi: data.linkKofi ?? setting.linkKofi ?? config.linkKofi,
+        linkTopgg: data.linkTopgg ?? setting.linkTopgg ?? config.linkTopgg,
+        linkBotList: data.linkBotList ?? setting.linkBotList ?? config.linkBotList
       }
     })
   }
-  globalThis.config = { ...config, ...setting }
+  if (!setting) throw new Error('Setting not found')
+
+  const { id, ...settingData } = setting
+
+  globalThis.config = { ...config, ...settingData }
 }
 
 export default db

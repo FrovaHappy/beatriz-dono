@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import type { Setting } from '@prisma/client'
 
-const settingDb: Omit<Setting, 'id'> = {
+const settingDb = {
   cooldown: Number.parseInt(process.env.COOLDOWNS_DEFAULT ?? '5'),
   privatesServers: JSON.parse(process.env.PRIVATES_SERVERS ?? '[]') ?? [],
   ownersServers: JSON.parse(process.env.OWNERS_SERVERS ?? '[]') ?? [],
@@ -12,7 +12,7 @@ const settingDb: Omit<Setting, 'id'> = {
   linkKofi: process.env.KOFI_LINK ?? 'https://ko-fi.com/frovahappy',
   linkTopgg: process.env.TOPGG_LINK ?? 'https://top.gg/bot/971562890702237766',
   linkBotList: process.env.BOTLIST_LINK ?? 'https://discordbotlist.com/bots/beatrizdono-beta'
-}
+} satisfies Omit<Setting, 'id'>
 const env = {
   discordToken: process.env.DISCORD_TOKEN ?? '',
   discordClient: process.env.DISCORD_CLIENT ?? ''
