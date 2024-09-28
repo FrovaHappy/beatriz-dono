@@ -1,4 +1,3 @@
-import links from '@/const/links.json'
 import { GlobalFonts, Path2D as Path, createCanvas, loadImage } from '@napi-rs/canvas'
 import { AttachmentBuilder, type GuildMember } from 'discord.js'
 
@@ -12,7 +11,7 @@ for (const font of fonts) {
 
 export default async function buildWelcomeImage(data: Canvas, member: GuildMember): Promise<AttachmentBuilder> {
   const user = {
-    avatar: member.user.avatarURL() ?? links['image-avatar'],
+    avatar: member.user.avatarURL() ?? config.imageAvatar,
     count: member.guild.memberCount.toString(),
     globalName: member.user.globalName ?? member.user.username,
     id: member.user.id,
@@ -25,9 +24,7 @@ export default async function buildWelcomeImage(data: Canvas, member: GuildMembe
   const images: Record<string, HTMLImageElement> = {}
   for (const l of layers) {
     if (l.type === 'image') {
-      images[l.id] = (await loadImage(
-        (l as Layer<Image>).img ?? links['image-transparent']
-      )) as unknown as HTMLImageElement
+      images[l.id] = (await loadImage((l as Layer<Image>).img ?? config.imageTransparent)) as unknown as HTMLImageElement
     }
     if (l.type === 'icon') {
       images[l.id] = (await loadImage(user.avatar)) as unknown as HTMLImageElement

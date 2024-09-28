@@ -1,5 +1,4 @@
 import { CommandNames } from '@/const/interactionsNames'
-import links from '@/const/links.json'
 import { getI18n, getI18nCollection } from '@/i18n'
 import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@lib/formatterText'
@@ -28,10 +27,10 @@ const command = new BuildCommand({
           color: resolveColor('#e6a7a7'),
           description: formatterText(i18n.response.description, {
             userName: i.user.username,
-            slot0: links['discord-invite'],
-            slot1: links.topgg,
-            slot2: links.botlist,
-            slot3: links.github
+            slot0: config.linkDiscord,
+            slot1: config.linkTopgg,
+            slot2: config.linkBotList,
+            slot3: config.linkGithub
           })
         }
       ]

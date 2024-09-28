@@ -37,17 +37,28 @@ this command is for testing the Dockerfile configurations
 
 The configurations are accessed through the thisGlobal.config object.
 
+> [!NOTE]
+> The configurations that are related with settings,will be updated from the database after of the first execution.
+> PENDING: add a command to update the settings from the database.
+
 ```bash
 # Bot Requieres
 DISCORD_TOKEN = 'your discord token'
 DISCORD_CLIENT = 'your discord client'
-DISCORD_INVITE_URL = 'https://discord.gg/your-invite-url'
 DATABASE_URL = 'mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority' // add your mongodb url
 
 # Bot Optionals
 PRIVATES_SERVERS = '["342443455343334912", "443664366665643264"]' // add your private servers ids base, keep in mind that this is handled from db
 OWNERS_SERVERS = '["342443455343334912"]' // this also is handled from db
 COOLDOWNS_DEFAULT = '5' // in seconds
+
+DISCORD_INVITE_URL = 'https://discord.gg/your-invite-url'
+GITHUB_LINK = 'https://github.com/your-github-link'
+DOCUMENTATION_LINK = 'https://your-documentation-link'
+WEBSITE_LINK = 'https://your-website-link'
+KOFI_LINK = 'https://ko-fi.com/your-kofi-link'
+TOPGG_LINK = 'https://top.gg/bot/your-topgg-link'
+BOTLIST_LINK = 'https://discordbotlist.com/bots/your-botlist-link'
 
 # Website Requieres
 IMGUR_CLIENT= 'your imgur client'

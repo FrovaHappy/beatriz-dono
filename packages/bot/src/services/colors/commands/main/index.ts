@@ -67,7 +67,6 @@ export default new BuildCommand({
         i
       })
       if (!colorRole) return { content: 'No se pudo crear el rol', components }
-      // eslint-disable-next-line space-unary-ops
       await (i.member?.roles as GuildMemberRoleManager).add(colorRole)
       const position = roles?.get(colorPointerId)?.rawPosition ?? 0
       await i.guild?.roles.setPosition(colorRole.id, position)

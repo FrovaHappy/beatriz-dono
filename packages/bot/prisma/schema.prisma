@@ -24,11 +24,17 @@ enum PermissionBot {
 }
 
 model Setting {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  privatesServers  String[]
-  ownersServers    String[]
-  discordInviteUrl String
-  cooldown         Int
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  privatesServers   String[]
+  ownersServers     String[]
+  cooldown          Int
+  linkDiscord       String
+  linkGithub        String
+  linkDocumentation String
+  linkWebsite       String
+  linkKofi          String
+  linkTopgg         String
+  linkBotList       String
 }
 
 model Server {

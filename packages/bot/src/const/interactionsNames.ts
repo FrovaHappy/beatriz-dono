@@ -14,7 +14,11 @@ export enum CommandNames {
 export enum ButtonNames {
   setting = 'setting',
   removeColor = 'remove-color',
-  editColorDefault = 'edit-color-default'
+  editColorDefault = 'edit-color-default',
+  linkDiscord = 'link-discord',
+  linkKofi = 'link-kofi',
+  linkGithub = 'link-github',
+  linkWebsite = 'link-website'
 }
 export enum ModalNames {
   editColorDefault = 'edit-color-default'
