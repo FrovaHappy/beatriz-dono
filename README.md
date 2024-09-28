@@ -101,22 +101,28 @@ You have the `getI18n` function to get the i18n, and the `getI18nCollection` to 
 
 ### Structures Files
 
-> [!WARNING]
-> the structure of the project to be changed, this can change in the future.
+The program searches for instances of the builders found inside the `/services` folder. This allows you to use the file system of your choice. Here are some recommendations for this project:
 
-The project bot have the following structure directory and files for valid modules
+* **Services with only one file**: You can leave it in the root of the project.
+* **Services with more than two interactions**: Group them accordingly.
+* **More complex systems**: Consider using a hexagonal or similar architecture.
 
 ``` js
 📦services
- ┗ 📂colors // name of the service 
-   ┣ 📂buttons 
-   ┣ 📂menus
-   ┣ 📂modals
-   ┣ 📂buttons
-   ┗ 📂commands
-     ┗ 📂main/index.ts // in the file index.ts you can define the command, use main as reference to the main command
-📦events
- ┗ 📂someEvent/index.ts // the events will follow with the same structure.
+ ┗ 📂services1
+   ┣ 📜service.button.ts      // File for buttons Ej: editColorsDefault.button.ts
+   ┣ 📜service.menu.ts        // File for menus Ej: colorDefault.menu.ts
+   ┣ 📜service.modal.ts       // File for modals Ej: editColorDefault.modal.ts
+   ┗ 📜service.command.ts     // File for commands Ej: help.command.ts
+ ┗ 📂services2                // suggestion for services with more than two interactions
+   ┣ 📂commands
+   │  ┗ 📜service.command.ts
+   ┗ 📂modals
+ ┗ 📂services3                // For services complex systems use the architecture of preference
+   ┣ 📂api
+   ┣ 📂models
+   ┗ 📂controllers
+
 ```
 
 > [!NOTE]
