@@ -1,6 +1,6 @@
 import type { ButtonNames } from '@/const/interactionsNames'
 import type { MessageOptions, ResolveWithUpdate, Scope } from '@/types/main'
-import type { ButtonBuilder, ButtonInteraction, PermissionResolvable } from 'discord.js'
+import { type ButtonBuilder, type ButtonInteraction, ButtonStyle, type PermissionResolvable } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import hasAccessForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
@@ -24,15 +24,16 @@ class BuildButton {
   data: ButtonBuilder
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
   resolve: ResolveWithUpdate
-
+  isLink = false
   constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'permissions'>) {
-    this.name = props.name
+    this.isLink = props.isLink ?? false
+    this.type = this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.resolve = props.resolve ?? 'reply'
     this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
-    this.data = props.data.setCustomId(this.name)
+    this.data = !this.isLink ? props.data.setCustomId(this.name) : props.data
     this.execute = props.execute
   }
 
