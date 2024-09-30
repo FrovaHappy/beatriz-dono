@@ -1,8 +1,8 @@
 import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
-import fetchColorCommand from '../../shared/fetchColorCommand'
-import removeRoles from '../../shared/removeRoles'
+import fetchColorCommand from '../shared/fetchColorCommand'
+import removeRoles from '../shared/removeRoles'
 
 export default new BuildButton({
   name: ButtonNames.removeColor,

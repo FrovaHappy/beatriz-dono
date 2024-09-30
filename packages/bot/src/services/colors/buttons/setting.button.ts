@@ -2,7 +2,7 @@ import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import db from '@/core/db'
 import { ButtonBuilder, ButtonStyle, resolveColor } from 'discord.js'
-import fetchColorCommand from '../../shared/fetchColorCommand'
+import fetchColorCommand from '../shared/fetchColorCommand'
 
 export default new BuildButton({
   name: ButtonNames.setting,

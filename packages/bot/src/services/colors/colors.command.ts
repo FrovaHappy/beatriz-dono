@@ -2,10 +2,10 @@ import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { ActionRowBuilder, type GuildMemberRoleManager, SlashCommandBuilder, StringSelectMenuBuilder } from 'discord.js'
-import type { EditColorDefault } from '../../modals/editColorDefault'
-import createColorRole from '../../shared/createColorRole'
-import fetchColorCommand from '../../shared/fetchColorCommand'
-import removeRoles from '../../shared/removeRoles'
+import type { EditColorDefault } from './editColorsDefault.modal'
+import createColorRole from './shared/createColorRole'
+import fetchColorCommand from './shared/fetchColorCommand'
+import removeRoles from './shared/removeRoles'
 
 const regexColors = /^#([a-f0-9]{6})$/
 
@@ -44,12 +44,12 @@ export default new BuildCommand({
     }
 
     const components = [
-      new ActionRowBuilder<any>().addComponents(
+      new ActionRowBuilder().addComponents(
         buttons.get(ButtonNames.setting).data,
         buttons.get(ButtonNames.removeColor).data,
         buttons.get(ButtonNames.editColorDefault).data
       ),
-      new ActionRowBuilder<any>().addComponents(colorDefaultFunc())
+      new ActionRowBuilder().addComponents(colorDefaultFunc())
     ]
 
     if (!colorPointerId) return { content: 'el comando no está configurado', components }

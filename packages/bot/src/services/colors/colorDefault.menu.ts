@@ -2,9 +2,9 @@ import COLORS from '@/const/colors'
 import { MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
 import { type GuildMemberRoleManager, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js'
-import createColorRole from '../../shared/createColorRole'
-import fetchColorCommand from '../../shared/fetchColorCommand'
-import removeRoles from '../../shared/removeRoles'
+import createColorRole from './shared/createColorRole'
+import fetchColorCommand from './shared/fetchColorCommand'
+import removeRoles from './shared/removeRoles'
 
 export default new BuildMenu({
   name: MenuNames.colorDefault,
