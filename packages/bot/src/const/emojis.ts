@@ -6,7 +6,8 @@ const emojis = {
   kofi: '<:kofi:1290030436705370235>',
   kannaAwave: '<:kannawave:1275989866794192897>',
   sparkles: '<a:sparkles:1275991218383224832>',
-  heartVar1: '<:heart:1275997495704686713>'
+  heartVar1: '<:heart:1275997495704686713>',
+  githubIssue: '<:IssueOpen:1290130154336682137>'
 }
 export function getEmoji(emoji: keyof typeof emojis) {
   const emojiSelected = emojis[emoji]

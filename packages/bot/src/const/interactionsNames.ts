@@ -17,7 +17,7 @@ export enum ButtonNames {
   editColorDefault = 'edit-color-default',
   linkDiscord = 'link-discord',
   linkKofi = 'link-kofi',
-  linkGithub = 'link-github',
+  linkGithubIssues = 'link-github-issues',
   linkWebsite = 'link-website'
 }
 export enum ModalNames {
