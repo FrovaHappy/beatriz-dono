@@ -1,4 +1,4 @@
-import type { Locale } from 'discord.js'
+import { Locale } from 'discord.js'
 import type { I18n } from './types'
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
@@ -20,7 +20,9 @@ function rewriteProp<T>(objO: T, objToReplace: Record<string, any> | undefined):
   return objOriginal as T
 }
 
-export function getI18n<T extends keyof I18n>(lang: Locale, key: T, strict = true) {
+export function getI18n<T extends keyof I18n>(langues: Locale, key: T, strict = true) {
+  let lang = langues
+  if (lang === Locale.SpanishLATAM) lang = Locale.SpanishES
   const i18nPath = join(__dirname, key, `${lang}.json`)
   const enPath = join(__dirname, key, 'en-US.json')
 
