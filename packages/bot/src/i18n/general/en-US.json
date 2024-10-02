@@ -6,5 +6,9 @@
   "errorCommand": {
     "title": "/<slot_0> command not found.",
     "description": "The command <slot_0> was not found."
+  },
+  "errorGuild": {
+    "title": "Guild not found.",
+    "description": "The guild you are trying to access does not exist."
   }
 }

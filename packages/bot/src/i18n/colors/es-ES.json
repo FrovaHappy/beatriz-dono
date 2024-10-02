@@ -1,6 +1,12 @@
 {
-  "command": {
-    "title": "Colores",
-    "description": "Obtén los colores del bot."
+  "title": "colores",
+  "description": "Personaliza tu nickname con un color personalizado.",
+  "options": {
+    "custom": "cambia el color de tu nickname, el formato es #RRGGBB."
+  },
+  "colorIncorrect": {
+    "title": "🚫 Oops! Algo salió mal con el color...",
+    "description": "Parece que el color que has introducido no es correcto. Asegúrate de usar un formato hexadecimal válido como `#FF5733`. ¡Prueba de nuevo! 🎨",
+    "footer": "Formato correcto: #RRGGBB"
   }
 }

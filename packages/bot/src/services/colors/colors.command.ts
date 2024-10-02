@@ -1,13 +1,26 @@
 import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { ActionRowBuilder, type GuildMemberRoleManager, SlashCommandBuilder, StringSelectMenuBuilder } from 'discord.js'
+import {
+  ActionRowBuilder,
+  Colors,
+  EmbedBuilder,
+  type GuildMemberRoleManager,
+  Locale,
+  SlashCommandBuilder,
+  StringSelectMenuBuilder
+} from 'discord.js'
 import type { EditColorDefault } from './editColorsDefault.modal'
 import createColorRole from './shared/createColorRole'
 import fetchColorCommand from './shared/fetchColorCommand'
 import removeRoles from './shared/removeRoles'
+import { getI18n, getI18nCollection } from '@/i18n'
+import formatterText from '@lib/formatterText'
 
 const regexColors = /^#([a-f0-9]{6})$/
+
+const en = getI18n(Locale.EnglishUS, CommandNames.colors)
+const languages = getI18nCollection(CommandNames.colors)
 
 export default new BuildCommand({
   name: CommandNames.colors,
@@ -16,23 +29,57 @@ export default new BuildCommand({
   permissions: [],
   cooldown: 15,
   data: new SlashCommandBuilder()
-    .setDescription('Personaliza el color de tu nickname con un color personalizado.')
+    .setDescription(en.description)
+    .setDescriptionLocalizations({
+      // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
+      ...languages.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.description }), {})
+    })
     .addStringOption(strOp =>
-      strOp.setName('color').setDescription('cambia el color de tu nickname, el formato es #RRGGBB')
+      strOp
+        .setName('custom')
+        .setDescription(en.options.custom)
+        .setDescriptionLocalizations({
+          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
+          ...languages.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.custom }), {})
+        })
+        .setRequired(false)
     ),
   execute: async i => {
-    const { guildId } = i
-    const roles = i.guild?.roles.cache
-    if (!guildId) return { content: 'No se encontró el guild' }
     const { buttons, menus } = globalThis
+    const { guildId } = i
+    const i18n = getI18n(i.locale, CommandNames.colors)
+    const general = getI18n(i.locale, 'general')
+    const roles = i.guild?.roles.cache
+
+    const components = {
+      linkDiscord: buttons.get(ButtonNames.linkDiscord).data,
+      linkGithubIssues: buttons.get(ButtonNames.linkGithubIssues).data,
+      linkKofi: buttons.get(ButtonNames.linkKofi).data,
+      setting: buttons.get(ButtonNames.setting).data,
+      removeColor: buttons.get(ButtonNames.removeColor).data,
+      editColorDefault: buttons.get(ButtonNames.editColorDefault).data
+    }
+    if (!guildId)
+      return {
+        embeds: [
+          new EmbedBuilder({
+            title: general.errorGuild.title,
+            color: Colors.Red,
+            description: general.errorGuild.description
+          })
+        ],
+        components: [
+          new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.linkKofi)
+        ]
+      }
 
     const { colorPointerId, colors, colorsDefault } = await fetchColorCommand(guildId, roles)
 
-    const colorDefaultFunc = () => {
+    const rebuildColorsDefault = () => {
       if (colorsDefault) {
         return new StringSelectMenuBuilder({
           customId: MenuNames.colorDefault,
-          placeholder: 'Selecciona un color'
+          placeholder: i18n.colorsDefault.placeholder
         }).addOptions(
           ...(colorsDefault as unknown as EditColorDefault).values.map(color => ({
             label: color.label,
@@ -42,22 +89,43 @@ export default new BuildCommand({
       }
       return menus.get(MenuNames.colorDefault).data
     }
+    if (!colorPointerId)
+      return {
+        embeds: [
+          new EmbedBuilder({
+            title: i18n.errorColorPointer.title,
+            description: i18n.errorColorPointer.description,
+            footer: { text: i18n.errorColorPointer.footer },
+            color: Colors.Red
+          })
+        ],
+        components: [
+          new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.setting)
+        ]
+      }
 
-    const components = [
-      new ActionRowBuilder().addComponents(
-        buttons.get(ButtonNames.setting).data,
-        buttons.get(ButtonNames.removeColor).data,
-        buttons.get(ButtonNames.editColorDefault).data
-      ),
-      new ActionRowBuilder().addComponents(colorDefaultFunc())
-    ]
-
-    if (!colorPointerId) return { content: 'el comando no está configurado', components }
-
-    const colorCustom = i.options.getString('color')?.toLowerCase()
+    const colorCustom = i.options.getString('custom')?.toLowerCase()
 
     if (colorCustom) {
-      if (!regexColors.test(colorCustom)) return { content: 'El color no es correcto' }
+      if (!regexColors.test(colorCustom)) {
+        return {
+          embeds: [
+            new EmbedBuilder({
+              title: i18n.colorIncorrect.title,
+              description: i18n.colorIncorrect.description,
+              color: Colors.Red,
+              footer: { text: i18n.colorIncorrect.footer }
+            })
+          ],
+          components: [
+            new ActionRowBuilder().addComponents(
+              components.linkDiscord,
+              components.linkGithubIssues,
+              components.linkKofi
+            )
+          ]
+        }
+      }
       await removeRoles(roles, colors, i)
       const colorRole = await createColorRole({
         hexColor: colorCustom as `#${string}`,
@@ -66,13 +134,64 @@ export default new BuildCommand({
         colorPointerId,
         i
       })
-      if (!colorRole) return { content: 'No se pudo crear el rol', components }
+      if (!colorRole)
+        return {
+          embeds: [
+            new EmbedBuilder({
+              title: i18n.roleError.title,
+              description: i18n.roleError.description,
+              color: Colors.Red,
+              footer: { text: i18n.roleError.footer }
+            })
+          ],
+          components: [
+            new ActionRowBuilder().addComponents(
+              components.linkDiscord,
+              components.linkGithubIssues,
+              components.linkKofi
+            )
+          ]
+        }
       await (i.member?.roles as GuildMemberRoleManager).add(colorRole)
       const position = roles?.get(colorPointerId)?.rawPosition ?? 0
       await i.guild?.roles.setPosition(colorRole.id, position)
-      return { content: `El color de tu nickname se ha cambiado a <@&${colorRole.id}>`, components }
+      return {
+        embeds: [
+          new EmbedBuilder({
+            title: i18n.colorCreate.title,
+            description: formatterText(i18n.colorCreate.description, { slot0: `<@${colorRole.id}>` }),
+            color: Colors.Green,
+            footer: { text: i18n.colorCreate.footer }
+          })
+        ],
+        components: [
+          new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.linkKofi)
+        ]
+      }
     }
 
-    return { content: 'menu de colores', components }
+    // Menu Colors
+
+    const colorCurrent = colors.find(c => (i.member?.roles as GuildMemberRoleManager)?.cache.get(c.roleId))
+    return {
+      embeds: [
+        new EmbedBuilder({
+          title: i18n.menu.title,
+          description: formatterText(i18n.menu.description, {
+            slot0: `<@&${colorCurrent?.roleId ?? 'none'}>`,
+            slot1: colorCurrent?.hexcolor ?? 'none'
+          })
+        })
+      ],
+      components: [
+        new ActionRowBuilder().addComponents(rebuildColorsDefault()),
+        new ActionRowBuilder().addComponents(
+          components.linkDiscord,
+          components.linkGithubIssues,
+          components.linkKofi,
+          components.setting
+        )
+      ]
+    }
   }
 })

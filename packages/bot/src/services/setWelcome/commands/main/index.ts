@@ -24,6 +24,7 @@ export default new BuildCommand({
   data: new SlashCommandBuilder()
     .setDescription(en.description)
     .setDescriptionLocalizations({
+      // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
       ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.description }), {})
     })
     .addChannelOption(op =>
@@ -31,6 +32,7 @@ export default new BuildCommand({
         .setName('channel')
         .setDescription(en.options.channel)
         .setDescriptionLocalizations({
+          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
           ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.channel }), {})
         })
         .setRequired(true)
@@ -40,6 +42,7 @@ export default new BuildCommand({
         .setName('send')
         .setDescription(en.options.send)
         .setDescriptionLocalizations({
+          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
           ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.send }), {})
         })
         .addChoices(
@@ -55,6 +58,7 @@ export default new BuildCommand({
         .setName('message')
         .setDescription(en.options.message)
         .setDescriptionLocalizations({
+          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
           ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.message }), {})
         })
         .setRequired(false)
@@ -64,6 +68,7 @@ export default new BuildCommand({
         .setName('image')
         .setDescription(en.options.image)
         .setDescriptionLocalizations({
+          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
           ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.image }), {})
         })
         .setRequired(false)
