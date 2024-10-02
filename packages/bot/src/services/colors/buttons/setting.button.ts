@@ -1,8 +1,11 @@
-import { ButtonNames } from '@/const/interactionsNames'
+import { ButtonNames, CommandNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import db from '@/core/db'
-import { ButtonBuilder, ButtonStyle, resolveColor } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, EmbedBuilder, resolveColor } from 'discord.js'
 import fetchColorCommand from '../shared/fetchColorCommand'
+import guildErrorMessage from '@/services/shared/guildError.message'
+import { getI18n } from '@/i18n'
+import formatterText from '@lib/formatterText'
 
 export default new BuildButton({
   name: ButtonNames.setting,
@@ -11,7 +14,14 @@ export default new BuildButton({
   data: new ButtonBuilder().setCustomId('setting').setLabel('Configuración').setStyle(ButtonStyle.Primary),
   execute: async i => {
     const { guildId } = i
-    if (!guildId) return { content: 'No se encontró el guild' }
+    if (!guildId) return guildErrorMessage(i.locale)
+    const i18n = getI18n(i.locale, CommandNames.colors)
+    const components = {
+      linkDiscord: buttons.get(ButtonNames.linkDiscord).data,
+      linkGithubIssues: buttons.get(ButtonNames.linkGithubIssues).data,
+      linkKofi: buttons.get(ButtonNames.linkKofi).data,
+      editColorsDefault: buttons.get(ButtonNames.editColorDefault).data
+    }
 
     let { colorPointerId } = await fetchColorCommand(guildId, i.guild?.roles.cache)
 
@@ -22,7 +32,23 @@ export default new BuildButton({
         color: resolveColor('#f75b00'),
         permissions: '0'
       })
-      if (!role) return { content: 'No se pudo crear el puntero de los colores' }
+      if (!role)
+        return {
+          embeds: [
+            new EmbedBuilder({
+              title: i18n.errorCreatedColorPointer.title,
+              description: i18n.errorCreatedColorPointer.description,
+              color: Colors.Red
+            })
+          ],
+          components: [
+            new ActionRowBuilder().addComponents(
+              components.linkDiscord,
+              components.linkGithubIssues,
+              components.linkKofi
+            )
+          ]
+        }
       await db.colorCommand.update({
         where: { serverId: guildId },
         data: {
@@ -31,10 +57,22 @@ export default new BuildButton({
       })
       colorPointerId = role.id
       return {
-        content: `se detecto la primera ejecución, por favor, mueve el rol <@&${role.id}> a una posición superior por debajo del rol del bot`
+        embeds: [
+          new EmbedBuilder({
+            title: i18n.firstExecution.title,
+            description: formatterText(i18n.firstExecution.description, { slot0: `<@&${role.id}>` }),
+            color: Colors.Green
+          })
+        ],
+        components: [
+          new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.linkKofi)
+        ]
       }
     }
 
-    return { content: 'Configuración', components: [] }
+    return {
+      embeds: [new EmbedBuilder({ title: i18n.settingMenu.title, description: i18n.settingMenu.description })],
+      components: [new ActionRowBuilder().addComponents(components.editColorsDefault)]
+    }
   }
 })

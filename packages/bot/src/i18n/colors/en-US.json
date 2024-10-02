@@ -19,6 +19,18 @@
     "description": "You have not configured the color pointer. Please configure it in the settings menu.",
     "footer": "⚙️ We're here to help! Contact the administrator if you need further assistance."
   },
+  "errorCreatedColorPointer": {
+    "title": "⛔ Oops! error creating color pointer!",
+    "description": "Something went wrong with the color pointer. Please contact the administrator or report the error."
+  },
+  "firstExecution": {
+    "title": "✅ Role successfully created!",
+    "description": "Great!\n**✨ This is your new Color Pointer <slot_0>, enjoy it!**\n\n now you can configure the position of the role manually in the settings server.\n\n**Done!** execute /colors custom for change the color of your nickname."
+  },
+  "settingMenu": {
+    "title": "⚙️ Settings",
+    "description": "Here’s everything you need to know about where settings the command /colors.\n\nWhat can you do?\n1. Change the color default collection.\n2. Remove the Color with uses.\n3. Change the position of the roles automatically. \n\n And more!"
+  },
   "colorCreate": {
     "title": "✅ Role successfully created!",
     "description": "Great!\n**✨ This is your new color <slot_0>, enjoy it!**",

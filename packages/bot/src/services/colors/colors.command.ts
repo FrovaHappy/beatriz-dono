@@ -16,6 +16,7 @@ import fetchColorCommand from './shared/fetchColorCommand'
 import removeRoles from './shared/removeRoles'
 import { getI18n, getI18nCollection } from '@/i18n'
 import formatterText from '@lib/formatterText'
+import guildErrorMessage from '../shared/guildError.message'
 
 const regexColors = /^#([a-f0-9]{6})$/
 
@@ -48,7 +49,6 @@ export default new BuildCommand({
     const { buttons, menus } = globalThis
     const { guildId } = i
     const i18n = getI18n(i.locale, CommandNames.colors)
-    const general = getI18n(i.locale, 'general')
     const roles = i.guild?.roles.cache
 
     const components = {
@@ -59,19 +59,7 @@ export default new BuildCommand({
       removeColor: buttons.get(ButtonNames.removeColor).data,
       editColorDefault: buttons.get(ButtonNames.editColorDefault).data
     }
-    if (!guildId)
-      return {
-        embeds: [
-          new EmbedBuilder({
-            title: general.errorGuild.title,
-            color: Colors.Red,
-            description: general.errorGuild.description
-          })
-        ],
-        components: [
-          new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.linkKofi)
-        ]
-      }
+    if (!guildId) return guildErrorMessage(i.locale)
 
     const { colorPointerId, colors, colorsDefault } = await fetchColorCommand(guildId, roles)
 
@@ -126,7 +114,6 @@ export default new BuildCommand({
           ]
         }
       }
-      await removeRoles(roles, colors, i)
       const colorRole = await createColorRole({
         hexColor: colorCustom as `#${string}`,
         guildId,
@@ -152,6 +139,7 @@ export default new BuildCommand({
             )
           ]
         }
+      await removeRoles(roles, colors, i)
       await (i.member?.roles as GuildMemberRoleManager).add(colorRole)
       const position = roles?.get(colorPointerId)?.rawPosition ?? 0
       await i.guild?.roles.setPosition(colorRole.id, position)
