@@ -16,6 +16,7 @@ import removeRoles from './shared/removeRoles'
 import { getI18n } from '@/i18n'
 import guildErrorMessage from '../shared/guildError.message'
 import formatterText from '@lib/formatterText'
+import messageErrorColorPointer from './shared/message.errorColorPointer'
 
 const en = getI18n(Locale.EnglishUS, CommandNames.colors)
 
@@ -45,20 +46,7 @@ export default new BuildMenu({
 
     const colorSelected = values[0] as `#${string}`
     const { colors, colorPointerId } = await fetchColorCommand(guildId, roles)
-    if (!colorPointerId)
-      return {
-        embeds: [
-          new EmbedBuilder({
-            title: i18n.errorColorPointer.title,
-            description: i18n.errorColorPointer.description,
-            color: Colors.Red,
-            footer: { text: i18n.errorColorPointer.footer }
-          })
-        ],
-        components: [
-          new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.linkKofi)
-        ]
-      }
+    if (!colorPointerId) return messageErrorColorPointer(i.locale)
 
     await removeRoles(roles, colors, i)
     const colorRole = await createColorRole({

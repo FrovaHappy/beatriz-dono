@@ -14,7 +14,7 @@ export default async function fetchColorCommand(guildId: string, roles?: Collect
     include: { colors: true }
   })
   if (!colorCommand) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     colorCommand = (
       await db.server.upsert({
         where: { serverId: guildId },
