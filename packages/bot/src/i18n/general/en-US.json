@@ -10,5 +10,31 @@
   "errorGuild": {
     "title": "Guild not found.",
     "description": "The guild you are trying to access does not exist."
+  },
+  "errorCooldown": {
+    "title": "Hang Tight! ⏳",
+    "description": "It looks like you need to wait <slot_0> before you can use that command again. Don’t worry, we’ll be ready soon!",
+    "footer": "Thanks for your patience! 😊"
+  },
+  "hasOcurredAnError": {
+    "title": "🚨 An error occurred!",
+    "description": "It seems that an error occurred while executing the command. Please contact the owner bot or report the error.",
+    "footer": "Error executed: <slot_0>"
+  },
+  "errorFoundService": {
+    "title": "🚨 Service not found!",
+    "description": "It seems that the service <slot_0> was not found. This was probably caused by a change in the bot code."
+  },
+  "errorPermissionBot": {
+    "title": "🔒 Access Denied",
+    "description": "It seems the bot does not have the necessary permissions to execute this <slot_0>. Please check the permissions and make sure they are enabled.",
+    "fields": {
+      "name": "🔧 Required Permissions"
+    },
+    "footer": "Thank you for your help! 🌟"
+  },
+  "errorAccessScope": {
+    "title": "🔒 Access Denied",
+    "description": "It seems you do not have access to this <slot_0>. Please contact the owner bot for access to this feature."
   }
 }
