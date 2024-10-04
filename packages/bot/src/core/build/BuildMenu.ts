@@ -17,6 +17,8 @@ import type {
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import buildMessageErrorForScope from './shared/hasAccessForScope'
+import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -73,25 +75,28 @@ class BuildMenu<T extends MenuType> {
 
   static async runInteraction(i: AnySelectMenuInteraction) {
     const menu: Menu = globalThis.menus.get(i.customId)
-    if (!menu) return { content: 'No se encontró el menu' }
+    if (!menu) return messageErrorFoundService(i.locale, `menu:${i.customId}`)
 
     const messageRequirePermissionsBot = requiresBotPermissions({
       permissions: menu.permissions,
       bot: i.guild?.members.me,
       nameInteraction: i.customId,
-      type: 'menu'
+      type: 'menu',
+      locale: i.locale
     })
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
       cooldown: menu.cooldown,
       name: menu.name,
-      type: 'menu'
+      type: 'menu',
+      locale: i.locale
     })
+    const messageAccessForScope = buildMessageErrorForScope(i.locale, menu.scope, i.guildId ?? '')
 
     const getMessage = async () => {
+      if (messageAccessForScope) return messageAccessForScope
       if (messageRequirePermissionsBot) return messageRequirePermissionsBot
-      if (messageCooldown) return { content: messageCooldown }
-
+      if (messageCooldown) return messageCooldown
       try {
         return await menu.execute(i)
       } catch (error) {

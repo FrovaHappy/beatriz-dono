@@ -5,6 +5,8 @@ import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import hasAccessForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import buildMessageErrorForScope from './shared/hasAccessForScope'
+import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
@@ -38,32 +40,27 @@ class BuildButton {
   }
 
   static async runInteraction(i: ButtonInteraction) {
-    const guildId = i.guildId
-    if (!guildId) return { content: 'No se encontró el button' }
     const button: BuildButton = globalThis.buttons.get(i.customId)
-
-    if (!button) return { content: 'No se encontró el button' }
-
+    if (!button) return messageErrorFoundService(i.locale, `button:${i.customId}`)
+    const messageRequirePermissions = requiresBotPermissions({
+      permissions: button.permissions,
+      bot: i.guild?.members.me,
+      nameInteraction: i.customId,
+      type: 'button',
+      locale: i.locale
+    })
+    const messageCooldown = isCooldownEnable({
+      id: i.user.id,
+      cooldown: button.cooldown,
+      name: button.name,
+      type: 'button',
+      locale: i.locale
+    })
+    const messageAccessForScope = buildMessageErrorForScope(i.locale, button.scope, i.guildId ?? '')
     const getMessage = async () => {
-      if (!hasAccessForScope(button.scope, guildId)) return { content: 'El bot no tiene acceso para este scope' }
-
-      const messageRequirePermissions = requiresBotPermissions({
-        permissions: button.permissions,
-        bot: i.guild?.members.me,
-        nameInteraction: i.customId,
-        type: 'button'
-      })
       if (messageRequirePermissions) return messageRequirePermissions
-
-      // TODO: add require user permission
-
-      const messageCooldown = isCooldownEnable({
-        id: i.user.id,
-        cooldown: button.cooldown,
-        name: button.name,
-        type: 'button'
-      })
-      if (messageCooldown) return { content: messageCooldown }
+      if (messageCooldown) return messageCooldown
+      if (messageAccessForScope) return messageAccessForScope
       try {
         return await button.execute(i)
       } catch (error) {

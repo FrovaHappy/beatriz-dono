@@ -11,6 +11,8 @@ import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import type { CommandNames } from '@/const/interactionsNames'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import buildMessageErrorForScope from './shared/hasAccessForScope'
+import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 /**
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional
@@ -38,23 +40,28 @@ class BuildCommand {
 
   static async runInteraction(i: ChatInputCommandInteraction) {
     const command: Command = globalThis.commands.get(i.commandName)
-    if (!command) return { content: 'No se encontró el command' }
+    if (!command) return messageErrorFoundService(i.locale, `command:${i.commandName}`)
 
+    // create message Access basic
     const messageRequirePermissions = requiresBotPermissions({
       permissions: command.permissions,
       bot: i.guild?.members.me,
       nameInteraction: i.commandName,
-      type: 'command'
+      type: 'command',
+      locale: i.locale
     })
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
       cooldown: command.cooldown,
       name: command.name,
-      type: 'command'
+      type: 'command',
+      locale: i.locale
     })
+    const messageAccessForScope = buildMessageErrorForScope(i.locale, command.scope, i.guildId ?? '')
     const getMessage = async () => {
       if (messageRequirePermissions) return messageRequirePermissions
-      if (messageCooldown) return { content: messageCooldown }
+      if (messageCooldown) return messageCooldown
+      if (messageAccessForScope) return messageAccessForScope
       try {
         return await command.execute(i)
       } catch (error) {

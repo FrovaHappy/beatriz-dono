@@ -4,6 +4,8 @@ import type { ModalBuilder, ModalSubmitInteraction, PermissionResolvable } from 
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import buildMessageErrorForScope from './shared/hasAccessForScope'
+import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 
 /**
  * #### Constructor
@@ -33,26 +35,27 @@ class BuildModal {
 
   static async runInteraction(i: ModalSubmitInteraction) {
     const modal: Modal = globalThis.modals.get(i.customId)
-
+    if (!modal) return messageErrorFoundService(i.locale, `modal:${i.customId}`)
+    const messageRequirePermissions = requiresBotPermissions({
+      permissions: modal.permissions,
+      bot: i.guild?.members.me,
+      nameInteraction: i.customId,
+      type: 'modal',
+      locale: i.locale
+    })
+    const messageCooldown = isCooldownEnable({
+      id: i.user.id,
+      cooldown: modal.cooldown,
+      name: modal.name,
+      type: 'modal',
+      locale: i.locale
+    })
+    const messageAccessForScope = buildMessageErrorForScope(i.locale, modal.scope, i.guildId ?? '')
     const getMessage = async () => {
-      if (!modal) return { content: 'No se encontró el modal' }
-      const messageRequirePermissions = requiresBotPermissions({
-        permissions: modal.permissions,
-        bot: i.guild?.members.me,
-        nameInteraction: i.customId,
-        type: 'modal'
-      })
+      if (messageAccessForScope) return messageAccessForScope
       if (messageRequirePermissions) return messageRequirePermissions
-      // TODO: add require user permission
-      // TODO: add scope validation
+      if (messageCooldown) return messageCooldown
 
-      const messageCooldown = isCooldownEnable({
-        id: i.user.id,
-        cooldown: modal.cooldown,
-        name: modal.name,
-        type: 'modal'
-      })
-      if (messageCooldown) return { content: messageCooldown }
       try {
         return await modal.execute(i)
       } catch (error) {
@@ -63,7 +66,6 @@ class BuildModal {
 
     try {
       if (modal.resolve === 'defer') await i.deferReply({ ephemeral: modal.ephemeral })
-
       const message = await getMessage()
       if (!message) return
       if (modal.resolve === 'defer') return await i.editReply(message)
