@@ -26,7 +26,7 @@ export default function buildMessageErrorForScope(
   guildId: string
 ): MessageOptions | undefined {
   const i18n = getI18n(locale, 'general')
-  if (!hasAccessForScope(scope, guildId)) return
+  if (hasAccessForScope(scope, guildId)) return
   return {
     embeds: [
       new EmbedBuilder({
