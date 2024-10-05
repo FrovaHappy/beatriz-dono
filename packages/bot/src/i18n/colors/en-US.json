@@ -41,6 +41,6 @@
   },
   "menu": {
     "title": "Colors Menu",
-    "description": "Here’s everything you need to know about your role and the options to customize it to your liking.\n\n**🌟 Your Current Role:**\n- **Role Name:** <slot_0>\n- **Current Color:** #<slot_1>\n\n**🎨 What Can You Do?**\n1. Change the color of your **nick** using `/colors custom` or explore options with `/colors menu`.\n2. If you prefer, you can also remove the color whenever you want.\n\nMake your profile look just the way you want! 😄"
+    "description": "Here’s everything you need to know about your role and the options to customize it to your liking.\n\n**🌟 Your Current Role:**\n- **Role Name:** <slot_0>\n- **Current Color:** <slot_1>\n\n**🎨 What Can You Do?**\n1. Change the color of your **nick** using `/colors custom` or explore options with `/colors menu`.\n2. If you prefer, you can also remove the color whenever you want.\n\nMake your profile look just the way you want! 😄"
   }
 }
