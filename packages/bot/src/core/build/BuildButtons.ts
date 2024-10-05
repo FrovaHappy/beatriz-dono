@@ -1,5 +1,5 @@
 import type { ButtonNames } from '@/const/interactionsNames'
-import type { MessageOptions, ResolveWithUpdate, Scope } from '@/types/main'
+import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import { type ButtonBuilder, type ButtonInteraction, ButtonStyle, type PermissionResolvable } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import hasAccessForScope from './shared/hasAccessForScope'
@@ -7,6 +7,7 @@ import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
+import baseMessage from './shared/baseMessage'
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
@@ -25,13 +26,13 @@ class BuildButton {
   cooldown: number
   data: ButtonBuilder
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
-  resolve: ResolveWithUpdate
+  resolve: Resolve
   isLink = false
   constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'permissions'>) {
     this.isLink = props.isLink ?? false
     this.type = this.name = props.name
     this.scope = props.scope ?? 'owner'
-    this.resolve = props.resolve ?? 'reply'
+    this.resolve = props.resolve ?? 'defer'
     this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
@@ -71,13 +72,11 @@ class BuildButton {
 
     try {
       if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
-
+      if (button.resolve === 'update') await i.deferUpdate()
       const message = await getMessage()
       if (!message) return
 
-      if (button.resolve === 'update') return await i.update(message)
-      if (button.resolve === 'defer') return await i.editReply(message)
-      return await i.reply(message)
+      return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
       return { content: `Error executing ${button.name}` }

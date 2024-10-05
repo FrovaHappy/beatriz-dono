@@ -19,6 +19,7 @@ import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
+import baseMessage from './shared/baseMessage'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -48,7 +49,7 @@ type MenuType = keyof Types
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
  */
-class BuildMenu<T extends MenuType> {
+class BuildMenu<T extends MenuType = 'string'> {
   type = 'menus' as const
   name: MenuNames
   ephemeral: boolean
@@ -57,16 +58,12 @@ class BuildMenu<T extends MenuType> {
   data: Types[T]['builder']
   scope: Scope
   resolve: Resolve
-  menuType: MenuType
   execute: (e: Types[T]['interaction']) => Promise<MessageOptions | undefined>
-  constructor(
-    props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data' | 'permissions' | 'menuType'>
-  ) {
+  constructor(props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data' | 'permissions'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
-    this.menuType = props.menuType
     this.cooldown = props.cooldown ?? 0
-    this.resolve = props.resolve ?? 'reply'
+    this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)
@@ -106,11 +103,11 @@ class BuildMenu<T extends MenuType> {
     }
 
     try {
+      if (menu.resolve === 'update') await i.deferUpdate()
       if (menu.resolve === 'defer') await i.deferReply({ ephemeral: menu.ephemeral })
       const message = await getMessage()
       if (!message) return
-      if (menu.resolve === 'defer') return await i.editReply(message)
-      return await i.reply(message)
+      return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
       return { content: `Error executing ${menu.name}` }

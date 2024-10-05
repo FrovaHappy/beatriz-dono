@@ -22,8 +22,7 @@ const en = getI18n(Locale.EnglishUS, CommandNames.colors)
 
 export default new BuildMenu({
   name: MenuNames.colorDefault,
-  menuType: 'string',
-  resolve: 'defer',
+  resolve: 'update',
   permissions: [],
   data: new StringSelectMenuBuilder({
     placeholder: en.colorsDefault.placeholder

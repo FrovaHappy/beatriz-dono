@@ -2,8 +2,7 @@
 import { Interaction, type PermissionResolvable } from 'discord.js'
 
 export type Scope = 'public' | 'private' | 'owner'
-export type Resolve = 'reply' | 'defer'
-export type ResolveWithUpdate = Resolve | 'update'
+export type Resolve = 'update' | 'defer'
 export type Types = 'menus' | 'commands' | 'buttons' | 'modals'
 
 export interface EventEmitted<Names, Interaction = any> {

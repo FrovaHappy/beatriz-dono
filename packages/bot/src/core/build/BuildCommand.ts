@@ -25,13 +25,13 @@ class BuildCommand {
   permissions: PermissionResolvable[]
   cooldown: number
   data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder
-  resolve: Resolve
+  resolve: Omit<Resolve, 'update'>
   execute: (e: ChatInputCommandInteraction) => Promise<MessageOptions | undefined>
   constructor(props: Partial<BuildCommand> & Pick<BuildCommand, 'name' | 'execute' | 'data' | 'permissions'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
-    this.resolve = props.resolve ?? 'reply'
+    this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false
     this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
     this.data = props.data.setName(this.name)
@@ -70,11 +70,10 @@ class BuildCommand {
       }
     }
     try {
-      if (command.resolve === 'defer') await i.deferReply({ ephemeral: command.ephemeral })
+      await i.deferReply({ ephemeral: command.ephemeral })
       const message = await getMessage()
       if (!message) return
-      if (command.resolve === 'defer') return await i.editReply(message)
-      return await i.reply({ ...message, ephemeral: command.ephemeral })
+      return await i.editReply(message)
     } catch (error) {
       console.error(error)
       return { content: `Error executing ${command.name}` }
