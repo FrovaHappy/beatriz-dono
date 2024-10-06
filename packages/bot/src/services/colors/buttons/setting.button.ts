@@ -1,4 +1,4 @@
-import { ButtonNames, CommandNames } from '@/const/interactionsNames'
+import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import db from '@/core/db'
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, EmbedBuilder, resolveColor } from 'discord.js'
@@ -9,6 +9,7 @@ import formatterText from '@lib/formatterText'
 
 export default new BuildButton({
   name: ButtonNames.setting,
+  scope: 'public',
   permissions: ['ManageRoles'],
   cooldown: 15,
   data: new ButtonBuilder().setCustomId('setting').setLabel('Configuración').setStyle(ButtonStyle.Primary),
@@ -20,7 +21,8 @@ export default new BuildButton({
       linkDiscord: buttons.get(ButtonNames.linkDiscord).data,
       linkGithubIssues: buttons.get(ButtonNames.linkGithubIssues).data,
       linkKofi: buttons.get(ButtonNames.linkKofi).data,
-      editColorsDefault: buttons.get(ButtonNames.editColorDefault).data
+      editColorsDefault: buttons.get(ButtonNames.editColorDefault).data,
+      menuColorRemove: menus.get(MenuNames.settingColorRemove).data
     }
 
     let { colorPointerId } = await fetchColorCommand(guildId, i.guild?.roles.cache)
@@ -72,7 +74,10 @@ export default new BuildButton({
 
     return {
       embeds: [new EmbedBuilder({ title: i18n.settingMenu.title, description: i18n.settingMenu.description })],
-      components: [new ActionRowBuilder().addComponents(components.editColorsDefault)]
+      components: [
+        new ActionRowBuilder().addComponents(components.menuColorRemove),
+        new ActionRowBuilder().addComponents(components.editColorsDefault)
+      ]
     }
   }
 })

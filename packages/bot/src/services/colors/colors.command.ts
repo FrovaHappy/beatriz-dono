@@ -27,7 +27,8 @@ export default new BuildCommand({
   name: CommandNames.colors,
   ephemeral: true,
   scope: 'public',
-  permissions: [],
+  permissions: ['ManageRoles'],
+  resolve: 'defer',
   cooldown: 15,
   data: new SlashCommandBuilder()
     .setDescription(en.description)
@@ -56,8 +57,8 @@ export default new BuildCommand({
       linkGithubIssues: buttons.get(ButtonNames.linkGithubIssues).data,
       linkKofi: buttons.get(ButtonNames.linkKofi).data,
       setting: buttons.get(ButtonNames.setting).data,
-      removeColor: buttons.get(ButtonNames.removeColor).data,
-      editColorDefault: buttons.get(ButtonNames.editColorDefault).data
+      removeColorUser: buttons.get(ButtonNames.removeColor).data,
+      colorDominante: buttons.get(ButtonNames.colorDominante).data
     }
     if (!guildId) return guildErrorMessage(i.locale)
 
@@ -158,12 +159,8 @@ export default new BuildCommand({
       ],
       components: [
         new ActionRowBuilder().addComponents(rebuildColorsDefault()),
-        new ActionRowBuilder().addComponents(
-          components.linkDiscord,
-          components.linkGithubIssues,
-          components.linkKofi,
-          components.setting
-        )
+        new ActionRowBuilder().addComponents(components.colorDominante, components.removeColorUser, components.setting),
+        new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.linkKofi)
       ]
     }
   }

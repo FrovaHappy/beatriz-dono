@@ -14,7 +14,10 @@ export default new BuildCommand({
     const linkDiscord = buttons.get(ButtonNames.linkDiscord)
     const linkGithubIssues = buttons.get(ButtonNames.linkGithubIssues)
     const linkKofi = buttons.get(ButtonNames.linkKofi)
-    const row = new ActionRowBuilder({ components: [linkDiscord.data, linkGithubIssues.data, linkKofi.data] })
+    const colorDominante = buttons.get(ButtonNames.colorDominante)
+    const row = new ActionRowBuilder({
+      components: [linkDiscord.data, linkGithubIssues.data, linkKofi.data, colorDominante.data]
+    })
     return { content: 'test!', components: [row] }
   }
 })
