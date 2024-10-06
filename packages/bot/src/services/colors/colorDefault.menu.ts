@@ -12,7 +12,7 @@ import {
 } from 'discord.js'
 import createColorRole from './shared/createColorRole'
 import fetchColorCommand from './shared/fetchColorCommand'
-import removeRoles from './shared/removeRoles'
+import { removeRolesOfUser } from './shared/removeRoles'
 import { getI18n } from '@/i18n'
 import guildErrorMessage from '../shared/guildError.message'
 import formatterText from '@lib/formatterText'
@@ -47,7 +47,6 @@ export default new BuildMenu({
     const { colors, colorPointerId } = await fetchColorCommand(guildId, roles)
     if (!colorPointerId) return messageErrorColorPointer(i.locale)
 
-    await removeRoles(roles, colors, i)
     const colorRole = await createColorRole({
       hexColor: colorSelected,
       guildId,
@@ -66,15 +65,13 @@ export default new BuildMenu({
           })
         ]
       }
-    await removeRoles(roles, colors, i)
+    await removeRolesOfUser(roles, colors, i)
     await (i.member?.roles as GuildMemberRoleManager).add(colorRole)
-    const position = roles?.get(colorPointerId)?.rawPosition ?? 0
-    await i.guild?.roles.setPosition(colorRole.id, position)
     return {
       embeds: [
         new EmbedBuilder({
           title: i18n.colorCreate.title,
-          description: formatterText(i18n.colorCreate.description, { slot0: `<@${colorRole.id}>` }),
+          description: formatterText(i18n.colorCreate.description, { slot0: `<@&${colorRole.id}>` }),
           color: Colors.Green,
           footer: { text: i18n.colorCreate.footer }
         })

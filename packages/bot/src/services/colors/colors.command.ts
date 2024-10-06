@@ -1,6 +1,5 @@
 import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   ActionRowBuilder,
   Colors,
@@ -13,10 +12,11 @@ import {
 import type { EditColorDefault } from './editColorsDefault.modal'
 import createColorRole from './shared/createColorRole'
 import fetchColorCommand from './shared/fetchColorCommand'
-import removeRoles from './shared/removeRoles'
+import { removeRolesOfUser } from './shared/removeRoles'
 import { getI18n, getI18nCollection } from '@/i18n'
 import formatterText from '@lib/formatterText'
 import guildErrorMessage from '../shared/guildError.message'
+import messageErrorColorPointer from './shared/message.errorColorPointer'
 
 const regexColors = /^#([a-f0-9]{6})$/
 
@@ -77,20 +77,7 @@ export default new BuildCommand({
       }
       return menus.get(MenuNames.colorDefault).data
     }
-    if (!colorPointerId)
-      return {
-        embeds: [
-          new EmbedBuilder({
-            title: i18n.errorColorPointer.title,
-            description: i18n.errorColorPointer.description,
-            footer: { text: i18n.errorColorPointer.footer },
-            color: Colors.Red
-          })
-        ],
-        components: [
-          new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.setting)
-        ]
-      }
+    if (!colorPointerId) return messageErrorColorPointer(i.locale)
 
     const colorCustom = i.options.getString('custom')?.toLowerCase()
 
@@ -139,15 +126,13 @@ export default new BuildCommand({
             )
           ]
         }
-      await removeRoles(roles, colors, i)
+      await removeRolesOfUser(roles, colors, i)
       await (i.member?.roles as GuildMemberRoleManager).add(colorRole)
-      const position = roles?.get(colorPointerId)?.rawPosition ?? 0
-      await i.guild?.roles.setPosition(colorRole.id, position)
       return {
         embeds: [
           new EmbedBuilder({
             title: i18n.colorCreate.title,
-            description: formatterText(i18n.colorCreate.description, { slot0: `<@${colorRole.id}>` }),
+            description: formatterText(i18n.colorCreate.description, { slot0: `<@&${colorRole.id}>` }),
             color: Colors.Green,
             footer: { text: i18n.colorCreate.footer }
           })

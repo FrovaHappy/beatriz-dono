@@ -15,8 +15,10 @@ export default async function createColorRole<T>(props: CreateColorRoleProps<T>)
   const guildRoles = i.guild?.roles.cache
   const color = colors?.find(color => color.hexcolor === hexColor)
   let colorRole = guildRoles?.find(role => role.id === color?.roleId)
+  const position = guildRoles?.get(colorPointerId)?.position ?? 0
   // verify if the role exists if not create it
   if (!colorRole) {
+    // verify if the role exists if not create it
     colorRole = await i.guild?.roles.create({
       name: `🌿${hexColor}🌼 `,
       color: resolveColor(hexColor),
@@ -24,10 +26,10 @@ export default async function createColorRole<T>(props: CreateColorRoleProps<T>)
       reason: 'Beatriz-Dono to create a new role color'
     })
   }
-  if (!colorRole) return null
 
-  // verify if the role is the same color if not change it
-  if (colorRole.color !== resolveColor(hexColor)) await colorRole.setColor(hexColor)
+  if (!colorRole) return null
+  // update the color and position of the role
+  await colorRole.edit({ position: position, color: resolveColor(hexColor) })
 
   // upsert the color in the database
   await db.colorCommand.update({
