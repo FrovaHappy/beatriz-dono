@@ -20,6 +20,7 @@ import requiresBotPermissions from './shared/requiresBotPermissions'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 import baseMessage from './shared/baseMessage'
+import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -98,7 +99,7 @@ class BuildMenu<T extends MenuType = 'string'> {
         return await menu.execute(i)
       } catch (error) {
         console.error(error)
-        return { content: `Error executing ${menu.name}` }
+        return messageHasOcurredAnError(i.locale, `menu:${i.customId}-inExecute`)
       }
     }
 
@@ -110,7 +111,7 @@ class BuildMenu<T extends MenuType = 'string'> {
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return { content: `Error executing ${menu.name}` }
+      return messageHasOcurredAnError(i.locale, `menu:${i.customId}-inReply`)
     }
   }
 }

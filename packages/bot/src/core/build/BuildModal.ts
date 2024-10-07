@@ -7,6 +7,7 @@ import requiresBotPermissions from './shared/requiresBotPermissions'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 import baseMessage from './shared/baseMessage'
+import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 
 /**
  * #### Constructor
@@ -61,7 +62,7 @@ class BuildModal {
         return await modal.execute(i)
       } catch (error) {
         console.error(error)
-        return { content: `Error executing ${modal.name}` }
+        return messageHasOcurredAnError(i.locale, `modal:${i.customId}-inExecute`)
       }
     }
 
@@ -73,7 +74,7 @@ class BuildModal {
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return { content: `Error executing ${modal.name}` }
+      return messageHasOcurredAnError(i.locale, `modal:${i.customId}-inReply`)
     }
   }
 }

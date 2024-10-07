@@ -13,6 +13,7 @@ import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
+import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 /**
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional
@@ -66,7 +67,7 @@ class BuildCommand {
         return await command.execute(i)
       } catch (error) {
         console.error(error)
-        return { content: `Error executing ${command.name}` }
+        return messageHasOcurredAnError(i.locale, `command:${i.commandName}-inExecute`)
       }
     }
     try {
@@ -76,7 +77,7 @@ class BuildCommand {
       return await i.editReply(message)
     } catch (error) {
       console.error(error)
-      return { content: `Error executing ${command.name}` }
+      return messageHasOcurredAnError(i.locale, `command:${i.commandName}-inReply`)
     }
   }
 }

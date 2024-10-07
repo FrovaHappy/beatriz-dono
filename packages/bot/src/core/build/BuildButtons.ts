@@ -8,6 +8,7 @@ import requiresBotPermissions from './shared/requiresBotPermissions'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 import baseMessage from './shared/baseMessage'
+import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
@@ -66,7 +67,7 @@ class BuildButton {
         return await button.execute(i)
       } catch (error) {
         console.error(error)
-        return { content: `Error executing ${button.name}` }
+        return messageHasOcurredAnError(i.locale, `button:${i.customId}-inExecute`)
       }
     }
 
@@ -79,7 +80,7 @@ class BuildButton {
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return { content: `Error executing ${button.name}` }
+      return messageHasOcurredAnError(i.locale, `button:${i.customId}-inReply`)
     }
   }
 }

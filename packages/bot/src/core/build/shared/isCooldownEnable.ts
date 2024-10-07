@@ -1,11 +1,12 @@
 import { getI18n } from '@/i18n'
+import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import type { MessageOptions } from '@/types/main'
 import formatterText from '@lib/formatterText'
 import { Collection, Colors, EmbedBuilder, type Locale, type Snowflake } from 'discord.js'
 
 interface Props {
   id: Snowflake
-  cooldown: number | undefined
+  cooldown: number
   type: string
   name: string
   locale: Locale
@@ -27,16 +28,15 @@ export default function isCooldownEnable(props: Props): MessageOptions | undefin
   try {
     const timestamps = cooldowns.get(cooldownName)
     if (!timestamps) throw new Error()
-    const cooldownAmount = (cooldown ?? config.cooldown) * 1000
+    const cooldownAmount = cooldown * 1000
 
     if (timestamps.has(id)) {
-      const expirationTime = timestamps.get(id) ?? 0 + cooldownAmount
-      const expiredTimestamp = Math.round(expirationTime / 1000)
+      const expirationTime = Math.round(((timestamps.get(id) ?? 0) + cooldownAmount) / 1000)
       return {
         embeds: [
           new EmbedBuilder({
             title: i18n.errorCooldown.title,
-            description: formatterText(i18n.errorCooldown.description, { slot0: `<t:${expiredTimestamp}:R>` }),
+            description: formatterText(i18n.errorCooldown.description, { slot0: `<t:${expirationTime}:R>` }),
             color: Colors.Orange,
             footer: { text: i18n.errorCooldown.footer }
           })
@@ -50,15 +50,6 @@ export default function isCooldownEnable(props: Props): MessageOptions | undefin
     return
   } catch (e) {
     console.error(e)
-    return {
-      embeds: [
-        new EmbedBuilder({
-          title: i18n.hasOcurredAnError.title,
-          description: i18n.hasOcurredAnError.description,
-          color: Colors.Red,
-          footer: { text: formatterText(i18n.hasOcurredAnError.footer, { slot0: `cooldowns: ${cooldownName}` }) }
-        })
-      ]
-    }
+    return messageHasOcurredAnError(locale, `cooldowns: ${cooldownName}`)
   }
 }
