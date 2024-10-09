@@ -1,7 +1,7 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { getI18n, getI18nCollection } from '@/i18n'
 import { formatterUser } from '@/services/shared/formatterUser'
-import { stringToJson } from '@/shared/general'
+import { reduceTupleToObj, stringToJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import { formatZodError } from '@/shared/validate'
 import BuildCommand from '@core/build/BuildCommand'
@@ -23,28 +23,19 @@ export default new BuildCommand({
   permissions: [],
   data: new SlashCommandBuilder()
     .setDescription(en.description)
-    .setDescriptionLocalizations({
-      // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-      ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.description }), {})
-    })
+    .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'description'))
     .addChannelOption(op =>
       op
         .setName('channel')
         .setDescription(en.options.channel)
-        .setDescriptionLocalizations({
-          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.channel }), {})
-        })
+        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.channel'))
         .setRequired(true)
     )
     .addStringOption(op =>
       op
         .setName('send')
         .setDescription(en.options.send)
-        .setDescriptionLocalizations({
-          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.send }), {})
-        })
+        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.send'))
         .addChoices(
           { name: 'All', value: SendWelcome.all },
           { name: 'alone message', value: SendWelcome.alone_message },
@@ -57,20 +48,14 @@ export default new BuildCommand({
       op
         .setName('message')
         .setDescription(en.options.message)
-        .setDescriptionLocalizations({
-          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.message }), {})
-        })
+        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.message'))
         .setRequired(false)
     )
     .addStringOption(op =>
       op
         .setName('image')
         .setDescription(en.options.image)
-        .setDescriptionLocalizations({
-          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-          ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.image }), {})
-        })
+        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.image'))
         .setRequired(false)
     )
     .setDefaultMemberPermissions(

@@ -1,5 +1,6 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { getI18n, getI18nCollection } from '@/i18n'
+import { reduceTupleToObj } from '@/shared/general'
 import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@libs/formatterText'
 import { Colors, Locale, SlashCommandBuilder } from 'discord.js'
@@ -13,26 +14,17 @@ export default new BuildCommand({
   cooldown: 5,
   ephemeral: true,
   permissions: [],
+  scope: 'public',
   data: new SlashCommandBuilder()
-    .setNameLocalizations({
-      // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-      ...i18nsArray.reduce((acc, [lang, i18n]) => ({ ...acc, [lang]: i18n.title }), {})
-    })
+    .setNameLocalizations(reduceTupleToObj(i18nsArray, 'title'))
     .setDescription(en.description)
-    .setDescriptionLocalizations({
-      // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-      ...i18nsArray.reduce((acc, [lang, i18n]) => ({ ...acc, [lang]: i18n.title }), {})
-    })
+    .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'description'))
     .addSubcommand(subcommand =>
       subcommand
         .setName('welcome')
         .setDescription(en.options.welcome)
-        .setDescriptionLocalizations({
-          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-          ...i18nsArray.reduce((acc, [lang, i18n]) => ({ ...acc, [lang]: i18n.options.welcome }), {})
-        })
+        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.welcome'))
     ),
-  scope: 'public',
   execute: async i => {
     const subcommand = i.options.getSubcommand(true)
     const i18n = getI18n(i.locale, CommandNames.help)

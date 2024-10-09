@@ -1,5 +1,6 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { getI18n, getI18nCollection } from '@/i18n'
+import { reduceTupleToObj } from '@/shared/general'
 import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@libs/formatterText'
 import { Locale, SlashCommandBuilder, resolveColor } from 'discord.js'
@@ -9,11 +10,9 @@ const i18nsArray = getI18nCollection(CommandNames.aboutMe)
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()
-    .setNameLocalizations({ ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.name }), {}) })
+    .setNameLocalizations(reduceTupleToObj(i18nsArray, 'name'))
     .setDescription(en.description)
-    .setDescriptionLocalizations({
-      ...i18nsArray.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.description }), {})
-    }),
+    .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'description')),
   name: CommandNames.aboutMe,
   scope: 'public',
   ephemeral: true,
