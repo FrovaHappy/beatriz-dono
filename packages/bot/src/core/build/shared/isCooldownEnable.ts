@@ -1,7 +1,7 @@
 import { getI18n } from '@/i18n'
 import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import type { MessageOptions } from '@/types/main'
-import formatterText from '@lib/formatterText'
+import formatterText from '@libs/formatterText'
 import { Collection, Colors, EmbedBuilder, type Locale, type Snowflake } from 'discord.js'
 
 interface Props {

@@ -1,4 +1,4 @@
-import { parseEmoji, type PartialEmoji } from 'discord.js'
+import { type PartialEmoji, parseEmoji } from 'discord.js'
 
 const emojis = {
   vote: '<:Vote:1290031552834830337>',

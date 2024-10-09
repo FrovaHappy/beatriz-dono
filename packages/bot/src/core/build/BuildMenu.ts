@@ -1,4 +1,6 @@
 import type { MenuNames } from '@/const/interactionsNames'
+import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
+import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import type {
   AnySelectMenuInteraction,
@@ -15,12 +17,10 @@ import type {
   UserSelectMenuInteraction
 } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
+import baseMessage from './shared/baseMessage'
+import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
-import buildMessageErrorForScope from './shared/hasAccessForScope'
-import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
-import baseMessage from './shared/baseMessage'
-import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder

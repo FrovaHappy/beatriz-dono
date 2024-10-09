@@ -1,11 +1,11 @@
 import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import db from '@/core/db'
+import { getI18n } from '@/i18n'
+import guildErrorMessage from '@/services/shared/guildError.message'
+import formatterText from '@libs/formatterText'
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, EmbedBuilder, resolveColor } from 'discord.js'
 import fetchColorCommand from '../shared/fetchColorCommand'
-import guildErrorMessage from '@/services/shared/guildError.message'
-import { getI18n } from '@/i18n'
-import formatterText from '@lib/formatterText'
 
 export default new BuildButton({
   name: ButtonNames.setting,

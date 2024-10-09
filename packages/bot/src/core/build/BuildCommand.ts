@@ -9,11 +9,11 @@ import type {
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 
 import type { CommandNames } from '@/const/interactionsNames'
-import isCooldownEnable from './shared/isCooldownEnable'
-import requiresBotPermissions from './shared/requiresBotPermissions'
-import buildMessageErrorForScope from './shared/hasAccessForScope'
 import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
 import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
+import buildMessageErrorForScope from './shared/hasAccessForScope'
+import isCooldownEnable from './shared/isCooldownEnable'
+import requiresBotPermissions from './shared/requiresBotPermissions'
 /**
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional

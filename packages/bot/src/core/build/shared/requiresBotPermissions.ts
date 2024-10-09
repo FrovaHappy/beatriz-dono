@@ -1,7 +1,7 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { getI18n } from '@/i18n'
 import type { MessageOptions } from '@/types/main'
-import formatterText from '@lib/formatterText'
+import formatterText from '@libs/formatterText'
 import {
   Colors,
   EmbedBuilder,

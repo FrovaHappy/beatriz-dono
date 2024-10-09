@@ -1,6 +1,8 @@
 import COLORS from '@/const/colors'
 import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
+import { getI18n } from '@/i18n'
+import formatterText from '@libs/formatterText'
 import {
   ActionRowBuilder,
   Colors,
@@ -10,13 +12,11 @@ import {
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder
 } from 'discord.js'
+import guildErrorMessage from '../shared/guildError.message'
 import createColorRole from './shared/createColorRole'
 import fetchColorCommand from './shared/fetchColorCommand'
-import { removeRolesOfUser } from './shared/removeRoles'
-import { getI18n } from '@/i18n'
-import guildErrorMessage from '../shared/guildError.message'
-import formatterText from '@lib/formatterText'
 import messageErrorColorPointer from './shared/message.errorColorPointer'
+import { removeRolesOfUser } from './shared/removeRoles'
 
 const en = getI18n(Locale.EnglishUS, CommandNames.colors)
 

@@ -1,0 +1,7 @@
+{
+  "name": "libs",
+  "scripts": {
+    "build": "tsc",
+    "dev": " tsc --watch"
+  }
+}

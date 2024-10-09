@@ -1,13 +1,9 @@
 {
   "name": "beatriz-bot-website",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
-    "cp": "node ./cp.cjs",
-    "dev": "npm run cp && next dev",
-    "build": "npm run cp && next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "build": "next build"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

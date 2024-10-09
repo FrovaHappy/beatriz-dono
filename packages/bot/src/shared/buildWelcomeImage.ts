@@ -2,7 +2,7 @@ import { GlobalFonts, Path2D as Path, createCanvas, loadImage } from '@napi-rs/c
 import { AttachmentBuilder, type GuildMember } from 'discord.js'
 
 import type { Canvas, Image, Layer } from '@/types/Canvas.types'
-import renderCanvas from '@lib/renderCanvas'
+import renderCanvas from '@libs/renderCanvas'
 // load Fonts
 import fonts from './fonts'
 for (const font of fonts) {

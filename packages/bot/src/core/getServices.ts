@@ -1,11 +1,11 @@
+import path from 'node:path'
+import readAllFiles from '@/shared/readAllFiles'
+import { Collection } from 'discord.js'
+import p from 'picocolors'
 import BuildButton from './build/BuildButtons'
 import BuildCommand from './build/BuildCommand'
 import BuildMenu from './build/BuildMenu'
 import BuildModal from './build/BuildModal'
-import path from 'node:path'
-import { Collection } from 'discord.js'
-import readAllFiles from '@/shared/readAllFiles'
-import p from 'picocolors'
 
 globalThis.buttons = new Collection<string, BuildButton>()
 globalThis.commands = new Collection<string, BuildCommand>()

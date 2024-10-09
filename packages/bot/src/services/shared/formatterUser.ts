@@ -1,4 +1,4 @@
-import formatterText from '@lib/formatterText'
+import formatterText from '@libs/formatterText'
 import type { User } from 'discord.js'
 
 /**

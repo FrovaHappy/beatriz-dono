@@ -1,8 +1,9 @@
 import 'module-alias/register'
+import { join } from 'node:path'
 import { addAliases } from 'module-alias'
 
 addAliases({
-  '@': `${__dirname}`,
-  '@core': `${__dirname}/core`,
-  '@lib': `${__dirname}/_lib`
+  '@': join(__dirname),
+  '@core': join(__dirname, 'core'),
+  '@libs': join(__dirname, '../../', 'libs', 'dist')
 })

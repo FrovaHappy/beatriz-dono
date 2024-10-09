@@ -1,7 +1,7 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import deployCommand from './deployCommands'
-import getServices from './getServices'
 import getEvents from './getEvents'
+import getServices from './getServices'
 
 export default async function startClient(): Promise<void> {
   const { config } = globalThis

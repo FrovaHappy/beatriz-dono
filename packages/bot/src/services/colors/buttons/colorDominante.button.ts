@@ -1,6 +1,10 @@
+import { getEmoji } from '@/const/emojis'
 import { ButtonNames, CommandNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
+import { getI18n } from '@/i18n'
 import guildErrorMessage from '@/services/shared/guildError.message'
+import { getDominanteColor, rgbToHex } from '@libs/colors'
+import formatterText from '@libs/formatterText'
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -9,14 +13,10 @@ import {
   EmbedBuilder,
   type GuildMemberRoleManager
 } from 'discord.js'
-import { getDominanteColor, rgbToHex } from '@lib/colors'
-import fetchColorCommand from '../shared/fetchColorCommand'
-import formatterText from '@lib/formatterText'
 import createColorRole from '../shared/createColorRole'
-import { getI18n } from '@/i18n'
-import { removeRolesOfUser } from '../shared/removeRoles'
+import fetchColorCommand from '../shared/fetchColorCommand'
 import messageErrorColorPointer from '../shared/message.errorColorPointer'
-import { getEmoji } from '@/const/emojis'
+import { removeRolesOfUser } from '../shared/removeRoles'
 
 export default new BuildButton({
   name: ButtonNames.colorDominante,

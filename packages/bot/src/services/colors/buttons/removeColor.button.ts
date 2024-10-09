@@ -1,10 +1,10 @@
 import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
+import guildErrorMessage from '@/services/shared/guildError.message'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
 import fetchColorCommand from '../shared/fetchColorCommand'
-import { removeRolesOfUser } from '../shared/removeRoles'
-import guildErrorMessage from '@/services/shared/guildError.message'
 import messageErrorColorPointer from '../shared/message.errorColorPointer'
+import { removeRolesOfUser } from '../shared/removeRoles'
 
 export default new BuildButton({
   name: ButtonNames.removeColor,

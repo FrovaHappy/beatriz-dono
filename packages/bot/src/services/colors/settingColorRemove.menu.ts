@@ -4,7 +4,7 @@ import { ActionRowBuilder, Collection, StringSelectMenuBuilder } from 'discord.j
 import guildErrorMessage from '../shared/guildError.message'
 import fetchColorCommand from './shared/fetchColorCommand'
 import messageErrorColorPointer from './shared/message.errorColorPointer'
-import { removeRolesOfServer, removeRolesOfDb } from './shared/removeRoles'
+import { removeRolesOfDb, removeRolesOfServer } from './shared/removeRoles'
 
 export default new BuildMenu({
   name: MenuNames.settingColorRemove,

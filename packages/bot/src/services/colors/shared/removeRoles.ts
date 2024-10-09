@@ -1,6 +1,6 @@
 import db from '@/core/db'
 import type { Color } from '@prisma/client'
-import { Collection, Interaction, type GuildMemberRoleManager, type Role } from 'discord.js'
+import { Collection, type GuildMemberRoleManager, Interaction, type Role } from 'discord.js'
 
 /**
  * @param roles collection of roles in the guild server

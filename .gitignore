@@ -1,5 +1,7 @@
 node_modules/
 .vscode
+.turbo
+.next
 .env
 dist
 package-lock.json

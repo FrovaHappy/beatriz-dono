@@ -1,5 +1,5 @@
 import { useCanvasCtx } from '@/app/context'
-import renderCanvas from '@lib/renderCanvas'
+import renderCanvas from '@libs/renderCanvas'
 import type { Image, Layer } from '@type/Canvas'
 import { type CSSProperties, useEffect, useMemo, useRef } from 'react'
 const USER = {

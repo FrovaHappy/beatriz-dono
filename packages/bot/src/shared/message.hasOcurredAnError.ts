@@ -1,5 +1,5 @@
 import { getI18n } from '@/i18n'
-import formatterText from '@lib/formatterText'
+import formatterText from '@libs/formatterText.js'
 import { Colors, EmbedBuilder, type Locale } from 'discord.js'
 
 export default function messageHasOcurredAnError(locale: Locale, trigger: string) {

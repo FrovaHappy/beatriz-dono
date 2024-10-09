@@ -1,5 +1,7 @@
 import { ButtonNames, CommandNames, MenuNames } from '@/const/interactionsNames'
+import { getI18n, getI18nCollection } from '@/i18n'
 import BuildCommand from '@core/build/BuildCommand'
+import formatterText from '@libs/formatterText'
 import {
   ActionRowBuilder,
   Colors,
@@ -9,14 +11,12 @@ import {
   SlashCommandBuilder,
   StringSelectMenuBuilder
 } from 'discord.js'
+import guildErrorMessage from '../shared/guildError.message'
 import type { EditColorDefault } from './editColorsDefault.modal'
 import createColorRole from './shared/createColorRole'
 import fetchColorCommand from './shared/fetchColorCommand'
-import { removeRolesOfUser } from './shared/removeRoles'
-import { getI18n, getI18nCollection } from '@/i18n'
-import formatterText from '@lib/formatterText'
-import guildErrorMessage from '../shared/guildError.message'
 import messageErrorColorPointer from './shared/message.errorColorPointer'
+import { removeRolesOfUser } from './shared/removeRoles'
 
 const regexColors = /^#([a-f0-9]{6})$/
 

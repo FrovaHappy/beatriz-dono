@@ -1,14 +1,14 @@
 import type { ButtonNames } from '@/const/interactionsNames'
+import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
+import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import { type ButtonBuilder, type ButtonInteraction, ButtonStyle, type PermissionResolvable } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
+import baseMessage from './shared/baseMessage'
 import hasAccessForScope from './shared/hasAccessForScope'
+import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
-import buildMessageErrorForScope from './shared/hasAccessForScope'
-import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
-import baseMessage from './shared/baseMessage'
-import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.

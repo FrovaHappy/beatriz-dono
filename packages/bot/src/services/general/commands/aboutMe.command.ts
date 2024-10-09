@@ -1,7 +1,7 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { getI18n, getI18nCollection } from '@/i18n'
 import BuildCommand from '@core/build/BuildCommand'
-import formatterText from '@lib/formatterText'
+import formatterText from '@libs/formatterText'
 import { Locale, SlashCommandBuilder, resolveColor } from 'discord.js'
 
 const en = getI18n(Locale.EnglishUS, CommandNames.aboutMe)

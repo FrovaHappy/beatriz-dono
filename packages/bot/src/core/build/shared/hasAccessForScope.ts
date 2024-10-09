@@ -1,6 +1,6 @@
 import { getI18n } from '@/i18n'
 import type { MessageOptions, Scope } from '@/types/main'
-import formatterText from '@lib/formatterText'
+import formatterText from '@libs/formatterText'
 import { Colors, EmbedBuilder, type Locale } from 'discord.js'
 
 /**
