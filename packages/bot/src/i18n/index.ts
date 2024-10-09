@@ -8,16 +8,23 @@ const commandFolders = readdirSync(join(__dirname, './')).filter(f =>
   ['.ts', '.js', '.json'].every(e => !f.endsWith(e))
 )
 
-function rewriteProp<T>(objO: T, objToReplace: Record<string, any> | undefined): T {
-  const objOriginal = objO as Record<string, any>
-  if (!objToReplace) return objOriginal as T
-  for (const key in Object.keys(objToReplace)) {
-    if (objOriginal[key] === undefined) continue
-    if (Array.isArray(objOriginal[key])) objOriginal[key] = [...objOriginal[key], ...objToReplace[key]]
-    else if (typeof objOriginal[key] === 'object') objOriginal[key] = { ...objOriginal[key], ...objToReplace[key] }
-    else objOriginal[key] = objToReplace[key]
+function rewriteObjet<T>(original: any, remplace: any): T {
+  const newObjet = original
+  if (!remplace) return newObjet
+  const keys = (() => {
+    try {
+      if (Array.isArray(newObjet)) return
+      if (typeof newObjet === 'string') return
+      return Object.keys(newObjet)
+    } catch (e) {
+      return
+    }
+  })()
+  if (!keys) return remplace
+  for (const key of keys) {
+    newObjet[key] = rewriteObjet(newObjet[key], remplace[key])
   }
-  return objOriginal as T
+  return newObjet
 }
 
 export function getI18n<T extends keyof I18n>(langues: Locale, key: T, strict = true) {
@@ -31,7 +38,7 @@ export function getI18n<T extends keyof I18n>(langues: Locale, key: T, strict = 
 
   if (!en) throw new Error(`file i18n/${key}/${lang}.json is required`)
 
-  return rewriteProp(en, i18n)
+  return rewriteObjet<typeof en>(en, i18n)
 }
 
 export const getI18nCollection = <T extends keyof I18n>(name: T) => {
