@@ -40,7 +40,6 @@ export function reduceTupleToObj(
   return tuple.reduce<Record<string, string>>((acc, elem) => {
     const [k, obj] = elem
     acc[k] = recoveryKey(obj)
-    console.log(acc)
     return acc
   }, {})
 }
