@@ -4,13 +4,15 @@ const db = new PrismaClient()
 export async function setSetting(data: Partial<Setting>) {
   const { config } = globalThis
   let setting = await db.setting.findFirst()
-
+  const addItemsToArray = (arr: string[], item: string) => {
+    return [...new Set([...arr, item])]
+  }
   if (!setting) {
     await db.setting.create({
       data: {
         cooldown: data.cooldown ?? config.cooldown,
         privatesServers: data.privatesServers ?? config.privatesServers,
-        ownersServers: data.ownersServers ?? config.ownersServers,
+        ownersServers: addItemsToArray(data.ownersServers ?? config.ownersServers, config.discordOwner),
         linkDiscord: data.linkDiscord ?? config.linkDiscord,
         linkGithub: data.linkGithub ?? config.linkGithub,
         linkDocumentation: data.linkDocumentation ?? config.linkDocumentation,
@@ -26,7 +28,10 @@ export async function setSetting(data: Partial<Setting>) {
       data: {
         cooldown: data.cooldown ?? setting.cooldown ?? config.cooldown,
         privatesServers: data.privatesServers ?? setting.privatesServers ?? config.privatesServers,
-        ownersServers: data.ownersServers ?? setting.ownersServers ?? config.ownersServers,
+        ownersServers: addItemsToArray(
+          data.ownersServers ?? setting.ownersServers ?? config.ownersServers,
+          config.discordOwner
+        ),
         linkDiscord: data.linkDiscord ?? setting.linkDiscord ?? config.linkDiscord,
         linkGithub: data.linkGithub ?? setting.linkGithub ?? config.linkGithub,
         linkDocumentation: data.linkDocumentation ?? setting.linkDocumentation ?? config.linkDocumentation,

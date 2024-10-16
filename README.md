@@ -4,42 +4,54 @@ A Bot multipurpose for discord
 
 ## Init Project
 
-### Install in Local
+> [!NOTE]
+> Si necesitas cambiar configuraciones del bot, puedes hacerlo manualmente desde la base de datos (falta por agrear un comando o interface para la manipulación de settings).
 
-First execute `npm install` for installed all dependencies of monorepo.
-then you need to generate the prism types, for that you have this script:
+### Configuración y Ejecución en local
 
-``` bash
-npm run bot:generate_db
+Sigue estos pasos para poner en marcha el proyecto:
+
+1. **Agregar el archivo `.env`:**  
+Crea un archivo `.env` en la raíz del proyecto. Este archivo debe incluir las variables de entorno necesarias para el proyecto ([ver Env sección](#environment-variables)).
+
+2. **Instalar dependencias:**  
+Ejecuta el siguiente comando para instalar las dependencias necesarias:
+
+```bash
+npm install
+```
+
+3. **Generar base de datos**
+  Crea y configura la base de datos ejecutando el comando:
+
+```bash
+npm run generate_db
+```
+
+4. **Ejecutar el Proyecto**
+Inicia el servidor en modo de desarrollo con el siguiente comando:
+
+```bash
+npm run dev
 ```
 
 ### Install with Docker
 
-You need [Docker Desktop][docker_desktop] before you can continue with the run.
+Para ejecutar con docker necesitas tener instalado [docker](https://docs.docker.com/engine/install/) en tu computadora.
 
-To run the development mode you have this command:
+1. Crea un archivo `.env` en la raíz del proyecto. Este archivo debe incluir las variables de entorno necesarias para el proyecto ([ver Env sección](#environment-variables)).
 
-```bash
-npm run docker:dev
-```
-
-And to run prod mode you have this command:
+2. Ejecuta el siguiente comando para generar el contenedor de docker:
 
 ```bash
-npm run docker:prod
+npm run docker:build
 ```
 
-this command is for testing the Dockerfile configurations
+## Environment Variables
 
-## Bot
-
-### Environment Variables
-
-The configurations are accessed through the thisGlobal.config object.
-
+The configurations are accessed through the thisGlobal.config object in the case of the bot.
 > [!NOTE]
-> The configurations that are related with settings,will be updated from the database after of the first execution.
-> PENDING: add a command to update the settings from the database.
+> The env of website not is required for the build of the docker container.
 
 ```bash
 # Bot Requieres
@@ -48,22 +60,9 @@ DISCORD_CLIENT = 'your user client id'
 DISCORD_OWNER = 'your server discord owner id'
 DATABASE_URL = 'mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority' // add your mongodb url
 
-# Bot Optionals
-PRIVATES_SERVERS = '["342443455343334912", "443664366665643264"]' // add your private servers ids base, keep in mind that this is handled from db
-OWNERS_SERVERS = '["342443455343334912"]' // this also is handled from db
-COOLDOWNS_DEFAULT = '5' // in seconds
-
-DISCORD_INVITE_URL = 'https://discord.gg/your-invite-url'
-GITHUB_LINK = 'https://github.com/your-github-link'
-DOCUMENTATION_LINK = 'https://your-documentation-link'
-WEBSITE_LINK = 'https://your-website-link'
-KOFI_LINK = 'https://ko-fi.com/your-kofi-link'
-TOPGG_LINK = 'https://top.gg/bot/your-topgg-link'
-BOTLIST_LINK = 'https://discordbotlist.com/bots/your-botlist-link'
-
 # Website Requieres
-IMGUR_CLIENT= 'your imgur client'
-IMGUR_KEY= 'your imgur key'
+IMGUR_CLIENT = 'your imgur client'
+IMGUR_KEY = 'your imgur key'
 ```
 
 ### Add I18n Languages
@@ -287,5 +286,3 @@ export default new BuildEvent({
 ## Website
 
 For the following commit... trust me 🫡.
-
-[docker_desktop]:https://www.docker.com/products/docker-desktop/

@@ -2,20 +2,24 @@ import 'dotenv/config'
 import type { Setting } from '@prisma/client'
 
 const settingDb = {
-  cooldown: Number.parseInt(process.env.COOLDOWNS_DEFAULT ?? '5'),
-  privatesServers: JSON.parse(process.env.PRIVATES_SERVERS ?? '[]') ?? [],
-  ownersServers: JSON.parse(process.env.OWNERS_SERVERS ?? '[]') ?? [],
-  linkDiscord: process.env.DISCORD_INVITE_URL ?? 'https://discord.gg/JRpHsGC8YQ',
-  linkGithub: process.env.GITHUB_LINK ?? 'https://github.com/FrovaHappy/beatriz-dono',
-  linkDocumentation: process.env.DOCUMENTATION_LINK ?? 'https://frovahappy.gitbook.io/beatriz-bot-docs/',
-  linkWebsite: process.env.WEBSITE_LINK ?? 'https://beatriz-dono.vercel.app/',
-  linkKofi: process.env.KOFI_LINK ?? 'https://ko-fi.com/frovahappy',
-  linkTopgg: process.env.TOPGG_LINK ?? 'https://top.gg/bot/971562890702237766',
-  linkBotList: process.env.BOTLIST_LINK ?? 'https://discordbotlist.com/bots/beatrizdono-beta'
+  cooldown: 5, // 5 segundos
+  privatesServers: [],
+  ownersServers: [],
+  linkDiscord: 'https://discord.gg/JRpHsGC8YQ',
+  linkGithub: 'https://github.com/FrovaHappy/beatriz-dono',
+  linkDocumentation: 'https://frovahappy.gitbook.io/beatriz-bot-docs/',
+  linkWebsite: 'https://beatriz-dono.vercel.app/',
+  linkKofi: 'https://ko-fi.com/frovahappy',
+  linkTopgg: 'https://top.gg/bot/971562890702237766',
+  linkBotList: 'https://discordbotlist.com/bots/beatrizdono-beta'
 } as Omit<Setting, 'id'>
 const env = {
-  discordToken: process.env.DISCORD_TOKEN ?? '',
-  discordClient: process.env.DISCORD_CLIENT ?? '',
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+  discordToken: process.env.DISCORD_TOKEN!,
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+  discordClient: process.env.DISCORD_CLIENT!,
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+  discordOwner: process.env.DISCORD_OWNER!,
   rootPath: process.env.NODE_ENV === 'production' ? `${process.cwd()}/dist` : `${process.cwd()}/src`
 }
 const utils = {
