@@ -44,7 +44,8 @@ The configurations are accessed through the thisGlobal.config object.
 ```bash
 # Bot Requieres
 DISCORD_TOKEN = 'your discord token'
-DISCORD_CLIENT = 'your discord client'
+DISCORD_CLIENT = 'your user client id'
+DISCORD_OWNER = 'your server discord owner id'
 DATABASE_URL = 'mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority' // add your mongodb url
 
 # Bot Optionals

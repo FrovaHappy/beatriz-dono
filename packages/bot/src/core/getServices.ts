@@ -15,7 +15,7 @@ const includes = ['.ts', '.js']
 const excludes = ['.test.ts', '.d.ts', '.test.js']
 export default async function getServices() {
   console.log(`${p.green('[services]')} Loading services`)
-  const absolutePath = path.join(process.cwd(), config.isProduction ? 'dist' : 'src', 'services')
+  const absolutePath = path.join(config.rootPath, 'services')
   const servicesPath = (await readAllFiles(absolutePath)).filter(
     file => includes.some(include => file.endsWith(include)) && !excludes.some(exclude => file.endsWith(exclude))
   )

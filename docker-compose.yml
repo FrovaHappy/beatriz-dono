@@ -2,9 +2,8 @@ services:
   bot:
     build: 
       context: .
-      target: production
-      args:
-        - DATABASE_URL=${DATABASE_URL}
+      target: deploy_bot
     env_file:
       - .env
-    container_name: prod
+    container_name: bot
+  

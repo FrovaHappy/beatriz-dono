@@ -1,18 +1,15 @@
 {
   "name": "bot",
   "scripts": {
-    "generate_db": "npx prisma db push",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
     "dev": "nodemon -L --exec ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "NODE_ENV=production node dist/index.js"
   },
   "paths": {
     "@/libs/*": ["../libs/dist/*"]
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.51",
-    "@prisma/client": "^5.13.0",
     "discord.js": "^14.16.2",
     "dotenv": "^16.4.5",
     "module-alias": "^2.2.3",
@@ -22,7 +19,6 @@
   "devDependencies": {
     "@types/module-alias": "^2.0.4",
     "nodemon": "3.1.0",
-    "prisma": "^5.13.0",
     "ts-node": "10.9.2"
   }
 }

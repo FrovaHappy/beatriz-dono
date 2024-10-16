@@ -16,7 +16,7 @@ const settingDb = {
 const env = {
   discordToken: process.env.DISCORD_TOKEN ?? '',
   discordClient: process.env.DISCORD_CLIENT ?? '',
-  isProduction: process.env.NODE_ENV === 'production'
+  rootPath: process.env.NODE_ENV === 'production' ? `${process.cwd()}/dist` : `${process.cwd()}/src`
 }
 const utils = {
   imageTransparent: 'https://i.imgur.com/m8BHGOt.png',

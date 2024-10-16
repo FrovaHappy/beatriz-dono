@@ -10,7 +10,7 @@ const excludes = ['.test.ts', '.d.ts', '.test.js']
 export default async function getEvents() {
   console.log(`${p.green('[events]:')} Loading events`)
   const events = new Collection<string, BuildEvent<keyof ClientEvents>>()
-  const absolutePath = path.join(process.cwd(), config.isProduction ? 'dist' : 'src', 'events')
+  const absolutePath = path.join(config.rootPath, 'events')
   const eventsPath = (await readAllFiles(absolutePath)).filter(
     file => includes.some(include => file.endsWith(include)) && !excludes.some(exclude => file.endsWith(exclude))
   )
