@@ -15,7 +15,7 @@ export default defineConfig({
       locales: {
         es: {
           label: 'Español',
-          lang: 'doc-es'
+          lang: 'es'
         },
         en: {
           label: 'English',
