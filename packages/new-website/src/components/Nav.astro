@@ -1,0 +1,211 @@
+---
+const apiUrl = import.meta.env.URL_API;
+console.log(apiUrl);
+---
+
+<nav>
+  <meta data-url-api={apiUrl} />
+  <x-logo></x-logo>
+  <ul class="links--actives">
+    <li><a href="#">Soporte</a></li>
+    <li><a href="/es/home">Wiki</a></li>
+  </ul>
+  <ul class="links--inactives">
+    <span>Pronto</span>
+    <span class="line"></span>
+    <li><a href="#">Galeria</a></li>
+  </ul>
+  <span class="spacer"></span>
+  <!-- button github -->
+  <a
+    href="https://github.com/FrovaHappy/beatriz-dono"
+    target="_blank"
+    class="button button--without-text"
+  >
+    <i class="ti ti-brand-github button--icon"></i>
+  </a>
+  <!-- button light/dark mode -->
+  <button class="button button--without-text" id="button-theme">
+    <i class="ti ti-moon-stars button--icon"></i>
+  </button>
+  <span class="line"></span>
+  <a href="" class="button button--primary">
+    <i class="ti ti-cup button--icon"></i>
+    <span class="button--text">Regalame un Café</span>
+  </a>
+  <div id="login">
+    <div class="loader" style="height: 2.4rem; aspect-ratio: 4/1"></div>
+    <a
+      href=`${apiUrl}/auth0/discord/callback`
+      class="button button--secondary"
+      style="display: none"
+    >
+      <i class="ti ti-brand-discord button--icon"></i>
+      <span class="button--text">iniciar sesión</span>
+    </a>
+    <div class="avatar" style="display: none">
+      <img src="" alt="" />
+      <ul class="options">
+        <li>
+          <a href="/dashboard">
+            <i class="ti ti-tool button--icon"></i>
+            <span class="button--text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href=`${apiUrl}/logout`>
+            <i class="ti ti-power button--icon"></i>
+            <span class="button--text">Cerrar sesión</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<script is:inline>
+  const apiUrl = document
+    .querySelector("meta[data-url-api]")
+    .getAttribute("data-url-api");
+  const buttonTheme = document.getElementById("button-theme");
+  let theme =
+    document.documentElement.getAttribute("data-theme") ??
+    localStorage.getItem("theme");
+  const changeTheme = (e) => {
+    if (!e) return;
+    theme = theme === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  };
+  buttonTheme?.addEventListener("click", changeTheme);
+  changeTheme();
+
+  // Login
+  const $login = document.getElementById("login");
+  const request = new Request(`${apiUrl}/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+  fetch(request)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      const $loader = $login.querySelector(".loader");
+      const $button = $login.querySelector("a");
+      const $avatar = $login.querySelector(".avatar");
+      $loader.style.display = "none";
+      if (data.ok) {
+        const user = data.data;
+        const $image = $avatar.querySelector("img");
+        const options = $avatar.querySelector(".options");
+        $image.src = `https://cdn.discordapp.com/avatars/${user.id}/a_${user.avatar}.png?size=48`;
+        $image.alt = user.username;
+        $avatar.style.display = "flex";
+        const activeOpotions = () => {
+          const active = $image.getAttribute("active");
+          $image.setAttribute("active", active === "true" ? "false" : "true");
+        };
+        $image.addEventListener("click", activeOpotions);
+        options.addEventListener("click", activeOpotions);
+      } else {
+        $button.style.display = "flex";
+      }
+    });
+</script>
+<style lang="scss">
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem;
+    padding: 1rem;
+    border-bottom: 0.0625rem solid var(--font-color-50);
+  }
+  .links {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    a {
+      padding: 0.375rem;
+      border-radius: var(--border-radius);
+      transition: all 0.2s ease-in-out;
+    }
+  }
+  .links--actives {
+    @extend .links;
+    a:hover {
+      background: color-mix(in srgb, var(--font-color) 25%, transparent);
+      color: var(--font-color);
+    }
+  }
+  .links--inactives {
+    @extend .links;
+    $color: color-mix(in srgb, var(--secondary-color) 50%, black);
+    border: 0.0625rem dashed $color;
+    padding: 0.375rem;
+    border-radius: var(--border-radius);
+    color: $color;
+    cursor: not-allowed;
+    .line {
+      background: $color;
+      height: 1rem;
+    }
+  }
+  .spacer {
+    flex-grow: 1;
+  }
+  .line {
+    width: 1px;
+    height: 1.5rem;
+    flex-shrink: 0;
+    background: var(--font-color-50);
+  }
+  #login {
+    display: flex;
+    align-items: center;
+    .avatar {
+      position: relative;
+      img {
+        cursor: pointer;
+        width: 2.275rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--font-color-10);
+      }
+      .options {
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        top: 110%;
+        right: 0;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        border-radius: var(--border-radius);
+        background: var(--font-color-10);
+        backdrop-filter: blur(0.5rem);
+        li {
+          a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease-in-out;
+          }
+          a:hover {
+            background: color-mix(in srgb, var(--font-color) 25%, transparent);
+            color: var(--font-color);
+          }
+        }
+      }
+      img[active="true"] + .options {
+        display: block;
+      }
+    }
+  }
+</style>
