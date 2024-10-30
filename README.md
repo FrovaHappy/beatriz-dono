@@ -54,15 +54,22 @@ The configurations are accessed through the thisGlobal.config object in the case
 > The env of website not is required for the build of the docker container.
 
 ```bash
+# General Environment
+DISCORD_CLIENT = 'discord client id'
 # Bot Requieres
-DISCORD_TOKEN = 'your discord token'
-DISCORD_CLIENT = 'your user client id'
+DISCORD_TOKEN = 'Token of Bot Discord'
 DISCORD_OWNER = 'your server discord owner id'
-DATABASE_URL = 'mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority' // add your mongodb url
+DATABASE_URL = 'URL of the database mongodb'
 
-# Website Requieres
+# API Requieres
+DISCORD_CLIENT_SECRET = 'Token of Application Discord'
+URL_CLIENT_DOMAIN = 'URL of the website needed for session'
+SECRET_KEY = 'secret used for session'
 IMGUR_CLIENT = 'your imgur client'
 IMGUR_KEY = 'your imgur key'
+
+# Website Requieres
+URL_API = 'URL of the API '
 ```
 
 ### Add I18n Languages

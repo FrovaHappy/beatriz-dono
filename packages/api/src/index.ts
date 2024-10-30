@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import './resolvePaths'
 import './config'
 import express from 'express'
-import session, { Cookie } from 'express-session'
+import session from 'express-session'
 import passport from 'passport'
 import { Strategy } from 'passport-discord'
 import cors from 'cors'
@@ -19,7 +19,7 @@ const discordStrategy = new Strategy(
   async (accessToken, refreshToken, profile, done) => {
     console.log('callback function', profile.id)
 
-    done(null, profile)
+    done(null, { id: profile.id, username: profile.username, avatar: profile.avatar })
   }
 )
 const app = express()
