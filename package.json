@@ -13,7 +13,7 @@
     "dev": "env-cmd turbo dev",
     "build": "env-cmd turbo build",
     "bot:start": "env-cmd npm run start --workspace=packages/bot",
-    "generate_db": "prisma db push",
+    "generate_db": "env-cmd prisma db push",
     "docker:prod": "docker compose up --build",
     "docker:dev": "docker compose -f dev.docker-compose.yml up --build"
   },
