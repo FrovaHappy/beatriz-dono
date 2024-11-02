@@ -22,7 +22,7 @@
       "complexity": { "noForEach": "warn" },
       "performance": { "noAccumulatingSpread": "warn" },
       "correctness": { "useExhaustiveDependencies": "warn" },
-      "style": { "noNonNullAssertion": "warn" },
+      "style": { "noNonNullAssertion": "off" },
       "a11y": { "noSvgWithoutTitle": "off" }
     },
     "ignore": ["**/dist/**"]
