@@ -1,0 +1,40 @@
+---
+
+---
+
+<x-content>
+  <slot />
+</x-content>
+<x-responsive>
+  <i class="ti ti-devices-off"></i><p>
+    No se puede visualizar el contenido en dispositivos móviles
+  </p>
+</x-responsive>
+
+<style lang="scss">
+  $min-width: 58rem;
+  x-content {
+    width: 100%;
+    @media (max-width: $min-width) {
+      display: none;
+    }
+  }
+  x-responsive {
+    display: none;
+    @media (max-width: $min-width) {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      padding: 80px;
+      gap: 2rem;
+      font-size: 1.5rem;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-secondary);
+      background: var(--font-color-10);
+      i {
+        font-size: 3rem;
+      }
+    }
+  }
+</style>

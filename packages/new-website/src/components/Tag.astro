@@ -1,0 +1,31 @@
+---
+interface Props {
+  type: "small" | "big";
+  text: string;
+  class?: string;
+}
+const { type, text, class: className } = Astro.props;
+---
+
+<p class={`tag tag--${type} ${className}`}>{text}</p>
+
+<style lang="scss">
+  .tag {
+    display: inline-block;
+    background: var(--secondary-color);
+    text-wrap: nowrap;
+    flex-shrink: 0;
+    box-shadow: 0 5px 1rem var(--font-color-50);
+    color: black;
+    &--small {
+      padding: 0.25rem 0.5rem;
+      font-weight: var(--semi-bold);
+      border-radius: var(--border-radius);
+    }
+    &--big {
+      padding: 0.5rem 1rem;
+      font-weight: var(--bold);
+      border-radius: var(--border-radius);
+    }
+  }
+</style>
