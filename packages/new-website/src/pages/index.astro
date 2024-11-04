@@ -1,4 +1,5 @@
 ---
+import Feacture from "../components/Landing/Feacture.astro";
 import Hero from "../components/Landing/Hero.astro";
 import Layout from "../layouts/Layout.astro";
 ---
@@ -6,6 +7,42 @@ import Layout from "../layouts/Layout.astro";
 <Layout title="Welcome to Beatriz Dono">
   <main>
     <Hero />
+    <Feacture title="Gestión de colores" image="/assets/feacture_color.png">
+      <p>
+        Con Beatriz~Dono, puedes personalizar el color de tu nickname con más de <span
+          >16 mil opciones</span
+        >, utilizando valores hexadecimales para crear roles únicos.
+      </p>
+      <p>¡Dale un toque personal a tu perfil!</p>
+      <p>
+        Además, puedes cambiarlo cuantas veces quieras, ¡<span
+          >sin limitaciones</span
+        >!
+      </p>
+      <a href="/es/modules/colors" class="button button--secondary"
+        >Aprende más sobre los Roles de Colores</a
+      >
+    </Feacture>
+    <Feacture
+      title="Bienvenidas"
+      image="/assets/feacture_welcome.png"
+      imageAlign="right"
+      tagTitle="En breve"
+    >
+      <p>
+        ¡Haz que cada bienvenida en tu servidor sea única con nuestro avanzado
+        sistema de <span>personalización de mensajes</span>!
+      </p>
+      <p>
+        Dale un toque especial y memorable a tus usuarios. Además, utiliza
+        nuestro potente <span>editor de imágenes</span> para crear diseños personalizados
+        y destacar aún más.
+      </p>
+      <p>¡Empieza a transformar tu servidor hoy mismo!</p>
+      <a href="/es/modules/welcome" class="button button--secondary"
+        >Aprende más sobre Bienvenidas</a
+      >
+    </Feacture>
   </main>
 </Layout>
 

@@ -1,0 +1,63 @@
+---
+import Tag from "../Tag.astro";
+
+interface Props {
+  title: string;
+  image: string;
+  imageAlign?: "left" | "right";
+  tagTitle?: string;
+}
+const { title, image, imageAlign = "left", tagTitle } = Astro.props;
+---
+
+<section class={imageAlign} style=":where(span) { color: red; }">
+  <img src={image} alt={title} class={`image image--${imageAlign}`} />
+  <div class="feacture-content">
+    <x-title>
+      <h2>
+        {title}
+      </h2>
+      {tagTitle ? <Tag text={tagTitle} type="small" /> : undefined}
+    </x-title>
+    <slot />
+  </div>
+</section>
+<script>
+  const $spans = document.querySelectorAll<HTMLSpanElement>(
+    ".feacture-content span",
+  );
+  $spans.forEach((span) => {
+    span.style.color = "var(--primary-color)";
+  });
+</script>
+
+<style lang="scss">
+  x-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  section {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 80px;
+  }
+  .left {
+    flex-direction: row;
+  }
+  .right {
+    justify-content: space-between;
+    flex-direction: row-reverse;
+  }
+  .feacture-content {
+    max-width: 750px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .image {
+    height: 300px;
+    border-radius: var(--border-radius-lg);
+  }
+</style>
