@@ -1,0 +1,108 @@
+---
+
+---
+
+<section>
+  <h2>Que sigue para el Bot?</h2>
+  <p>Mira lo que tenemos planeado en nuestro Mapa de Desarrollo.</p>
+  <div class="target">
+    <svg
+      width="100"
+      height="100"
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M46.1562 95.5813L44.9562 94.7688C38.9505 90.5667 33.3698 85.7877 28.2937 80.5C19.375 71.1562 9.375 57.15 9.375 40.6188C9.375 20.2812 25.8813 0 50 0C74.1188 0 90.625 20.2812 90.625 40.625C90.625 57.1562 80.625 71.1625 71.7062 80.4938C66.6302 85.7815 61.0495 90.5604 55.0438 94.7625C54.5354 95.1167 54.1354 95.3875 53.8438 95.575C52.575 96.4187 51.2812 97.2188 50 98.0312C48.7188 97.2188 47.425 96.4188 46.1562 95.5813ZM50 53.125C53.3152 53.125 56.4946 51.808 58.8388 49.4638C61.183 47.1196 62.5 43.9402 62.5 40.625C62.5 37.3098 61.183 34.1304 58.8388 31.7862C56.4946 29.442 53.3152 28.125 50 28.125C46.6848 28.125 43.5054 29.442 41.1612 31.7862C38.817 34.1304 37.5 37.3098 37.5 40.625C37.5 43.9402 38.817 47.1196 41.1612 49.4638C43.5054 51.808 46.6848 53.125 50 53.125Z"
+        fill="url(#paint0_linear_210_55)"></path>
+      <defs>
+        <linearGradient
+          id="paint0_linear_210_55"
+          x1="50"
+          y1="0"
+          x2="50"
+          y2="98.0312"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#00FF99" stop-opacity="0.5"></stop>
+          <stop offset="1" stop-color="white" stop-opacity="0.5"></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <div class="container">
+      <h2>Ruta de Desarrollo</h2>
+      <ul>
+        <li>
+          Galeria de la comunidad donde podras dejar tus diseños de imagenes y
+          poder acelerar tus personalizaciones. roles.
+        </li>
+        <li>
+          Modulo de Niveles, esto usara el mismo consepto de diseño de
+          bienvenidas, pero agregando la mecanicas de niveles.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  section {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 40px;
+    background: var(--bg-color);
+    border-radius: var(--border-radius);
+  }
+  .container {
+    display: flex;
+    max-width: 900px;
+    flex-direction: column;
+    gap: 1rem;
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-left: 2rem;
+    }
+    li {
+      position: relative;
+      color: var(--font-color-90);
+      &::after {
+        top: 50%;
+        left: -2rem;
+        position: absolute;
+        content: "";
+        width: 0.5rem;
+        height: 0.5rem;
+        box-shadow: 0 0 5px 0.05rem var(--bg-color);
+        transform: translate(0%, -50%);
+        background: var(--secondary-color);
+        border-radius: 50%;
+      }
+    }
+  }
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .target {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 40px;
+    gap: 40px;
+    border-radius: var(--border-radius);
+    background: radial-gradient(
+      circle at -10% -10%,
+      var(--primary-color) 0%,
+      var(--font-color-10) 50%
+    );
+  }
+</style>
