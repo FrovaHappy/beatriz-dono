@@ -3,9 +3,10 @@ import Nav from "../components/Nav.astro";
 
 interface Props {
   title: string;
+  showFooter?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, showFooter = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,6 +26,16 @@ const { title } = Astro.props;
   <body>
     <Nav />
     <slot />
+    {
+      showFooter && (
+        <footer>
+          <p>
+            Hecho con ❤️ por{" "}
+            <a href="https://github.com/FrovaHappy">frova_happy</a>
+          </p>
+        </footer>
+      )
+    }
   </body>
 </html>
 <style is:global lang="scss">
@@ -160,5 +171,21 @@ const { title } = Astro.props;
     text-wrap: pretty;
     font-size: 1.125rem;
     line-height: 1.5;
+  }
+  footer {
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: var(--font-color-10) solid 1px;
+    padding: 40px 0;
+    p > a {
+      cursor: pointer;
+      color: var(--primary-color);
+      text-decoration: underline;
+      &:hover {
+        color: color-mix(in srgb, var(--primary-color) 100%, white 25%);
+      }
+    }
   }
 </style>
