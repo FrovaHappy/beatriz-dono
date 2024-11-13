@@ -1,0 +1,61 @@
+---
+title: Módulo de Colores
+description: Usamos colores para dar vida a tu nombre de usuario y facilitar su personalización.
+---
+import { Steps } from '@astrojs/starlight/components'
+import { Badge } from '@astrojs/starlight/components'
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+
+## ¿Qué hace este módulo?
+
+- Organiza los colores del servidor para que sean fáciles de mantener y reutilizar.
+- Optimiza el uso de colores sin necesidad de crear roles manualmente.
+- Permite elegir entre una plantilla de colores predefinida o personalizarla.
+- *(Función futura)*: Ofrecerá una opción para limitar el acceso al comando de colores personalizados mediante un rol de membresía.
+
+## ¿Cómo funciona?
+
+Con escribir `/colors` en el chat, el bot te mostrará un menu con las opciones por defecto.
+Pero si le pasas el comando `/colors` con el argumento `custom`, podrás personalizar tu nombre de usuario con los colores que desees.
+
+## Configuración
+
+### Iniciar el módulo
+
+Iniciar el módulo es sencillo: simplemente ejecuta el comando `/colors` en el servidor por primera vez y sigue los pasos que se te indicarán.
+
+### Cómo personalizar la plantilla de colores
+
+<Tabs>
+  <TabItem label="Discord" icon="discord">
+    <Steps>
+
+    1. Al ejecutar el comando `/colors`, verás un botón de configuración. Haz clic en él para acceder al menú, donde encontrarás la opción **Customize Template** para ajustar los colores de la plantilla.
+
+    2. En el menú emergente, se te pedirá un JSON con los colores que deseas modificar. Por ejemplo:
+
+        ```json
+        {
+          "version": "v1",
+          "values": [
+            { "hexcolor": "#000000", "label": "Black" },
+            { "hexcolor": "#ffffff", "label": "White" }
+          ]
+        }
+        ```
+
+        - `version`: <Badge text="Opcional" variant="note" /> Si no lo especificas, se usará la última versión del esquema.
+        - `values`: <Badge text="Obligatorio" variant="caution" /> arreglo de objetos con los colores a personalizar.
+        - `hexcolor`: <Badge text="Obligatorio" variant="caution" /> Especifica el color en formato hexadecimal.
+        - `label`: <Badge text="Obligatorio" variant="caution" /> Nombre descriptivo del color.
+
+    3. ¡Listo! Ahora puedes ejecutar el comando `/colors` nuevamente para ver tus colores personalizados en acción.
+    
+    </Steps>
+  </TabItem>
+
+  <TabItem label="Website" icon="star">
+    en el futuro
+  </TabItem>
+
+</Tabs>
