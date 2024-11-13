@@ -35,5 +35,5 @@ export default async function fetchColorCommand(guildId: string, roles?: Collect
     ).colorCommand!
   }
   if (colorCommand.colorPointerId) colorCommand.colorPointerId = roles?.get(colorCommand.colorPointerId)?.id ?? null
-  return colorCommand as unknown as Omit<typeof colorCommand, 'colorsDefault'> & { colorsDefault: Colors }
+  return colorCommand as unknown as Omit<typeof colorCommand, 'colorsDefault'> & { colorsDefault: Colors | undefined }
 }

@@ -1,10 +1,10 @@
 import { MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
 import { ActionRowBuilder, Collection, StringSelectMenuBuilder } from 'discord.js'
-import guildErrorMessage from '../shared/guildError.message'
-import fetchColorCommand from './shared/fetchColorCommand'
-import messageErrorColorPointer from './shared/message.errorColorPointer'
-import { removeRolesOfDb, removeRolesOfServer } from './shared/removeRoles'
+import guildErrorMessage from '../../shared/guildError.message'
+import fetchColorCommand from '../shared/fetchColorCommand'
+import messageErrorColorPointer from '../shared/message.errorColorPointer'
+import { removeRolesOfDb, removeRolesOfServer } from '../shared/removeRoles'
 
 export default new BuildMenu({
   name: MenuNames.settingColorRemove,

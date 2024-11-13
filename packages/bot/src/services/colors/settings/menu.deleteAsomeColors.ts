@@ -1,7 +1,7 @@
 import { MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
-import { RoleSelectMenuBuilder, SelectMenuBuilder, StringSelectMenuInteraction } from 'discord.js'
-import fetchColorCommand from './shared/fetchColorCommand'
+import { RoleSelectMenuBuilder } from 'discord.js'
+import fetchColorCommand from '../shared/fetchColorCommand'
 
 export default new BuildMenu<'role'>({
   name: MenuNames.settingDeleteAsomeColors,

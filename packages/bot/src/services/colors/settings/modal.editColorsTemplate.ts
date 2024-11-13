@@ -2,7 +2,7 @@ import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
 import db from '@/core/db'
 import { ActionRowBuilder, ComponentType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
-import { validate } from './schema.color'
+import { validate } from '../schema.color'
 
 const COLORS_PLACEHOLDER = `
 {
