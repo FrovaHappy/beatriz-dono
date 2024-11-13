@@ -2,7 +2,7 @@ import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
 import db from '@/core/db'
 import { ActionRowBuilder, ComponentType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
-import z, { ZodError } from 'zod'
+import { validate } from './schema.color'
 
 const COLORS_PLACEHOLDER = `
 {
@@ -13,16 +13,6 @@ const COLORS_PLACEHOLDER = `
   ]
 }
 `
-
-const schemaEditColorDefault = {
-  v1: z.array(z.object({ hexcolor: z.string().regex(/^#([a-f0-9]{6})$/), label: z.string() }).strict())
-}
-type ColorValuesV1 = z.infer<(typeof schemaEditColorDefault)['v1']>
-
-export interface EditColorDefault {
-  version: keyof typeof schemaEditColorDefault
-  values: ColorValuesV1
-}
 
 const textEdit = new TextInputBuilder({
   label: 'Color',
@@ -47,19 +37,13 @@ export default new BuildModal({
     if (!guildId) return { content: 'No se encontró el guild' }
 
     // validate JSON color
-    const colorsInput: any = i.fields.getTextInputValue('input')
-    let jsonColors: Record<string, any>
-    try {
-      const { version, values } = JSON.parse(colorsInput as string)
-      schemaEditColorDefault[(version as keyof typeof schemaEditColorDefault) ?? currentVersion].parse(values)
-      jsonColors = { version: version ?? currentVersion, values }
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return { content: `Error en el json: ${JSON.stringify(error.errors)}` }
-      }
-      return { content: 'El json no es valido' }
-    }
+    const colorsInput = i.fields.getTextInputValue('input')
+    const errorColors = validate(colorsInput)
+    if (errorColors) return { content: errorColors }
 
+    // if the json is valid, update the database
+    const jsonColors = JSON.parse(colorsInput)
+    jsonColors.version = jsonColors.version ?? currentVersion
     // update database
     await db.colorCommand.update({
       where: { serverId: guildId },

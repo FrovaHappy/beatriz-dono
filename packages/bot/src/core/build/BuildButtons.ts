@@ -27,7 +27,7 @@ class BuildButton {
   cooldown: number
   data: ButtonBuilder
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
-  resolve: Resolve
+  resolve: Resolve | 'showModal'
   isLink = false
   constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'permissions'>) {
     this.isLink = props.isLink ?? false

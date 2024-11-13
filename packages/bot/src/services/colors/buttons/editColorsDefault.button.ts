@@ -7,7 +7,7 @@ export default new BuildButton({
   name: ButtonNames.editColorDefault,
   data: new ButtonBuilder().setLabel('Edit colors default').setStyle(ButtonStyle.Secondary),
   permissions: [],
-  resolve: 'defer',
+  resolve: 'showModal',
   execute: async i => {
     const { modals } = globalThis
     if (!i.guildId) return { content: 'Guild not found' }

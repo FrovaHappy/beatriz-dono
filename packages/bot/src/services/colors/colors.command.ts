@@ -12,16 +12,36 @@ import {
   StringSelectMenuBuilder
 } from 'discord.js'
 import guildErrorMessage from '../shared/guildError.message'
-import type { EditColorDefault } from './editColorsDefault.modal'
+import type { Colors as SchemaColors } from './schema.color'
 import createColorRole from './shared/createColorRole'
 import fetchColorCommand from './shared/fetchColorCommand'
 import messageErrorColorPointer from './shared/message.errorColorPointer'
 import { removeRolesOfUser } from './shared/removeRoles'
+import { reduceTupleToObj } from '@/shared/general'
 
 const regexColors = /^#([a-f0-9]{6})$/
 
 const en = getI18n(Locale.EnglishUS, CommandNames.colors)
 const languages = getI18nCollection(CommandNames.colors)
+
+interface RebuildColorsProps {
+  colorsDefault: SchemaColors | undefined
+  placeholder: string
+}
+const rebuildColorsDefault = ({ colorsDefault, placeholder }: RebuildColorsProps) => {
+  if (colorsDefault) {
+    return new StringSelectMenuBuilder({
+      customId: MenuNames.colorDefault,
+      placeholder
+    }).addOptions(
+      ...colorsDefault.values.map(color => ({
+        label: color.label,
+        value: color.hexcolor
+      }))
+    )
+  }
+  return menus.get(MenuNames.colorDefault).data
+}
 
 export default new BuildCommand({
   name: CommandNames.colors,
@@ -32,18 +52,12 @@ export default new BuildCommand({
   cooldown: 15,
   data: new SlashCommandBuilder()
     .setDescription(en.description)
-    .setDescriptionLocalizations({
-      // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-      ...languages.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.description }), {})
-    })
+    .setDescriptionLocalizations(reduceTupleToObj(languages, 'description'))
     .addStringOption(strOp =>
       strOp
         .setName('custom')
         .setDescription(en.options.custom)
-        .setDescriptionLocalizations({
-          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-          ...languages.reduce((acc, [l, i18n]) => ({ ...acc, [l]: i18n.options.custom }), {})
-        })
+        .setDescriptionLocalizations(reduceTupleToObj(languages, 'options.custom'))
         .setRequired(false)
     ),
   execute: async i => {
@@ -64,20 +78,6 @@ export default new BuildCommand({
 
     const { colorPointerId, colors, colorsDefault } = await fetchColorCommand(guildId, roles)
 
-    const rebuildColorsDefault = () => {
-      if (colorsDefault) {
-        return new StringSelectMenuBuilder({
-          customId: MenuNames.colorDefault,
-          placeholder: i18n.colorsDefault.placeholder
-        }).addOptions(
-          ...(colorsDefault as unknown as EditColorDefault).values.map(color => ({
-            label: color.label,
-            value: color.hexcolor
-          }))
-        )
-      }
-      return menus.get(MenuNames.colorDefault).data
-    }
     if (!colorPointerId) return messageErrorColorPointer(i.locale)
 
     const colorCustom = i.options.getString('custom')?.toLowerCase()
@@ -158,7 +158,9 @@ export default new BuildCommand({
         })
       ],
       components: [
-        new ActionRowBuilder().addComponents(rebuildColorsDefault()),
+        new ActionRowBuilder().addComponents(
+          rebuildColorsDefault({ colorsDefault, placeholder: i18n.colorsDefault.placeholder })
+        ),
         new ActionRowBuilder().addComponents(components.colorDominante, components.removeColorUser, components.setting),
         new ActionRowBuilder().addComponents(components.linkDiscord, components.linkGithubIssues, components.linkKofi)
       ]

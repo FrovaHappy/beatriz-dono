@@ -1,5 +1,6 @@
 import db from '@/core/db'
 import type { Collection, Role } from 'discord.js'
+import type { Colors } from '../schema.color'
 
 /**
  * This function is used to fetch the color command from the database.
@@ -14,7 +15,6 @@ export default async function fetchColorCommand(guildId: string, roles?: Collect
     include: { colors: true }
   })
   if (!colorCommand) {
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     colorCommand = (
       await db.server.upsert({
         where: { serverId: guildId },
@@ -35,5 +35,5 @@ export default async function fetchColorCommand(guildId: string, roles?: Collect
     ).colorCommand!
   }
   if (colorCommand.colorPointerId) colorCommand.colorPointerId = roles?.get(colorCommand.colorPointerId)?.id ?? null
-  return colorCommand
+  return colorCommand as unknown as Omit<typeof colorCommand, 'colorsDefault'> & { colorsDefault: Colors }
 }
