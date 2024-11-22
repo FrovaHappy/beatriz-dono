@@ -22,30 +22,39 @@ class BuildCommand {
   name: CommandNames
   scope: Scope
   ephemeral: boolean
-  permissions: PermissionResolvable[]
+  permissionsBot: PermissionResolvable[]
   cooldown: number
   data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder
   resolve: Omit<Resolve, 'update'>
   execute: (e: ChatInputCommandInteraction) => Promise<MessageOptions | undefined>
-  constructor(props: Partial<BuildCommand> & Pick<BuildCommand, 'name' | 'execute' | 'data' | 'permissions'>) {
+  constructor(props: Partial<BuildCommand> & Pick<BuildCommand, 'name' | 'execute' | 'data'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
     this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false
-    this.permissions = [...new Set([...PERMISSIONS_BASE_BOT, ...props.permissions])]
+    this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
     this.data = props.data.setName(this.name)
     this.execute = props.execute
   }
 
   static async runInteraction(i: ChatInputCommandInteraction) {
-    const command: Command = globalThis.commands.get(i.commandName)
-    if (!command) return messages.serviceNotFound(i.locale, `command:${i.commandName}`)
+    const { commandName, locale } = i
+    const command: Command = globalThis.commands.get(commandName)
+    const bot = i.guild?.members.me ?? undefined
+    if (!bot) {
+      return await i.reply({
+        ...messages.errorInService(locale, `command:${commandName}-guildMemberNotFound`),
+        ephemeral: true
+      })
+    }
+
+    if (!command) return await i.reply(messages.serviceNotFound(locale, `command:${commandName}`))
 
     // create message Access basic
     const messageRequirePermissions = requiresBotPermissions({
-      permissions: command.permissions,
-      bot: i.guild?.members.me,
+      permissions: command.permissionsBot,
+      bot,
       type: 'command',
       locale: i.locale
     })
@@ -57,7 +66,7 @@ class BuildCommand {
       locale: i.locale
     })
     const messageAccessForScope = buildMessageErrorForScope(i.locale, command.scope, i.guildId ?? '')
-    
+
     const controlAccess = () => {
       if (messageRequirePermissions) return messageRequirePermissions
       if (messageCooldown) return messageCooldown

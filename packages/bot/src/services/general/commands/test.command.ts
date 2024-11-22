@@ -7,7 +7,6 @@ export default new BuildCommand({
   cooldown: 60,
   name: CommandNames.test,
   scope: 'private',
-  permissions: [],
   ephemeral: true,
   data: new SlashCommandBuilder().setDescription('Replies with Pong!'),
   async execute() {

@@ -47,8 +47,12 @@ class BuildButton {
     const button: BuildButton = buttons.get(customId)
     const bot = i.guild?.members.me
     const user = i.guild?.members.cache.get(i.user.id)
-    if (!bot || !user) return messages.guildIdNoFound(locale)
-    if (!button) return messages.serviceNotFound(locale, `button:${customId}`)
+    if (!bot || !user)
+      return await i.reply({
+        ...messages.errorInService(locale, `button:${customId}-guildMemberNotFound`),
+        ephemeral: true
+      })
+    if (!button) return await i.reply(messages.serviceNotFound(locale, `button:${customId}`))
     const messageRequirePermissions = requiresBotPermissions({
       permissions: button.permissionsBot,
       bot,

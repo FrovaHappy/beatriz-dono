@@ -29,7 +29,6 @@ const command = new BuildCommand({
   name: CommandNames.aboutMe,
   scope: 'public',
   ephemeral: true,
-  permissions: [],
   execute: async i => {
     return messagesAboutMe.main(i.locale)
   }

@@ -32,7 +32,7 @@ export default new BuildModal({
   ephemeral: true,
   resolve: 'update',
   data: new ModalBuilder({ title: 'Edit Color Default' }).addComponents(rows),
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
   async execute(i) {
     const { guildId, locale } = i
     if (!guildId) return messages.guildIdNoFound(locale)

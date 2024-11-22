@@ -15,7 +15,7 @@ export default new BuildCommand({
   name: CommandNames.colors,
   ephemeral: true,
   scope: 'public',
-  permissions: ['ManageRoles'],
+  permissionsBot: ['ManageRoles'],
   resolve: 'defer',
   cooldown: 15,
   data: new SlashCommandBuilder()

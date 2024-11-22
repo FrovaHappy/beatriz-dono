@@ -19,7 +19,6 @@ export default new BuildCommand({
   name: CommandNames.welcomeSet,
   ephemeral: true,
   scope: 'owner',
-  permissions: [],
   data: new SlashCommandBuilder()
     .setDescription(en.description)
     .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'description'))

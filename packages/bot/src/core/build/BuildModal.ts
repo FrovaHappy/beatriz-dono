@@ -1,12 +1,13 @@
 import type { ModalNames } from '@/const/interactionsNames'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import type { ModalBuilder, ModalSubmitInteraction, PermissionResolvable } from 'discord.js'
-import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
+import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import messages from '@/messages'
+import requiresUserPermissions from './shared/requiresUserPermissions'
 
 /**
  * #### Constructor
@@ -18,30 +19,48 @@ class BuildModal {
   scope: Scope
   ephemeral: boolean
   resolve: Resolve
-  permissions: PermissionResolvable[]
+  permissionsBot: PermissionResolvable[]
+  permissionsUser: PermissionResolvable[]
   cooldown: number
   data: ModalBuilder
   execute: (e: ModalSubmitInteraction) => Promise<MessageOptions>
 
-  constructor(props: Partial<BuildModal> & Pick<BuildModal, 'name' | 'execute' | 'data' | 'permissions'>) {
+  constructor(props: Partial<BuildModal> & Pick<BuildModal, 'name' | 'execute' | 'data'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.resolve = props.resolve ?? 'defer'
-    this.permissions = [...new Set([...PERMISSIONS_BASE_BOT, ...props.permissions])]
+    this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
+    this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
     this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
   }
 
   static async runInteraction(i: ModalSubmitInteraction) {
-    const modal: Modal = globalThis.modals.get(i.customId)
-    if (!modal) return messages.serviceNotFound(i.locale, `modal:${i.customId}`)
+    const { customId, locale } = i
+    const modal: Modal = globalThis.modals.get(customId)
+    const bot = i.guild?.members.me ?? undefined
+    const user = i.guild?.members.cache.get(i.user.id)
+    if (!bot || !user) {
+      return await i.reply({
+        ...messages.errorInService(locale, `modal:${customId}-guildMemberNotFound`),
+        ephemeral: true
+      })
+    }
+    if (!modal) return await i.reply(messages.serviceNotFound(locale, `modal:${customId}`))
+
     const messageRequirePermissions = requiresBotPermissions({
-      permissions: modal.permissions,
-      bot: i.guild?.members.me,
+      permissions: modal.permissionsBot,
+      bot,
       type: 'modal',
-      locale: i.locale
+      locale
+    })
+    const messageRequirePermissionsUser = requiresUserPermissions({
+      permissions: modal.permissionsUser,
+      user,
+      type: 'modal',
+      locale
     })
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
@@ -52,8 +71,9 @@ class BuildModal {
     })
     const messageAccessForScope = buildMessageErrorForScope(i.locale, modal.scope, i.guildId ?? '')
     const controlAccess = () => {
-      if (messageAccessForScope) return messageAccessForScope
       if (messageRequirePermissions) return messageRequirePermissions
+      if (messageRequirePermissionsUser) return messageRequirePermissionsUser
+      if (messageAccessForScope) return messageAccessForScope
       if (messageCooldown) return messageCooldown
     }
     const getMessage = async () => {
@@ -75,7 +95,7 @@ class BuildModal {
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return messages.errorInService(i.locale, `modal:${i.customId}-inReply`)
+      return messages.errorInService(locale, `modal:${customId}-inReply`)
     }
   }
 }

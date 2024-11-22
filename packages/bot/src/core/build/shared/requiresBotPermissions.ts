@@ -14,7 +14,7 @@ import {
 
 interface Props {
   permissions: PermissionResolvable[]
-  bot: GuildMember | null | undefined
+  bot: GuildMember
   type: string
   locale: Locale
 }
