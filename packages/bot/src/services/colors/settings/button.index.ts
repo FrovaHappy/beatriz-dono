@@ -7,7 +7,7 @@ import messages, { messagesColors } from '@/messages'
 export default new BuildButton({
   name: ButtonNames.setting,
   scope: 'public',
-  permissions: ['ManageRoles'],
+  permissionsBot: ['ManageRoles'],
   resolve: 'update',
   data: new ButtonBuilder().setCustomId('setting').setLabel('Configuración').setStyle(ButtonStyle.Primary),
   execute: async i => {

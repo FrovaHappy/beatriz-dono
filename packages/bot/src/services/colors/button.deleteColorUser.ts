@@ -7,7 +7,7 @@ import messages, { messagesColors } from '@/messages'
 
 export default new BuildButton({
   name: ButtonNames.removeColor,
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
   resolve: 'update',
   data: new ButtonBuilder().setLabel('Eliminar color').setStyle(ButtonStyle.Secondary),
   async execute(i) {

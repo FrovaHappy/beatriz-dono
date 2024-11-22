@@ -21,20 +21,20 @@ class BuildButton {
   name: ButtonNames | string
   scope: Scope
   ephemeral: boolean
-  permissions: PermissionResolvable[]
+  permissionsBot: PermissionResolvable[]
   cooldown: number
   data: ButtonBuilder
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
   resolve: Resolve | 'showModal'
   isLink = false
-  constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'permissions'>) {
+  constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data'>) {
     this.isLink = props.isLink ?? false
     this.type = this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.resolve = props.resolve ?? 'defer'
     this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
-    this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
+    this.permissionsBot = [...new Set([...PERMISSIONS_BASE, ...(props.permissionsBot ?? [])])]
     this.data = !this.isLink ? props.data.setCustomId(this.name) : props.data
     this.execute = props.execute
   }
@@ -43,7 +43,7 @@ class BuildButton {
     const button: BuildButton = globalThis.buttons.get(i.customId)
     if (!button) return messages.serviceNotFound(i.locale, `button:${i.customId}`)
     const messageRequirePermissions = requiresBotPermissions({
-      permissions: button.permissions,
+      permissions: button.permissionsBot,
       bot: i.guild?.members.me,
       type: 'button',
       locale: i.locale

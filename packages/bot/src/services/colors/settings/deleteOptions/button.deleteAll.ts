@@ -8,7 +8,7 @@ import { ButtonNames } from '@/const/interactionsNames'
 export default new BuildButton({
   name: ButtonNames.deleteServerAllColors,
   scope: 'public',
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
   resolve: 'update',
   cooldown: 15,
   data: new ButtonBuilder().setLabel('Yes').setStyle(ButtonStyle.Danger),

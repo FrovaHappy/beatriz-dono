@@ -5,7 +5,7 @@ import { ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default new BuildButton({
   name: ButtonNames.linkKofi,
-  permissions: [],
+  permissionsBot: [],
   isLink: true,
   data: new ButtonBuilder()
     .setURL(config.linkKofi)

@@ -7,7 +7,7 @@ import { ButtonBuilder, ButtonStyle } from 'discord.js'
 export default new BuildButton({
   name: ButtonNames.editColorDefault,
   data: new ButtonBuilder().setLabel('Edit colors default').setStyle(ButtonStyle.Secondary),
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
   resolve: 'showModal',
   execute: async i => {
     if (!i.guildId) return messages.guildIdNoFound(i.locale)

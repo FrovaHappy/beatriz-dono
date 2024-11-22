@@ -9,7 +9,7 @@ import { changeColor } from './shared/changeColor'
 
 export default new BuildButton({
   name: ButtonNames.colorCast,
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
   scope: 'public',
   resolve: 'update',
   data: new ButtonBuilder().setLabel('Color Cast').setStyle(ButtonStyle.Secondary).setEmoji(getEmoji('colorWand')),

@@ -10,7 +10,7 @@ export default new BuildButton({
     label: 'Reordenar colores',
     style: ButtonStyle.Secondary
   }),
-  permissions: ['ManageRoles'],
+  permissionsBot: ['ManageRoles'],
   ephemeral: true,
   resolve: 'update',
   execute: async i => {

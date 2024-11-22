@@ -8,7 +8,7 @@ import messages, { messagesColors } from '@/messages'
 export default new BuildButton({
   name: ButtonNames.startColor,
   scope: 'public',
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
   resolve: 'update',
   cooldown: 15,
   data: new ButtonBuilder().setLabel('Start').setStyle(ButtonStyle.Primary),
