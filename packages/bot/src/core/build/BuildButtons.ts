@@ -1,12 +1,13 @@
 import type { ButtonNames } from '@/const/interactionsNames'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import type { ButtonBuilder, ButtonInteraction, PermissionResolvable } from 'discord.js'
-import PERMISSIONS_BASE from '../../const/PermissionsBase'
+import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import messages from '@/messages'
+import requiresUserPermissions from './shared/requiresUserPermissions'
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
@@ -22,6 +23,7 @@ class BuildButton {
   scope: Scope
   ephemeral: boolean
   permissionsBot: PermissionResolvable[]
+  permissionsUser: PermissionResolvable[]
   cooldown: number
   data: ButtonBuilder
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
@@ -34,32 +36,46 @@ class BuildButton {
     this.resolve = props.resolve ?? 'defer'
     this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
-    this.permissionsBot = [...new Set([...PERMISSIONS_BASE, ...(props.permissionsBot ?? [])])]
+    this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
+    this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
     this.data = !this.isLink ? props.data.setCustomId(this.name) : props.data
     this.execute = props.execute
   }
 
   static async runInteraction(i: ButtonInteraction) {
-    const button: BuildButton = globalThis.buttons.get(i.customId)
-    if (!button) return messages.serviceNotFound(i.locale, `button:${i.customId}`)
+    const { customId, locale } = i
+    const button: BuildButton = buttons.get(customId)
+    const bot = i.guild?.members.me
+    const user = i.guild?.members.cache.get(i.user.id)
+    if (!bot || !user) return messages.guildIdNoFound(locale)
+    if (!button) return messages.serviceNotFound(locale, `button:${customId}`)
     const messageRequirePermissions = requiresBotPermissions({
       permissions: button.permissionsBot,
-      bot: i.guild?.members.me,
+      bot,
       type: 'button',
-      locale: i.locale
+      locale
+    })
+    const messageRequirePermissionsUser = requiresUserPermissions({
+      permissions: button.permissionsUser,
+      user,
+      type: 'button',
+      locale
     })
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
       cooldown: button.cooldown,
       name: button.name,
       type: 'button',
-      locale: i.locale
+      locale
     })
     const messageAccessForScope = buildMessageErrorForScope(i.locale, button.scope, i.guildId ?? '')
-    const getMessage = async () => {
+    const controlAccess = () => {
+      if (messageRequirePermissionsUser) return messageRequirePermissionsUser
       if (messageRequirePermissions) return messageRequirePermissions
       if (messageCooldown) return messageCooldown
       if (messageAccessForScope) return messageAccessForScope
+    }
+    const getMessage = async () => {
       try {
         return await button.execute(i)
       } catch (error) {
@@ -69,6 +85,8 @@ class BuildButton {
     }
 
     try {
+      const controlDenied = controlAccess()
+      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
       if (button.resolve === 'update') await i.deferUpdate()
       const message = await getMessage()

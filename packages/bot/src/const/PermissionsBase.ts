@@ -1,6 +1,6 @@
 import type { PermissionResolvable } from 'discord.js'
 
-const PERMISSIONS_BASE: PermissionResolvable[] = [
+export const PERMISSIONS_BASE_BOT: PermissionResolvable[] = [
   'SendMessages',
   'SendMessagesInThreads',
   'EmbedLinks',
@@ -8,4 +8,5 @@ const PERMISSIONS_BASE: PermissionResolvable[] = [
   'AttachFiles',
   'ReadMessageHistory'
 ]
-export default PERMISSIONS_BASE
+export const PERMISSIONS_BASE_USER: PermissionResolvable[] = ['SendMessages', 'ReadMessageHistory']
+

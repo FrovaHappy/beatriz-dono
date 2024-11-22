@@ -14,7 +14,7 @@ import type {
   UserSelectMenuBuilder,
   UserSelectMenuInteraction
 } from 'discord.js'
-import PERMISSIONS_BASE from '../../const/PermissionsBase'
+import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
@@ -65,7 +65,7 @@ class BuildMenu<T extends MenuType = 'string'> {
     this.cooldown = props.cooldown ?? 0
     this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false
-    this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
+    this.permissions = [...new Set([...PERMISSIONS_BASE_BOT, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
   }
@@ -89,10 +89,12 @@ class BuildMenu<T extends MenuType = 'string'> {
     })
     const messageAccessForScope = buildMessageErrorForScope(i.locale, menu.scope, i.guildId ?? '')
 
-    const getMessage = async () => {
+    const controlAccess = () => {
       if (messageAccessForScope) return messageAccessForScope
       if (messageRequirePermissionsBot) return messageRequirePermissionsBot
       if (messageCooldown) return messageCooldown
+    }
+    const getMessage = async () => {
       try {
         return await menu.execute(i)
       } catch (error) {
@@ -102,6 +104,8 @@ class BuildMenu<T extends MenuType = 'string'> {
     }
 
     try {
+      const controlDenied = controlAccess()
+      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (menu.resolve === 'update') await i.deferUpdate()
       if (menu.resolve === 'defer') await i.deferReply({ ephemeral: menu.ephemeral })
       const message = await getMessage()

@@ -1,7 +1,7 @@
 import type { ModalNames } from '@/const/interactionsNames'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import type { ModalBuilder, ModalSubmitInteraction, PermissionResolvable } from 'discord.js'
-import PERMISSIONS_BASE from '../../const/PermissionsBase'
+import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
@@ -29,7 +29,7 @@ class BuildModal {
     this.cooldown = props.cooldown ?? config.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.resolve = props.resolve ?? 'defer'
-    this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
+    this.permissions = [...new Set([...PERMISSIONS_BASE_BOT, ...props.permissions])]
     this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
   }
@@ -51,11 +51,12 @@ class BuildModal {
       locale: i.locale
     })
     const messageAccessForScope = buildMessageErrorForScope(i.locale, modal.scope, i.guildId ?? '')
-    const getMessage = async () => {
+    const controlAccess = () => {
       if (messageAccessForScope) return messageAccessForScope
       if (messageRequirePermissions) return messageRequirePermissions
       if (messageCooldown) return messageCooldown
-
+    }
+    const getMessage = async () => {
       try {
         return await modal.execute(i)
       } catch (error) {
@@ -65,6 +66,8 @@ class BuildModal {
     }
 
     try {
+      const controlDenied = controlAccess()
+      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (modal.resolve === 'defer') await i.deferReply({ ephemeral: modal.ephemeral })
       if (modal.resolve === 'update') await i.deferUpdate()
       const message = await getMessage()

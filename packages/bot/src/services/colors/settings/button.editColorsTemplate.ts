@@ -8,6 +8,7 @@ export default new BuildButton({
   name: ButtonNames.editColorDefault,
   data: new ButtonBuilder().setLabel('Edit colors default').setStyle(ButtonStyle.Secondary),
   permissionsBot: ['ManageRoles'],
+  permissionsUser: ['ManageRoles'],
   resolve: 'showModal',
   execute: async i => {
     if (!i.guildId) return messages.guildIdNoFound(i.locale)

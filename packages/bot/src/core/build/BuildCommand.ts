@@ -6,7 +6,7 @@ import type {
   SlashCommandOptionsOnlyBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from 'discord.js'
-import PERMISSIONS_BASE from '../../const/PermissionsBase'
+import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 
 import type { CommandNames } from '@/const/interactionsNames'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
@@ -33,7 +33,7 @@ class BuildCommand {
     this.cooldown = props.cooldown ?? 0
     this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false
-    this.permissions = [...new Set([...PERMISSIONS_BASE, ...props.permissions])]
+    this.permissions = [...new Set([...PERMISSIONS_BASE_BOT, ...props.permissions])]
     this.data = props.data.setName(this.name)
     this.execute = props.execute
   }
@@ -57,10 +57,13 @@ class BuildCommand {
       locale: i.locale
     })
     const messageAccessForScope = buildMessageErrorForScope(i.locale, command.scope, i.guildId ?? '')
-    const getMessage = async () => {
+    
+    const controlAccess = () => {
       if (messageRequirePermissions) return messageRequirePermissions
       if (messageCooldown) return messageCooldown
       if (messageAccessForScope) return messageAccessForScope
+    }
+    const getMessage = async () => {
       try {
         return await command.execute(i)
       } catch (error) {
@@ -69,6 +72,8 @@ class BuildCommand {
       }
     }
     try {
+      const controlDenied = controlAccess()
+      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       await i.deferReply({ ephemeral: command.ephemeral })
       const message = await getMessage()
       if (!message) return
