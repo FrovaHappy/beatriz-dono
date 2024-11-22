@@ -1,14 +1,12 @@
 import type { ButtonNames } from '@/const/interactionsNames'
-import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
-import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
-import { type ButtonBuilder, type ButtonInteraction, ButtonStyle, type PermissionResolvable } from 'discord.js'
+import type { ButtonBuilder, ButtonInteraction, PermissionResolvable } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
-import hasAccessForScope from './shared/hasAccessForScope'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import messages from '@/messages'
 /**
  * #### Constructor
  * * ` data `: The buttonBuilder.customId(name) not is required.
@@ -20,7 +18,7 @@ import requiresBotPermissions from './shared/requiresBotPermissions'
  */
 class BuildButton {
   type = 'buttons'
-  name: ButtonNames
+  name: ButtonNames | string
   scope: Scope
   ephemeral: boolean
   permissions: PermissionResolvable[]
@@ -43,11 +41,10 @@ class BuildButton {
 
   static async runInteraction(i: ButtonInteraction) {
     const button: BuildButton = globalThis.buttons.get(i.customId)
-    if (!button) return messageErrorFoundService(i.locale, `button:${i.customId}`)
+    if (!button) return messages.serviceNotFound(i.locale, `button:${i.customId}`)
     const messageRequirePermissions = requiresBotPermissions({
       permissions: button.permissions,
       bot: i.guild?.members.me,
-      nameInteraction: i.customId,
       type: 'button',
       locale: i.locale
     })
@@ -67,7 +64,7 @@ class BuildButton {
         return await button.execute(i)
       } catch (error) {
         console.error(error)
-        return messageHasOcurredAnError(i.locale, `button:${i.customId}-inExecute`)
+        return messages.errorInService(i.locale, `button:${i.customId}-inExecute`)
       }
     }
 
@@ -80,7 +77,7 @@ class BuildButton {
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return messageHasOcurredAnError(i.locale, `button:${i.customId}-inReply`)
+      return messages.errorInService(i.locale, `button:${i.customId}-inReply`)
     }
   }
 }

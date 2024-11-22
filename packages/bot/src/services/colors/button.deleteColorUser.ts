@@ -1,10 +1,9 @@
 import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
-import guildErrorMessage from '@/services/shared/guildError.message'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
-import fetchColorCommand from '../shared/fetchColorCommand'
-import messageErrorColorPointer from '../shared/message.errorColorPointer'
-import { removeRolesOfUser } from '../shared/removeRoles'
+import fetchColorCommand from './shared/fetchColorCommand'
+import { removeRolesOfUser } from './shared/removeRoles'
+import messages, { messagesColors } from '@/messages'
 
 export default new BuildButton({
   name: ButtonNames.removeColor,
@@ -12,16 +11,14 @@ export default new BuildButton({
   resolve: 'update',
   data: new ButtonBuilder().setLabel('Eliminar color').setStyle(ButtonStyle.Secondary),
   async execute(i) {
-    const { guildId } = i
-    if (!guildId) return guildErrorMessage(i.locale)
+    const { guildId, locale } = i
     const roles = i.guild?.roles.cache
+
+    if (!guildId) return messages.guildIdNoFound(locale)
     const { colorPointerId, colors } = await fetchColorCommand(guildId, roles)
-    if (!colorPointerId) return messageErrorColorPointer(i.locale)
+    if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     const logDeleteRoles = await removeRolesOfUser(roles, colors, i)
-    return {
-      content: `Se eliminaron ${logDeleteRoles.total} roles de colores, falló ${logDeleteRoles.fails.length} roles`,
-      components: []
-    }
+    return messagesColors.deleteColorUser(locale, logDeleteRoles.total)
   }
 })

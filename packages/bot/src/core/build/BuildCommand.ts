@@ -9,11 +9,10 @@ import type {
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
 
 import type { CommandNames } from '@/const/interactionsNames'
-import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
-import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import messages from '@/messages'
 /**
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional
@@ -41,13 +40,12 @@ class BuildCommand {
 
   static async runInteraction(i: ChatInputCommandInteraction) {
     const command: Command = globalThis.commands.get(i.commandName)
-    if (!command) return messageErrorFoundService(i.locale, `command:${i.commandName}`)
+    if (!command) return messages.serviceNotFound(i.locale, `command:${i.commandName}`)
 
     // create message Access basic
     const messageRequirePermissions = requiresBotPermissions({
       permissions: command.permissions,
       bot: i.guild?.members.me,
-      nameInteraction: i.commandName,
       type: 'command',
       locale: i.locale
     })
@@ -67,7 +65,7 @@ class BuildCommand {
         return await command.execute(i)
       } catch (error) {
         console.error(error)
-        return messageHasOcurredAnError(i.locale, `command:${i.commandName}-inExecute`)
+        return messages.errorInService(i.locale, `command:${i.commandName}-inExecute`)
       }
     }
     try {
@@ -77,7 +75,7 @@ class BuildCommand {
       return await i.editReply(message)
     } catch (error) {
       console.error(error)
-      return messageHasOcurredAnError(i.locale, `command:${i.commandName}-inReply`)
+      return messages.errorInService(i.locale, `command:${i.commandName}-inReply`)
     }
   }
 }

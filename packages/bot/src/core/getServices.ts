@@ -6,11 +6,13 @@ import BuildButton from './build/BuildButtons'
 import BuildCommand from './build/BuildCommand'
 import BuildMenu from './build/BuildMenu'
 import BuildModal from './build/BuildModal'
+import Collections from '@/shared/Collections'
 
 globalThis.buttons = new Collection<string, BuildButton>()
 globalThis.commands = new Collection<string, BuildCommand>()
 globalThis.menus = new Collection<string, BuildMenu<'string'>>()
 globalThis.modals = new Collection<string, BuildModal>()
+
 const includes = ['.ts', '.js']
 const excludes = ['.test.ts', '.d.ts', '.test.js']
 export default async function getServices() {

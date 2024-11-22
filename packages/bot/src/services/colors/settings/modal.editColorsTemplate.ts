@@ -2,7 +2,9 @@ import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
 import db from '@/core/db'
 import { ActionRowBuilder, ComponentType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
-import { validate } from '../schema.color'
+import { validate, CURRENT_VERSION } from '../schema.color'
+import messages, { messagesColors } from '@/messages'
+import fetchColorCommand from '../shared/fetchColorCommand'
 
 const COLORS_PLACEHOLDER = `
 {
@@ -28,22 +30,24 @@ const rows = new ActionRowBuilder<TextInputBuilder>().addComponents(textEdit)
 export default new BuildModal({
   name: ModalNames.editColorDefault,
   ephemeral: true,
-  resolve: 'defer',
+  resolve: 'update',
   data: new ModalBuilder({ title: 'Edit Color Default' }).addComponents(rows),
   permissions: [],
   async execute(i) {
-    const currentVersion = 'v1'
-    const { guildId } = i
-    if (!guildId) return { content: 'No se encontró el guild' }
+    const { guildId, locale } = i
+    if (!guildId) return messages.guildIdNoFound(locale)
+    const roles = i.guild?.roles.cache
+    const { colorPointerId } = await fetchColorCommand(guildId, roles)
+    if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     // validate JSON color
     const colorsInput = i.fields.getTextInputValue('input')
     const errorColors = validate(colorsInput)
-    if (errorColors) return { content: errorColors }
+    if (errorColors) return messagesColors.editColorTemplate.jsonInvalid(locale, errorColors)
 
     // if the json is valid, update the database
     const jsonColors = JSON.parse(colorsInput)
-    jsonColors.version = jsonColors.version ?? currentVersion
+    jsonColors.version = jsonColors.version ?? CURRENT_VERSION
     // update database
     await db.colorCommand.update({
       where: { serverId: guildId },
@@ -51,6 +55,6 @@ export default new BuildModal({
         colorsDefault: jsonColors
       }
     })
-    return { content: 'edit Color Default' }
+    return messagesColors.editColorTemplate.success(locale)
   }
 })

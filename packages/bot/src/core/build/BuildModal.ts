@@ -1,6 +1,4 @@
 import type { ModalNames } from '@/const/interactionsNames'
-import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
-import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import type { ModalBuilder, ModalSubmitInteraction, PermissionResolvable } from 'discord.js'
 import PERMISSIONS_BASE from '../../const/PermissionsBase'
@@ -8,6 +6,7 @@ import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import messages from '@/messages'
 
 /**
  * #### Constructor
@@ -37,11 +36,10 @@ class BuildModal {
 
   static async runInteraction(i: ModalSubmitInteraction) {
     const modal: Modal = globalThis.modals.get(i.customId)
-    if (!modal) return messageErrorFoundService(i.locale, `modal:${i.customId}`)
+    if (!modal) return messages.serviceNotFound(i.locale, `modal:${i.customId}`)
     const messageRequirePermissions = requiresBotPermissions({
       permissions: modal.permissions,
       bot: i.guild?.members.me,
-      nameInteraction: i.customId,
       type: 'modal',
       locale: i.locale
     })
@@ -62,7 +60,7 @@ class BuildModal {
         return await modal.execute(i)
       } catch (error) {
         console.error(error)
-        return messageHasOcurredAnError(i.locale, `modal:${i.customId}-inExecute`)
+        return messages.errorInService(i.locale, `modal:${i.customId}-inExecute`)
       }
     }
 
@@ -74,7 +72,7 @@ class BuildModal {
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return messageHasOcurredAnError(i.locale, `modal:${i.customId}-inReply`)
+      return messages.errorInService(i.locale, `modal:${i.customId}-inReply`)
     }
   }
 }

@@ -1,10 +1,10 @@
-import { formatterUser } from '@/services/shared/formatterUser'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import type { Canvas } from '@/types/Canvas.types'
 import db from '@core/db'
 import WELCOME from '@libs/welcome'
 import type { GuildMember } from 'discord.js'
 import { validateCanvas } from '../../services/setWelcome/commands/main/validate'
+import formatterText from '@libs/formatterText'
 export default async function welcome(member: GuildMember): Promise<void> {
   const welcomeDb = await db.welcomeCommand.findUnique({
     where: { serverId: member.guild.id }
@@ -18,7 +18,13 @@ export default async function welcome(member: GuildMember): Promise<void> {
     await SendWelcomeWith({
       send,
       image: canvas ?? WELCOME,
-      message: formatterUser(message, member.user, member.guild.memberCount),
+      message: formatterText(message, {
+        '{{server_count}}': member.guild.memberCount.toString(),
+        '{{server_name}}': member.guild.name,
+        '{{user_name}}': member.displayName,
+        '{{user_id}}': member.id,
+        '{{user_discriminator}}': member.user.tag
+      }),
       member
     })
   )

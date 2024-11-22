@@ -1,8 +1,6 @@
-import { getI18n } from '@/i18n'
-import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
+import messages from '@/messages'
 import type { MessageOptions } from '@/types/main'
-import formatterText from '@libs/formatterText'
-import { Collection, Colors, EmbedBuilder, type Locale, type Snowflake } from 'discord.js'
+import { Collection, type Locale, type Snowflake } from 'discord.js'
 
 interface Props {
   id: Snowflake
@@ -15,9 +13,7 @@ interface Props {
  * @returns `true` if the commands/buttons have access to execute
  */
 export default function isCooldownEnable(props: Props): MessageOptions | undefined {
-  const { config } = globalThis
   const { id, cooldown, type, name, locale } = props
-  const i18n = getI18n(locale, 'general')
   const { cooldowns } = globalThis
   const cooldownName = `${type}-${name}`
   if (!cooldowns.has(cooldownName)) {
@@ -27,21 +23,12 @@ export default function isCooldownEnable(props: Props): MessageOptions | undefin
   const now = Date.now()
   try {
     const timestamps = cooldowns.get(cooldownName)
-    if (!timestamps) throw new Error()
+    if (!timestamps) throw new Error('timestamps not found')
     const cooldownAmount = cooldown * 1000
 
     if (timestamps.has(id)) {
       const expirationTime = Math.round(((timestamps.get(id) ?? 0) + cooldownAmount) / 1000)
-      return {
-        embeds: [
-          new EmbedBuilder({
-            title: i18n.errorCooldown.title,
-            description: formatterText(i18n.errorCooldown.description, { slot0: `<t:${expirationTime}:R>` }),
-            color: Colors.Orange,
-            footer: { text: i18n.errorCooldown.footer }
-          })
-        ]
-      }
+      return messages.cooldownEnable(locale, expirationTime)
     }
     timestamps.set(id, now)
     setTimeout(() => {
@@ -50,6 +37,6 @@ export default function isCooldownEnable(props: Props): MessageOptions | undefin
     return
   } catch (e) {
     console.error(e)
-    return messageHasOcurredAnError(locale, `cooldowns: ${cooldownName}`)
+    return messages.errorInService(locale, `cooldowns: ${cooldownName}`)
   }
 }

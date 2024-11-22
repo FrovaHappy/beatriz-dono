@@ -1,3 +1,4 @@
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function stringToJson<T = any, G = null>(str: string, df: any = null): T | G {
   try {
     return JSON.parse(str)
@@ -22,11 +23,10 @@ export function objWithKeyValueEqual<T extends string | number | symbol>(OBJ: Re
  * @param selectValue this select the value of the object. Ej: title select [tuple.object].title
  * @returns return a new object with the tuple.key as key and the selectValue as value.
  */
-export function reduceTupleToObj(
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  tuple: [key: string, object: Record<string, any>][],
-  selectValue: string
-): Record<string, string> {
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export type TupleKeyObject = [key: string, object: Record<string, any>]
+export function reduceTupleToObj(tuple: TupleKeyObject[], selectValue: string): Record<string, string> {
   const separe = selectValue.split('.')
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>

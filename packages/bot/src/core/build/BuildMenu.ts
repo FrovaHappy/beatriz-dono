@@ -1,6 +1,4 @@
 import type { MenuNames } from '@/const/interactionsNames'
-import messageErrorFoundService from '@/services/colors/shared/message.errorFoundService'
-import messageHasOcurredAnError from '@/shared/message.hasOcurredAnError'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import type {
   AnySelectMenuInteraction,
@@ -21,6 +19,7 @@ import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
+import messages from '@/messages'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -73,12 +72,11 @@ class BuildMenu<T extends MenuType = 'string'> {
 
   static async runInteraction(i: AnySelectMenuInteraction) {
     const menu: Menu = globalThis.menus.get(i.customId)
-    if (!menu) return messageErrorFoundService(i.locale, `menu:${i.customId}`)
+    if (!menu) return messages.serviceNotFound(i.locale, `menu:${i.customId}`)
 
     const messageRequirePermissionsBot = requiresBotPermissions({
       permissions: menu.permissions,
       bot: i.guild?.members.me,
-      nameInteraction: i.customId,
       type: 'menu',
       locale: i.locale
     })
@@ -99,7 +97,7 @@ class BuildMenu<T extends MenuType = 'string'> {
         return await menu.execute(i)
       } catch (error) {
         console.error(error)
-        return messageHasOcurredAnError(i.locale, `menu:${i.customId}-inExecute`)
+        return messages.errorInService(i.locale, `menu:${i.customId}-inExecute`)
       }
     }
 
@@ -111,7 +109,7 @@ class BuildMenu<T extends MenuType = 'string'> {
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return messageHasOcurredAnError(i.locale, `menu:${i.customId}-inReply`)
+      return messages.errorInService(i.locale, `menu:${i.customId}-inReply`)
     }
   }
 }

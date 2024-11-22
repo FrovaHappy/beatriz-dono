@@ -13,8 +13,13 @@ export enum CommandNames {
 
 export enum ButtonNames {
   setting = 'setting',
+  deleteColorUser = 'delete-color-user',
+  deleteServerAllColors = 'delete-server-all-colors',
+  deleteServerNotUsedColors = 'delete-server-not-used-colors',
+  startColor = 'start-color',
   removeColor = 'remove-color',
-  colorDominante = 'color-dominante',
+  colorCast = 'color-cast',
+  serverColorOrder = 'server-color-order',
   editColorDefault = 'edit-color-default',
   linkDiscord = 'link-discord',
   linkKofi = 'link-kofi',

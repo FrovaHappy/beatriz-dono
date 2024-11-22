@@ -1,6 +1,5 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { getI18n, getI18nCollection } from '@/i18n'
-import { formatterUser } from '@/services/shared/formatterUser'
 import { reduceTupleToObj, stringToJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import { formatZodError } from '@/shared/validate'
@@ -19,7 +18,7 @@ export default new BuildCommand({
   cooldown: 0,
   name: CommandNames.welcomeSet,
   ephemeral: true,
-  scope: 'public',
+  scope: 'owner',
   permissions: [],
   data: new SlashCommandBuilder()
     .setDescription(en.description)
@@ -82,7 +81,13 @@ export default new BuildCommand({
         ]
       }
     }
-    const messageReply = formatterUser(message, i.user, i.guild.memberCount)
+    const messageReply = formatterText(message, {
+      '{{server_count}}': i.guild?.memberCount.toString(),
+      '{{server_name}}': i.guild?.name,
+      '{{user_name}}': i.member?.user.username,
+      '{{user_id}}': i.member?.user.id,
+      '{{user_discriminator}}': i.member?.user.discriminator
+    })
     await db.server.update({
       where: { serverId },
       data: {
@@ -97,8 +102,8 @@ export default new BuildCommand({
           title: i18n.response.title,
           color: Colors.Aqua,
           description: formatterText(i18n.response.description, {
-            slot0: channelId,
-            slot1: send
+            '{{slot0}}': channelId,
+            '{{slot1}}': send
           })
         })
       ],

@@ -1,7 +1,6 @@
-import { getI18n } from '@/i18n'
+import messages from '@/messages'
 import type { MessageOptions, Scope } from '@/types/main'
-import formatterText from '@libs/formatterText'
-import { Colors, EmbedBuilder, type Locale } from 'discord.js'
+import type { Locale } from 'discord.js'
 
 /**
  *
@@ -25,15 +24,6 @@ export default function buildMessageErrorForScope(
   scope: Scope,
   guildId: string
 ): MessageOptions | undefined {
-  const i18n = getI18n(locale, 'general')
   if (hasAccessForScope(scope, guildId)) return
-  return {
-    embeds: [
-      new EmbedBuilder({
-        title: i18n.errorAccessScope.title,
-        description: formatterText(i18n.errorAccessScope.description, { slot0: scope }),
-        color: Colors.Red
-      })
-    ]
-  }
+  return messages.accessDeniedForScope({ locale, scope })
 }

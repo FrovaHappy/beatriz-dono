@@ -1,15 +1,7 @@
 {
-  "errorPermissions": {
-    "title": "/<slot_0> command requires permissions.",
-    "description": "The command requires the next permissions for functioning correctly:\n<slot_0>\n\nIf your purpose is to disable completely, I recommend you to go to ``settings > integrations > <slot_1>`` and disable the command."
-  },
   "errorCommand": {
     "title": "/<slot_0> command not found.",
     "description": "The command <slot_0> was not found."
-  },
-  "errorGuild": {
-    "title": "Guild not found.",
-    "description": "The guild you are trying to access does not exist."
   },
   "errorCooldown": {
     "title": "Hang Tight! ⏳",

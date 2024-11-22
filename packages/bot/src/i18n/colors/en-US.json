@@ -14,14 +14,9 @@
     "description": "It looks like we couldn't create the role you requested. Don't worry! Here's what might have happened:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes:** Possible causes. You do not have sufficient permissions. The bot does not have 'Manage Roles' permissions.3. The requested role is above the bot's role.\n3. How can you fix it?\nCheck your permissions or the bot's permissions.\n3. Make sure the bot's role is in the correct position.\n4.",
     "footer": "⚙️ We're here to help! Contact the administrator if you need further assistance."
   },
-  "errorColorPointer": {
-    "title": "⛔ Oops! Could not create role!",
-    "description": "You have not configured the color pointer. Please configure it in the settings menu.",
-    "footer": "⚙️ We're here to help! Contact the administrator if you need further assistance."
-  },
-  "errorCreatedColorPointer": {
-    "title": "⛔ Oops! error creating color pointer!",
-    "description": "Something went wrong with the color pointer. Please contact the administrator or report the error."
+  "initColorPointer": {
+    "title": "🎨 The Color Module is Disabled!",
+    "description": "Hey, are you an admin? 🌟 Click **Start** to set up and activate the color module. Bring some life to the server! 🌈"
   },
   "firstExecution": {
     "title": "✅ Role successfully created!",
