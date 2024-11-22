@@ -11,6 +11,7 @@ export default new BuildButton({
     style: ButtonStyle.Secondary
   }),
   permissionsBot: ['ManageRoles'],
+  permissionsUser: ['ManageRoles'],
   ephemeral: true,
   resolve: 'update',
   execute: async i => {

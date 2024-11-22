@@ -14,7 +14,8 @@ enum DeleteColors {
 export default new BuildMenu({
   name: MenuNames.settingColorRemove,
   resolve: 'update',
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
+  permissionsUser: ['ManageRoles'],
   data: new StringSelectMenuBuilder({
     placeholder: 'Delete the colors'
   }).addOptions(

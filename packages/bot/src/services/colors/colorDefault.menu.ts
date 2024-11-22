@@ -12,7 +12,7 @@ const en = getI18n(Locale.EnglishUS, CommandNames.colors)
 export default new BuildMenu({
   name: MenuNames.colorDefault,
   resolve: 'update',
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
   data: new StringSelectMenuBuilder({
     placeholder: en.colorsDefault.placeholder
   }).addOptions(

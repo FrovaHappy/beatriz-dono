@@ -9,6 +9,7 @@ export default new BuildButton({
   name: ButtonNames.startColor,
   scope: 'public',
   permissionsBot: ['ManageRoles'],
+  permissionsUser: ['ManageRoles'],
   resolve: 'update',
   cooldown: 15,
   data: new ButtonBuilder().setLabel('Start').setStyle(ButtonStyle.Primary),

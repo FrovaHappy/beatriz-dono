@@ -14,12 +14,13 @@ import type {
   UserSelectMenuBuilder,
   UserSelectMenuInteraction
 } from 'discord.js'
-import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
+import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import messages from '@/messages'
+import requiresUserPermissions from './shared/requiresUserPermissions'
 interface Types {
   string: {
     builder: StringSelectMenuBuilder
@@ -53,32 +54,48 @@ class BuildMenu<T extends MenuType = 'string'> {
   type = 'menus' as const
   name: MenuNames
   ephemeral: boolean
-  permissions: PermissionResolvable[]
+  permissionsBot: PermissionResolvable[]
+  permissionsUser: PermissionResolvable[]
   cooldown: number
   data: Types[T]['builder']
   scope: Scope
   resolve: Resolve
   execute: (e: Types[T]['interaction']) => Promise<MessageOptions | undefined>
-  constructor(props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data' | 'permissions'>) {
+  constructor(props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? 0
     this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false
-    this.permissions = [...new Set([...PERMISSIONS_BASE_BOT, ...props.permissions])]
+    this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
+    this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
     this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
   }
 
   static async runInteraction(i: AnySelectMenuInteraction) {
-    const menu: Menu = globalThis.menus.get(i.customId)
-    if (!menu) return messages.serviceNotFound(i.locale, `menu:${i.customId}`)
-
+    const { customId, locale } = i
+    const menu: Menu = globalThis.menus.get(customId)
+    const bot = i.guild?.members.me ?? undefined
+    const user = i.guild?.members.cache.get(i.user.id)
+    if (!menu) return await i.reply({ ...messages.serviceNotFound(locale, `menu:${customId}`), ephemeral: true })
+    if (!bot || !user) {
+      return await i.reply({
+        ...messages.errorInService(locale, `menu:${customId}-guildMemberNotFound`),
+        ephemeral: true
+      })
+    }
     const messageRequirePermissionsBot = requiresBotPermissions({
-      permissions: menu.permissions,
-      bot: i.guild?.members.me,
+      permissions: menu.permissionsBot,
+      bot,
       type: 'menu',
-      locale: i.locale
+      locale
+    })
+    const messageRequirePermissionsUser = requiresUserPermissions({
+      permissions: menu.permissionsUser,
+      user,
+      type: 'menu',
+      locale
     })
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
@@ -90,8 +107,9 @@ class BuildMenu<T extends MenuType = 'string'> {
     const messageAccessForScope = buildMessageErrorForScope(i.locale, menu.scope, i.guildId ?? '')
 
     const controlAccess = () => {
-      if (messageAccessForScope) return messageAccessForScope
       if (messageRequirePermissionsBot) return messageRequirePermissionsBot
+      if (messageRequirePermissionsUser) return messageRequirePermissionsUser
+      if (messageAccessForScope) return messageAccessForScope
       if (messageCooldown) return messageCooldown
     }
     const getMessage = async () => {

@@ -11,7 +11,8 @@ export default new BuildMenu<'role'>({
   scope: 'public',
   cooldown: 15,
   data: new RoleSelectMenuBuilder().setMinValues(1).setMaxValues(10).setPlaceholder('Select a role'),
-  permissions: [],
+  permissionsBot: ['ManageRoles'],
+  permissionsUser: ['ManageRoles'],
   async execute(i) {
     const { guildId, values, locale } = i
     const roles = i.guild?.roles.cache
