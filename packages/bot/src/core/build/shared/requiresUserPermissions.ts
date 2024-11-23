@@ -1,12 +1,6 @@
 import messages from '@/messages'
 import type { MessageOptions } from '@/types/main'
-import {
-  type APIInteractionGuildMember,
-  type GuildMember,
-  type Locale,
-  type PermissionResolvable,
-  PermissionsBitField
-} from 'discord.js'
+import { type GuildMember, type Locale, type PermissionResolvable, PermissionsBitField } from 'discord.js'
 
 interface Props {
   permissions: PermissionResolvable[]
@@ -26,6 +20,6 @@ export default function requiresBotPermissions(props: Props): MessageOptions | u
     const permissionsRequired = new PermissionsBitField(permissions)
       .toArray()
       .filter(p => !permissionsCurrent.some(pc => pc === p))
-    return messages.errorPermissions(locale, type, permissionsRequired)
+    return messages.errorPermissions(locale, type, permissionsRequired, 'user')
   }
 }

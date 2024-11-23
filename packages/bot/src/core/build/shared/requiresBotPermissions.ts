@@ -1,16 +1,6 @@
-import { CommandNames } from '@/const/interactionsNames'
-import { getI18n } from '@/i18n'
 import messages from '@/messages'
 import type { MessageOptions } from '@/types/main'
-import formatterText from '@libs/formatterText'
-import {
-  Colors,
-  EmbedBuilder,
-  type GuildMember,
-  type Locale,
-  type PermissionResolvable,
-  PermissionsBitField
-} from 'discord.js'
+import { type GuildMember, type Locale, type PermissionResolvable, PermissionsBitField } from 'discord.js'
 
 interface Props {
   permissions: PermissionResolvable[]
@@ -32,6 +22,6 @@ export default function requiresBotPermissions(props: Props): MessageOptions | u
     const permissionsRequired = new PermissionsBitField(permissions)
       .toArray()
       .filter(p => !permissionsCurrent.some(pc => pc === p))
-    return messages.errorPermissions(locale, type, permissionsRequired)
+    return messages.errorPermissions(locale, type, permissionsRequired, 'bot')
   }
 }
