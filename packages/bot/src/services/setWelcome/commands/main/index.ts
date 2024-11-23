@@ -1,5 +1,4 @@
 import { CommandNames } from '@/const/interactionsNames'
-import { getI18n, getI18nCollection } from '@/i18n'
 import { reduceTupleToObj, stringToJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import { formatZodError } from '@/shared/validate'
@@ -11,29 +10,24 @@ import { SendWelcome } from '@prisma/client'
 import { Colors, EmbedBuilder, type GuildMember, Locale, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { validateCanvas } from './validate'
 
-const i18nsArray = getI18nCollection(CommandNames.welcomeSet)
-const en = getI18n(Locale.EnglishUS, CommandNames.welcomeSet)
-
 export default new BuildCommand({
   cooldown: 0,
   name: CommandNames.welcomeSet,
   ephemeral: true,
   scope: 'owner',
   data: new SlashCommandBuilder()
-    .setDescription(en.description)
-    .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'description'))
+    .setDescription('Set the welcome message')
+    .setDescriptionLocalizations({
+      'es-ES': 'Establece el mensaje de bienvenida',
+      'es-419': 'Establece el mensaje de bienvenida'
+    })
     .addChannelOption(op =>
-      op
-        .setName('channel')
-        .setDescription(en.options.channel)
-        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.channel'))
-        .setRequired(true)
+      op.setName('channel').setDescription('channel where the message will be sent').setRequired(true)
     )
     .addStringOption(op =>
       op
         .setName('send')
-        .setDescription(en.options.send)
-        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.send'))
+        .setDescription('send the message with')
         .addChoices(
           { name: 'All', value: SendWelcome.all },
           { name: 'alone message', value: SendWelcome.alone_message },
@@ -42,30 +36,17 @@ export default new BuildCommand({
         )
         .setRequired(true)
     )
-    .addStringOption(op =>
-      op
-        .setName('message')
-        .setDescription(en.options.message)
-        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.message'))
-        .setRequired(false)
-    )
-    .addStringOption(op =>
-      op
-        .setName('image')
-        .setDescription(en.options.image)
-        .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'options.image'))
-        .setRequired(false)
-    )
+    .addStringOption(op => op.setName('message').setDescription('message to send').setRequired(false))
+    .addStringOption(op => op.setName('image').setDescription('image to send').setRequired(false))
     .setDefaultMemberPermissions(
       PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageMessages
     ),
   async execute(i) {
-    const i18n = getI18n(i.locale, CommandNames.welcomeSet)
     const serverId = i.guild?.id
     if (!serverId) return { content: 'error with server id' }
     const imageLength = i.options.getString('image')?.length ?? 0
     const image = stringToJson(i.options.getString('image') ?? '')
-    const message = i.options.getString('message') ?? i18n.messageDefault
+    const message = i.options.getString('message') ?? ' welcome to {{server_name}} {{user_name}}'
     const channelId = i.options.getChannel('channel', true).id
     const send = i.options.getString('send', true) as SendWelcome
 
@@ -74,8 +55,9 @@ export default new BuildCommand({
       return {
         embeds: [
           new EmbedBuilder({
-            title: i18n.errorValidation.title,
-            description: `${i18n.errorValidation.description}\n${formatZodError(invalidJson)}`
+            title: 'error in JSON',
+            description: `detected an error in the JSON: ${formatZodError(invalidJson)}`,
+            color: Colors.Red
           })
         ]
       }
@@ -98,12 +80,9 @@ export default new BuildCommand({
     return {
       embeds: [
         new EmbedBuilder({
-          title: i18n.response.title,
+          title: 'success',
           color: Colors.Aqua,
-          description: formatterText(i18n.response.description, {
-            '{{slot0}}': channelId,
-            '{{slot1}}': send
-          })
+          description: 'welcome message updated'
         })
       ],
       ...(await SendWelcomeWith({

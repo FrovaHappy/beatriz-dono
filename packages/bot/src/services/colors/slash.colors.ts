@@ -1,5 +1,4 @@
 import { CommandNames } from '@/const/interactionsNames'
-import { getI18n, getI18nCollection } from '@/i18n'
 import BuildCommand from '@core/build/BuildCommand'
 import { type GuildMemberRoleManager, Locale, SlashCommandBuilder } from 'discord.js'
 import fetchColorCommand from './shared/fetchColorCommand'
@@ -7,9 +6,6 @@ import { reduceTupleToObj } from '@/shared/general'
 
 import messages, { messagesColors } from '@/messages'
 import { changeColor } from './shared/changeColor'
-
-const en = getI18n(Locale.EnglishUS, CommandNames.colors)
-const languages = getI18nCollection(CommandNames.colors)
 
 export default new BuildCommand({
   name: CommandNames.colors,
@@ -19,13 +15,19 @@ export default new BuildCommand({
   resolve: 'defer',
   cooldown: 15,
   data: new SlashCommandBuilder()
-    .setDescription(en.description)
-    .setDescriptionLocalizations(reduceTupleToObj(languages, 'description'))
+    .setDescription('Change the color of your nickname')
+    .setDescriptionLocalizations({
+      'es-ES': 'Cambia el color de tu nombre',
+      'es-419': 'Cambia el color de tu nombre'
+    })
     .addStringOption(strOp =>
       strOp
         .setName('custom')
-        .setDescription(en.options.custom)
-        .setDescriptionLocalizations(reduceTupleToObj(languages, 'options.custom'))
+        .setDescription('add a color custom')
+        .setDescriptionLocalizations({
+          'es-ES': 'añade un color personalizado',
+          'es-419': 'añade un color personalizado'
+        })
         .setRequired(false)
     ),
   execute: async i => {
