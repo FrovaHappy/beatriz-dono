@@ -11,9 +11,9 @@ export default async function welcome(member: GuildMember): Promise<void> {
     where: { serverId: member.guild.id }
   })
   if (!welcomeDb) return
-  const { channelId, image, message, send } = welcomeDb
-  const isValidCanvas = validateCanvas(image)
-  const canvas = isValidCanvas ? (image as unknown as Canvas) : null
+  const { channelId } = welcomeDb
+  // const isValidCanvas = validateCanvas(image)
+  //const canvas = isValidCanvas ? (image as unknown as Canvas) : null
   const webhook = member.guild.channels.cache.get(channelId) as any
   await webhook?.send(
     {
@@ -24,7 +24,10 @@ export default async function welcome(member: GuildMember): Promise<void> {
         },
         {
           title: `Welcome ${member.displayName} ${emojis.kannaAwave}`,
-          description: `thanks for participating in ${member.guild.name}`,
+          description: `thanks for joining ${member.guild.name}`,
+          thumbnail: {
+            url: member.displayAvatarURL({ size: 512 })
+          },
           footer: {
             text: `#${member.guild.memberCount}`
           },
