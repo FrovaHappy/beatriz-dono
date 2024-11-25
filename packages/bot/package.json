@@ -10,15 +10,15 @@
     "@/libs/*": ["../libs/dist/*"]
   },
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.51",
-    "discord.js": "^14.16.2",
+    "@napi-rs/canvas": "^0.1.64",
+    "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
     "module-alias": "^2.2.3",
-    "picocolors": "^1.0.1"
+    "picocolors": "^1.1.1"
   },
   "devDependencies": {
     "@types/module-alias": "^2.0.4",
-    "nodemon": "3.1.0",
+    "nodemon": "3.1.7",
     "ts-node": "10.9.2"
   }
 }
