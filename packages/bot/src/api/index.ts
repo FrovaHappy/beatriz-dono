@@ -1,0 +1,44 @@
+import express from 'express'
+import session from 'express-session'
+import cors from 'cors'
+import passport from 'passport'
+import routers from './routes'
+import discordStrategy from './discordStrategy'
+const app = express()
+
+export default async function startApi() {
+  app.use(cors({ origin: config.urlClientDomain, credentials: true }))
+  app.use(
+    session({
+      secret: config.secretKey,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        path: '/',
+        httpOnly: false,
+        maxAge: config.oneDay,
+        secure: config.isProduction
+      }
+    })
+  )
+  app.use(express.json())
+
+  // Passport config
+  passport.use(discordStrategy)
+  app.use(passport.initialize())
+  app.use(passport.session())
+  passport.serializeUser((user, done) => {
+    done(null, user)
+  })
+  passport.deserializeUser((user, done) => {
+    if (user) done(null, user)
+    else done(null, undefined)
+  })
+
+  // Routes
+  app.use(routers)
+
+  app.listen(config.portApi, () => {
+    console.log(`Server is running on port ${config.portApi}`)
+  })
+}
