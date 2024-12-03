@@ -1,0 +1,43 @@
+$size: 1.5rem;
+.content {
+  position: relative;
+  height: $size;
+  aspect-ratio: 2/1;
+  background: color-mix(in srgb, black 30% , transparent);
+  border-radius: calc($size * 0.1);
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  text-align: left;
+}
+.label {
+  display: block;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  margin: 0;
+}
+.switch {
+  display: block;
+  height: calc($size * 0.8);
+  margin: calc($size * 0.1);
+  background: #bbb;
+  aspect-ratio: 1/1;
+  position: absolute;
+  right: calc($size);
+  border-radius: calc($size * 0.1);
+  transition: all 0.1s ease-in 0s;
+}
+.checkbox {
+  display: none;
+  &:checked + .label {
+    .switch {
+      right: 0px;
+      background: var(--primary-color);
+    }
+  }
+}
