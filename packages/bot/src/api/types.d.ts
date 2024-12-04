@@ -9,7 +9,6 @@ export interface DataUser {
   id: string
   username: string
   avatar: string | null
-  token: string
   guilds: {
     name: string
     owner: boolean

@@ -45,6 +45,16 @@ model Server {
   users          User[]          @relation(fields: [usersId], references: [id])
   usersId        String[]        @db.ObjectId
   welcome        WelcomeCommand?
+  settings       ServerSetting?
+}
+
+model ServerSetting {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  serverId       String  @unique
+  colorActive    Boolean @default(false)
+  welcomeActive  Boolean @default(false)
+
+  refServer Server @relation(fields: [serverId], references: [serverId])
 }
 
 model ColorCommand {

@@ -1,0 +1,10 @@
+---
+import Settings from "../../components/Dashboard/Guild/Settings";
+
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Guild Management">
+  <h1>Guild Management</h1>
+  <Settings client:load apiUrl={import.meta.env.URL_API} />
+</Layout>

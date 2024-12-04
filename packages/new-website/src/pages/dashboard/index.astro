@@ -1,0 +1,10 @@
+---
+import ContainerGuilds from "../../components/Dashboard/ContainerGuilds";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Dashboard">
+  <meta data-url-api={import.meta.env.URL_API} />
+  <h1>Dashboard</h1>
+  <ContainerGuilds apiUrl={import.meta.env.URL_API} client:load />
+</Layout>

@@ -1,6 +1,6 @@
 ---
 const apiUrl = import.meta.env.URL_API;
-console.log(apiUrl);
+const urlOathCallback = import.meta.env.URL_OATH_CALLBACK;
 ---
 
 <nav>
@@ -36,7 +36,7 @@ console.log(apiUrl);
   <div id="login">
     <div class="loader" style="height: 2.4rem; aspect-ratio: 4/1"></div>
     <a
-      href=`${apiUrl}/auth0/discord/callback`
+      href=`${apiUrl}${urlOathCallback}`
       class="button button--secondary"
       style="display: none"
     >
@@ -65,25 +65,25 @@ console.log(apiUrl);
 <x-phone>
   <i class="ti ti-menu button--icon"></i>
 </x-phone>
-<script is:inline>
+<script>
   const apiUrl = document
     .querySelector("meta[data-url-api]")
-    .getAttribute("data-url-api");
+    ?.getAttribute("data-url-api");
   const buttonTheme = document.getElementById("button-theme");
   let theme =
     document.documentElement.getAttribute("data-theme") ??
     localStorage.getItem("theme");
-  const changeTheme = (e) => {
+  const changeTheme = (e: any) => {
     if (!e) return;
     theme = theme === "light" ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   };
   buttonTheme?.addEventListener("click", changeTheme);
-  changeTheme();
+  changeTheme(null);
 
   // Login
-  const $login = document.getElementById("login");
+  const $login = document.getElementById("login")!;
   const request = new Request(`${apiUrl}/user`, {
     method: "GET",
     headers: {
@@ -95,29 +95,29 @@ console.log(apiUrl);
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      const $loader = $login.querySelector(".loader");
-      const $button = $login.querySelector("a");
-      const $avatar = $login.querySelector(".avatar");
+      const $loader = $login.querySelector<HTMLDivElement>(".loader")!;
+      const $button = $login.querySelector("a")!;
+      const $avatar = $login.querySelector<HTMLDivElement>(".avatar")!;
       $loader.style.display = "none";
       if (data.ok) {
         const user = data.data;
-        const $image = $avatar.querySelector("img");
-        const options = $avatar.querySelector(".options");
+        const $image = $avatar.querySelector("img")!;
+        const options = $avatar.querySelector<HTMLDivElement>(".options")!;
         $image.src = `https://cdn.discordapp.com/avatars/${user.id}/a_${user.avatar}.png?size=48`;
         $image.alt = user.username;
         $avatar.style.display = "flex";
-        const activeOpotions = () => {
+        const activeOptions = () => {
           const active = $image.getAttribute("active");
           $image.setAttribute("active", active === "true" ? "false" : "true");
         };
-        $image.addEventListener("click", activeOpotions);
-        options.addEventListener("click", activeOpotions);
+        $image.addEventListener("click", activeOptions);
+        options.addEventListener("click", activeOptions);
       } else {
         $button.style.display = "flex";
       }
     });
-  const $menu = document.querySelector("x-phone");
-  const $nav = document.querySelector("nav");
+  const $menu = document.querySelector("x-phone")!;
+  const $nav = document.querySelector("nav")!;
   $menu.addEventListener("click", () => {
     $nav.classList.toggle("show-menu");
   });

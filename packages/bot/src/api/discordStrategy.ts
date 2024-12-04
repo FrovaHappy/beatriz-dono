@@ -1,6 +1,7 @@
 import type { DataUser } from '@/api/types'
 import { PermissionsBitField } from 'discord.js'
 import { Strategy } from 'passport-discord'
+import { getGuild } from '@/rest/guild'
 
 export default new Strategy(
   {
@@ -10,23 +11,26 @@ export default new Strategy(
     scope: ['identify', 'guilds']
   },
   async (accessToken, refreshToken, profile, done) => {
-    const guilds = profile.guilds?.map(guild => {
-      let isAdmin = false
-      if (new PermissionsBitField(BigInt(guild.permissions)).has('Administrator')) isAdmin = true
-      return {
+    const guilds = []
+    for (const guild of profile.guilds ?? []) {
+      const isAdmin = new PermissionsBitField(BigInt(guild.permissions)).has('Administrator')
+      if (!isAdmin) continue
+      const guildBot = await getGuild(guild.id)
+
+      guilds.push({
         name: guild.name,
         owner: guild.owner,
         icon: guild.icon,
-        isAdmin,
+        isAdmin: !!guildBot,
         id: guild.id
-      }
-    })
+      })
+    }
+
     const user: DataUser = {
-      token: accessToken,
       id: profile.id,
       username: profile.username,
       avatar: profile.avatar,
-      guilds: guilds ?? []
+      guilds: guilds
     }
     done(null, user)
   }

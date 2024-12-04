@@ -38,6 +38,10 @@ export default async function startApi() {
   // Routes
   app.use(routers)
 
+  app.use((req, res) => {
+    res.status(404).json({ data: null, message: 'Route not found', ok: false })
+  })
+
   app.listen(config.portApi, () => {
     console.log(`Server is running on port ${config.portApi}`)
   })
