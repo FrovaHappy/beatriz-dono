@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { toastCustom } from '../../../LayoutReact'
+import { toastCustom } from '@layouts/LayoutReact'
 import css from '../CardSetting.module.scss'
-import type { SettingContract } from '../../../../hooks/contractApi'
-import postSetting from '../../../../hooks/postSetting'
-import type { ComponentProps } from '../../../../types'
-import { Switch } from '../../../General/Switch'
+import type { SettingContract } from '@hooks/contractApi'
+import postSetting from '@hooks/postSetting'
+import type { ComponentProps } from '@src/types'
+import { Switch } from '@components/General/Switch'
 
 interface Props extends ComponentProps {
   guildId: string

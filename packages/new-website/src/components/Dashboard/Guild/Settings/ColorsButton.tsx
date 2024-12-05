@@ -1,9 +1,9 @@
-import { useEffect, useId, useState } from 'react'
-import { Switch } from '../../../General/Switch'
-import type { SettingContract } from '../../../../hooks/contractApi'
-import postSetting from '../../../../hooks/postSetting'
+import { useEffect, useState } from 'react'
+import { Switch } from '@components/General/Switch'
+import type { SettingContract } from '@hooks/contractApi'
+import postSetting from '@hooks/postSetting'
 import css from '../CardSetting.module.scss'
-import { toastCustom } from '../../../LayoutReact'
+import { toastCustom } from '@layouts/LayoutReact'
 
 export default function ColorsButton({ guildId }: { guildId: string }) {
   const [updateSetting, setUpdateSetting] = useState<Partial<SettingContract>>({})

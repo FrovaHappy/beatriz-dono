@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
-import getSetting from '../../../hooks/getSetting'
-import type { SettingContract } from '../../../hooks/contractApi'
-import ColorsButton from './Settings/ColorsButton'
-import LayoutReact from '../../LayoutReact'
-import WelcomeButton from './Settings/WelcomeButton'
-import type { ComponentProps } from '../../../types'
+import { useEffect, useState } from 'react'
+import getSetting from '@hooks/getSetting'
+import ColorsButton from './ColorsButton'
+import WelcomeButton from './WelcomeButton'
+import LayoutReact from '@layouts/LayoutReact'
+import type { ComponentProps } from '@src/types'
 interface Props extends ComponentProps {}
 export default function Settings({ apiUrl }: Props) {
   const [guildId, setGuildId] = useState<any>()

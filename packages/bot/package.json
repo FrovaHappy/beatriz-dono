@@ -7,17 +7,29 @@
     "start": "NODE_ENV=production node dist/index.js"
   },
   "paths": {
-    "@/libs/*": ["../libs/dist/*"]
+    "@/libs/*": [
+      "../libs/dist/*"
+    ]
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.64",
+    "cors": "2.8.5",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
+    "express": "4.21.1",
+    "express-session": "1.18.1",
     "module-alias": "^2.2.3",
+    "passport": "0.7.0",
+    "passport-discord": "0.1.4",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
     "@types/module-alias": "^2.0.4",
+    "@types/passport": "^1.0.17",
+    "@types/passport-discord": "^0.1.14",
     "nodemon": "3.1.7",
     "ts-node": "10.9.2"
   }

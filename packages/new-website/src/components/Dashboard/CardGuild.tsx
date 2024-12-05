@@ -1,4 +1,4 @@
-import type { GuildContract } from '../../hooks/contractApi'
+import type { GuildContract } from '@hooks/contractApi'
 import css from './CardGuild.module.scss'
 
 interface CardGuildProps {
