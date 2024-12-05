@@ -40,4 +40,11 @@ $size: 1.5rem;
       background: var(--primary-color);
     }
   }
+  &:disabled + .label {
+    opacity: 0.5;
+    cursor: not-allowed;
+    .switch {
+      border: 1px solid  color-mix(in srgb, white 30% , transparent);
+    }
+  }
 }

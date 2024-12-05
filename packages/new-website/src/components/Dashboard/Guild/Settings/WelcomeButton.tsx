@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { toastCustom } from '@layouts/LayoutReact'
-import css from '../CardSetting.module.scss'
 import type { SettingContract } from '@hooks/contractApi'
 import postSetting from '@hooks/postSetting'
 import type { ComponentProps } from '@src/types'
@@ -9,16 +8,19 @@ import { Switch } from '@components/General/Switch'
 interface Props extends ComponentProps {
   guildId: string
   checked: boolean
+  css: CSSModuleClasses
 }
 
 export default function welcomeButton(props: Props) {
-  const { guildId, apiUrl, checked } = props
+  const { guildId, apiUrl, css, checked } = props
   const [updateSetting, setUpdateSetting] = useState<Partial<SettingContract>>({})
-  const { setting, status } = postSetting(apiUrl, guildId, updateSetting, [guildId, updateSetting])
+  const [check, setCheck] = useState(checked)
+  const { setting, status } = postSetting(apiUrl, guildId, updateSetting, [check])
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleChange = (e: any) => {
     setUpdateSetting({ welcomeActive: e.target.checked })
+    setCheck(e.target.checked)
   }
   useEffect(() => {
     if (!setting) return
@@ -31,7 +33,7 @@ export default function welcomeButton(props: Props) {
     <div className={css.card}>
       <h2 className={css.title}>Welcome</h2>
       <p className={css.subtitle}>Administra tus mensajes de bienvenida</p>
-      <Switch name='colors' checked={setting?.welcomeActive || false} onChange={handleChange} />
+      <Switch name='colors' checked={check} onChange={handleChange} disabled={status === 'loading'} />
     </div>
   )
 }

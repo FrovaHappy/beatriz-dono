@@ -4,6 +4,7 @@ import ColorsButton from './ColorsButton'
 import WelcomeButton from './WelcomeButton'
 import LayoutReact from '@layouts/LayoutReact'
 import type { ComponentProps } from '@src/types'
+import cssCardSetting from './CardSetting.module.scss'
 interface Props extends ComponentProps {}
 export default function Settings({ apiUrl }: Props) {
   const [guildId, setGuildId] = useState<any>()
@@ -20,8 +21,8 @@ export default function Settings({ apiUrl }: Props) {
   return (
     <LayoutReact>
       <div>
-        <ColorsButton guildId={guildId} />
-        <WelcomeButton guildId={guildId} checked={!!setting?.welcomeActive} apiUrl={apiUrl} />
+        <ColorsButton guildId={guildId} css={cssCardSetting} apiUrl={apiUrl} checked={!!setting?.colorActive} />
+        <WelcomeButton guildId={guildId} apiUrl={apiUrl} css={cssCardSetting} checked={!!setting?.welcomeActive} />
       </div>
     </LayoutReact>
   )
