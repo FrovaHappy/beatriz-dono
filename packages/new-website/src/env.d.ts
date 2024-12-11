@@ -2,4 +2,5 @@
 
 interface ImportMetaEnv {
   readonly URL_API: string
+  readonly URL_OATH_CALLBACK: string
 }

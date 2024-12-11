@@ -1,0 +1,44 @@
+.avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  img {
+    cursor: pointer;
+    width: 2.275rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--font-color-10);
+  }
+  .options {
+    z-index: var(--z-menu-button);
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    top: 110%;
+    right: 0;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    background: var(--font-color-10);
+    backdrop-filter: blur(0.5rem);
+    li {
+      a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: var(--border-radius);
+        transition: all 0.2s ease-in-out;
+      }
+      a:hover {
+        background: color-mix(in srgb, var(--font-color) 25%, transparent);
+        color: var(--font-color);
+      }
+    }
+  }
+  img[active="true"] + .options {
+    display: block;
+  }
+}

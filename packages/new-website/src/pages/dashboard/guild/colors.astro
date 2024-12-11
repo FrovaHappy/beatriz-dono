@@ -1,0 +1,8 @@
+---
+import ColorsSettings from "@components/Dashboard/Guild/ColorsSettings";
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="Colors">
+  <ColorsSettings client:only apiUrl={import.meta.env.URL_API} />
+</Layout>

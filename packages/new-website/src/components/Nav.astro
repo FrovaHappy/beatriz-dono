@@ -1,4 +1,6 @@
 ---
+import LoginButton from "./Nav/LoginButton";
+
 const apiUrl = import.meta.env.URL_API;
 const urlOathCallback = import.meta.env.URL_OATH_CALLBACK;
 ---
@@ -33,34 +35,7 @@ const urlOathCallback = import.meta.env.URL_OATH_CALLBACK;
     <i class="ti ti-cup button--icon"></i>
     <span class="button--text">Regalame un Café</span>
   </a>
-  <div id="login">
-    <div class="loader" style="height: 2.4rem; aspect-ratio: 4/1"></div>
-    <a
-      href=`${apiUrl}${urlOathCallback}`
-      class="button button--secondary"
-      style="display: none"
-    >
-      <i class="ti ti-brand-discord button--icon"></i>
-      <span class="button--text">iniciar sesión</span>
-    </a>
-    <div class="avatar" style="display: none">
-      <img src="" alt="" />
-      <ul class="options">
-        <li>
-          <a href="/dashboard">
-            <i class="ti ti-tool button--icon"></i>
-            <span class="button--text">Dashboard</span>
-          </a>
-        </li>
-        <li>
-          <a href=`${apiUrl}/logout`>
-            <i class="ti ti-power button--icon"></i>
-            <span class="button--text">Cerrar sesión</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <LoginButton apiUrl={apiUrl} oauthCallback={urlOathCallback} client:only />
 </nav>
 <x-phone>
   <i class="ti ti-menu button--icon"></i>
@@ -82,40 +57,6 @@ const urlOathCallback = import.meta.env.URL_OATH_CALLBACK;
   buttonTheme?.addEventListener("click", changeTheme);
   changeTheme(null);
 
-  // Login
-  const $login = document.getElementById("login")!;
-  const request = new Request(`${apiUrl}/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
-  fetch(request)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      const $loader = $login.querySelector<HTMLDivElement>(".loader")!;
-      const $button = $login.querySelector("a")!;
-      const $avatar = $login.querySelector<HTMLDivElement>(".avatar")!;
-      $loader.style.display = "none";
-      if (data.ok) {
-        const user = data.data;
-        const $image = $avatar.querySelector("img")!;
-        const options = $avatar.querySelector<HTMLDivElement>(".options")!;
-        $image.src = `https://cdn.discordapp.com/avatars/${user.id}/a_${user.avatar}.png?size=48`;
-        $image.alt = user.username;
-        $avatar.style.display = "flex";
-        const activeOptions = () => {
-          const active = $image.getAttribute("active");
-          $image.setAttribute("active", active === "true" ? "false" : "true");
-        };
-        $image.addEventListener("click", activeOptions);
-        options.addEventListener("click", activeOptions);
-      } else {
-        $button.style.display = "flex";
-      }
-    });
   const $menu = document.querySelector("x-phone")!;
   const $nav = document.querySelector("nav")!;
   $menu.addEventListener("click", () => {

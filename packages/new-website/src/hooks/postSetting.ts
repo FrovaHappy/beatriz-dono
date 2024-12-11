@@ -14,6 +14,12 @@ export default function postSetting(apiUrl: string, guildId: string, body: Parti
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setStatus(Status.LOADING)
+
+    if (Object.keys(body ?? {}).length === 0 || !guildId) {
+      setStatus(Status.ERROR)
+      return
+    }
+
     const request = new Request(`${apiUrl}/guild/setting`, {
       method: 'POST',
       headers: {

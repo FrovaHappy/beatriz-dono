@@ -1,0 +1,52 @@
+$color: var(--primary-color);
+$colorShadow: color-mix(in srgb, $color 30%, transparent);
+
+.container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--font-color-10);
+}
+
+.loader {
+  width: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: $color;
+  box-shadow: 0 0 0 0 $colorShadow;
+  animation: l2 1.5s infinite linear;
+  position: relative;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 $colorShadow;
+    animation: inherit;
+    animation-delay: -0.5s;
+  }
+  &:after {
+    animation-delay: -1s;
+  }
+}
+@keyframes l2 {
+  100% {
+    box-shadow: 0 0 0 40px transparent;
+  }
+}
+.loaderInfinite {
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(-45deg, transparent 20%, var(--font-color-10), transparent 80%);
+  animation:linearFrame 2s linear infinite;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+@keyframes linearFrame {
+  100% {
+    transform: translate(100%, 100%);
+  }
+}

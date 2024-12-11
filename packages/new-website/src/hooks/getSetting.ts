@@ -14,7 +14,10 @@ export default function usSetting(apiUrl: string, id: string, deps: any[]) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setStatus(Status.LOADING)
-    console.log(id)
+    if (!id) {
+      setStatus(Status.ERROR)
+      return
+    }
     const request = new Request(`${apiUrl}/guild/setting/${id}`, {
       method: 'GET',
       headers: {
@@ -26,7 +29,6 @@ export default function usSetting(apiUrl: string, id: string, deps: any[]) {
       .then(res => res.json())
       .then(d => {
         const { data, ok, message } = d
-        console.log(message)
         if (!ok) {
           return setStatus(Status.ERROR)
         }
