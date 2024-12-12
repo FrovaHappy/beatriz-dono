@@ -2,6 +2,7 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import deployCommand from './deployCommands'
 import getEvents from './getEvents'
 import getServices from './getServices'
+import loadFonts from './loadFonts'
 
 export default async function startClient(): Promise<void> {
   const { config } = globalThis
@@ -9,7 +10,8 @@ export default async function startClient(): Promise<void> {
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
   })
   globalThis.cooldowns = new Collection()
-
+  
+  await loadFonts()
   await getServices()
   await deployCommand(globalThis.commands)
 

@@ -58,12 +58,12 @@ const WELCOME: Canvas = {
       type: 'text',
       color: '#E54554',
       size: 36,
-      family: 'Inter',
+      family: 'Open Sans',
       weight: 900,
       align: 'end',
       limitLetters: 300,
       baseline: 'top',
-      content: '<user_name>'
+      content: '{{user_name}}'
     },
     {
       id: 7,
@@ -72,7 +72,7 @@ const WELCOME: Canvas = {
       type: 'text',
       size: 20,
       color: '#651D24',
-      family: 'Karla Italic',
+      family: 'Karla',
       weight: 600,
       align: 'start',
       limitLetters: 0,

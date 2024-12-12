@@ -3,11 +3,6 @@ import { AttachmentBuilder, type GuildMember } from 'discord.js'
 
 import type { Canvas, Image, Layer } from '@/types/Canvas.types'
 import renderCanvas from '@libs/renderCanvas'
-// load Fonts
-import fonts from './fonts'
-for (const font of fonts) {
-  GlobalFonts.registerFromPath(font.patch, font.nameAlias)
-}
 
 export default async function buildWelcomeImage(data: Canvas, member: GuildMember): Promise<AttachmentBuilder> {
   const user = {
