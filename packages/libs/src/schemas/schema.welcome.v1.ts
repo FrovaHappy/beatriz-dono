@@ -1,4 +1,4 @@
-import { fontsFamily } from 'src/getFonts'
+import { type FontsFamily, fontsFamily } from 'src/getFonts'
 import { z } from 'zod'
 
 const MAX_WIDTH_CANVAS = 2000
@@ -6,7 +6,7 @@ const PATCH_REGEX = /^([mxywhcvzsqtalMXYWHCVZSQTAL0-9 ,.-]+)$/
 const DOMAIN_SUPPORTED = '(imgur.com|media.discordapp.net)'
 const URL_IMAGE = `^https?://${DOMAIN_SUPPORTED}/\\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)$`
 const URL_REGEX = new RegExp(URL_IMAGE)
-const validateColor = z.custom((val: string) => {
+const validateColor = z.custom<string>((val: string) => {
   if (typeof val !== 'string') return false
   if (val.length === 8) return false // #RRGGBB + letter error
   if (/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test(val)) return true
@@ -16,12 +16,14 @@ const filterSchema = z.object({
   blur: z.number().min(0).max(100).optional(),
   brightness: z.number().min(-100).max(100).optional(),
   contrast: z.number().min(-100).max(100).optional(),
-  dropShadow: z.object({
-    offsetX: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-    offsetY: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-    blurRadius: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-    color: validateColor
-  }),
+  dropShadow: z
+    .object({
+      offsetX: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
+      offsetY: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
+      blurRadius: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
+      color: validateColor
+    })
+    .optional(),
   grayscale: z.number().min(0).max(100).optional(),
   hueRotate: z.number().min(-360).max(360).optional(),
   invert: z.number().min(0).max(100).optional(),
@@ -35,16 +37,16 @@ const filterSchema = z.object({
 const textSchema = z.object({
   id: z.string().min(1).max(100),
   type: z.literal('text'),
-  dx: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-  dy: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-  text: z.string().max(MAX_WIDTH_CANVAS).min(1).optional(),
+  dx: z.number().min(0).max(MAX_WIDTH_CANVAS),
+  dy: z.number().min(0).max(MAX_WIDTH_CANVAS),
+  text: z.string().min(1).max(MAX_WIDTH_CANVAS),
   size: z
     .number()
     .min(10)
     .max(MAX_WIDTH_CANVAS * 3)
     .optional(),
-  family: z.custom(val => fontsFamily.some(val), 'This Font is not available'),
-  color: validateColor.default('#0000'),
+  family: z.custom<FontsFamily>(val => fontsFamily.some(val), 'This Font is not available'),
+  color: validateColor.default('#000'),
   globalAlpha: z.number().min(0).max(1).multipleOf(0.01).optional(),
   letterSpacing: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
   maxWidth: z.number().min(1).max(MAX_WIDTH_CANVAS).optional(),
@@ -106,6 +108,7 @@ const canvasSchema = z.object({
 export type Canvas = z.infer<typeof canvasSchema>
 export type Text = z.infer<typeof textSchema>
 export type Shape = z.infer<typeof shapeSchema>
+export type Filter = z.infer<typeof filterSchema>
 
 export function isText(layer: Text | Shape): layer is Text {
   return layer.type === 'text'
