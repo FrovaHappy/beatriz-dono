@@ -33,6 +33,7 @@ const filterSchema = z.object({
   - support for gradient
 */
 const textSchema = z.object({
+  id: z.string().min(1).max(100),
   type: z.literal('text'),
   dx: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
   dy: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
@@ -62,6 +63,7 @@ const textSchema = z.object({
 
 const shapeSchema = z
   .object({
+    id: z.string().min(1).max(100),
     type: z.literal('shape'),
     dx: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dy: z.number().min(0).max(MAX_WIDTH_CANVAS),
