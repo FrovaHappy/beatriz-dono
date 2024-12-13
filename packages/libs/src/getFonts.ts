@@ -67,7 +67,7 @@ const fonts = {
 }
 
 export type FontsFamily = keyof typeof fonts
-export const getFontsFamily = () => Object.keys(fonts) as FontsFamily[]
+export const fontsFamily = Object.keys(fonts) as FontsFamily[]
 
 export const getFonts = async (root: string) => {
   if (!existsSync(root)) await mkdir(root, { recursive: true })
