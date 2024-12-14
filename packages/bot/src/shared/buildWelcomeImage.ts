@@ -1,31 +1,41 @@
-import { GlobalFonts, Path2D as Path, createCanvas, loadImage } from '@napi-rs/canvas'
+import { Path2D as Path, createCanvas, loadImage } from '@napi-rs/canvas'
 import { AttachmentBuilder, type GuildMember } from 'discord.js'
 
-import type { Canvas, Image, Layer } from '@/types/Canvas.types'
-import renderCanvas from '@libs/renderCanvas'
+import { isShape, type Canvas } from '@libs/schemas/schema.welcome.v1'
+import PaintCanvas from '@libs/PaintCanvas'
+import type { User, Guild } from '@type/index'
 
 export default async function buildWelcomeImage(data: Canvas, member: GuildMember): Promise<AttachmentBuilder> {
-  const user = {
-    avatar: member.user.avatarURL() ?? config.imageAvatar,
-    count: member.guild.memberCount.toString(),
-    globalName: member.user.globalName ?? member.user.username,
-    id: member.user.id,
-    username: member.user.username
+  const filterText: User & Guild = {
+    userName: member.user.globalName ?? member.user.username,
+    userId: member.user.id,
+    userDiscriminator: member.user.discriminator,
+    userDisplayName: member.user.displayName,
+    userAvatar: member.user.avatarURL() ?? config.imageAvatar,
+    userBanner: member.user.bannerURL() ?? undefined,
+    membersCount: member.guild.memberCount.toString(),
+    guildAvatar: member.user.avatarURL() ?? config.imageAvatar,
+    guildBanner: member.guild.bannerURL() ?? undefined,
+    guildName: member.guild.name,
+    guildId: member.guild.id
   }
-  const { layers, ...base } = data
-  const canvas = createCanvas(data.width, data.height)
-  const ctx = canvas.getContext('2d')
+  const { layers } = data
+  const canvas = createCanvas(data.w, data.h)
+  const ctx = canvas.getContext('2d') as unknown as CanvasRenderingContext2D
 
   const images: Record<string, HTMLImageElement> = {}
-  for (const l of layers) {
-    if (l.type === 'image') {
-      images[l.id] = (await loadImage((l as Layer<Image>).img ?? config.imageTransparent)) as unknown as HTMLImageElement
-    }
-    if (l.type === 'icon') {
-      images[l.id] = (await loadImage(user.avatar)) as unknown as HTMLImageElement
-    }
+  for (const layer of layers) {
+    if (!isShape(layer)) continue
+    if (!layer.image) continue
+    images[layer.id] = (await loadImage(layer.image)) as unknown as HTMLImageElement
   }
-  renderCanvas(layers, base, user, ctx as unknown as CanvasRenderingContext2D, Path as typeof Path2D, images)
+  PaintCanvas({
+    ctx,
+    canvas: data,
+    Path2D: Path as unknown as typeof Path2D,
+    images,
+    filterText
+  })
   const extension = 'png'
 
   return new AttachmentBuilder(await canvas.encode(extension), { name: `welcome.${extension}` })

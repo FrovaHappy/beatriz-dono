@@ -27,7 +27,7 @@ export default async function getServices() {
       try {
         return require(servicePath).default
       } catch (error) {
-        console.log(`${p.red('[services]')} Error loading service ${servicePath}`)
+        console.log(`${p.red('[services]')} Error loading service ${servicePath}\n${error}`)
         return null
       }
     })()

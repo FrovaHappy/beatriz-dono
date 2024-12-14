@@ -2,9 +2,10 @@ import type { Canvas } from '../schemas/schema.welcome.v1'
 
 export default {
   version: '1',
+  title: 'default',
   h: 200,
   w: 200,
-  bgColor: 'transparent',
+  bgColor: '#f00',
   layers: [
     {
       type: 'text',
@@ -12,16 +13,18 @@ export default {
       dx: 0,
       dy: 0,
       text: '{{user_name}}',
-      size: 100,
+      size: 34,
       family: 'Roboto',
       color: '#000',
       globalAlpha: 1,
       letterSpacing: 0,
-      maxWidth: 0,
+      maxWidth: 50,
       weight: 400,
       align: 'start',
       baseline: 'top',
-      filter: {}
+      filter: {
+        blur: 10
+      }
     },
     {
       type: 'shape',

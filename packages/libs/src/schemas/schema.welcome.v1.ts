@@ -1,16 +1,20 @@
-import { type FontsFamily, fontsFamily } from 'src/getFonts'
-import { z } from 'zod'
+import { type FontsFamily, fontsFamily } from '../getFonts'
+import { z, ZodError } from 'zod'
 
 const MAX_WIDTH_CANVAS = 2000
-const PATCH_REGEX = /^([mxywhcvzsqtalMXYWHCVZSQTAL0-9 ,.-]+)$/
-const DOMAIN_SUPPORTED = '(imgur.com|media.discordapp.net)'
-const URL_IMAGE = `^https?://${DOMAIN_SUPPORTED}/\\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)$`
-const URL_REGEX = new RegExp(URL_IMAGE)
-const validateColor = z.custom<string>((val: string) => {
-  if (typeof val !== 'string') return false
-  if (val.length === 8) return false // #RRGGBB + letter error
-  if (/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test(val)) return true
-}, 'the format has to be #RGB or #RRGGBB')
+
+const regex = {
+  hexColor: /^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/,
+  patch: /^([mxywhcvzsqtalMXYWHCVZSQTAL0-9 ,.-]+)$/,
+  urlImage: () => {
+    const domains = ['imgur.com', 'media.discordapp.net', 'i.pinimg.com']
+    return new RegExp(`^https?://${domains.join('|')}/\\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)$`)
+  }
+}
+const validateColor = z.union([
+  z.string().refine((val: string) => regex.hexColor.test(val), 'the format has to be #RGB or #RRGGBB'),
+  z.literal('transparent')
+])
 
 const filterSchema = z.object({
   blur: z.number().min(0).max(100).optional(),
@@ -45,7 +49,7 @@ const textSchema = z.object({
     .min(10)
     .max(MAX_WIDTH_CANVAS * 3)
     .optional(),
-  family: z.custom<FontsFamily>(val => fontsFamily.some(val), 'This Font is not available'),
+  family: z.string().refine(val => fontsFamily.some(f => f === val), 'This Font is not available'),
   color: validateColor.default('#000'),
   globalAlpha: z.number().min(0).max(1).multipleOf(0.01).optional(),
   letterSpacing: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
@@ -77,7 +81,7 @@ const shapeSchema = z
     sh: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
     image: z
       .union([
-        z.string().url().regex(URL_REGEX),
+        z.string().url().regex(regex.urlImage()),
         z.literal('{{user_avatar}}'),
         z.literal('{{user_banner}}'),
         z.literal('{{server_avatar}}'),
@@ -88,7 +92,7 @@ const shapeSchema = z
     imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).default('low'),
     clip: z
       .object({
-        d: z.string().regex(PATCH_REGEX),
+        d: z.string().regex(regex.patch),
         h: z.number().min(0).max(1),
         w: z.number().min(0).max(1)
       })
@@ -100,6 +104,7 @@ const shapeSchema = z
 
 const canvasSchema = z.object({
   version: z.literal('1').default('1'),
+  title: z.string().min(1).max(100),
   h: z.number().min(0).max(MAX_WIDTH_CANVAS),
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
   bgColor: validateColor.default('transparent'),
@@ -122,15 +127,14 @@ export function validateCanvas(data: any) {
   try {
     canvasSchema.parse(data)
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        ok: false,
-        errors: error.issues
-      }
+    console.log(error)
+    return {
+      ok: false,
+      errors: error instanceof ZodError ? error.errors : undefined
     }
   }
   return {
     ok: true,
-    errors: []
+    errors: undefined
   }
 }

@@ -16,10 +16,10 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
       "@type/*": [
-        "src/types/*"
+        "./types/*"
       ]
     }
   },

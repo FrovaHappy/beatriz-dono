@@ -1,14 +1,14 @@
 import { CommandNames } from '@/const/interactionsNames'
-import { reduceTupleToObj, stringToJson } from '@/shared/general'
+import { stringToJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
-import { formatZodError } from '@/shared/validate'
 import BuildCommand from '@core/build/BuildCommand'
 import db from '@core/db'
 import formatterText from '@libs/formatterText'
-import WELCOME from '@libs/welcome'
+import WELCOME from '@libs/PaintCanvas/template.welcome'
 import { SendWelcome } from '@prisma/client'
-import { Colors, EmbedBuilder, type GuildMember, Locale, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
-import { validateCanvas } from './validate'
+import { Colors, EmbedBuilder, type GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import { validateCanvas } from '@libs/schemas/schema.welcome.v1'
+import { formattedErrorZod } from '@/shared/formattedErrorZod'
 
 export default new BuildCommand({
   cooldown: 0,
@@ -44,19 +44,19 @@ export default new BuildCommand({
   async execute(i) {
     const serverId = i.guild?.id
     if (!serverId) return { content: 'error with server id' }
-    const imageLength = i.options.getString('image')?.length ?? 0
-    const image = stringToJson(i.options.getString('image') ?? '')
+    const image = stringToJson(i.options.getString('image')) ?? WELCOME
     const message = i.options.getString('message') ?? ' welcome to {{server_name}} {{user_name}}'
     const channelId = i.options.getChannel('channel', true).id
     const send = i.options.getString('send', true) as SendWelcome
-
-    const invalidJson = image ? validateCanvas(image) : undefined
-    if (invalidJson && imageLength > 0) {
+    const validate = validateCanvas(image)
+    console.log({ validate, image })
+    if (!validate.ok) {
+      if (!validate.errors) return { content: 'error in JSON' }
       return {
         embeds: [
           new EmbedBuilder({
             title: 'error in JSON',
-            description: `detected an error in the JSON: ${formatZodError(invalidJson)}`,
+            description: `detected an error in the JSON: ${formattedErrorZod(validate.errors)}`,
             color: Colors.Red
           })
         ]
@@ -69,14 +69,6 @@ export default new BuildCommand({
       '{{user_id}}': i.member?.user.id,
       '{{user_discriminator}}': i.member?.user.discriminator
     })
-    await db.server.update({
-      where: { serverId },
-      data: {
-        welcome: {
-          upsert: { create: { channelId, message, send, image }, update: { channelId, message, send, image } }
-        }
-      }
-    })
     return {
       embeds: [
         new EmbedBuilder({
@@ -86,7 +78,7 @@ export default new BuildCommand({
         })
       ],
       ...(await SendWelcomeWith({
-        image: image ?? WELCOME,
+        image: image,
         message: messageReply,
         member: i.member as GuildMember,
         send

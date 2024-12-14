@@ -1,10 +1,10 @@
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function stringToJson<T = any, G = null>(str: string, df: any = null): T | G {
+export function stringToJson<T = any>(str: string | undefined | null): T | null {
   try {
+    if (!str) return null
     return JSON.parse(str)
   } catch (e) {
-    if (df) return df
-    return null as G
+    return null
   }
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

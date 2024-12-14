@@ -25,7 +25,7 @@ export function validate(colors: string) {
     schemaEditColorDefault[(json.version as Version) ?? CURRENT_VERSION].parse(json)
   } catch (error) {
     if (error instanceof ZodError) {
-      return `Error en el json:\n${formattedErrorZod(error, 'JSON.')}`
+      return `Error en el json:\n${formattedErrorZod(error.errors, 'JSON.')}`
     }
     return 'El json no es valido'
   }

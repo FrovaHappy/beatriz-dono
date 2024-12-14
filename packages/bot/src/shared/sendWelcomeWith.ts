@@ -1,4 +1,4 @@
-import type { Canvas } from '@/types/Canvas.types'
+import type { Canvas } from '@libs/schemas/schema.welcome.v1'
 import { SendWelcome } from '@prisma/client'
 import type { GuildMember } from 'discord.js'
 import buildWelcomeImage from './buildWelcomeImage'

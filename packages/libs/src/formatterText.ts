@@ -9,14 +9,14 @@ type Rules = Record<UserRules, string> & Record<Slot, string> & Record<ServerRul
 export function formatterTextUser(strToFormat: string, param: User & Guild): string {
   return formatterText(strToFormat, {
     '{{user_name}}': param.userName,
-    '{{user_global}}': param.displayName,
+    '{{user_global}}': param.userDisplayName,
     '{{user_id}}': param.userId,
-    '{{user_avatar}}': param.avatar,
-    '{{user_discriminator}}': param.discriminator,
-    '{{server_banner}}': param.banner ?? '',
-    '{{server_icon}}': param.avatar,
+    '{{user_avatar}}': param.userAvatar,
+    '{{user_discriminator}}': param.userDiscriminator,
+    '{{server_banner}}': param.guildBanner ?? '',
+    '{{server_icon}}': param.guildAvatar,
     '{{server_name}}': param.guildName,
-    '{{server_count}}': param.memberCount.toString(),
+    '{{server_count}}': param.membersCount,
     '{{server_id}}': param.guildId
   })
 }

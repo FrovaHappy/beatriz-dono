@@ -1,15 +1,15 @@
 export interface User {
   userId: string
   userName: string
-  displayName: string
-  discriminator: string
-  avatar: string
-  banner?: string
+  userDisplayName: string
+  userDiscriminator: string
+  userAvatar: string
+  userBanner?: string
 }
 export interface Guild {
   guildId: string
   guildName: string
-  avatar: string
-  banner?: string
-  memberCount: number
+  guildAvatar: string
+  guildBanner?: string
+  membersCount: string
 }

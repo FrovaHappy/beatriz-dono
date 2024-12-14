@@ -1,11 +1,6 @@
-import SendWelcomeWith from '@/shared/sendWelcomeWith'
-import type { Canvas } from '@/types/Canvas.types'
 import db from '@core/db'
-import WELCOME from '@libs/welcome'
-import { Emoji, type GuildMember } from 'discord.js'
-import { validateCanvas } from '../../services/setWelcome/commands/main/validate'
-import formatterText from '@libs/formatterText'
-import emojis, { getEmoji } from '@/const/emojis'
+import type { GuildMember } from 'discord.js'
+import emojis from '@/const/emojis'
 export default async function welcome(member: GuildMember): Promise<void> {
   const welcomeDb = await db.welcomeCommand.findUnique({
     where: { serverId: member.guild.id }
