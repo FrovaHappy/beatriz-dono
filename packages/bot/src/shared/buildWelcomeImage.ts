@@ -20,6 +20,19 @@ const getColorCast = async (layerId: string | undefined, layers: Canvas['layers'
 
   return color
 }
+const getImages = async (layers: Canvas['layers']) => {
+  const images: Record<string, HTMLImageElement> = {}
+  const resolveImages = []
+  for (const layer of layers) {
+    if (!isShape(layer)) continue
+    resolveImages.push(async () => {
+      if (!layer.image) return
+      images[layer.id] = (await loadImage(layer.image)) as unknown as HTMLImageElement
+    })
+  }
+  await Promise.allSettled(resolveImages.map(fn => fn()))
+  return images
+}
 
 export default async function buildWelcomeImage(data: Canvas, member: GuildMember): Promise<AttachmentBuilder> {
   const filterText: User & Guild = {
@@ -35,23 +48,16 @@ export default async function buildWelcomeImage(data: Canvas, member: GuildMembe
     guildName: member.guild.name,
     guildId: member.guild.id
   }
-  const { layers } = data
+  // load images
+  console.time('fetchImages')
+  const images = await getImages(data.layers)
+  const castColor = await getColorCast(data.layerCastColor, data.layers)
+  console.timeEnd('fetchImages')
+
+  // create canvas
   const canvas = createCanvas(data.w, data.h)
   const ctx = canvas.getContext('2d') as unknown as CanvasRenderingContext2D
-  console.time('fetchImages')
-  const images: Record<string, HTMLImageElement> = {}
-  const resolveImages = []
-  for (const layer of layers) {
-    if (!isShape(layer)) continue
-    resolveImages.push(async () => {
-      if (!layer.image) return
-      images[layer.id] = (await loadImage(layer.image)) as unknown as HTMLImageElement
-    })
-  }
-  await Promise.allSettled(resolveImages.map(fn => fn()))
-  const castColor = await getColorCast(data.layerCastColor, layers)
-  console.log(castColor)
-  console.timeEnd('fetchImages')
+  // render canvas
   PaintCanvas({
     ctx,
     canvas: data,
