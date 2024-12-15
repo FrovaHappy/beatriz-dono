@@ -71,6 +71,7 @@ const shapeSchema = z
   .object({
     id: z.string().min(1).max(100),
     type: z.literal('shape'),
+    color: validateColor.default('transparent'),
     dx: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dy: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dh: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),

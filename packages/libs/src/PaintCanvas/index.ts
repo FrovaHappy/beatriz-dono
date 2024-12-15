@@ -7,10 +7,12 @@ interface PaintCanvasProps {
   ctx: CanvasRenderingContext2D
   canvas: Canvas
   Path2D: typeof Path2D
-  images: Record<string, HTMLImageElement>
+  images: Record<string, HTMLImageElement | undefined>
   filterText: User & Guild
 }
-
+/**
+ * Props.images is a Record<[id: sting], HTMLImageElement | undefined>
+ */
 export default function paintCanvas(props: PaintCanvasProps) {
   console.time('paintCanvas')
   const { ctx, canvas, Path2D, filterText, images } = props
@@ -25,7 +27,7 @@ export default function paintCanvas(props: PaintCanvasProps) {
   ctx.restore() // restore the previous state of the canvas
   console.log('render base')
   for (const layer of layers) {
-    // if (isShape(layer)) paintShape({ ctx, layer, base, Path2D })
+    if (isShape(layer)) paintShape({ ctx, layer, base, Path2D, image: images[layer.id] })
     if (isText(layer)) paintText({ ctx, layer, filterText })
   }
   console.timeEnd('paintCanvas')

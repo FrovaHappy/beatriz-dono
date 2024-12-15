@@ -31,6 +31,8 @@ export default {
       id: '2',
       dx: 0,
       dy: 0,
+      dw: 100,
+      dh: 100,
       image: 'https://i.pinimg.com/736x/25/b6/60/25b660a41df5005c3bbb7cdcb65755b5.jpg'
     }
   ]
