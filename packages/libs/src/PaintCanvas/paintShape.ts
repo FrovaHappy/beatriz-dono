@@ -1,4 +1,4 @@
-import type { Canvas, Shape } from '../schemas/schema.welcome.v1'
+import type { Canvas, Shape } from './schema.welcome.v1'
 
 interface PaintShapeProps {
   ctx: CanvasRenderingContext2D

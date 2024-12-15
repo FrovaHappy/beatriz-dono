@@ -1,4 +1,4 @@
-import type { Canvas } from '../schemas/schema.welcome.v1'
+import type { Canvas } from './schema.welcome.v1'
 
 export default {
   version: '1',

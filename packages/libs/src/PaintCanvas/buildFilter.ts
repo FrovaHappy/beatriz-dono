@@ -1,4 +1,4 @@
-import type { Filter } from '../schemas/schema.welcome.v1'
+import type { Filter } from './schema.welcome.v1'
 
 export function buildFilter(filter: Filter | undefined) {
   if (!filter) return undefined

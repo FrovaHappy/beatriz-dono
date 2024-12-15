@@ -1,4 +1,4 @@
-import { isShape, isText, type Canvas } from '../schemas/schema.welcome.v1'
+import { isShape, isText, type Canvas } from './schema.welcome.v1'
 import paintShape from './paintShape'
 import type { Guild, User } from '@type/index'
 import paintText from './paintText'
