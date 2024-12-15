@@ -50,7 +50,7 @@ const textSchema = z.object({
     .max(MAX_WIDTH_CANVAS * 3)
     .optional(),
   family: z.string().refine(val => fontsFamily.some(f => f === val), 'This Font is not available'),
-  color: validateColor.default('#000'),
+  color: z.union([validateColor, z.literal('auto')]).default('#000'),
   globalAlpha: z.number().min(0).max(1).multipleOf(0.01).optional(),
   letterSpacing: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
   maxWidth: z.number().min(1).max(MAX_WIDTH_CANVAS).optional(),
@@ -71,7 +71,7 @@ const shapeSchema = z
   .object({
     id: z.string().min(1).max(100),
     type: z.literal('shape'),
-    color: validateColor.default('transparent'),
+    color: z.union([validateColor, z.literal('auto')]).default('transparent'),
     dx: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dy: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dh: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
@@ -109,6 +109,7 @@ const canvasSchema = z.object({
   h: z.number().min(0).max(MAX_WIDTH_CANVAS),
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
   bgColor: validateColor.default('transparent'),
+  layerCastColor: z.string().optional(),
   layers: z.array(z.union([textSchema, shapeSchema]))
 })
 export type Canvas = z.infer<typeof canvasSchema>

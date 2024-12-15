@@ -1,3 +1,5 @@
+export type { Canvas, Shape, Text, Filter } from '../PaintCanvas/schema.welcome.v1'
+
 export interface User {
   userId: string
   userName: string

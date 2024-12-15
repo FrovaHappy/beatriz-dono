@@ -7,7 +7,7 @@ import formatterText from '@libs/formatterText'
 import WELCOME from '@libs/PaintCanvas/template.welcome'
 import { SendWelcome } from '@prisma/client'
 import { Colors, EmbedBuilder, type GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
-import { validateCanvas } from '@libs/schemas/schema.welcome.v1'
+import { validateCanvas } from '@libs/PaintCanvas/schema.welcome.v1'
 import { formattedErrorZod } from '@/shared/formattedErrorZod'
 
 export default new BuildCommand({

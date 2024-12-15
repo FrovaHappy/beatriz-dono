@@ -6,6 +6,7 @@ export default {
   h: 200,
   w: 200,
   bgColor: '#f00',
+  layerCastColor: '2',
   layers: [
     {
       type: 'text',

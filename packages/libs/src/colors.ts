@@ -110,7 +110,8 @@ const quantization = (rgbValues: Color[], depth: number): Color[] => {
 }
 
 //  Convert each pixel value ( number ) to hexadecimal ( string ) with base 16
-export function rgbToHex(pixel: Color) {
+export function rgbToHex(pixel: Color | undefined) {
+  if (!pixel) return '#000001'
   const componentToHex = (c: number) => {
     const hex = c.toString(16)
     return hex.padStart(2, '0')

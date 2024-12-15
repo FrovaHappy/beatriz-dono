@@ -9,6 +9,7 @@ interface PaintCanvasProps {
   Path2D: typeof Path2D
   images: Record<string, HTMLImageElement | undefined>
   filterText: User & Guild
+  castColor: string | undefined
 }
 /**
  * Props.images is a Record<[id: sting], HTMLImageElement | undefined>
