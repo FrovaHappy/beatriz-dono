@@ -18,8 +18,6 @@ export default function paintShape(props: PaintShapeProps) {
     h: layer.dh ?? image?.height ?? 100,
     w: layer.dw ?? image?.width ?? 100
   }
-
-  console.log(dimension.w, dimension.h)
   ctx.translate(layer.dx, layer.dy) // move the position of the image
   const minImage = Math.min(dimension.w, dimension.h)
   const scaleTo = minImage / Math.max(patch?.w ?? minImage, patch?.h ?? minImage)
@@ -36,9 +34,7 @@ export default function paintShape(props: PaintShapeProps) {
   // setting
   ctx.fillStyle = color
 
-  if (layer.color !== 'transparent')
-    // renders fills
-    ctx.fillRect(0, 0, dimension.w, dimension.h)
+  if (layer.color !== 'transparent') ctx.fillRect(0, 0, dimension.w, dimension.h)
   if (image) ctx.drawImage(image, center.w, center.h, dimension.w / scaleTo, dimension.h / scaleTo)
 
   ctx.transform(1, 0, 0, 1, 0, 0) // reset the transformation matrix to the identity matrix

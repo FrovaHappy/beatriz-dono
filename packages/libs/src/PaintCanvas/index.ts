@@ -15,7 +15,6 @@ interface PaintCanvasProps {
  * Props.images is a Record<[id: sting], HTMLImageElement | undefined>
  */
 export default function paintCanvas(props: PaintCanvasProps) {
-  console.time('paintCanvas')
   const { ctx, canvas, Path2D, filterText, images, castColor } = props
   const { layers, ...base } = canvas
   ctx.clearRect(0, 0, base.w, base.h) // reset canvas in the Frontend
@@ -26,11 +25,9 @@ export default function paintCanvas(props: PaintCanvasProps) {
     ctx.fillRect(0, 0, base.w, base.h)
   }
   ctx.restore() // restore the previous state of the canvas
-  console.log('render base')
   for (const layer of layers) {
     if (isShape(layer)) paintShape({ ctx, layer, Path2D, image: images[layer.id], castColor })
     if (isText(layer)) paintText({ ctx, layer, filterText, castColor })
   }
-  console.timeEnd('paintCanvas')
   return ctx
 }
