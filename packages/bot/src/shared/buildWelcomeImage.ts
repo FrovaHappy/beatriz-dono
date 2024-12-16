@@ -6,6 +6,7 @@ import PaintCanvas from '@libs/PaintCanvas'
 import type { User, Guild } from '@type/index'
 import { rgbToHex, getPallete } from '@libs/colors'
 import { isShape } from '@libs/PaintCanvas/schema.welcome.v1'
+import { formatterTextUser } from '@libs/formatterText'
 
 const getColorCast = async (layerId: string | undefined, layers: Canvas['layers']) => {
   if (!layerId) return undefined
@@ -23,14 +24,15 @@ const getColorCast = async (layerId: string | undefined, layers: Canvas['layers'
 
   return color
 }
-const getImages = async (layers: Canvas['layers']) => {
+const getImages = async (layers: Canvas['layers'], filterText: User & Guild) => {
   const images: Record<string, HTMLImageElement> = {}
   const resolveImages = []
   for (const layer of layers) {
     if (!isShape(layer)) continue
     resolveImages.push(async () => {
       if (!layer.image) return
-      images[layer.id] = (await loadImage(layer.image)) as unknown as HTMLImageElement
+      const url = formatterTextUser(layer.image, filterText)
+      images[layer.id] = (await loadImage(url)) as unknown as HTMLImageElement
     })
   }
   await Promise.allSettled(resolveImages.map(fn => fn()))
@@ -53,7 +55,7 @@ export default async function buildWelcomeImage(data: Canvas, member: GuildMembe
   }
   // load images
   console.time('fetchImages')
-  const images = await getImages(data.layers)
+  const images = await getImages(data.layers, filterText)
   const castColor = await getColorCast(data.layerCastColor, data.layers)
   console.timeEnd('fetchImages')
 
