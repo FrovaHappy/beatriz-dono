@@ -16,7 +16,7 @@ interface PaintCanvasProps {
  */
 export default function paintCanvas(props: PaintCanvasProps) {
   console.time('paintCanvas')
-  const { ctx, canvas, Path2D, filterText, images } = props
+  const { ctx, canvas, Path2D, filterText, images, castColor } = props
   const { layers, ...base } = canvas
   ctx.clearRect(0, 0, base.w, base.h) // reset canvas in the Frontend
   ctx.save()
@@ -28,8 +28,8 @@ export default function paintCanvas(props: PaintCanvasProps) {
   ctx.restore() // restore the previous state of the canvas
   console.log('render base')
   for (const layer of layers) {
-    if (isShape(layer)) paintShape({ ctx, layer, base, Path2D, image: images[layer.id] })
-    if (isText(layer)) paintText({ ctx, layer, filterText })
+    if (isShape(layer)) paintShape({ ctx, layer, Path2D, image: images[layer.id], castColor })
+    if (isText(layer)) paintText({ ctx, layer, filterText, castColor })
   }
   console.timeEnd('paintCanvas')
   return ctx

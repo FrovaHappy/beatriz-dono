@@ -7,11 +7,12 @@ interface PaintTextProps {
   ctx: CanvasRenderingContext2D
   layer: Text
   filterText: User & Guild
+  castColor: string | undefined
 }
 
 export default function paintText(options: PaintTextProps) {
-  const { ctx, layer, filterText } = options
-
+  const { ctx, layer, filterText, castColor } = options
+  const color = !!castColor && layer.color === 'auto' ? castColor : layer.color
   let text = formatterTextUser(layer.text, filterText)
   ctx.save() // save the current state of the canvas
   let widthText = ctx.measureText(text).width
@@ -28,7 +29,7 @@ export default function paintText(options: PaintTextProps) {
   ctx.font = `${layer.weight} ${layer.size}px ${layer.family}`
   ctx.textAlign = layer.align
   ctx.textBaseline = layer.baseline
-  ctx.fillStyle = layer.color
+  ctx.fillStyle = color
 
   const filter = buildFilter(layer.filter)
   if (filter) ctx.filter = filter

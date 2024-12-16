@@ -5,7 +5,6 @@ export default {
   title: 'default',
   h: 200,
   w: 200,
-  bgColor: '#f00',
   layerCastColor: '2',
   layers: [
     {
@@ -16,7 +15,7 @@ export default {
       text: '{{user_name}}',
       size: 34,
       family: 'Roboto',
-      color: '#000',
+      color: 'auto',
       globalAlpha: 1,
       letterSpacing: 0,
       maxWidth: 50,
@@ -24,7 +23,7 @@ export default {
       align: 'start',
       baseline: 'top',
       filter: {
-        blur: 10
+        blur: 2
       }
     },
     {
@@ -34,7 +33,7 @@ export default {
       dy: 0,
       dw: 100,
       dh: 100,
-      image: 'https://i.pinimg.com/736x/25/b6/60/25b660a41df5005c3bbb7cdcb65755b5.jpg'
+      image: 'https://i.pinimg.com/736x/a0/ff/c3/a0ffc3de26c59b956b758d50b2137dc5.jpg'
     }
   ]
 } as Canvas

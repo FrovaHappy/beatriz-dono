@@ -4,7 +4,7 @@ import { AttachmentBuilder, type GuildMember } from 'discord.js'
 import type { Canvas } from '@type/index'
 import PaintCanvas from '@libs/PaintCanvas'
 import type { User, Guild } from '@type/index'
-import { getDominanteColor, rgbToHex } from '@libs/colors'
+import { rgbToHex, getPallete } from '@libs/colors'
 import { isShape } from '@libs/PaintCanvas/schema.welcome.v1'
 
 const getColorCast = async (layerId: string | undefined, layers: Canvas['layers']) => {
@@ -12,8 +12,11 @@ const getColorCast = async (layerId: string | undefined, layers: Canvas['layers'
   const layer = layers.find(l => l.id === layerId)
   if (!layer) return
   let color: string | undefined
-
-  if (isShape(layer) && layer.image) return rgbToHex(await getDominanteColor(layer.image, 10))
+  if (isShape(layer) && layer.image) {
+    const colors = (await getPallete(layer.image, 1, 2))?.map(c => rgbToHex(c))
+    console.log(colors)
+    return colors?.[0]
+  }
   color = layer.color
   if (color === 'auto') color = undefined
   if (color === 'transparent') color = undefined

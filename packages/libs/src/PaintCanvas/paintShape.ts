@@ -1,15 +1,16 @@
-import type { Canvas, Shape } from './schema.welcome.v1'
+import type { Shape } from './schema.welcome.v1'
 
 interface PaintShapeProps {
   ctx: CanvasRenderingContext2D
   layer: Shape
-  base: Omit<Canvas, 'layers'>
   image: HTMLImageElement | undefined
+  castColor: string | undefined
   Path2D: typeof Path2D
 }
 
 export default function paintShape(props: PaintShapeProps) {
-  const { ctx, layer, base, Path2D, image } = props
+  const { ctx, layer, Path2D, image, castColor } = props
+  const color = !!castColor && layer.color === 'auto' ? castColor : layer.color
   const patch = layer.clip
   ctx.save()
 
@@ -33,7 +34,7 @@ export default function paintShape(props: PaintShapeProps) {
     ctx.clip(new Path2D(patch.d))
   }
   // setting
-  ctx.fillStyle = layer.color
+  ctx.fillStyle = color
 
   if (layer.color !== 'transparent')
     // renders fills
