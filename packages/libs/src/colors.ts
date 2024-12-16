@@ -6,6 +6,8 @@ type Color = {
   g: number
   b: number
 }
+const TOLERANCE = 0.1
+
 function createPixelArray(imgData: PixelData['data']) {
   const rgbValues = []
   // note that we are loop in every 4!
@@ -52,6 +54,10 @@ const findBiggestColorRange = (rgbValues: Color[]) => {
 
   // biome-ignore lint/complexity/noForEach: <explanation>
   rgbValues.forEach((pixel: { r: number; g: number; b: number }) => {
+    const sumPixel = pixel.r + pixel.g + pixel.b
+    const skipBlack = sumPixel / (255 * 3) < TOLERANCE
+    const skipWhite = sumPixel / (255 * 3) > 1 - TOLERANCE
+    if (skipBlack || skipWhite) return
     rMin = Math.min(rMin, pixel.r)
     gMin = Math.min(gMin, pixel.g)
     bMin = Math.min(bMin, pixel.b)
@@ -139,8 +145,8 @@ export const orderByLuminance = (rgbValues: Color[]) => {
 
 export async function getPallete(url: string, colorCount: number, quality: number) {
   const options = { quality, colorCount }
-  if (options.quality < 10) options.quality = 10
-  if (options.colorCount < 100) options.colorCount = 100
+  if (options.quality > 10) options.quality = 10
+  if (options.colorCount > 100) options.colorCount = 100
   const pixels = await loadImg(url)
   if (!pixels) return null
   const pixelArray = createPixelArray(pixels.data)
