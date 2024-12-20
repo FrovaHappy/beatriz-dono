@@ -17,6 +17,9 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
+    "types": [
+      "vitest/globals"
+    ],
     "paths": {
       "@type/*": [
         "./types/*"

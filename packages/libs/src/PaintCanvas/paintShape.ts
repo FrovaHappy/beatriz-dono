@@ -1,7 +1,9 @@
+import { buildFilter } from './buildFilter'
 import type { Shape } from './schema.welcome.v1'
 
 interface PaintShapeProps {
   ctx: CanvasRenderingContext2D
+  ctxSupport: CanvasRenderingContext2D
   layer: Shape
   image: HTMLImageElement | undefined
   castColor: string | undefined
@@ -9,35 +11,42 @@ interface PaintShapeProps {
 }
 
 export default function paintShape(props: PaintShapeProps) {
-  const { ctx, layer, Path2D, image, castColor } = props
+  const { ctx, ctxSupport, layer, Path2D, image, castColor } = props
   const color = !!castColor && layer.color === 'auto' ? castColor : layer.color
   const patch = layer.clip
+  const filter = buildFilter(layer.filter)
   ctx.save()
 
+  // obtain dimensions and scale of the image
   const dimension = {
     h: layer.dh ?? image?.height ?? 100,
     w: layer.dw ?? image?.width ?? 100
   }
-  ctx.translate(layer.dx, layer.dy) // move the position of the image
-  const minImage = Math.min(dimension.w, dimension.h)
-  const scaleTo = minImage / Math.max(patch?.w ?? minImage, patch?.h ?? minImage)
-  const center = {
-    h: ((patch?.h ?? dimension.h) - dimension.h / scaleTo) / 2,
-    w: ((patch?.w ?? dimension.w) - dimension.w / scaleTo) / 2
+
+  const renderImage = () => {
+    if (!patch) return null
+    const { width: dataWidth, height: dataHeight } = ctxSupport.canvas
+    const maxPatch = Math.max(patch.w, patch.h)
+    ctxSupport.save()
+    ctxSupport.fillStyle = color
+    ctxSupport.scale(dataWidth / maxPatch, dataHeight / maxPatch)
+    ctxSupport.clip(new Path2D(patch.d))
+    ctxSupport.fillRect(0, 0, patch.w, patch.h)
+    if (image) ctxSupport.drawImage(image, 0, 0, patch.w, patch.h)
+    ctxSupport.restore()
+    return ctxSupport.canvas
   }
+  const imageCanvas = renderImage()
 
-  if (patch) {
-    // calculate the scale of the image
-    ctx.scale(scaleTo, scaleTo)
-    ctx.clip(new Path2D(patch.d))
+  if (filter) ctx.filter = filter
+  console.log(layer.dx, layer.dy)
+  ctx.translate(layer.dx, layer.dy)
+  if (imageCanvas) ctx.drawImage(imageCanvas, 0, 0, dimension.w, dimension.h)
+  else {
+    ctx.fillStyle = color
+    ctx.fillRect(0, 0, dimension.w, dimension.h)
+    if (image) ctx.drawImage(image, 0, 0, dimension.w, dimension.h)
   }
-  // setting
-  ctx.fillStyle = color
-
-  if (layer.color !== 'transparent') ctx.fillRect(0, 0, dimension.w, dimension.h)
-  if (image) ctx.drawImage(image, center.w, center.h, dimension.w / scaleTo, dimension.h / scaleTo)
-
-  ctx.transform(1, 0, 0, 1, 0, 0) // reset the transformation matrix to the identity matrix
 
   ctx.restore()
 }

@@ -22,7 +22,6 @@ export default function paintText(options: PaintTextProps) {
       text = text.slice(0, -1)
       widthText = ctx.measureText(text).width
     }
-    text += '...'
   }
   // Global Settings
   ctx.globalAlpha = layer.globalAlpha ?? 1
