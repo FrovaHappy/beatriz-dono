@@ -76,10 +76,6 @@ const shapeSchema = z
     dy: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dh: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
     dw: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-    sx: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-    sy: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-    sw: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-    sh: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
     image: z
       .union([
         z.string().url().regex(regex.urlImage()),
@@ -95,7 +91,20 @@ const shapeSchema = z
       .object({
         d: z.string().regex(regex.patch),
         h: z.number().min(1).max(MAX_WIDTH_CANVAS),
-        w: z.number().min(1).max(MAX_WIDTH_CANVAS)
+        w: z.number().min(1).max(MAX_WIDTH_CANVAS),
+        align: z
+          .union([
+            z.literal('top'),
+            z.literal('left'),
+            z.literal('right'),
+            z.literal('center'),
+            z.literal('button'),
+            z.literal('top-left'),
+            z.literal('top-right'),
+            z.literal('bottom-left'),
+            z.literal('bottom-right')
+          ])
+          .default('center')
       })
       .strict()
       .optional(),

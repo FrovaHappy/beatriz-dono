@@ -27,12 +27,37 @@ export default function paintShape(props: PaintShapeProps) {
     if (!patch) return null
     const { width: dataWidth, height: dataHeight } = ctxSupport.canvas
     const maxPatch = Math.max(patch.w, patch.h)
+
     ctxSupport.save()
     ctxSupport.fillStyle = color
+    console.log(color)
     ctxSupport.scale(dataWidth / maxPatch, dataHeight / maxPatch)
     ctxSupport.clip(new Path2D(patch.d))
     ctxSupport.fillRect(0, 0, patch.w, patch.h)
-    if (image) ctxSupport.drawImage(image, 0, 0, patch.w, patch.h)
+
+    if (image) {
+      const scaleImage = {
+        w: (image.width * maxPatch) / Math.min(image.width, image.height),
+        h: (image.height * maxPatch) / Math.min(image.width, image.height)
+      }
+      const middle = {
+        w: Math.round((maxPatch - scaleImage.w) / 2),
+        h: Math.round((maxPatch - scaleImage.h) / 2)
+      }
+      const aligns = {
+        top: [middle.w, 0],
+        button: [middle.w, maxPatch - scaleImage.h],
+        left: [0, middle.h],
+        right: [0, 0],
+        center: [middle.w, middle.h],
+        'top-left': [0, 0], // ok
+        'top-right': [maxPatch - scaleImage.w, 0],
+        'bottom-left': [0, maxPatch - scaleImage.h],
+        'bottom-right': [maxPatch - scaleImage.w, maxPatch - scaleImage.h]
+      }
+
+      ctxSupport.drawImage(image, aligns[patch.align][0], aligns[patch.align][1], scaleImage.w, scaleImage.h)
+    }
     ctxSupport.restore()
     return ctxSupport.canvas
   }
