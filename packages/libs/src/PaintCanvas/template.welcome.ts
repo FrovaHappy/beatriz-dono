@@ -2,7 +2,7 @@ import type { Canvas } from './schema.welcome.v1'
 export default {
   version: '1',
   title: 'default',
-  author: 'frova_happy',
+  author: '653429940502659111',
   h: 400,
   w: 400,
   layerCastColor: '2',
