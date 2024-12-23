@@ -89,7 +89,7 @@ const shapeSchema = z
         z.literal('{{server_banner}}')
       ])
       .optional(),
-    imageSmoothingEnabled: z.boolean().default(true),
+    imageSmoothingEnabled: z.boolean().optional(),
     imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).optional(),
     clip: z
       .object({
@@ -119,6 +119,9 @@ const shapeSchema = z
 const canvasSchema = z.object({
   version: z.literal('1'),
   title: z.string().min(1).max(100),
+  author: z.string().min(1).max(100),
+  forkedFrom: z.string().min(1).max(100).optional(),
+  visible: z.boolean().optional(),
   h: z.number().min(0).max(MAX_WIDTH_CANVAS),
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
   bgColor: validateColor.optional(),

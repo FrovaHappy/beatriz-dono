@@ -2,6 +2,7 @@ import type { Canvas } from './schema.welcome.v1'
 export default {
   version: '1',
   title: 'default',
+  author: 'frova_happy',
   h: 400,
   w: 400,
   layerCastColor: '2',
@@ -82,4 +83,4 @@ export default {
       }
     }
   ]
-} as Canvas
+} satisfies Canvas
