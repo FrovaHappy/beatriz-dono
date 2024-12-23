@@ -12,7 +12,7 @@ interface PaintShapeProps {
 
 export default function paintShape(props: PaintShapeProps) {
   const { ctx, ctxSupport, layer, Path2D, image, castColor } = props
-  const color = !!castColor && layer.color === 'auto' ? castColor : layer.color
+  const color = !!castColor && layer.color === 'auto' ? castColor : layer.color 
   const patch = layer.clip
   const filter = buildFilter(layer.filter)
   ctx.save()
@@ -29,8 +29,7 @@ export default function paintShape(props: PaintShapeProps) {
     const maxPatch = Math.max(patch.w, patch.h)
 
     ctxSupport.save()
-    ctxSupport.fillStyle = color
-    console.log(color)
+    ctxSupport.fillStyle = color ?? 'transparent'
     ctxSupport.scale(dataWidth / maxPatch, dataHeight / maxPatch)
     ctxSupport.clip(new Path2D(patch.d))
     ctxSupport.fillRect(0, 0, patch.w, patch.h)
@@ -56,7 +55,13 @@ export default function paintShape(props: PaintShapeProps) {
         'bottom-right': [maxPatch - scaleImage.w, maxPatch - scaleImage.h]
       }
 
-      ctxSupport.drawImage(image, aligns[patch.align][0], aligns[patch.align][1], scaleImage.w, scaleImage.h)
+      ctxSupport.drawImage(
+        image,
+        aligns[patch.align ?? 'center'][0],
+        aligns[patch.align ?? 'center'][1],
+        scaleImage.w,
+        scaleImage.h
+      )
     }
     ctxSupport.restore()
     return ctxSupport.canvas
@@ -68,7 +73,7 @@ export default function paintShape(props: PaintShapeProps) {
   ctx.translate(layer.dx, layer.dy)
   if (imageCanvas) ctx.drawImage(imageCanvas, 0, 0, dimension.w, dimension.h)
   else {
-    ctx.fillStyle = color
+    ctx.fillStyle = color ?? 'transparent'
     ctx.fillRect(0, 0, dimension.w, dimension.h)
     if (image) ctx.drawImage(image, 0, 0, dimension.w, dimension.h)
   }

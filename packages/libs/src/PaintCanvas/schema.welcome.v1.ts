@@ -50,20 +50,24 @@ const textSchema = z.object({
     .max(MAX_WIDTH_CANVAS * 3)
     .optional(),
   family: z.custom<FontsFamily>(val => fontsFamily.some(f => f === val), 'This Font is not available'),
-  color: z.union([validateColor, z.literal('auto')]).default('#000'),
+  color: z.union([validateColor, z.literal('auto')]).optional(),
   globalAlpha: z.number().min(0).max(1).multipleOf(0.01).optional(),
   letterSpacing: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
   maxWidth: z.number().min(1).max(MAX_WIDTH_CANVAS).optional(),
   weight: z.number().min(200).max(1000).step(100).optional(),
-  align: z.union([z.literal('start'), z.literal('end'), z.literal('left'), z.literal('right'), z.literal('center')]),
-  baseline: z.union([
-    z.literal('top'),
-    z.literal('hanging'),
-    z.literal('middle'),
-    z.literal('alphabetic'),
-    z.literal('ideographic'),
-    z.literal('bottom')
-  ]),
+  align: z
+    .union([z.literal('start'), z.literal('end'), z.literal('left'), z.literal('right'), z.literal('center')])
+    .optional(),
+  baseline: z
+    .union([
+      z.literal('top'),
+      z.literal('hanging'),
+      z.literal('middle'),
+      z.literal('alphabetic'),
+      z.literal('ideographic'),
+      z.literal('bottom')
+    ])
+    .optional(),
   filter: filterSchema.optional()
 })
 
@@ -71,7 +75,7 @@ const shapeSchema = z
   .object({
     id: z.string().min(1).max(100),
     type: z.literal('shape'),
-    color: z.union([validateColor, z.literal('auto')]).default('transparent'),
+    color: z.union([validateColor, z.literal('auto')]).optional(),
     dx: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dy: z.number().min(0).max(MAX_WIDTH_CANVAS),
     dh: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
@@ -86,7 +90,7 @@ const shapeSchema = z
       ])
       .optional(),
     imageSmoothingEnabled: z.boolean().default(true),
-    imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).default('low'),
+    imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).optional(),
     clip: z
       .object({
         d: z.string().regex(regex.patch),
@@ -104,7 +108,7 @@ const shapeSchema = z
             z.literal('bottom-left'),
             z.literal('bottom-right')
           ])
-          .default('center')
+          .optional()
       })
       .strict()
       .optional(),
@@ -113,11 +117,11 @@ const shapeSchema = z
   .strict()
 
 const canvasSchema = z.object({
-  version: z.literal('1').default('1'),
+  version: z.literal('1'),
   title: z.string().min(1).max(100),
   h: z.number().min(0).max(MAX_WIDTH_CANVAS),
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
-  bgColor: validateColor.default('transparent'),
+  bgColor: validateColor.optional(),
   layerCastColor: z.string().optional(),
   layers: z.array(z.union([textSchema, shapeSchema]))
 })

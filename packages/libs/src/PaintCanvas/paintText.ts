@@ -26,9 +26,9 @@ export default function paintText(options: PaintTextProps) {
   // Global Settings
   ctx.globalAlpha = layer.globalAlpha ?? 1
   ctx.font = `${layer.weight} ${layer.size}px ${layer.family}`
-  ctx.textAlign = layer.align
-  ctx.textBaseline = layer.baseline
-  ctx.fillStyle = color
+  ctx.textAlign = layer.align ?? 'start'
+  ctx.textBaseline = layer.baseline ?? 'alphabetic'
+  ctx.fillStyle = color ?? '#000'
 
   const filter = buildFilter(layer.filter)
   if (filter) ctx.filter = filter
