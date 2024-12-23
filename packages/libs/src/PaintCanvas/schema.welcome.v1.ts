@@ -119,7 +119,7 @@ const shapeSchema = z
 const canvasSchema = z.object({
   version: z.literal('1'),
   title: z.string().min(1).max(100),
-  author: z.string().min(1).max(100),
+  author: z.string().min(10).max(100),
   forkedFrom: z.string().min(1).max(100).optional(),
   visible: z.boolean().optional(),
   h: z.number().min(0).max(MAX_WIDTH_CANVAS),
