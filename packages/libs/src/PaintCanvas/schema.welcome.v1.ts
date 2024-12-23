@@ -89,8 +89,8 @@ const shapeSchema = z
         z.literal('{{server_banner}}')
       ])
       .optional(),
-    imageSmoothingEnabled: z.boolean().optional(),
-    imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).optional(),
+    imageSmoothingEnabled: z.boolean().optional(), // TODO: for implement
+    imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).optional(), // TODO: for implement
     clip: z
       .object({
         d: z.string().regex(regex.patch),
