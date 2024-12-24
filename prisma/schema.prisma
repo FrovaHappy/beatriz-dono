@@ -92,3 +92,16 @@ model WelcomeCommand {
   send      SendWelcome
   channelId String
 }
+
+model Canvas {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  author    String
+  title     String
+  forkedFrom String?
+  visible   Boolean
+  h         Int
+  w         Int
+  bgColor   String?
+  layerCast String?
+  layers    Json
+}
