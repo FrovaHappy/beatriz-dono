@@ -4,6 +4,7 @@ import cors from 'cors'
 import passport from 'passport'
 import routers from './routes'
 import discordStrategy from './discordStrategy'
+import { rateLimit } from 'express-rate-limit'
 const app = express()
 
 export default async function startApi() {
@@ -21,6 +22,7 @@ export default async function startApi() {
       }
     })
   )
+  app.use(rateLimit({ windowMs: config.middleMinutes, max: 100, legacyHeaders: false }))
   app.use(express.json())
 
   // Passport config

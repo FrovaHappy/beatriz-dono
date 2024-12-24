@@ -20,6 +20,7 @@ const utils = {
   imageTransparent: 'https://i.imgur.com/m8BHGOt.png',
   imageAvatar: 'https://i.imgur.com/LB7cfKh.png',
   oneDay: 24 * 60 * 60 * 1000,
+  middleMinutes: 30 * 1000,
   isProduction: process.env.NODE_ENV === 'production'
 }
 export const envSchema = z.object({
