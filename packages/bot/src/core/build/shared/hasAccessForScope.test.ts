@@ -5,7 +5,7 @@ globalThis.config = {
   ...globalThis.config,
   setting: {
     ...globalThis.config.setting,
-    privatesServers: ['000'],
+    privatesServers: ['111'],
     ownersServers: ['222']
   }
 }
