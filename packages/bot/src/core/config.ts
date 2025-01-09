@@ -1,22 +1,20 @@
 import 'dotenv/config'
 import type { Setting } from '@prisma/client'
-import { z } from 'zod'
+import { any, string, z } from 'zod'
 import p from 'picocolors'
 ;(() => {
-  const envSchema = z
-    .object({
-      DATABASE_URL: z.string(),
-      PRIVATE: z.string(),
-      PORT: z.string().optional()
-    })
-    .strict()
+  const envSchema = z.object({
+    DATABASE_URL: z.string(),
+    PRIVATE: z.string(),
+    PORT: z.string().optional()
+  })
   try {
     envSchema.parse(process.env)
   } catch (error) {
     if (error instanceof z.ZodError) {
       let message = `${p.bgRedBright(' Error ')} Invalid environment variables:\n\n`
       for (const issue of error.issues) {
-        message += `${p.gray('┃')} ${issue.path.join('→')} ${p.gray(`(${issue.message})`)}\n`
+        message += `${p.gray('┃')} ${issue.path.join(' → ')} ${p.gray(`(${issue.message})`)}\n`
       }
       console.log(message)
     }
@@ -47,13 +45,15 @@ const parsePrivate = (s: string) => {
   type Private = z.infer<typeof privateSchema>
   try {
     return privateSchema.parse(JSON.parse(s)) as Private
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       let message = `${p.bgRedBright(' Error ')}  Invalid env.PRIVATE config:\n\n`
       for (const issue of error.issues) {
-        message += `${p.gray('┃')} ${issue.path.join('→')} ${p.gray(`(${issue.message})`)}\n`
+        message += `${p.gray('┃')} ${issue.path.join(' → ')} ${p.gray(`(${issue.message})`)}\n`
       }
       console.log(message)
+    } else {
+      console.log({ message: error.message, string: s })
     }
     process.exit(1)
   }
