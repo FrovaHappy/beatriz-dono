@@ -8,7 +8,7 @@ export default new BuildButton({
   permissionsBot: [],
   isLink: true,
   data: new ButtonBuilder()
-    .setURL(config.linkKofi)
+    .setURL(config.setting.linkKofi)
     .setLabel('Support me')
     .setStyle(ButtonStyle.Link)
     .setEmoji(getEmoji('kofi')),

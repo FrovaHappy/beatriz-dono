@@ -11,8 +11,8 @@ import type { Locale } from 'discord.js'
 
 export function hasAccessForScope(scope: Scope, guildId: string): boolean {
   const { config } = globalThis
-  const isPrivate = config.privatesServers.includes(guildId)
-  const isOwner = config.ownersServers.includes(guildId)
+  const isPrivate = config.setting.privatesServers.includes(guildId)
+  const isOwner = config.setting.ownersServers.includes(guildId)
 
   if (scope === 'public') return true
   if (scope === 'private') return isPrivate || isOwner // validate if the user is owner

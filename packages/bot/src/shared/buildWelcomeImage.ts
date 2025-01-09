@@ -48,7 +48,7 @@ export default async function buildWelcomeImage(data: Canvas, member: GuildMembe
     userAvatar: member.displayAvatarURL(),
     userBanner: member.user.bannerURL() ?? undefined,
     membersCount: member.guild.memberCount.toString(),
-    guildAvatar: member.guild.members.me?.displayAvatarURL() ?? config.imageAvatar,
+    guildAvatar: member.guild.members.me?.displayAvatarURL() ?? config.utils.imageAvatar,
     guildBanner: member.guild.bannerURL() ?? undefined,
     guildName: member.guild.name,
     guildId: member.guild.id
@@ -61,10 +61,13 @@ export default async function buildWelcomeImage(data: Canvas, member: GuildMembe
 
   // create canvas
   const canvas = createCanvas(data.w, data.h)
+  const canvasImage = createCanvas(data.w, data.h)
   const ctx = canvas.getContext('2d') as unknown as CanvasRenderingContext2D
+  const ctxImage = canvasImage.getContext('2d') as unknown as CanvasRenderingContext2D
   // render canvas
   PaintCanvas({
     ctx,
+    ctxSupport: ctxImage,
     canvas: data,
     Path2D: Path as unknown as typeof Path2D,
     images,

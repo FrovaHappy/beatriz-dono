@@ -8,7 +8,7 @@ export default new BuildButton({
   permissionsBot: [],
   isLink: true,
   data: new ButtonBuilder()
-    .setURL(config.linkDiscord)
+    .setURL(config.setting.linkDiscord)
     .setLabel('Join to Discord')
     .setStyle(ButtonStyle.Link)
     .setEmoji(getEmoji('kannaAwave')),

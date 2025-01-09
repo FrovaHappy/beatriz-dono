@@ -1,7 +1,7 @@
 import { Colors, type Locale } from 'discord.js'
 
 export default function main(locale: Locale) {
-  const { linkGithub, linkDiscord, linkTopgg } = config
+  const { linkGithub, linkDiscord, linkTopgg } = config.setting
   return {
     embeds: [
       {

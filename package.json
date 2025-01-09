@@ -12,6 +12,7 @@
     "test:ui": "vitest --ui",
     "dev": "env-cmd turbo dev",
     "build": "env-cmd turbo build",
+    "build:lib": "env-cmd npm run build --workspace=packages/lib",
     "bot:start": "env-cmd npm run start --workspace=packages/bot",
     "generate_db": "env-cmd prisma db push",
     "docker:prod": "docker compose up --build",

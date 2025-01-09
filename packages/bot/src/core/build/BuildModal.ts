@@ -28,7 +28,7 @@ class BuildModal {
   constructor(props: Partial<BuildModal> & Pick<BuildModal, 'name' | 'execute' | 'data'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
-    this.cooldown = props.cooldown ?? config.cooldown
+    this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.resolve = props.resolve ?? 'defer'
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]

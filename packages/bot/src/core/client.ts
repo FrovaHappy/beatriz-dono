@@ -24,5 +24,5 @@ export default async function startClient(): Promise<void> {
       client.on(event.name, (...args) => event.execute(...args))
     }
   }
-  client.login(config.discordToken)
+  client.login(config.env.discord.token)
 }

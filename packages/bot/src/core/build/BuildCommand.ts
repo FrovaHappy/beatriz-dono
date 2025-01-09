@@ -30,7 +30,7 @@ class BuildCommand {
   constructor(props: Partial<BuildCommand> & Pick<BuildCommand, 'name' | 'execute' | 'data'>) {
     this.name = props.name
     this.scope = props.scope ?? 'owner'
-    this.cooldown = props.cooldown ?? 0
+    this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]

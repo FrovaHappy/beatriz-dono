@@ -8,7 +8,7 @@ export default new BuildButton({
   permissionsBot: [],
   isLink: true,
   data: new ButtonBuilder()
-    .setURL(`${config.linkGithub}/issues`)
+    .setURL(`${config.setting.linkGithub}/issues`)
     .setLabel('Report an issue')
     .setStyle(ButtonStyle.Link)
     .setEmoji(getEmoji('githubIssue')),

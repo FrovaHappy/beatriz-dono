@@ -3,8 +3,11 @@ import { hasAccessForScope } from './hasAccessForScope'
 
 globalThis.config = {
   ...globalThis.config,
-  privatesServers: ['111'],
-  ownersServers: ['222']
+  setting: {
+    ...globalThis.config.setting,
+    privatesServers: ['000'],
+    ownersServers: ['222']
+  }
 }
 
 describe('hasAccessForScope', () => {

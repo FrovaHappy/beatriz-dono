@@ -10,35 +10,32 @@ export async function setSetting(data: Partial<Setting>) {
   if (!setting) {
     await db.setting.create({
       data: {
-        cooldown: data.cooldown ?? config.cooldown,
-        privatesServers: data.privatesServers ?? config.privatesServers,
-        ownersServers: addItemsToArray(data.ownersServers ?? config.ownersServers, config.discordOwner),
-        linkDiscord: data.linkDiscord ?? config.linkDiscord,
-        linkGithub: data.linkGithub ?? config.linkGithub,
-        linkDocumentation: data.linkDocumentation ?? config.linkDocumentation,
-        linkWebsite: data.linkWebsite ?? config.linkWebsite,
-        linkKofi: data.linkKofi ?? config.linkKofi,
-        linkTopgg: data.linkTopgg ?? config.linkTopgg,
-        linkBotList: data.linkBotList ?? config.linkBotList
+        cooldown: data.cooldown ?? config.env.discord.cooldown,
+        privatesServers: data.privatesServers ?? config.setting.ownersServers,
+        ownersServers: [config.env.discord.guildOwner],
+        linkDiscord: data.linkDiscord ?? config.setting.linkDiscord,
+        linkGithub: data.linkGithub ?? config.setting.linkGithub,
+        linkDocumentation: data.linkDocumentation ?? config.setting.linkDocumentation,
+        linkWebsite: data.linkWebsite ?? config.setting.linkWebsite,
+        linkKofi: data.linkKofi ?? config.setting.linkKofi,
+        linkTopgg: data.linkTopgg ?? config.setting.linkTopgg,
+        linkBotList: data.linkBotList ?? config.setting.linkBotList
       }
     })
   } else {
     setting = await db.setting.update({
       where: { id: setting.id },
       data: {
-        cooldown: data.cooldown ?? setting.cooldown ?? config.cooldown,
-        privatesServers: data.privatesServers ?? setting.privatesServers ?? config.privatesServers,
-        ownersServers: addItemsToArray(
-          data.ownersServers ?? setting.ownersServers ?? config.ownersServers,
-          config.discordOwner
-        ),
-        linkDiscord: data.linkDiscord ?? setting.linkDiscord ?? config.linkDiscord,
-        linkGithub: data.linkGithub ?? setting.linkGithub ?? config.linkGithub,
-        linkDocumentation: data.linkDocumentation ?? setting.linkDocumentation ?? config.linkDocumentation,
-        linkWebsite: data.linkWebsite ?? setting.linkWebsite ?? config.linkWebsite,
-        linkKofi: data.linkKofi ?? setting.linkKofi ?? config.linkKofi,
-        linkTopgg: data.linkTopgg ?? setting.linkTopgg ?? config.linkTopgg,
-        linkBotList: data.linkBotList ?? setting.linkBotList ?? config.linkBotList
+        cooldown: data.cooldown ?? setting.cooldown ?? config.setting.cooldown,
+        privatesServers: data.privatesServers ?? setting.privatesServers ?? config.setting.privatesServers,
+        ownersServers: [...new Set([config.env.discord.guildOwner, ...(data.ownersServers ?? setting.ownersServers)])],
+        linkDiscord: data.linkDiscord ?? setting.linkDiscord ?? config.setting.linkDiscord,
+        linkGithub: data.linkGithub ?? setting.linkGithub ?? config.setting.linkGithub,
+        linkDocumentation: data.linkDocumentation ?? setting.linkDocumentation ?? config.setting.linkDocumentation,
+        linkWebsite: data.linkWebsite ?? setting.linkWebsite ?? config.setting.linkWebsite,
+        linkKofi: data.linkKofi ?? setting.linkKofi ?? config.setting.linkKofi,
+        linkTopgg: data.linkTopgg ?? setting.linkTopgg ?? config.setting.linkTopgg,
+        linkBotList: data.linkBotList ?? setting.linkBotList ?? config.setting.linkBotList
       }
     })
   }
@@ -46,7 +43,7 @@ export async function setSetting(data: Partial<Setting>) {
 
   const { id, ...settingData } = setting
 
-  globalThis.config = { ...config, ...settingData }
+  globalThis.config = { ...config, setting: settingData }
 }
 
 export default db

@@ -8,14 +8,14 @@ import {
 import pc from 'picocolors'
 import type { Command } from './build/BuildCommand'
 
-export const rest = new REST().setToken(config.discordToken)
+export const rest = new REST().setToken(config.env.discord.token)
 
 export async function putGuildCommands(guildsIds: string[], commands: CommandDataJson[], scope: Scope) {
   const errors: string[] = []
   console.log(`  ∷ deploying ${pc.bold(scope)} commands ...`)
   for await (const guildId of guildsIds) {
     try {
-      await rest.put(Routes.applicationGuildCommands(config.discordClient, guildId), {
+      await rest.put(Routes.applicationGuildCommands(config.env.discord.applicationId, guildId), {
         body: commands
       })
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -29,7 +29,7 @@ export async function putGuildCommands(guildsIds: string[], commands: CommandDat
 export async function putGlobalCommands(commands: CommandDataJson[]) {
   console.log('  ∷ deploying global commands ...')
   try {
-    await rest.put(Routes.applicationCommands(config.discordClient), {
+    await rest.put(Routes.applicationCommands(config.env.discord.applicationId), {
       body: commands
     })
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -54,20 +54,22 @@ function getCommands(collection: Collection<string, Command>) {
 
 export default async function deployCommand(collection: Collection<string, Command>): Promise<void> {
   const commands = getCommands(collection)
-  const excludeOwnerOfPrivates = config.privatesServers.filter(guildId => !config.ownersServers.includes(guildId))
+  const excludeOwnerOfPrivates = config.setting.privatesServers.filter(
+    guildId => !config.setting.ownersServers.includes(guildId)
+  )
   const logsCommands = [
     `${pc.green('[commands]:')} Deploying commands ...`,
     `   - public commands found: ${pc.bold(commands.public.length)}`,
     `   - owner commands found: ${pc.bold(commands.owner.length)}`,
     `   - private commands found: ${pc.bold(commands.private.length)}`,
-    `   - privates servers found: ${pc.bold(config.privatesServers.length)}`,
-    `   - owners servers found: ${pc.bold(config.ownersServers.length)}`,
-    `   - exclude owners servers of private: ${pc.bold(config.privatesServers.length - excludeOwnerOfPrivates.length)}`
+    `   - privates servers found: ${pc.bold(config.setting.privatesServers.length)}`,
+    `   - owners servers found: ${pc.bold(config.setting.ownersServers.length)}`,
+    `   - exclude owners servers of private: ${pc.bold(config.setting.privatesServers.length - excludeOwnerOfPrivates.length)}`
   ]
   console.log(logsCommands.join('\n'))
 
   await putGlobalCommands(commands.public) // update public commands
-  await putGuildCommands(config.ownersServers, [...commands.private, ...commands.owner], 'owner') // update owner commands
+  await putGuildCommands(config.setting.ownersServers, [...commands.private, ...commands.owner], 'owner') // update owner commands
   await putGuildCommands(excludeOwnerOfPrivates, commands.private, 'private') // update private commands
 
   console.log()

@@ -34,7 +34,7 @@ class BuildButton {
     this.type = this.name = props.name
     this.scope = props.scope ?? 'owner'
     this.resolve = props.resolve ?? 'defer'
-    this.cooldown = props.cooldown ?? config.cooldown
+    this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
     this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
