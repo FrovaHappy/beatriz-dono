@@ -1,7 +1,8 @@
 import 'dotenv/config'
 import type { Setting } from '@prisma/client'
-import { any, string, z } from 'zod'
+import { z } from 'zod'
 import p from 'picocolors'
+
 ;(() => {
   const envSchema = z.object({
     DATABASE_URL: z.string(),
@@ -34,12 +35,15 @@ const parsePrivate = (s: string) => {
         userOwner: z.string(),
         cooldown: z.number().default(5)
       }),
-      api: z
-        .object({
-          secretKey: z.string(),
-          urlClientDomain: z.string()
-        })
-        .strict()
+      api: z.object({
+        secretKey: z.string(),
+        urlClientDomain: z.string()
+      }),
+      sql: z.object({
+        url: z.string(),
+        syncUrl: z.string(),
+        token: z.string()
+      })
     })
     .strict()
   type Private = z.infer<typeof privateSchema>
