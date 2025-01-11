@@ -8,3 +8,6 @@ package-lock.json
 fonts
 test.png
 _lib
+
+# Ignore SQLite databases
+*.db
