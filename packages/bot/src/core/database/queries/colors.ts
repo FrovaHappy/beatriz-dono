@@ -8,7 +8,7 @@ interface Colors {
   is_active: boolean
   pointer_id: number
   templete: Record<string, any>
-  colors: [Color]
+  colors: Color[]
 }
 const ColorRegex = {
   hex_color: /^#[0-9A-F]{6}$/i,
@@ -48,30 +48,17 @@ export const getColors = async (guild_id: string) => {
   } as Colors
 }
 
-export const createColors = async (guild_id: string, colors: [Color]) => {
-  const colorsQuery = (
-    await client.execute({
-      sql: `
-        SELECT hex_color, role_id FROM Colors 
-        INSERT INTO Colors (guild_id, hex_color, role_id)
-        ${colors
-          .map((color: Color) => {
-            if (!ColorRegex.hex_color.test(color.hex_color)) return
-            if (!ColorRegex.role_id.test(color.role_id)) return
-            return `VALUES ($guild_id, ${color.hex_color}, ${color.role_id})`
-          })
-          .filter(c => c)
-          .join(', ')}
-        }
-      `,
-      args: { guild_id }
-    })
-  ).toJSON()
+export const createColors = async (guild_id: string, colors: Color[]) => {
   const colorsSettingsQuery = (
     await client.execute({
       sql: `
-        SELECT {guild_id, is_active, pointer_id, templete} FROM ColorSetting
+        SELECT {guild_id, is_active, pointer_id, templete} FROM Guilds
+        JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
         WHERE guild_id = $guild_id
+        IF guild.id IS NULL THEN
+          INSERT INTO Guilds (id)
+          VALUES ($guild_id)
+        END IF
         IF guild_id IS NULL THEN
           INSERT INTO ColorSetting (guild_id)
           VALUES ($guild_id)
@@ -80,6 +67,34 @@ export const createColors = async (guild_id: string, colors: [Color]) => {
       args: { guild_id }
     })
   ).toJSON()
+  let colorsQuery: any
+  if (colors.length === 0) {
+    colorsQuery = await client.execute({
+      sql: `
+          SELECT hex_color, role_id FROM Colors
+          WHERE guild_id = $guild_id
+        `,
+      args: { guild_id }
+    })
+  } else {
+    colorsQuery = (
+      await client.execute({
+        sql: `
+          SELECT hex_color, role_id FROM Colors 
+          INSERT INTO Colors (guild_id, hex_color, role_id)
+          ${colors
+            .map((color: Color) => {
+              if (!ColorRegex.hex_color.test(color.hex_color)) return
+              if (!ColorRegex.role_id.test(color.role_id)) return
+              return `VALUES ($guild_id, ${color.hex_color}, ${color.role_id})`
+            })
+            .filter(c => c)
+            .join(', ')};
+        `,
+        args: { guild_id }
+      })
+    ).toJSON()
+  }
   return {
     guild_id,
     is_active: colorsSettingsQuery[0].is_active,
