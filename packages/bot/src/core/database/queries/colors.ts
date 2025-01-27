@@ -1,13 +1,14 @@
 import client from '../clientSQL'
-interface Color {
+import type { ColorsTemplete } from '@libs/schemas/colorsTemplete'
+export interface Color {
   hex_color: string
   role_id: string
 }
-interface Colors {
+export interface Colors {
   guild_id: string
   is_active: boolean
-  pointer_id: number
-  templete: Record<string, any>
+  pointer_id: string | null
+  templete: ColorsTemplete
   colors: Color[]
 }
 const ColorRegex = {
@@ -15,7 +16,7 @@ const ColorRegex = {
   role_id: /^[0-9]{5,30}$/i
 }
 
-export const getColors = async (guild_id: string) => {
+export const readColors = async (guild_id: string) => {
   const colorsQuery = (
     await client.execute({
       sql: 'SELECT hex_color, role_id FROM ColorsWHERE guild_id = $guild_id;',
@@ -35,7 +36,6 @@ export const getColors = async (guild_id: string) => {
       args: { guild_id }
     })
   ).toJSON()
-  if (colorsSettingsQuery.length === 0) return null
   return {
     guild_id,
     is_active: colorsSettingsQuery[0].is_active,
