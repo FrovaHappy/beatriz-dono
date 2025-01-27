@@ -1,10 +1,12 @@
 ---
+import getPublic from "@utils/getPublic";
 
+const { urlDonate, urlGithub } = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
 
 <section>
   <div class="container">
-    <h2>Este Proyecto es de codigo abierto</h2>
+    <h2>Este Proyecto es de código abierto</h2>
     <p>
       Puedes explorar, contribuir o incluso crear tu propio bot a partir de este
       proyecto. Está bajo licencia MIT, lo que significa que será libre ahora y
@@ -12,19 +14,11 @@
     </p>
 
     <div class="buttons">
-      <a
-        href="https://ko-fi.com/frovahappy"
-        target="_blank"
-        class="button button--primary"
-      >
+      <a href={urlDonate.kofi} target="_blank" class="button button--primary">
         <i class="ti ti-cup button--icon"></i>
-        <span>Regalame un Café</span>
+        <span>Regala un Café</span>
       </a>
-      <a
-        href="https://github.com/beatriz-dono/Beatriz-Dono"
-        target="_blank"
-        class="button button--secondary"
-      >
+      <a href={urlGithub} target="_blank" class="button button--secondary">
         <i class="ti ti-brand-github button--icon"></i>
         <span>Ver el Proyecto</span>
       </a>

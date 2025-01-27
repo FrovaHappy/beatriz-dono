@@ -1,12 +1,14 @@
 ---
+import getPublic from "@utils/getPublic";
 import LoginButton from "./Nav/LoginButton";
 
-const apiUrl = import.meta.env.URL_API;
-const urlOathCallback = import.meta.env.URL_OATH_CALLBACK;
+const { urlApi, urlOathCallback, urlGithub } = getPublic(
+  import.meta.env.PUBLIC_VARIABLES,
+);
 ---
 
 <nav>
-  <meta data-url-api={apiUrl} />
+  <meta data-url-api={urlApi} />
   <x-logo></x-logo>
   <ul class="links--actives">
     <li><a href="#">Soporte</a></li>
@@ -19,11 +21,7 @@ const urlOathCallback = import.meta.env.URL_OATH_CALLBACK;
   </ul>
   <span class="spacer"></span>
   <!-- button github -->
-  <a
-    href="https://github.com/FrovaHappy/beatriz-dono"
-    target="_blank"
-    class="button button--without-text"
-  >
+  <a href={urlGithub} target="_blank" class="button button--without-text">
     <i class="ti ti-brand-github button--icon"></i>
   </a>
   <!-- button light/dark mode -->
@@ -35,7 +33,7 @@ const urlOathCallback = import.meta.env.URL_OATH_CALLBACK;
     <i class="ti ti-cup button--icon"></i>
     <span class="button--text">Regalame un Café</span>
   </a>
-  <LoginButton apiUrl={apiUrl} oauthCallback={urlOathCallback} client:only />
+  <LoginButton apiUrl={urlApi} oauthCallback={urlOathCallback} client:only />
 </nav>
 <x-phone>
   <i class="ti ti-menu button--icon"></i>

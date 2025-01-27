@@ -3,10 +3,12 @@ import getSetting from '@hooks/getSetting'
 import ColorsButton from './ColorsButton'
 import WelcomeButton from './WelcomeButton'
 import LayoutReact from '@layouts/LayoutReact'
-import type { ComponentProps } from '@src/types'
 import cssCardSetting from './CardSetting.module.scss'
-interface Props extends ComponentProps {}
-export default function Settings({ apiUrl }: Props) {
+interface Props {
+  apiUrl: string
+  oauthCallback: string
+}
+export default function Settings({ apiUrl, oauthCallback }: Props) {
   const guildId = useMemo(() => {
     const id = new URLSearchParams(document.location.search).get('id')
     if (!id) document.location.href = '/dashboard'
@@ -32,8 +34,15 @@ export default function Settings({ apiUrl }: Props) {
           apiUrl={apiUrl}
           checked={!!setting?.colorActive}
           actionCard={goToLinks.colors}
+          oauthCallback={oauthCallback}
         />
-        <WelcomeButton guildId={guildId} apiUrl={apiUrl} css={cssCardSetting} checked={!!setting?.welcomeActive} />
+        <WelcomeButton
+          guildId={guildId}
+          apiUrl={apiUrl}
+          css={cssCardSetting}
+          checked={!!setting?.welcomeActive}
+          oauthCallback={oauthCallback}
+        />
       </div>
     </LayoutReact>
   )

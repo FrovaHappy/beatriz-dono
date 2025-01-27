@@ -1,6 +1,5 @@
 import { useId } from 'react'
 import css from './Switch.module.scss'
-import type { JSX } from 'preact'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string
