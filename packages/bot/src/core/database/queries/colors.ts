@@ -47,8 +47,12 @@ export const readColors = async (guild_id: string) => {
     }))
   } as Colors
 }
-
-export const createColors = async (guild_id: string, colors: Color[]) => {
+interface CreateColors {
+  guild_id: string
+  pointer_id?: string
+  colors: Color[]
+}
+export const createColors = async ({ guild_id, pointer_id, colors }: CreateColors) => {
   const colorsSettingsQuery = (
     await client.execute({
       sql: `
@@ -60,11 +64,11 @@ export const createColors = async (guild_id: string, colors: Color[]) => {
           VALUES ($guild_id)
         END IF
         IF guild_id IS NULL THEN
-          INSERT INTO ColorSetting (guild_id)
-          VALUES ($guild_id)
+          INSERT INTO ColorSetting (guild_id, pointer_id)
+          VALUES ($guild_id, $pointer_id)
         END IF;
       `,
-      args: { guild_id }
+      args: { guild_id, pointer_id: pointer_id ?? null }
     })
   ).toJSON()
   let colorsQuery: any
