@@ -8,21 +8,21 @@ import { rateLimit } from 'express-rate-limit'
 const app = express()
 
 export default async function startApi() {
-  app.use(cors({ origin: config.urlClientDomain, credentials: true }))
+  app.use(cors({ origin: config.env.api.urlClientDomain, credentials: true }))
   app.use(
     session({
-      secret: config.secretKey,
+      secret: config.env.api.secretKey,
       resave: false,
       saveUninitialized: false,
       cookie: {
         path: '/',
         httpOnly: false,
-        maxAge: config.oneDay,
-        secure: config.isProduction
+        maxAge: config.utils.oneDay,
+        secure: config.utils.isProduction
       }
     })
   )
-  app.use(rateLimit({ windowMs: config.middleMinutes, max: 100, legacyHeaders: false }))
+  app.use(rateLimit({ windowMs: config.utils.middleMinutes, max: 100, legacyHeaders: false }))
   app.use(express.json())
 
   // Passport config
@@ -44,7 +44,7 @@ export default async function startApi() {
     res.status(404).json({ data: null, message: 'Route not found', ok: false })
   })
 
-  app.listen(config.portApi, () => {
-    console.log(`Server is running on port ${config.portApi}`)
+  app.listen(config.env.port, () => {
+    console.log(`Server is running on port ${config.env.port}`)
   })
 }
