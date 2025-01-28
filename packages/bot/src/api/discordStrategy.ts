@@ -5,9 +5,9 @@ import { getGuild } from '@/rest/guild'
 
 export default new Strategy(
   {
-    clientID: config.discordClient,
-    clientSecret: config.discordOauthSecret,
-    callbackURL: config.urlOathCallback,
+    clientID: config.env.discord.applicationId,
+    clientSecret: config.env.discord.oAuthSecret,
+    callbackURL: config.env.discord.oAuthCallback,
     scope: ['identify', 'guilds']
   },
   async (accessToken, refreshToken, profile, done) => {
