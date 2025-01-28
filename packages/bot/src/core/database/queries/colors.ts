@@ -107,7 +107,7 @@ export const createColors = async (guild_id: string, colors: Color[]) => {
   } as Colors
 }
 
-export const deleteColors = async (guild_id: string, colors: [Color]) => {
+export const deleteColors = async (guild_id: string, colors: Color[]) => {
   const colorsQuery = (
     await client.execute({
       sql: `
