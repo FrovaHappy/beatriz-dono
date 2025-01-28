@@ -7,7 +7,7 @@ import p from 'picocolors'
   const envSchema = z.object({
     DATABASE_URL: z.string(),
     PRIVATE: z.string(),
-    PORT: z.string().optional()
+    PORT: z.string()
   })
   try {
     envSchema.parse(process.env)
@@ -64,7 +64,8 @@ const parsePrivate = (s: string) => {
 }
 const env = {
   ...parsePrivate(process.env.PRIVATE!),
-  rootPath: process.env.NODE_ENV ? `${process.cwd()}/dist` : `${process.cwd()}/src`
+  rootPath: process.env.NODE_ENV ? `${process.cwd()}/dist` : `${process.cwd()}/src`,
+  port: process.env.PORT!
 }
 const setting = {
   cooldown: 5, // 5 segundos
