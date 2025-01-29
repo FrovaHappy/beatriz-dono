@@ -1,3 +1,4 @@
+import type { ResultSet } from '@libsql/client'
 import client from '../clientSQL'
 import type { ColorsTemplete } from '@libs/schemas/colorsTemplete'
 export interface Color {
@@ -17,12 +18,10 @@ const ColorRegex = {
 }
 
 export const readColors = async (guild_id: string) => {
-  const colorsQuery = (
-    await client.execute({
-      sql: 'SELECT hex_color, role_id FROM ColorsWHERE guild_id = $guild_id;',
-      args: { guild_id }
-    })
-  ).toJSON()
+  const colorsQuery = await client.execute({
+    sql: 'SELECT hex_color, role_id FROM ColorsWHERE guild_id = $guild_id;',
+    args: { guild_id }
+  })
   const colorsSettingsQuery = (
     await client.execute({
       sql: `
@@ -41,7 +40,7 @@ export const readColors = async (guild_id: string) => {
     is_active: colorsSettingsQuery[0].is_active,
     pointer_id: colorsSettingsQuery[0].pointer_id,
     templete: colorsSettingsQuery[0].templete,
-    colors: colorsQuery.rows.map((color: any) => ({
+    colors: colorsQuery.rows.map(color => ({
       hex_color: color.hex_color,
       role_id: color.role_id
     }))
@@ -71,7 +70,7 @@ export const createColors = async ({ guild_id, pointer_id, colors }: CreateColor
       args: { guild_id, pointer_id: pointer_id ?? null }
     })
   ).toJSON()
-  let colorsQuery: any
+  let colorsQuery: ResultSet
   if (colors.length === 0) {
     colorsQuery = await client.execute({
       sql: `
@@ -104,7 +103,7 @@ export const createColors = async ({ guild_id, pointer_id, colors }: CreateColor
     is_active: colorsSettingsQuery[0].is_active,
     pointer_id: colorsSettingsQuery[0].pointer_id,
     templete: colorsSettingsQuery[0].templete,
-    colors: colorsQuery.rows.map((color: any) => ({
+    colors: colorsQuery.rows.map(color => ({
       hex_color: color.hex_color,
       role_id: color.role_id
     }))
@@ -112,9 +111,8 @@ export const createColors = async ({ guild_id, pointer_id, colors }: CreateColor
 }
 
 export const deleteColors = async (guild_id: string, colors: Color[]) => {
-  const colorsQuery = (
-    await client.execute({
-      sql: `
+  const colorsQuery = await client.execute({
+    sql: `
         SELECT hex_color, role_id FROM Colors
         DELETE FROM Colors
         WHERE guild_id = $guild_id AND hex_color IN (${colors
@@ -126,9 +124,11 @@ export const deleteColors = async (guild_id: string, colors: Color[]) => {
           .filter(c => c)
           .join(', ')})
       `,
-      args: { guild_id }
-    })
-  ).toJSON()
+    args: { guild_id }
+  })
 
-  return colors.filter(color => !colorsQuery.includes((c: any) => c.role_id === color.role_id))
+  return colorsQuery.rows.map(color => ({
+    hex_color: color.hex_color,
+    role_id: color.role_id
+  }))
 }
