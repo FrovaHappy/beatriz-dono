@@ -2,6 +2,6 @@
   "name": "libs",
   "scripts": {
     "build": "tsc",
-    "dev": " tsc --watch"
+    "dev": " tsc --preserveWatchOutput --watch"
   }
 }
