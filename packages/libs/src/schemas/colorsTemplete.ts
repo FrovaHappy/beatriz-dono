@@ -20,7 +20,6 @@ const schemaColors = z.union([schemaColorsV1, schemaColorsV2])
 
 export type ColorsTemplete = z.infer<typeof schemaColors>
 type ColorsTempleteLatest = z.infer<typeof schemaColorsV2>
-export type Colors = z.infer<typeof schemaColors>
 
 export const validate = (s: string) => {
   try {
@@ -46,15 +45,16 @@ export const validate = (s: string) => {
   }
 }
 
-export const isVersionLatest = (data: ColorsTemplete): data is ColorsTempleteLatest => {
-  const colors: ColorsTempleteLatest['colors'] = []
+export const parseToLatest = (data: ColorsTemplete): ColorsTempleteLatest | null => {
   if (data.version === 'v1') {
-    for (const color of data.colors) {
-      colors.push({
+    return {
+      version: 'v2',
+      colors: data.colors.map(color => ({
         label: color.label,
         hex_color: color.hexcolor
-      })
+      }))
     }
   }
-  return data.version === 'v2'
+  if (data.version === 'v2') return data
+  return null
 }
