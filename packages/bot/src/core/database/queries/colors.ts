@@ -122,7 +122,7 @@ export const deleteColors = async (guild_id: string, colors: Color[]) => {
             return `${color.hex_color}, ${color.role_id}`
           })
           .filter(c => c)
-          .join(', ')})
+          .join(', ')});
       `,
     args: { guild_id }
   })
@@ -131,4 +131,65 @@ export const deleteColors = async (guild_id: string, colors: Color[]) => {
     hex_color: color.hex_color,
     role_id: color.role_id
   }))
+}
+
+interface UpdateColors {
+  guild_id: string
+  pointer_id?: string
+  colorTemplate?: ColorsTemplete
+  is_active?: boolean
+  colors: Color[]
+}
+export const updateColors = async ({ guild_id, pointer_id, colorTemplate, is_active, colors }: UpdateColors) => {
+  const colorsSettingsQuery = await client.execute({
+    sql: `
+        SELECT {guild_id, is_active, pointer_id, templete} FROM Guilds
+        JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
+        WHERE guild_id = $guild_id
+        IF $pointer_id IS NOT NULL THEN
+          UPDATE ColorSetting SET pointer_id = $pointer_id WHERE guild_id = $guild_id
+        END IF
+        IF $colorTemplate IS NOT NULL THEN
+          UPDATE ColorSetting SET templete = $colorTemplate WHERE guild_id = $guild_id
+        END IF
+        IF $is_active IS NOT NULL THEN
+          UPDATE ColorSetting SET is_active = $is_active WHERE guild_id = $guild_id
+        END IF;
+      `,
+    args: {
+      guild_id,
+      pointer_id: pointer_id ?? null,
+      colorTemplate: colorTemplate ? JSON.stringify(colorTemplate) : null,
+      is_active: is_active ?? null
+    }
+  })
+
+  const colorsQuery = await client.execute({
+    sql: `
+        SELECT hex_color, role_id FROM Colors
+        WHERE guild_id = $guild_id
+        UPDATE Colors WHERE guild_id = $guild_id AND hex_color IN (${colors
+          .map((color: Color) => {
+            if (!ColorRegex.hex_color.test(color.hex_color)) return
+            if (!ColorRegex.role_id.test(color.role_id)) return
+            return `${color.hex_color}, ${color.role_id}`
+          })
+          .filter(c => c)
+          .join(', ')}
+        );
+
+      `,
+    args: { guild_id }
+  })
+  if (colorsSettingsQuery.rows.length === 0) return null
+  return {
+    guild_id,
+    is_active: colorsSettingsQuery.rows[0].is_active,
+    pointer_id: colorsSettingsQuery.rows[0].pointer_id,
+    templete: colorsSettingsQuery.rows[0].templete,
+    colors: colorsQuery.rows.map(color => ({
+      hex_color: color.hex_color,
+      role_id: color.role_id
+    }))
+  }
 }
