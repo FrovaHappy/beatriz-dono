@@ -16,10 +16,35 @@ const schemaColorsV2 = z.object({
     })
   )
 })
-export const schemaColors = z.union([schemaColorsV1, schemaColorsV2])
-export type ColorsTemplete = z.infer<typeof schemaColors>
+const schemaColors = z.union([schemaColorsV1, schemaColorsV2])
 
+export type ColorsTemplete = z.infer<typeof schemaColors>
 type ColorsTempleteLatest = z.infer<typeof schemaColorsV2>
+export type Colors = z.infer<typeof schemaColors>
+
+export const validate = (s: string) => {
+  try {
+    const data = schemaColors.parse(JSON.parse(s))
+    return { error: false, data: schemaColors.parse(data) }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        error: true,
+        data: {
+          title: 'Data Invalid',
+          description: error.issues.map(issue => `${issue.path.join('.')} -> ${issue.message}`).join('\n')
+        }
+      }
+    }
+    return {
+      error: true,
+      data: {
+        title: 'Json failed to parse',
+        description: 'Please check the JSON format'
+      }
+    }
+  }
+}
 
 export const isVersionLatest = (data: ColorsTemplete): data is ColorsTempleteLatest => {
   const colors: ColorsTempleteLatest['colors'] = []
