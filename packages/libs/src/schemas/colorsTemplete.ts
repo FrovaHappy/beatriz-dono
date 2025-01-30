@@ -19,9 +19,11 @@ const schemaColorsV2 = z.object({
 const schemaColors = z.union([schemaColorsV1, schemaColorsV2])
 
 export type ColorsTemplete = z.infer<typeof schemaColors>
-type ColorsTempleteLatest = z.infer<typeof schemaColorsV2>
+export type ColorsTempleteLatest = z.infer<typeof schemaColorsV2>
 
-export const validate = (s: string) => {
+export const validate = (
+  s: string
+): { error: false; data: ColorsTemplete } | { error: true; data: { title: string; description: string } } => {
   try {
     const data = schemaColors.parse(JSON.parse(s))
     return { error: false, data: schemaColors.parse(data) }
