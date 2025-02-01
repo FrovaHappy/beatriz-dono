@@ -26,11 +26,10 @@ CREATE TABLE IF NOT EXISTS Colors (
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
 CREATE TABLE IF NOT EXISTS ColorSetting (
-  id text NOT NULL PRIMARY KEY,
-  guild_id text NOT NULL,
-is_active boolean DEFAULT false,
-pointer_id text,
-templete json,
+  guild_id text NOT NULL PRIMARY KEY,
+  is_active boolean DEFAULT false,
+  pointer_id text,
+  templete json,
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
 CREATE TABLE IF NOT EXISTS Goodbye_Messages (
