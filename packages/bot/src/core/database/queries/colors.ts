@@ -1,50 +1,72 @@
-import type { ResultSet } from '@libsql/client'
-import client from '../clientSQL'
+import { createHash } from 'node:crypto'
+import client, { formatResponse, type ResultSet } from '../clientSQL'
 import type { ColorsTemplete } from '@libs/schemas/colorsTemplete'
+import { regexHexColor, regexRole } from '@libs/regex'
 export interface Color {
   hex_color: string
   role_id: string
 }
-export interface Colors {
+export interface ColorSetting {
   guild_id: string
   is_active: boolean
   pointer_id: string | null
   templete: ColorsTemplete
-  colors: Color[]
 }
-const ColorRegex = {
-  hex_color: /^#[0-9A-F]{6}$/i,
-  role_id: /^[0-9]{5,30}$/i
+
+const queryColorsSettings = async (guild_id: string) => {
+  let data = await client.execute({
+    queries: `
+      SELECT id as guild_id, is_active, pointer_id, templete FROM Guilds
+      JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
+      WHERE guild_id = $guild_id;
+    `,
+    args: { guild_id }
+  })
+  if (data.rows.length === 0) {
+    await client
+      .execute({
+        queries: `
+              INSERT INTO Guilds (id) VALUES ($guild_id);
+            `,
+        args: { guild_id }
+      })
+      .catch(e => {})
+
+    data = await client.execute({
+      queries: `
+            INSERT INTO ColorSetting (guild_id, pointer_id, templete) VALUES ($guild_id, 0, null);
+            SELECT * FROM Guilds
+            JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
+            WHERE guild_id = $guild_id
+          `,
+      args: { guild_id }
+    })
+  }
+  return formatResponse<ColorSetting>(data)[0]
+}
+
+const queryColors = async (guild_id: string) => {
+  const data = await client.execute({
+    queries: 'SELECT hex_color, role_id FROM Colors WHERE guild_id = $guild_id;',
+    args: { guild_id }
+  })
+  return formatResponse<Color>(data)
 }
 
 export const readColors = async (guild_id: string) => {
-  const colorsQuery = await client.execute({
-    sql: 'SELECT hex_color, role_id FROM ColorsWHERE guild_id = $guild_id;',
-    args: { guild_id }
-  })
-  const colorsSettingsQuery = (
-    await client.execute({
-      sql: `
-        SELECT * FROM ColorSetting
-        WHERE guild_id = $guild_id
-        IF guild_id IS NULL THEN
-          INSERT INTO ColorSetting (guild_id)
-          VALUES ($guild_id)
-        END IF;
-      `,
-      args: { guild_id }
-    })
-  ).toJSON()
+  const colors = await queryColors(guild_id)
+  const colorSetting = await queryColorsSettings(guild_id)
+
   return {
     guild_id,
-    is_active: colorsSettingsQuery[0].is_active,
-    pointer_id: colorsSettingsQuery[0].pointer_id,
-    templete: colorsSettingsQuery[0].templete,
-    colors: colorsQuery.rows.map(color => ({
+    is_active: colorSetting.is_active,
+    pointer_id: colorSetting.pointer_id,
+    templete: colorSetting.templete,
+    colors: colors.map(color => ({
       hex_color: color.hex_color,
       role_id: color.role_id
     }))
-  } as Colors
+  } as ColorSetting & { colors: Color[] }
 }
 interface CreateColors {
   guild_id: string
@@ -54,7 +76,7 @@ interface CreateColors {
 export const createColors = async ({ guild_id, pointer_id, colors }: CreateColors) => {
   const colorsSettingsQuery = (
     await client.execute({
-      sql: `
+      queries: `
         SELECT {guild_id, is_active, pointer_id, templete} FROM Guilds
         JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
         WHERE guild_id = $guild_id
@@ -73,7 +95,7 @@ export const createColors = async ({ guild_id, pointer_id, colors }: CreateColor
   let colorsQuery: ResultSet
   if (colors.length === 0) {
     colorsQuery = await client.execute({
-      sql: `
+      queries: `
           SELECT hex_color, role_id FROM Colors
           WHERE guild_id = $guild_id
         `,
@@ -82,13 +104,13 @@ export const createColors = async ({ guild_id, pointer_id, colors }: CreateColor
   } else {
     colorsQuery = (
       await client.execute({
-        sql: `
+        queries: `
           SELECT hex_color, role_id FROM Colors 
           INSERT INTO Colors (guild_id, hex_color, role_id)
           ${colors
             .map((color: Color) => {
-              if (!ColorRegex.hex_color.test(color.hex_color)) return
-              if (!ColorRegex.role_id.test(color.role_id)) return
+              if (!regexHexColor.test(color.hex_color)) return
+              if (!regexRole.test(color.role_id)) return
               return `VALUES ($guild_id, ${color.hex_color}, ${color.role_id})`
             })
             .filter(c => c)
@@ -107,18 +129,18 @@ export const createColors = async ({ guild_id, pointer_id, colors }: CreateColor
       hex_color: color.hex_color,
       role_id: color.role_id
     }))
-  } as Colors
+  } as ColorSetting & { colors: Color[] }
 }
 
 export const deleteColors = async (guild_id: string, colors: Color[]) => {
   const colorsQuery = await client.execute({
-    sql: `
+    queries: `
         SELECT hex_color, role_id FROM Colors
         DELETE FROM Colors
         WHERE guild_id = $guild_id AND hex_color IN (${colors
           .map((color: Color) => {
-            if (!ColorRegex.hex_color.test(color.hex_color)) return
-            if (!ColorRegex.role_id.test(color.role_id)) return
+            if (!regexHexColor.test(color.hex_color)) return
+            if (!regexRole.test(color.role_id)) return
             return `${color.hex_color}, ${color.role_id}`
           })
           .filter(c => c)
@@ -142,7 +164,7 @@ interface UpdateColors {
 }
 export const updateColors = async ({ guild_id, pointer_id, colorTemplate, is_active, colors }: UpdateColors) => {
   const colorsSettingsQuery = await client.execute({
-    sql: `
+    queries: `
         SELECT {guild_id, is_active, pointer_id, templete} FROM Guilds
         JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
         WHERE guild_id = $guild_id
@@ -165,13 +187,13 @@ export const updateColors = async ({ guild_id, pointer_id, colorTemplate, is_act
   })
 
   const colorsQuery = await client.execute({
-    sql: `
+    queries: `
         SELECT hex_color, role_id FROM Colors
         WHERE guild_id = $guild_id
         UPDATE Colors WHERE guild_id = $guild_id AND hex_color IN (${colors
           .map((color: Color) => {
-            if (!ColorRegex.hex_color.test(color.hex_color)) return
-            if (!ColorRegex.role_id.test(color.role_id)) return
+            if (!regexHexColor.test(color.hex_color)) return
+            if (!regexRole.test(color.role_id)) return
             return `${color.hex_color}, ${color.role_id}`
           })
           .filter(c => c)
