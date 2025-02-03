@@ -4,12 +4,11 @@ import pc from 'picocolors'
 import updateBot from './updateBot'
 import startApi from '@/api'
 
-const messageReady = (user: string | undefined): string => pc.bgGreen(`\n Ready! Logged in as ${pc.bold(user)} 🎉 `)
 export default new BuildEvent({
   name: Events.ClientReady,
   once: true,
   execute(client) {
-    console.log(messageReady(client.user?.tag))
+    console.log(`\n${pc.bgGreen(' Bot ')} Bot started as ${pc.cyan(client.user?.username)}`)
     updateBot(client)
     startApi()
   }
