@@ -1,10 +1,10 @@
-import { readColors, deleteColors, createColors, updateColors } from './queries/colors'
+import { readColors, deleteColors, insertColors, updateColorSetting } from './queries/colors'
 
 export default {
   colors: {
     read: readColors,
-    create: createColors,
     delete: deleteColors,
-    update: updateColors
+    insert: insertColors,
+    update: updateColorSetting
   }
 }
