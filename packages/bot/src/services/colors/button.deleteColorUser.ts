@@ -7,6 +7,7 @@ import db from '@/core/database'
 
 export default new BuildButton({
   name: ButtonNames.removeColor,
+  scope: 'private',
   permissionsBot: ['ManageRoles'],
   resolve: 'update',
   data: new ButtonBuilder().setLabel('Eliminar color').setStyle(ButtonStyle.Secondary),

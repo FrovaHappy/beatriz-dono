@@ -29,10 +29,10 @@ class BuildButton {
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
   resolve: Resolve | 'showModal'
   isLink = false
-  constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data'>) {
+  constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'scope'>) {
     this.isLink = props.isLink ?? false
     this.type = this.name = props.name
-    this.scope = props.scope ?? 'owner'
+    this.scope = props.scope
     this.resolve = props.resolve ?? 'defer'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.ephemeral = props.ephemeral ?? false

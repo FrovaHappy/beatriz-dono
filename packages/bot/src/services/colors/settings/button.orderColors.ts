@@ -6,6 +6,7 @@ import { ButtonBuilder, ButtonStyle, type RolePosition } from 'discord.js'
 
 export default new BuildButton({
   name: ButtonNames.serverColorOrder,
+  scope: 'private',
   data: new ButtonBuilder({
     label: 'Reordenar colores',
     style: ButtonStyle.Secondary

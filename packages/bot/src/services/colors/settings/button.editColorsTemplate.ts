@@ -6,6 +6,7 @@ import { ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default new BuildButton({
   name: ButtonNames.editColorDefault,
+  scope: 'private',
   data: new ButtonBuilder().setLabel('Edit colors default').setStyle(ButtonStyle.Secondary),
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],

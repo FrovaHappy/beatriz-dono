@@ -5,6 +5,7 @@ import { ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default new BuildButton({
   name: ButtonNames.linkGithubIssues,
+  scope: 'private',
   permissionsBot: [],
   isLink: true,
   data: new ButtonBuilder()
