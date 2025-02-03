@@ -2,12 +2,13 @@ import { ButtonNames } from '@/const/interactionsNames'
 import type { MessageOptions } from '@/types/main'
 import { ActionRowBuilder, Colors, type Locale } from 'discord.js'
 
-function jsonInvalid(locale: Locale, error: string): MessageOptions {
+function jsonInvalid(locale: Locale, error: { title: string; description: string }): MessageOptions {
+  const { title, description } = error
   return {
     embeds: [
       {
-        title: 'Error',
-        description: `El json no es válido\n ${error}`,
+        title,
+        description,
         color: Colors.Red
       }
     ]

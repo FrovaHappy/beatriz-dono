@@ -2,9 +2,9 @@ import COLORS from '@/const/colors'
 import { MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
 import { StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js'
-import fetchColorCommand from './shared/fetchColorCommand'
 import messages, { messagesColors } from '@/messages'
 import { changeColor } from './shared/changeColor'
+import db from '@/core/database'
 
 export default new BuildMenu({
   name: MenuNames.colorDefault,
@@ -22,7 +22,8 @@ export default new BuildMenu({
     const roles = i.guild?.roles.cache
     if (!guildId) return messages.guildIdNoFound(locale)
 
-    const { colors, colorPointerId } = await fetchColorCommand(guildId, roles)
+    const { colors, pointer_id } = await db.colors.read(guildId)
+    const colorPointerId = roles?.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     const colorSelected = values[0] as `#${string}`

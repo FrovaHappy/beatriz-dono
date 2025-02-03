@@ -1,9 +1,9 @@
 import BuildButton from '@/core/build/BuildButtons'
 import messages, { messagesColors } from '@/messages'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
-import fetchColorCommand from '../../shared/fetchColorCommand'
-import { removeRolesOfDb, removeRolesOfServer } from '../../shared/removeRoles'
+import { removeRolesOfServer } from '../../shared/removeRoles'
 import { ButtonNames } from '@/const/interactionsNames'
+import db from '@/core/database'
 
 export default new BuildButton({
   name: ButtonNames.deleteServerAllColors,
@@ -16,11 +16,12 @@ export default new BuildButton({
   execute: async i => {
     const { guildId, locale } = i
     if (!guildId) return messages.guildIdNoFound(locale)
-    const { colorPointerId, colors } = await fetchColorCommand(guildId, i.guild?.roles.cache)
+    const { pointer_id, colors } = await db.colors.read(guildId)
+    const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
     const roles = i.guild?.roles.cache
     if (!colorPointerId) return messagesColors.initColorPointer(locale)
     await removeRolesOfServer(roles, colors, i)
-    await removeRolesOfDb(roles, colors, i)
+    await db.colors.delete(guildId, colors)
     return messagesColors.settingsColorsDelete.deleteAllConfirmed(locale, colors.length)
   }
 })

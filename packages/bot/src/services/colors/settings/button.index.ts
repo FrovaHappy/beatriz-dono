@@ -1,8 +1,8 @@
 import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
-import fetchColorCommand from '../shared/fetchColorCommand'
 import messages, { messagesColors } from '@/messages'
+import db from '@/core/database'
 
 export default new BuildButton({
   name: ButtonNames.setting,
@@ -13,8 +13,10 @@ export default new BuildButton({
   data: new ButtonBuilder().setCustomId('setting').setLabel('Configuración').setStyle(ButtonStyle.Primary),
   execute: async i => {
     const { guildId, locale } = i
+    const roles = i.guild?.roles.cache
     if (!guildId) return messages.guildIdNoFound(locale)
-    const { colorPointerId } = await fetchColorCommand(guildId, i.guild?.roles.cache)
+    const { pointer_id } = await db.colors.read(guildId)
+    const colorPointerId = roles?.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     return messagesColors.setting(locale)

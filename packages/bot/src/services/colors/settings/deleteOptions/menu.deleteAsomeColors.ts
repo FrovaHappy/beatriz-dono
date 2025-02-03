@@ -1,8 +1,8 @@
 import { MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
 import { RoleSelectMenuBuilder } from 'discord.js'
-import fetchColorCommand from '../../shared/fetchColorCommand'
 import messages, { messagesColors } from '@/messages'
+import db from '@/core/database'
 
 export default new BuildMenu<'role'>({
   name: MenuNames.settingDeleteAsomeColors,
@@ -18,11 +18,12 @@ export default new BuildMenu<'role'>({
     const roles = i.guild?.roles.cache
     if (!guildId) return messages.guildIdNoFound(locale)
 
-    const { colorPointerId, colors } = await fetchColorCommand(guildId, roles)
+    const { pointer_id, colors } = await db.colors.read(guildId)
+    const colorPointerId = roles?.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     const colorsRemove = colors.filter(
-      color => roles?.get(color.roleId)?.id === values.find(value => value === color.roleId)
+      color => roles?.get(color.role_id)?.id === values.find(value => value === color.role_id)
     )
 
     return {

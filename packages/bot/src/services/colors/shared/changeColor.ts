@@ -1,14 +1,13 @@
-
 import { messagesColors } from '@/messages'
 import type { GuildMemberRoleManager, Interaction, Locale } from 'discord.js'
 import createColorRole from './createColorRole'
 import { removeRolesOfUser } from './removeRoles'
-import type { Color as ColorPrisma } from '@prisma/client'
+import type { Color } from '@/core/database/queries/colors'
 
 interface ChangeColorProps {
   colorCustom: string
   colorPointerId: string
-  colors: ColorPrisma[]
+  colors: Color[]
   guildId: string
   i: Interaction
   locale: Locale

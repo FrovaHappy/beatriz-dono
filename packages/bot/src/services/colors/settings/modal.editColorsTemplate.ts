@@ -1,20 +1,17 @@
 import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
-import db from '@/core/db'
+import db from '@/core/database'
 import { ActionRowBuilder, ComponentType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
-import { validate, CURRENT_VERSION } from '../schema.color'
+import { parseToLatest, validate, type ColorsTempleteLatest } from '@libs/schemas/colorsTemplete'
 import messages, { messagesColors } from '@/messages'
-import fetchColorCommand from '../shared/fetchColorCommand'
 
-const COLORS_PLACEHOLDER = `
-{
-  "version": "v1",
-  "values": [
-    { "hexcolor": "#000000", "label": "Black" },
-    { "hexcolor": "#ffffff", "label": "White" }
+const COLORS_PLACEHOLDER = JSON.stringify({
+  version: 'v2',
+  colors: [
+    { label: 'Black', hex_color: '#000000' },
+    { label: 'White', hex_color: '#ffffff' }
   ]
-}
-`
+} satisfies ColorsTempleteLatest)
 
 const textEdit = new TextInputBuilder({
   label: 'Color',
@@ -37,23 +34,26 @@ export default new BuildModal({
     const { guildId, locale } = i
     if (!guildId) return messages.guildIdNoFound(locale)
     const roles = i.guild?.roles.cache
-    const { colorPointerId } = await fetchColorCommand(guildId, roles)
+    const { pointer_id } = await db.colors.read(guildId)
+    const colorPointerId = pointer_id ?? roles?.first()?.id
     if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     // validate JSON color
     const colorsInput = i.fields.getTextInputValue('input')
-    const errorColors = validate(colorsInput)
-    if (errorColors) return messagesColors.editColorTemplate.jsonInvalid(locale, errorColors)
+    const data = validate(colorsInput)
+    if (data.error) return messagesColors.editColorTemplate.jsonInvalid(locale, data.data)
 
-    // if the json is valid, update the database
-    const jsonColors = JSON.parse(colorsInput)
-    jsonColors.version = jsonColors.version ?? CURRENT_VERSION
+    const jsonColors = parseToLatest(data.data)
+    if (!jsonColors)
+      return messagesColors.editColorTemplate.jsonInvalid(locale, {
+        title: 'Error update color template',
+        description: 'if this error persists, please contact the developer'
+      })
+
     // update database
-    await db.colorCommand.update({
-      where: { serverId: guildId },
-      data: {
-        colorsDefault: jsonColors
-      }
+    await db.colors.update({
+      guild_id: guildId,
+      templete: jsonColors
     })
     return messagesColors.editColorTemplate.success(locale)
   }

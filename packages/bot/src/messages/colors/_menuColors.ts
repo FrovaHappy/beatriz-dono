@@ -25,12 +25,13 @@ const i18ns: I18ns<I18n> = {
 }
 
 interface RebuildColorsProps {
-  templete: ColorsTemplete | undefined
+  templete: ColorsTemplete
   placeholder: string
 }
 
-interface MenuColorsProps extends RebuildColorsProps {
+interface MenuColorsProps {
   locale: Locale
+  templete: ColorsTemplete
   colorCurrent?: {
     role_id: string
     hex_color: string
@@ -75,4 +76,3 @@ export default function menuColors(props: MenuColorsProps): MessageOptions {
     ]
   }
 }
-

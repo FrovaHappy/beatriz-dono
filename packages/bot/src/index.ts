@@ -4,7 +4,7 @@ import startClient from './core/client'
 import { setSetting } from './core/db'
 
 const run = async () => {
-  await setSetting({})
+  //await setSetting({})
   await startClient()
 }
 run()

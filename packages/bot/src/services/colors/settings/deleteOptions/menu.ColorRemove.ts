@@ -1,9 +1,9 @@
 import { MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
-import { ActionRowBuilder, Collection, StringSelectMenuBuilder } from 'discord.js'
-import fetchColorCommand from '../../shared/fetchColorCommand'
-import { removeRolesOfDb, removeRolesOfServer } from '../../shared/removeRoles'
+import { Collection, StringSelectMenuBuilder } from 'discord.js'
+import { removeRolesOfServer } from '../../shared/removeRoles'
 import messages, { messagesColors } from '@/messages'
+import db from '@/core/database'
 
 enum DeleteColors {
   deleteAll = 'delete-all',
@@ -28,7 +28,8 @@ export default new BuildMenu({
     const value = i.values[0] as DeleteColors
     const roles = i.guild?.roles.cache ?? new Collection()
     if (!guildId) return messages.guildIdNoFound(locale)
-    const { colors, colorPointerId } = await fetchColorCommand(guildId, roles)
+    const { colors, pointer_id } = await db.colors.read(guildId)
+    const colorPointerId = roles?.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     if (value === DeleteColors.deleteAll) {
@@ -38,10 +39,10 @@ export default new BuildMenu({
       return messagesColors.settingsColorsDelete.deleteAsome(locale)
     }
     if (value === DeleteColors.deleteNotUsed) {
-      const colorsUnused = colors.filter(color => !roles.get(color.roleId))
-      const rolesUnused = colors.filter(color => roles.get(color.roleId)?.members.size === 0)
+      const colorsUnused = colors.filter(color => !roles.get(color.role_id))
+      const rolesUnused = colors.filter(color => roles.get(color.role_id)?.members.size === 0)
       await removeRolesOfServer(roles, rolesUnused, i)
-      await removeRolesOfDb(roles, [...colorsUnused, ...rolesUnused], i)
+      await db.colors.delete(guildId, [...colorsUnused, ...rolesUnused])
       return {
         content: `Se eliminaron ${rolesUnused.length + colorsUnused.length} roles de colores of ${colors.length} colores.`
       }

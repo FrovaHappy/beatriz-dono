@@ -1,9 +1,7 @@
 import { CommandNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
-import { type GuildMemberRoleManager, Locale, SlashCommandBuilder } from 'discord.js'
-import fetchColorCommand from './shared/fetchColorCommand'
-import { reduceTupleToObj } from '@/shared/general'
-
+import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
+import db from '@/core/database'
 import messages, { messagesColors } from '@/messages'
 import { changeColor } from './shared/changeColor'
 
@@ -35,13 +33,14 @@ export default new BuildCommand({
     const roles = i.guild?.roles.cache
     if (!guildId) return messages.guildIdNoFound(locale)
 
-    const { colorPointerId, colors, colorsDefault } = await fetchColorCommand(guildId, roles)
+    const { pointer_id, colors, templete } = await db.colors.read(guildId)
+    const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return messagesColors.initColorPointer(locale)
 
     const colorCustom = i.options.getString('custom')?.toLowerCase()
     if (colorCustom) return changeColor({ colorCustom, colorPointerId, colors, guildId, i, locale })
 
-    const colorCurrent = colors.find(c => (i.member?.roles as GuildMemberRoleManager)?.cache.get(c.roleId))
-    return messagesColors.menuColors({ locale, colorsDefault, colorCurrent })
+    const colorCurrent = colors.find(c => (i.member?.roles as GuildMemberRoleManager)?.cache.get(c.role_id))
+    return messagesColors.menuColors({ locale, templete, colorCurrent })
   }
 })

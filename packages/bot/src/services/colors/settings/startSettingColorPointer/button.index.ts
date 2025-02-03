@@ -1,8 +1,7 @@
 import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, resolveColor } from 'discord.js'
-import fetchColorCommand from '../../shared/fetchColorCommand'
-import db from '@/core/db'
+import { ButtonBuilder, ButtonStyle, resolveColor } from 'discord.js'
+import db from '@/core/database'
 import messages, { messagesColors } from '@/messages'
 
 export default new BuildButton({
@@ -16,7 +15,8 @@ export default new BuildButton({
   execute: async i => {
     const { guildId, locale } = i
     if (!guildId) return messages.guildIdNoFound(locale)
-    let { colorPointerId } = await fetchColorCommand(guildId, i.guild?.roles.cache)
+    const { pointer_id } = await db.colors.read(guildId)
+    const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
 
     if (!colorPointerId) {
       const role = await i.guild?.roles.create({
@@ -26,13 +26,10 @@ export default new BuildButton({
         permissions: '0'
       })
       if (!role) return messagesColors.startSettingColorPointer.errorCreatingRole(locale)
-      await db.colorCommand.update({
-        where: { serverId: guildId },
-        data: {
-          colorPointerId: role.id
-        }
+      await db.colors.update({
+        guild_id: guildId,
+        pointer_id: role.id
       })
-      colorPointerId = role.id
     }
     return messagesColors.startSettingColorPointer.success(locale)
   }

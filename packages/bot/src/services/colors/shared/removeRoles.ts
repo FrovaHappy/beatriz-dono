@@ -1,6 +1,5 @@
-import db from '@/core/db'
-import type { Color } from '@prisma/client'
-import { Collection, type GuildMemberRoleManager, Interaction, type Role } from 'discord.js'
+import type { Color } from '@/core/database/queries/colors'
+import { Collection, type GuildMemberRoleManager, type Role } from 'discord.js'
 
 /**
  * @param roles collection of roles in the guild server
@@ -11,7 +10,7 @@ import { Collection, type GuildMemberRoleManager, Interaction, type Role } from 
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function removeRolesOfUser(roles: Collection<string, Role> | undefined, colors: Color[], i: any) {
-  const colorsRemove = roles?.filter(role => colors.some(color => color.roleId === role.id)) ?? new Collection()
+  const colorsRemove = roles?.filter(role => colors.some(color => color.role_id === role.id)) ?? new Collection()
   const logDeleteRoles = {
     total: colorsRemove.size,
     fails: [] as Role[]
@@ -28,7 +27,7 @@ export async function removeRolesOfUser(roles: Collection<string, Role> | undefi
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function removeRolesOfServer(roles: Collection<string, Role> | undefined, colors: Color[], i: any) {
-  const colorsRemove = roles?.filter(role => colors.some(color => color.roleId === role.id)) ?? new Collection()
+  const colorsRemove = roles?.filter(role => colors.some(color => color.role_id === role.id)) ?? new Collection()
   const logDeleteRoles = {
     total: colorsRemove.size,
     fails: [] as Role[]
@@ -41,20 +40,4 @@ export async function removeRolesOfServer(roles: Collection<string, Role> | unde
     }
   }
   return logDeleteRoles
-}
-
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export async function removeRolesOfDb(roles: Collection<string, Role> | undefined, colors: Color[], i: any) {
-  await db.colorCommand.update({
-    where: { serverId: i.guildId },
-    data: {
-      colors: {
-        deleteMany: {
-          roleId: {
-            in: colors.map(color => color.roleId)
-          }
-        }
-      }
-    }
-  })
 }
