@@ -9,5 +9,5 @@ const { urlApi, urlOathCallback } = getPublic(import.meta.env.PUBLIC_VARIABLES);
 
 <Layout title="Guild Management">
   <h1>Guild Management</h1>
-  <Settings apiUrl={urlApi} oauthCallback={urlOathCallback} />
+  <Settings apiUrl={urlApi} oauthCallback={urlOathCallback} client:only />
 </Layout>

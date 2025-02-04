@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "A Bot multipurpose for discord",
   "packageManager": "npm@10.0.0",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "lint": "biome check --write --diagnostic-level=error",
     "test": "vitest",
@@ -13,7 +11,8 @@
     "dev": "env-cmd turbo dev",
     "build": "env-cmd turbo build",
     "build:lib": "env-cmd npm run build --workspace=packages/lib",
-    "bot:start": "env-cmd npm run start --workspace=packages/bot",
+    "build:web": "env-cmd npm run build --workspace=packages/website",
+    "start:bot": "env-cmd npm run start --workspace=packages/bot",
     "generate_db": "env-cmd prisma db push",
     "docker:prod": "docker compose up --build",
     "docker:dev": "docker compose -f dev.docker-compose.yml up --build"
