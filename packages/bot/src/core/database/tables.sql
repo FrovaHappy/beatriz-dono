@@ -33,21 +33,18 @@ CREATE TABLE IF NOT EXISTS ColorSetting (
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
 CREATE TABLE IF NOT EXISTS Goodbye_Messages (
-  id text NOT NULL PRIMARY KEY,
-  guild_id text NOT NULL,
+  guild_id text NOT NULL PRIMARY KEY,
   is_active boolean NOT NULL,
   content text,
   embed JSON,
-  image text,
-  FOREIGN KEY (guild_id) REFERENCES Guilds (id),
-  FOREIGN KEY (image) REFERENCES Canvas (id)
+  channel_id text,
+  FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
 CREATE TABLE IF NOT EXISTS Welcome_Messages (
-  id text NOT NULL PRIMARY KEY,
-  guild_id text NOT NULL,
+  guild_id text NOT NULL PRIMARY KEY,
   is_active boolean NOT NULL,
   content text,
   embed JSON,
-  image text,
+  channel_id text,
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
