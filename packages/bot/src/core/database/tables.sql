@@ -2,6 +2,13 @@ CREATE TABLE IF NOT EXISTS Guilds (
   id text NOT NULL PRIMARY KEY,
   scope_bot TEXT CHECK (scope_bot IN ('public', 'private', 'owner')) NOT NULL DEFAULT 'public'
 );
+CREATE TABLE IF NOT EXISTS Guild_Features (
+  guild_id text NOT NULL PRIMARY KEY,
+  welcome boolean NOT NULL DEFAULT false,
+  goodbye boolean NOT NULL DEFAULT false,
+  colors boolean NOT NULL DEFAULT false,
+  FOREIGN KEY (guild_id) REFERENCES Guilds (id)
+);
 CREATE TABLE IF NOT EXISTS Users (
   id text NOT NULL PRIMARY KEY,
   FOREIGN KEY (id) REFERENCES Guilds (id)
@@ -32,17 +39,15 @@ CREATE TABLE IF NOT EXISTS ColorSetting (
   templete json,
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
-CREATE TABLE IF NOT EXISTS Goodbye_Messages (
+CREATE TABLE IF NOT EXISTS Goodbyes (
   guild_id text NOT NULL PRIMARY KEY,
-  is_active boolean NOT NULL,
   content text,
   embed JSON,
   channel_id text,
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
-CREATE TABLE IF NOT EXISTS Welcome_Messages (
+CREATE TABLE IF NOT EXISTS Welcomes (
   guild_id text NOT NULL PRIMARY KEY,
-  is_active boolean NOT NULL,
   content text,
   embed JSON,
   channel_id text,
