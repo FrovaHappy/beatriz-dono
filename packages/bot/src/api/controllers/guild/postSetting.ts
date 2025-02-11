@@ -1,8 +1,8 @@
 import z from 'zod'
 import type { Request, Response } from 'express'
 import type { ValidateZodProps } from '@/api/shared/validateZod'
-import db from '@/core/db'
-import { getGuild } from '@/rest/guild'
+import rest from '@/rest'
+import db from '@/core/database'
 
 const schemaBody = z
   .object({
@@ -16,19 +16,12 @@ export const validatePostSetting: ValidateZodProps = { body: schemaBody }
 
 export default async function postSetting(req: Request, res: Response) {
   const { guildId, ...settingBody } = req.body as z.infer<typeof schemaBody>
-  const guild = await getGuild(guildId)
+  const guild = await rest.guild.read(guildId)
   if (!guild) {
     res.json({ data: null, message: 'Guild not found', ok: false })
     return
   }
-  const update = await db.serverSetting.upsert({
-    where: { serverId: guildId },
-    create: {
-      serverId: guildId,
-      ...settingBody
-    },
-    update: settingBody
-  })
+  const update = await db.guild.read(guildId)
   res.status(201).json({
     data: update,
     message: 'Setting saved',
