@@ -1,15 +1,12 @@
-import db from '@core/db'
 import type { GuildMember } from 'discord.js'
+import db from '@/core/database'
 import emojis from '@/const/emojis'
 export default async function welcome(member: GuildMember): Promise<void> {
-  const welcomeDb = await db.welcomeCommand.findUnique({
-    where: { serverId: member.guild.id }
-  })
-  if (!welcomeDb) return
-  const { channelId } = welcomeDb
-  // const isValidCanvas = validateCanvas(image)
-  //const canvas = isValidCanvas ? (image as unknown as Canvas) : null
-  const webhook = member.guild.channels.cache.get(channelId) as any
+  const welcomeDb = await db.welcome.read(member.guild.id)
+  const channel_id = welcomeDb.channel_id
+  if (!channel_id) return
+
+  const webhook = member.guild.channels.cache.get(channel_id) as any
   await webhook?.send(
     {
       embeds: [
