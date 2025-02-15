@@ -1,5 +1,5 @@
-import db from '@/core/database'
-import type { Color } from '@/core/database/queries/colors'
+import db from '@/database'
+import type { Color } from '@/database/queries/colors'
 import { type ChatInputCommandInteraction, resolveColor } from 'discord.js'
 
 interface CreateColorRoleProps<T> {

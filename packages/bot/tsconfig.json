@@ -37,6 +37,9 @@
       ],
       "@type/*": [
         "../libs/src/types/*"
+      ],
+      "@db": [
+        "src/database/index.ts"
       ]
     }
   },

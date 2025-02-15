@@ -1,6 +1,6 @@
 import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
-import db from '@/core/database'
+import db from '@/database'
 import messages, { messagesColors } from '@/messages'
 import { ButtonBuilder, ButtonStyle, type RolePosition } from 'discord.js'
 

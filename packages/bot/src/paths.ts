@@ -5,5 +5,6 @@ import { addAliases } from 'module-alias'
 addAliases({
   '@': join(__dirname),
   '@core': join(__dirname, 'core'),
-  '@libs': join(__dirname, '../../', 'libs', 'dist')
+  '@libs': join(__dirname, '../../', 'libs', 'dist'),
+  '@db': join(__dirname, 'database')
 })

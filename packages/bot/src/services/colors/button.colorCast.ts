@@ -5,7 +5,7 @@ import { getDominanteColor, rgbToHex } from '@libs/colors'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
 import messages, { messagesColors } from '@/messages'
 import { changeColor } from './shared/changeColor'
-import db from '@/core/database'
+import db from '@db'
 
 export default new BuildButton({
   name: ButtonNames.colorCast,

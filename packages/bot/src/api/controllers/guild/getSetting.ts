@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import rest from '@/rest'
-import db from '@/core/database'
+import db from '@db'
 import type { ValidateZodProps } from '@/api/shared/validateZod'
 import z from 'zod'
 

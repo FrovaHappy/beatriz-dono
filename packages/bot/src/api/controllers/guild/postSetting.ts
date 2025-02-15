@@ -2,7 +2,7 @@ import z from 'zod'
 import type { Request, Response } from 'express'
 import type { ValidateZodProps } from '@/api/shared/validateZod'
 import rest from '@/rest'
-import db from '@/core/database'
+import db from '@db'
 
 const schemaBody = z
   .object({

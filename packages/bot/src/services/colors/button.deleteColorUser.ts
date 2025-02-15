@@ -3,7 +3,7 @@ import BuildButton from '@/core/build/BuildButtons'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
 import { removeRolesOfUser } from './shared/removeRoles'
 import messages, { messagesColors } from '@/messages'
-import db from '@/core/database'
+import db from '@db'
 
 export default new BuildButton({
   name: ButtonNames.removeColor,

@@ -3,7 +3,7 @@ import messages, { messagesColors } from '@/messages'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
 import { removeRolesOfServer } from '../../shared/removeRoles'
 import { ButtonNames } from '@/const/interactionsNames'
-import db from '@/core/database'
+import db from '@/database'
 
 export default new BuildButton({
   name: ButtonNames.deleteServerAllColors,

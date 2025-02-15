@@ -2,7 +2,7 @@ import { MenuNames } from '@/const/interactionsNames'
 import BuildMenu from '@/core/build/BuildMenu'
 import { RoleSelectMenuBuilder } from 'discord.js'
 import messages, { messagesColors } from '@/messages'
-import db from '@/core/database'
+import db from '@/database'
 
 export default new BuildMenu<'role'>({
   name: MenuNames.settingDeleteAsomeColors,

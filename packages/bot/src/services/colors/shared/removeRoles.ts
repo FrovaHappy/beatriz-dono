@@ -1,4 +1,4 @@
-import type { Color } from '@/core/database/queries/colors'
+import type { Color } from '@/database/queries/colors'
 import { Collection, type GuildMemberRoleManager, type Role } from 'discord.js'
 
 /**

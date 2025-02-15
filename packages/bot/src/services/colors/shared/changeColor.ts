@@ -2,7 +2,7 @@ import { messagesColors } from '@/messages'
 import type { GuildMemberRoleManager, Interaction, Locale } from 'discord.js'
 import createColorRole from './createColorRole'
 import { removeRolesOfUser } from './removeRoles'
-import type { Color } from '@/core/database/queries/colors'
+import type { Color } from '@/database/queries/colors'
 
 interface ChangeColorProps {
   colorCustom: string

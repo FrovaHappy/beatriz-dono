@@ -3,7 +3,7 @@ import BuildMenu from '@/core/build/BuildMenu'
 import { Collection, StringSelectMenuBuilder } from 'discord.js'
 import { removeRolesOfServer } from '../../shared/removeRoles'
 import messages, { messagesColors } from '@/messages'
-import db from '@/core/database'
+import db from '@/database'
 
 enum DeleteColors {
   deleteAll = 'delete-all',

@@ -1,7 +1,7 @@
 import { CommandNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
 import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
-import db from '@/core/database'
+import db from '@db'
 import messages, { messagesColors } from '@/messages'
 import { changeColor } from './shared/changeColor'
 

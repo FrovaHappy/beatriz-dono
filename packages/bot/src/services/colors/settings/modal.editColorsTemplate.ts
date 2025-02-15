@@ -1,6 +1,6 @@
 import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
-import db from '@/core/database'
+import db from '@/database'
 import { ActionRowBuilder, ComponentType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
 import { parseToLatest, validate, type ColorsTempleteLatest } from '@libs/schemas/colorsTemplete'
 import messages, { messagesColors } from '@/messages'

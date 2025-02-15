@@ -4,7 +4,7 @@ import BuildMenu from '@/core/build/BuildMenu'
 import { StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js'
 import messages, { messagesColors } from '@/messages'
 import { changeColor } from './shared/changeColor'
-import db from '@/core/database'
+import db from '@db'
 
 export default new BuildMenu({
   name: MenuNames.colorDefault,

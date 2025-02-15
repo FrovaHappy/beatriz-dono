@@ -1,5 +1,5 @@
 import type { GuildMember } from 'discord.js'
-import db from '@/core/database'
+import db from '@db'
 import emojis from '@/const/emojis'
 export default async function welcome(member: GuildMember): Promise<void> {
   const welcomeDb = await db.welcome.read(member.guild.id)
