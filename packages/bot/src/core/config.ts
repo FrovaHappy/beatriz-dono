@@ -2,7 +2,6 @@ import 'dotenv/config'
 import type { Setting } from '@prisma/client'
 import { z } from 'zod'
 import p from 'picocolors'
-
 ;(() => {
   const envSchema = z.object({
     DATABASE_URL: z.string(),
@@ -64,7 +63,7 @@ const parsePrivate = (s: string) => {
 }
 const env = {
   ...parsePrivate(process.env.PRIVATE!),
-  rootPath: process.env.NODE_ENV ? `${process.cwd()}/dist` : `${process.cwd()}/src`,
+  rootPath: `${process.cwd()}/src`,
   port: process.env.PORT!
 }
 const setting = {

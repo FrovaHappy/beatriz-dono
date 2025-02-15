@@ -3,13 +3,10 @@
   "version": "2.0.0",
   "scripts": {
     "dev": "nodemon -L --exec tsx src/index.ts",
-    "build": "tsc",
-    "start": "NODE_ENV=production node dist/index.js"
+    "start": "tsx src/index.ts"
   },
   "paths": {
-    "@/libs/*": [
-      "../libs/dist/*"
-    ]
+    "@/libs/*": ["../libs/dist/*"]
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.64",
