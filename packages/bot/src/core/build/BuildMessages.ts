@@ -1,0 +1,36 @@
+import type { MessageOptions } from '@/types/main'
+import formatterText, { type Rules } from '@libs/formatterText'
+import type { Locale } from 'discord.js'
+
+type Messages = Record<Partial<Locale>, MessageOptions>
+
+/**
+ * Build Messages
+ * @param messages is contains all the messages for translation
+ * @param defaultMessage is the default message if the locale is not found
+ */
+class BuildMessages {
+  #messages: Messages
+  #defaultMessage: MessageOptions
+  constructor(messages: Messages, defaultMessage: MessageOptions) {
+    this.#messages = messages
+    this.#defaultMessage = defaultMessage
+  }
+
+  getMessage(locale: Locale, parse: Rules): MessageOptions {
+    const message = this.#messages[locale] ?? this.#defaultMessage
+    const format = (prop: any) => {
+      let text = JSON.stringify(prop)
+      text = formatterText(text, parse)
+      return JSON.parse(text)
+    }
+    return {
+      content: formatterText(message.content, parse),
+      embeds: message.embeds?.map((embed: any) => format(embed)),
+      components: message.components?.map((component: any) => format(component)),
+      files: message.files
+    }
+  }
+}
+
+export default BuildMessages
