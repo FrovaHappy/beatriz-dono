@@ -1,8 +1,8 @@
 services:
   bot:
-    build: 
+    build:
       context: .
-      target: deploy_bot
+      target: deploy
       args:
         - DATABASE_URL=${DATABASE_URL}
         - DISCORD_TOKEN=${DISCORD_TOKEN}
@@ -11,4 +11,3 @@ services:
     env_file:
       - .env
     container_name: bot
-  
