@@ -4,7 +4,7 @@ type UserRules = '{{user_name}}' | '{{user_global}}' | '{{user_id}}' | '{{user_a
 type ServerRules = '{{server_name}}' | '{{server_id}}' | '{{server_icon}}' | '{{server_banner}}' | '{{server_count}}'
 type Slot = `{{slot${number}}}`
 
-type Rules = Record<UserRules, string> & Record<Slot, string> & Record<ServerRules, string>
+export type Rules = Record<UserRules, string> & Record<Slot, string> & Record<ServerRules, string>
 
 export function formatterTextUser(strToFormat: string, param: User & Guild): string {
   return formatterText(strToFormat, {
