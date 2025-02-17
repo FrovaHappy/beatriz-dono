@@ -1,4 +1,4 @@
-import messages from '@/messages'
+import messages from './msg.hasAccessToScope'
 import type { MessageOptions, Scope } from '@/types/main'
 import type { Locale } from 'discord.js'
 
@@ -25,5 +25,5 @@ export default function buildMessageErrorForScope(
   guildId: string
 ): MessageOptions | undefined {
   if (hasAccessForScope(scope, guildId)) return
-  return messages.accessDeniedForScope({ locale, scope })
+  return messages.getMessage(locale, { '{{slot0}}': scope })
 }
