@@ -23,12 +23,13 @@ class BuildMessages {
   getMessage(locale: Locale, parse: Partial<Rules>): MessageOptions {
     const message = this.#messages[locale] ?? this.#defaultMessage
     const format = (prop: any) => {
+      if (typeof prop === 'undefined') return
       let text = JSON.stringify(prop)
       text = formatterText(text, parse)
       return JSON.parse(text)
     }
     return {
-      content: formatterText(message.content, parse),
+      content: format(message.content),
       embeds: message.embeds?.map((embed: any) => format(embed)),
       components: message.components?.map((component: any) => format(component)),
       files: message.files
