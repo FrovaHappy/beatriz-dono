@@ -2,8 +2,10 @@ import type { MessageOptions } from '@/types/main'
 import formatterText, { type Rules } from '@libs/formatterText'
 import type { Locale } from 'discord.js'
 
-type Messages = Record<Partial<Locale>, MessageOptions>
-
+type Messages = Partial<Record<Locale, MessageOptions>>
+interface PropsBuildMessages extends Messages {
+  default: MessageOptions
+}
 /**
  * Build Messages
  * @param messages is contains all the messages for translation
@@ -12,12 +14,13 @@ type Messages = Record<Partial<Locale>, MessageOptions>
 class BuildMessages {
   #messages: Messages
   #defaultMessage: MessageOptions
-  constructor(messages: Messages, defaultMessage: MessageOptions) {
+  constructor(props: PropsBuildMessages) {
+    const { default: defaultMessage, ...messages } = props
     this.#messages = messages
     this.#defaultMessage = defaultMessage
   }
 
-  getMessage(locale: Locale, parse: Rules): MessageOptions {
+  getMessage(locale: Locale, parse: Partial<Rules>): MessageOptions {
     const message = this.#messages[locale] ?? this.#defaultMessage
     const format = (prop: any) => {
       let text = JSON.stringify(prop)
