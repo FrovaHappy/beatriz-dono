@@ -1,13 +1,11 @@
 {
-  "display": "Node 18",
-  "_version": "18.2.0",
   "compilerOptions": {
     "lib": [
-      "es2023",
+      "es2024",
       "DOM"
     ],
     "module": "node16",
-    "target": "es2022",
+    "target": "es2024",
     "outDir": "dist",
     "rootDirs": [
       "src",
