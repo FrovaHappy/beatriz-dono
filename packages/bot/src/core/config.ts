@@ -69,7 +69,7 @@ const env = {
 const setting = {
   cooldown: 5, // 5 segundos
   privatesServers: [],
-  ownersServers: [],
+  ownersServers: [env.discord.guildOwner],
   linkDiscord: 'https://discord.gg/JRpHsGC8YQ',
   linkGithub: 'https://github.com/FrovaHappy/beatriz-dono',
   linkDocumentation: 'https://frovahappy.gitbook.io/beatriz-bot-docs/',
