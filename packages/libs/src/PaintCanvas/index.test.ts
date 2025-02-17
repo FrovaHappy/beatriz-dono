@@ -66,9 +66,9 @@ describe('PaintCanvas', () => {
       filterText,
       castColor
     })
-    const imageBuffer = await canvas.encode('webp', 1)
+    const imageBuffer = await canvas.encode('webp', 100)
 
-    await fs.writeFile('test.png', imageBuffer)
+    await fs.writeFile('test.webp', imageBuffer)
 
     expect(true).toBe(true)
   })

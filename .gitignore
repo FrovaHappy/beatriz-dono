@@ -7,6 +7,7 @@ dist
 package-lock.json
 fonts
 test.png
+test.webp
 _lib
 
 # Ignore SQLite databases
