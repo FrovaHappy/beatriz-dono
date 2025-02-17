@@ -1,6 +1,5 @@
 import errorInService from './_errorInService'
 import guildIdNoFound from './_guildIdNoFound'
-import accessDeniedForScope from './_accessDeniedForScope'
 import serviceNotFound from './_serviceNotFound'
 
 import colors from './colors'
@@ -14,7 +13,6 @@ export const messagesAboutMe = aboutMe
 export default {
   errorInService,
   guildIdNoFound,
-  accessDeniedForScope,
   serviceNotFound,
   errorPermissions,
   cooldownEnable
