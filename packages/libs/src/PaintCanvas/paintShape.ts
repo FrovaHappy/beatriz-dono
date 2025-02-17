@@ -12,7 +12,7 @@ interface PaintShapeProps {
 
 export default function paintShape(props: PaintShapeProps) {
   const { ctx, ctxSupport, layer, Path2D, image, castColor } = props
-  const color = !!castColor && layer.color === 'auto' ? castColor : layer.color 
+  const color = !!castColor && layer.color === 'auto' ? castColor : layer.color
   const patch = layer.clip
   const filter = buildFilter(layer.filter)
   ctx.save()
@@ -28,6 +28,7 @@ export default function paintShape(props: PaintShapeProps) {
     const { width: dataWidth, height: dataHeight } = ctxSupport.canvas
     const maxPatch = Math.max(patch.w, patch.h)
 
+    ctxSupport.clearRect(0, 0, dataWidth, dataHeight)
     ctxSupport.save()
     ctxSupport.fillStyle = color ?? 'transparent'
     ctxSupport.scale(dataWidth / maxPatch, dataHeight / maxPatch)
