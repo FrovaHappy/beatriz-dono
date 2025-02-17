@@ -1,5 +1,5 @@
 import '@core/config'
-import { hasAccessForScope } from './hasAccessForScope'
+import { hasAccessForScope, reorderScope } from './hasAccessForScope'
 
 globalThis.config = {
   ...globalThis.config,
@@ -29,5 +29,14 @@ describe('hasAccessForScope', () => {
   })
   it('should return false if the scope is not private and the user not is owner', () => {
     expect(hasAccessForScope('private', '333')).toBe(false)
+  })
+})
+
+describe('reorderScope', () => {
+  it('should return the correct order', () => {
+    expect(reorderScope(['111', '222', '333'], ['333'])).toEqual({
+      privates: ['111', '222'],
+      owners: ['333']
+    })
   })
 })
