@@ -1,7 +1,7 @@
 /* eslint-disable no-var */
 import type { Collection } from 'discord.js'
 import type { ButtonNames, CommandNames, MenuNames, ModalNames } from './const/interactionsNames'
-import type { Config } from './core/config'
+import type { Config } from './config'
 import type { Button } from './shared/BuildButtons'
 import type { Command } from './shared/BuildCommand'
 import type { JsonResponse } from './api/types'

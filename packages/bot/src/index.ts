@@ -1,5 +1,5 @@
 import './paths'
-import './core/config'
+import './config'
 import startClient from './core/client'
 
 const run = async () => {
