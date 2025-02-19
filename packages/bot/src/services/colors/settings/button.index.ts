@@ -5,7 +5,7 @@ import messages, { messagesColors } from '@/messages'
 import db from '@/database'
 
 export default new BuildButton({
-  name: ButtonNames.setting,
+  name: 'setting',
   scope: 'public',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],

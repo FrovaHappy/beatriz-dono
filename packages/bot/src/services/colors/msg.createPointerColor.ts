@@ -10,7 +10,7 @@ export default new BuildMessages({
         color: Colors.DarkPurple
       }
     ],
-    components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons.get('setup').data)]
+    components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons.get('startColors').data)]
   },
   'es-ES': {
     embeds: [
@@ -20,6 +20,6 @@ export default new BuildMessages({
         color: Colors.DarkPurple
       }
     ],
-    components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons.get('setup').data)]
+    components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons.get('startColors').data)]
   }
 })

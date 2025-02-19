@@ -17,7 +17,7 @@ export default new BuildButton({
   data: new ButtonBuilder().setLabel('Color Cast').setStyle(ButtonStyle.Secondary).setEmoji(getEmoji('colorWand')),
   async execute(i) {
     const { guildId, locale } = i
-    if (!guildId) return messages.guildIdNoFound(locale)
+    if (!guildId) throw new Error('Guild ID not found')
     const { colors, pointer_id } = await db.colors.read(guildId)
     const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
