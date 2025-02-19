@@ -3,6 +3,7 @@ import BuildCommand from '@core/build/BuildCommand'
 import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
 import db from '@db'
 import messages, { messagesColors } from '@/messages'
+import msgCreatePointerColor from './msg.createPointerColor'
 import { changeColor } from './shared/changeColor'
 
 export default new BuildCommand({
@@ -34,13 +35,13 @@ export default new BuildCommand({
     if (!guildId) return messages.guildIdNoFound(locale)
 
     const { pointer_id, colors, templete } = await db.colors.read(guildId)
-    const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
-    if (!colorPointerId) return messagesColors.initColorPointer(locale)
+    const colorPointerId = roles?.get(pointer_id ?? '0')?.id
+    if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
 
     const colorCustom = i.options.getString('custom')?.toLowerCase()
     if (colorCustom) return changeColor({ colorCustom, colorPointerId, colors, guildId, i, locale })
 
-    const colorCurrent = colors.find(c => (i.member?.roles as GuildMemberRoleManager)?.cache.get(c.role_id))
+    const colorCurrent = colors.find(c => roles?.get(c.role_id))
     return messagesColors.menuColors({ locale, templete, colorCurrent })
   }
 })

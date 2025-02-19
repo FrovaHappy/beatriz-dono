@@ -3,6 +3,8 @@ import type { GuildMemberRoleManager, Interaction, Locale } from 'discord.js'
 import createColorRole from './createColorRole'
 import { removeRolesOfUser } from './removeRoles'
 import type { Color } from '@/database/queries/colors'
+import msgColorIncorrect from './msg.colorIncorrect'
+import msgColorChanged from './msg.colorChanged'
 
 interface ChangeColorProps {
   colorCustom: string
@@ -18,7 +20,7 @@ export async function changeColor(props: ChangeColorProps) {
   const { colorCustom, guildId, i, locale, colors, colorPointerId } = props
   const roles = i.guild?.roles.cache
   // Logic
-  if (!regexColors.test(colorCustom)) return messagesColors.colorIncorrect(locale, colorCustom)
+  if (!regexColors.test(colorCustom)) return msgColorIncorrect.getMessage(locale, { '{{slot0}}': colorCustom })
   const colorRole = await createColorRole({
     hexColor: colorCustom as `#${string}`,
     guildId,
@@ -26,9 +28,9 @@ export async function changeColor(props: ChangeColorProps) {
     colorPointerId,
     i
   })
-  if (!colorRole) return messagesColors.errorCreatingColor({ locale })
+  if (!colorRole) throw new Error('Error creating color role in changeColor.ts')
 
   await removeRolesOfUser(roles, colors, i)
   await (i.member?.roles as GuildMemberRoleManager).add(colorRole)
-  return messagesColors.changedColorsUser({ locale, color: colorRole.id })
+  return msgColorChanged.getMessage(locale, { '{{slot0}}': colorRole.id })
 }

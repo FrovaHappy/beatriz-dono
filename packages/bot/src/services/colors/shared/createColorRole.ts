@@ -7,7 +7,6 @@ interface CreateColorRoleProps<T> {
   colors: Color[]
   guildId: string
   colorPointerId: string
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   i: T extends ChatInputCommandInteraction ? T : any
 }
 
