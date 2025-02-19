@@ -1,3 +1,4 @@
+import e from 'express'
 import client, { formatResponse } from '../clientSQL'
 
 export const readGuild = async (guild_id: string) => {
@@ -39,4 +40,25 @@ export const readGuild = async (guild_id: string) => {
       colors: guild.colors
     }
   }
+}
+
+export const getGuilds = async () => {
+  const data = await client.execute({
+    queries: `
+      SELECT scope_bot, id, welcome, goodbye, colors FROM Guilds
+      LEFT JOIN Guild_Features ON Guilds.id = Guild_Features.guild_id
+    `
+  })
+  const guilds = formatResponse(data)
+  return guilds.map(guild => {
+    return {
+      guild_id: guild.id,
+      scope_bot: guild.scope_bot,
+      features: {
+        welcome: guild.welcome,
+        goodbye: guild.goodbye,
+        colors: guild.colors
+      }
+    }
+  })
 }
