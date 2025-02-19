@@ -7,8 +7,6 @@ import { Collection, type GuildMemberRoleManager, type Role } from 'discord.js'
  * @param i Any interaction
  * @returns an object with the total of roles removed and the roles that failed to remove
  */
-
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function removeRolesOfUser(roles: Collection<string, Role> | undefined, colors: Color[], i: any) {
   const colorsRemove = roles?.filter(role => colors.some(color => color.role_id === role.id)) ?? new Collection()
   const logDeleteRoles = {
@@ -25,7 +23,6 @@ export async function removeRolesOfUser(roles: Collection<string, Role> | undefi
   return logDeleteRoles
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function removeRolesOfServer(roles: Collection<string, Role> | undefined, colors: Color[], i: any) {
   const colorsRemove = roles?.filter(role => colors.some(color => color.role_id === role.id)) ?? new Collection()
   const logDeleteRoles = {
