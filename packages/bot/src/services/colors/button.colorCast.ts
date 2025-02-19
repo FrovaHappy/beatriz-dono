@@ -6,6 +6,8 @@ import { ButtonBuilder, ButtonStyle } from 'discord.js'
 import messages, { messagesColors } from '@/messages'
 import { changeColor } from './shared/changeColor'
 import db from '@db'
+import msgCreatePointerColor from './msg.createPointerColor'
+import msgColorCastNotFound from './msg.ColorCastNotFound'
 
 export default new BuildButton({
   name: ButtonNames.colorCast,
@@ -18,10 +20,10 @@ export default new BuildButton({
     if (!guildId) return messages.guildIdNoFound(locale)
     const { colors, pointer_id } = await db.colors.read(guildId)
     const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
-    if (!colorPointerId) return messagesColors.initColorPointer(locale)
+    if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
 
     const color = await getDominanteColor(i.user.displayAvatarURL({ extension: 'png', size: 512 }), 5)
-    if (!color) return messagesColors.colorsCastNoFound(locale)
+    if (!color) return msgColorCastNotFound.getMessage(locale, {})
 
     const hex = rgbToHex(color)
     return changeColor({ colorCustom: hex, colorPointerId, colors, guildId, i, locale })
