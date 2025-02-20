@@ -6,7 +6,6 @@ import BuildButton from './build/BuildButtons'
 import BuildCommand from './build/BuildCommand'
 import BuildMenu from './build/BuildMenu'
 import BuildModal from './build/BuildModal'
-import Collections from '@/shared/Collections'
 
 globalThis.buttons = new Collection<string, BuildButton>()
 globalThis.commands = new Collection<string, BuildCommand>()
@@ -31,7 +30,7 @@ export default async function getServices() {
         return null
       }
     })()
-    if (service instanceof BuildButton) globalThis.buttons.set(service.name, service)
+    if (service instanceof BuildButton) globalThis.buttons.set(service.customId, service)
     if (service instanceof BuildCommand) globalThis.commands.set(service.name, service)
     if (service instanceof BuildMenu) globalThis.menus.set(service.name, service)
     if (service instanceof BuildModal) globalThis.modals.set(service.name, service)

@@ -1,6 +1,12 @@
-import type { ButtonNames } from '@/const/interactionsNames'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
-import type { ButtonBuilder, ButtonInteraction, PermissionResolvable } from 'discord.js'
+import {
+  ButtonBuilder,
+  type ButtonInteraction,
+  type ButtonStyle,
+  type ComponentEmojiResolvable,
+  type Locale,
+  type PermissionResolvable
+} from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
@@ -17,29 +23,50 @@ import requiresUserPermissions from './shared/requiresUserPermissions'
  *   - `defer`: Sends a new async message reply. (incompatible with Modals)
  *   - `update`: The interaction will be updated. (incompatible with Modals)
  */
+
+interface ButtonData {
+  name: string
+  style: ButtonStyle
+  emoji?: ComponentEmojiResolvable
+}
 class BuildButton {
   type = 'buttons'
-  name: ButtonNames | string
   scope: Scope
   ephemeral: boolean
   permissionsBot: PermissionResolvable[]
   permissionsUser: PermissionResolvable[]
+  url: string | undefined
   cooldown: number
-  data: ButtonBuilder
+  customId: string
+  translates: Partial<Record<Locale, ButtonData>> & { default: ButtonData }
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
   resolve: Resolve | 'showModal'
-  isLink = false
-  constructor(props: Partial<BuildButton> & Pick<BuildButton, 'name' | 'execute' | 'data' | 'scope'>) {
-    this.isLink = props.isLink ?? false
-    this.type = this.name = props.name
+  constructor(
+    props: Partial<BuildButton> &
+      Pick<
+        BuildButton,
+        'execute' | 'scope' | 'customId' | 'translates' | 'permissionsBot' | 'permissionsUser' | 'resolve'
+      >
+  ) {
+    this.url = props.url
+    this.customId = props.customId
     this.scope = props.scope
     this.resolve = props.resolve ?? 'defer'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
     this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
-    this.data = !this.isLink ? props.data.setCustomId(this.name) : props.data
+    this.translates = props.translates
     this.execute = props.execute
+  }
+
+  getButton = (locale: Locale) => {
+    const { translates, customId, url } = this
+    const buttonData = translates[locale] ?? translates.default
+    const button = new ButtonBuilder().setCustomId(customId).setLabel(buttonData.name).setStyle(buttonData.style)
+    if (buttonData.emoji) button.setEmoji(buttonData.emoji)
+    if (url) button.setURL(url)
+    return button
   }
 
   static async runInteraction(i: ButtonInteraction) {
@@ -53,6 +80,7 @@ class BuildButton {
         ephemeral: true
       })
     if (!button) return await i.reply(messages.serviceNotFound(locale, `button:${customId}`))
+    if (button.url) return
     const messageRequirePermissions = requiresBotPermissions({
       permissions: button.permissionsBot,
       bot,
@@ -68,7 +96,7 @@ class BuildButton {
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
       cooldown: button.cooldown,
-      name: button.name,
+      name: button.customId,
       type: 'button',
       locale
     })
