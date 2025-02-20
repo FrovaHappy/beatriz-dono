@@ -1,18 +1,20 @@
-import type { MenuNames } from '@/const/interactionsNames'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
-import type {
-  AnySelectMenuInteraction,
+import {
+  type AnySelectMenuInteraction,
+  type APISelectMenuDefaultValue,
   ChannelSelectMenuBuilder,
-  ChannelSelectMenuInteraction,
-  MentionableSelectMenuBuilder,
-  MentionableSelectMenuInteraction,
-  PermissionResolvable,
+  type ChannelSelectMenuInteraction,
+  type ComponentEmojiResolvable,
+  type Locale,
+  type MentionableSelectMenuInteraction,
+  type PermissionResolvable,
   RoleSelectMenuBuilder,
-  RoleSelectMenuInteraction,
+  type RoleSelectMenuInteraction,
+  type SelectMenuDefaultValueType,
   StringSelectMenuBuilder,
-  StringSelectMenuInteraction,
+  type StringSelectMenuInteraction,
   UserSelectMenuBuilder,
-  UserSelectMenuInteraction
+  type UserSelectMenuInteraction
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
@@ -21,58 +23,92 @@ import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import messages from '@/messages'
 import requiresUserPermissions from './shared/requiresUserPermissions'
-interface Types {
-  string: {
-    builder: StringSelectMenuBuilder
-    interaction: StringSelectMenuInteraction
-  }
-  user: {
-    builder: UserSelectMenuBuilder
-    interaction: UserSelectMenuInteraction
-  }
-  role: {
-    builder: RoleSelectMenuBuilder
-    interaction: RoleSelectMenuInteraction
-  }
-  mentionable: {
-    builder: MentionableSelectMenuBuilder
-    interaction: MentionableSelectMenuInteraction
-  }
-  channels: {
-    builder: ChannelSelectMenuBuilder
-    interaction: ChannelSelectMenuInteraction
-  }
+
+type MenuType =
+  | StringSelectMenuInteraction
+  | UserSelectMenuInteraction
+  | RoleSelectMenuInteraction
+  | MentionableSelectMenuInteraction
+  | ChannelSelectMenuInteraction
+
+type StringSelectTranslate = {
+  placeholder: string
+  options: {
+    value: string
+    label: string
+    description?: string
+    emoji?: ComponentEmojiResolvable
+  }[]
+}
+type UserSelectTranslate = {
+  placeholder: string
+  defaultValues?: APISelectMenuDefaultValue<SelectMenuDefaultValueType.User>[]
+}
+type RoleSelectTranslate = {
+  placeholder: string
+  defaultValues?: APISelectMenuDefaultValue<SelectMenuDefaultValueType.Role>[]
+}
+type ChannelSelectTranslate = {
+  placeholder: string
+  defaultValues?: APISelectMenuDefaultValue<SelectMenuDefaultValueType.Channel>[]
+}
+type SelectTranslate = {
+  string: StringSelectTranslate
+  user: UserSelectTranslate
+  role: RoleSelectTranslate
+  channel: ChannelSelectTranslate
 }
 
-type MenuType = keyof Types
-
-/**
- * #### Constructor
- * * ` data `: The buttonBuilder.customId(name) not is required.
- */
-class BuildMenu<T extends MenuType = 'string'> {
+class BuildMenu<T extends keyof SelectTranslate> {
   type = 'menus' as const
-  name: MenuNames
+  customId: string
   ephemeral: boolean
+  maxValues?: number
+  minValues?: number
   permissionsBot: PermissionResolvable[]
   permissionsUser: PermissionResolvable[]
+  typeData: 'string' | 'user' | 'role' | 'channel'
   cooldown: number
-  data: Types[T]['builder']
+  translates: Partial<Record<Locale, SelectTranslate[T]>> & { default: SelectTranslate[T] }
   scope: Scope
   resolve: Resolve
-  execute: (e: Types[T]['interaction']) => Promise<MessageOptions | undefined>
-  constructor(props: Partial<BuildMenu<T>> & Pick<BuildMenu<T>, 'name' | 'execute' | 'data'>) {
-    this.name = props.name
+  execute: (e: MenuType) => Promise<MessageOptions | undefined>
+  constructor(
+    props: Partial<BuildMenu<T>> &
+      Pick<
+        BuildMenu<T>,
+        'execute' | 'customId' | 'translates' | 'resolve' | 'permissionsBot' | 'permissionsUser' | 'typeData'
+      >
+  ) {
+    this.customId = props.customId
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
-    this.resolve = props.resolve ?? 'defer'
+    this.resolve = props.resolve
+    this.typeData = props.typeData
     this.ephemeral = props.ephemeral ?? false
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
     this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
-    this.data = props.data.setCustomId(this.name)
+    this.translates = props.translates
     this.execute = props.execute
   }
 
+  get(locale: Locale) {
+    const { translates, customId, minValues, maxValues, typeData } = this
+    const menuData = translates[locale] || translates.default
+
+    if (typeData === 'string') {
+      return new StringSelectMenuBuilder({ customId, minValues, maxValues, ...menuData })
+    }
+    if (typeData === 'user') {
+      return new UserSelectMenuBuilder({ customId, minValues, maxValues, ...(menuData as UserSelectTranslate) })
+    }
+    if (typeData === 'role') {
+      return new RoleSelectMenuBuilder({ customId, minValues, maxValues, ...(menuData as RoleSelectTranslate) })
+    }
+    if (typeData === 'channel') {
+      return new ChannelSelectMenuBuilder({ customId, minValues, maxValues, ...(menuData as ChannelSelectTranslate) })
+    }
+  }
   static async runInteraction(i: AnySelectMenuInteraction) {
     const { customId, locale } = i
     const menu: Menu = globalThis.menus.get(customId)
@@ -100,7 +136,7 @@ class BuildMenu<T extends MenuType = 'string'> {
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
       cooldown: menu.cooldown,
-      name: menu.name,
+      name: menu.customId,
       type: 'menu',
       locale: i.locale
     })
