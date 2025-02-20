@@ -1,5 +1,5 @@
 import BuildMessages from '@/core/build/BuildMessages'
-import { ActionRowBuilder, type ButtonBuilder, Colors } from 'discord.js'
+import { Colors } from 'discord.js'
 
 export default new BuildMessages({
   default: {
@@ -10,7 +10,7 @@ export default new BuildMessages({
         color: Colors.DarkPurple
       }
     ],
-    components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons.get('startColors').data)]
+    components: [[{ type: 'button', customId: 'colorPointer' }]]
   },
   'es-ES': {
     embeds: [
@@ -20,6 +20,6 @@ export default new BuildMessages({
         color: Colors.DarkPurple
       }
     ],
-    components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons.get('startColors').data)]
+    components: [[{ type: 'button', customId: 'colorPointer' }]]
   }
 })

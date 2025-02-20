@@ -1,16 +1,22 @@
-import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import db from '@/database'
-import messages, { messagesColors } from '@/messages'
-import { ButtonBuilder, ButtonStyle, type RolePosition } from 'discord.js'
+import { ButtonStyle, type RolePosition } from 'discord.js'
+import msgCreatePointerColor from '../msg.createPointerColor'
+import msgOrderColors from './msg.orderColors'
 
 export default new BuildButton({
-  name: ButtonNames.serverColorOrder,
+  customId: 'orderColors',
   scope: 'private',
-  data: new ButtonBuilder({
-    label: 'Reordenar colores',
-    style: ButtonStyle.Secondary
-  }),
+  translates: {
+    default: {
+      name: 'Order Colors',
+      style: ButtonStyle.Primary
+    },
+    'es-ES': {
+      name: 'Ordenar colores',
+      style: ButtonStyle.Primary
+    }
+  },
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
   ephemeral: true,
@@ -19,10 +25,10 @@ export default new BuildButton({
     const { guildId, locale } = i
     const roles = i.guild?.roles.cache
 
-    if (!guildId) return messages.guildIdNoFound(locale)
+    if (!guildId) throw new Error('Guild ID not found')
     const { colors, pointer_id } = await db.colors.read(guildId)
     const colorPointerId = roles?.get(pointer_id ?? '0')?.id
-    if (!colorPointerId) return messagesColors.initColorPointer(locale)
+    if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
 
     const colorPointer = roles.get(colorPointerId)!
     const colorsForOrder: RolePosition[] = []
@@ -32,6 +38,6 @@ export default new BuildButton({
     }
     await i.guild?.roles.setPositions(colorsForOrder)
 
-    return messagesColors.orderColors(locale)
+    return msgOrderColors.getMessage(locale, {})
   }
 })

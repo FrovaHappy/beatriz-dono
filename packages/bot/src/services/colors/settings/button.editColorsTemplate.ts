@@ -1,13 +1,21 @@
-import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import type { Modal } from '@/core/build/BuildModal'
 import messages from '@/messages'
-import { ButtonBuilder, ButtonStyle } from 'discord.js'
+import { ButtonStyle } from 'discord.js'
 
 export default new BuildButton({
-  name: ButtonNames.editColorDefault,
+  customId: 'editColorsTemplate',
   scope: 'private',
-  data: new ButtonBuilder().setLabel('Edit colors default').setStyle(ButtonStyle.Secondary),
+  translates: {
+    default: {
+      name: 'Edit Template',
+      style: ButtonStyle.Primary
+    },
+    'es-ES': {
+      name: 'Editar Plantilla',
+      style: ButtonStyle.Primary
+    }
+  },
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
   resolve: 'showModal',

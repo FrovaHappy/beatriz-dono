@@ -4,15 +4,24 @@ import BuildButton from '@/core/build/BuildButtons'
 import { ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default new BuildButton({
-  name: ButtonNames.linkDiscord,
+  customId: 'linkDiscord',
   scope: 'public',
   permissionsBot: [],
-  isLink: true,
-  data: new ButtonBuilder()
-    .setURL(config.setting.linkDiscord)
-    .setLabel('Join to Discord')
-    .setStyle(ButtonStyle.Link)
-    .setEmoji(getEmoji('kannaAwave')),
+  permissionsUser: [],
+  resolve: 'update',
+  url: config.setting.linkDiscord,
+  translates: {
+    default: {
+      name: 'Join Discord',
+      style: ButtonStyle.Link,
+      emoji: getEmoji('kannaAwave')
+    },
+    'es-ES': {
+      name: 'Unite a Discord',
+      style: ButtonStyle.Link,
+      emoji: getEmoji('kannaAwave')
+    }
+  },
   cooldown: 0,
   execute: async i => {
     return undefined

@@ -1,20 +1,30 @@
 import { getEmoji } from '@/const/emojis'
-import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
 import { getDominanteColor, rgbToHex } from '@libs/colors'
-import { ButtonBuilder, ButtonStyle } from 'discord.js'
-import messages, { messagesColors } from '@/messages'
+import { ButtonStyle } from 'discord.js'
 import { changeColor } from './shared/changeColor'
 import db from '@db'
 import msgCreatePointerColor from './msg.createPointerColor'
 import msgColorCastNotFound from './msg.ColorCastNotFound'
 
 export default new BuildButton({
-  name: ButtonNames.colorCast,
+  customId: 'colorCast',
   permissionsBot: ['ManageRoles'],
+  permissionsUser: ['ManageRoles'],
   scope: 'public',
   resolve: 'update',
-  data: new ButtonBuilder().setLabel('Color Cast').setStyle(ButtonStyle.Secondary).setEmoji(getEmoji('colorWand')),
+  translates: {
+    default: {
+      name: 'Color Cast',
+      style: ButtonStyle.Secondary,
+      emoji: getEmoji('colorWand')
+    },
+    'es-ES': {
+      name: 'Color Cast',
+      style: ButtonStyle.Secondary,
+      emoji: getEmoji('colorWand')
+    }
+  },
   async execute(i) {
     const { guildId, locale } = i
     if (!guildId) throw new Error('Guild ID not found')
