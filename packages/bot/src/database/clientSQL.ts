@@ -1,13 +1,20 @@
 import type { Client, ResultSet as Res } from '@libsql/client'
+import { readFile } from 'node:fs/promises'
 const { createClient } = require('@libsql/client')
 
+export async function loadTables() {
+  const queryTables = await readFile('./src/database/tables.sql', 'utf-8')
+  await execute({ queries: queryTables }).catch(error => {
+    console.error(error)
+    process.exit(1)
+  })
+}
+
 export interface ResultSet extends Res {}
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function formatResponse<T = Record<string, any>>(response: ResultSet): Array<T> {
   const { rows, columns } = response
   const data: Array<T> = []
   for (const row of rows) {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     const rowData: Record<string, any> = {}
     for (let i = 0; i < columns.length; i++) {
       rowData[columns[i]] = row[i]
@@ -31,7 +38,6 @@ interface Execute {
 }
 
 interface ErrorQuery {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   error: any
   args: Record<string, Value>
   query: string
@@ -50,7 +56,6 @@ async function execute({ queries, args = {} }: Execute) {
       })
     }
     return result as ResultSet
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (error: any) {
     if (error?.fail) throw error
 
