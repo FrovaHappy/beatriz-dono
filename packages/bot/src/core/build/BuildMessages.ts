@@ -22,11 +22,20 @@ class BuildMessages {
 
   getMessage(locale: Locale, parse: Partial<Rules>): MessageOptions {
     const message = this.#messages[locale] ?? this.#messages.default
-    const format = (prop: any) => {
-      if (typeof prop === 'undefined') return
-      let text = JSON.stringify(prop)
-      text = formatterText(text, parse)
-      return JSON.parse(text)
+    const format = (prop: any): any => {
+      if (typeof prop === 'string') return formatterText(prop, parse)
+      if (typeof prop === 'number') return prop
+      if (typeof prop === 'boolean') return prop
+      if (prop === null || prop === undefined) return prop
+      if (Array.isArray(prop)) return prop.map(format(prop))
+      if (typeof prop === 'object') {
+        const keys = Object.keys(prop)
+        if (keys.length === 0) return prop
+        return keys.reduce((acc, key) => {
+          acc[key] = format(prop[key])
+          return acc
+        }, {} as any)
+      }
     }
     const buildComponents = () => {
       if (!message.components) return []
