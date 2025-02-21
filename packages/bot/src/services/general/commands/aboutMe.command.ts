@@ -1,31 +1,19 @@
 import { CommandNames } from '@/const/interactionsNames'
 import { messagesAboutMe } from '@/messages'
-import { reduceTupleToObj, type TupleKeyObject } from '@/shared/general'
 import BuildCommand from '@core/build/BuildCommand'
-import { Locale, SlashCommandBuilder } from 'discord.js'
-
-const i18nsArray: TupleKeyObject[] = [
-  [
-    Locale.EnglishUS,
-    {
-      name: 'about-me',
-      description: 'Get information about me.'
-    }
-  ],
-  [
-    Locale.SpanishES,
-    {
-      name: 'sobre-mi',
-      description: 'Obtén información sobre mí.'
-    }
-  ]
-]
+import { SlashCommandBuilder } from 'discord.js'
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()
-    .setNameLocalizations(reduceTupleToObj(i18nsArray, 'name'))
-    .setDescription(i18nsArray[0][1].description)
-    .setDescriptionLocalizations(reduceTupleToObj(i18nsArray, 'description')),
+    .setNameLocalizations({
+      'es-ES': 'sobre-mi',
+      'en-US': 'about-me'
+    })
+    .setDescription('Get information about me.')
+    .setDescriptionLocalizations({
+      'es-ES': 'Obtén información sobre mí.',
+      'en-US': 'Get information about me.'
+    }),
   name: CommandNames.aboutMe,
   scope: 'public',
   ephemeral: true,
