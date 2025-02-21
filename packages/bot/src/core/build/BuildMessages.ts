@@ -3,9 +3,7 @@ import formatterText, { type Rules } from '@libs/formatterText'
 import { ActionRowBuilder, type ButtonBuilder, type Locale } from 'discord.js'
 
 type componentInfo = { type: 'button' | 'menu' | 'modal'; customId: string }
-interface MsgCustom extends Omit<MessageOptions, 'components'> {
-  components?: componentInfo[][]
-}
+interface MsgCustom extends Omit<MessageOptions, 'components'> {}
 
 type Messages = Partial<Record<Locale, MsgCustom>> & { default: MsgCustom }
 
@@ -16,8 +14,10 @@ type Messages = Partial<Record<Locale, MsgCustom>> & { default: MsgCustom }
  */
 class BuildMessages {
   #messages: Messages
-  constructor(messages: Messages) {
-    this.#messages = messages
+  #components: componentInfo[][]
+  constructor(props: { translates: Messages; components?: componentInfo[][] }) {
+    this.#messages = props.translates
+    this.#components = props.components ?? []
   }
 
   getMessage(locale: Locale, parse: Partial<Rules>): MessageOptions {
@@ -38,8 +38,7 @@ class BuildMessages {
       }
     }
     const buildComponents = () => {
-      if (!message.components) return []
-      return message.components.map(component => {
+      return this.#components.map(component => {
         return new ActionRowBuilder<ButtonBuilder>().addComponents(
           ...component.map(c => {
             const { type, customId } = c
