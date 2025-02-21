@@ -10,7 +10,7 @@ export interface ColorSetting {
   guild_id: string
   is_active: boolean
   pointer_id: string | null
-  templete: ColorsTemplete
+  templete: ColorsTemplete | null
 }
 
 const queryColorsSettings = async (guild_id: string) => {

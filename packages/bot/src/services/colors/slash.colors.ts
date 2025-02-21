@@ -1,10 +1,23 @@
 import { CommandNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
-import { type GuildMemberRoleManager, SlashCommandBuilder } from 'discord.js'
+import { ActionRowBuilder, type Locale, SlashCommandBuilder, type StringSelectMenuBuilder } from 'discord.js'
 import db from '@db'
 import messages, { messagesColors } from '@/messages'
 import msgCreatePointerColor from './msg.createPointerColor'
 import { changeColor } from './shared/changeColor'
+import msgShowMenu from './msg.showMenu'
+import { parseToLatest, type ColorsTemplete } from '@libs/schemas/colorsTemplete'
+
+const customColorsOptions = (locale: Locale, templete: ColorsTemplete | null) => {
+  console.log(menus)
+  const menu = menus.get('selectColors').get(locale) as StringSelectMenuBuilder
+  if (!templete) {
+    return menu
+  }
+  const latest = parseToLatest(templete)
+  menu.setOptions(latest.colors.map(c => ({ label: c.label, value: c.hex_color, emoji: c.emoji })))
+  return menu
+}
 
 export default new BuildCommand({
   name: CommandNames.colors,
@@ -42,6 +55,11 @@ export default new BuildCommand({
     if (colorCustom) return changeColor({ colorCustom, colorPointerId, colors, guildId, i, locale })
 
     const colorCurrent = colors.find(c => roles?.get(c.role_id))
-    return messagesColors.menuColors({ locale, templete, colorCurrent })
+    const menu = msgShowMenu.getMessage(locale, { '{{slot0}}': colorCurrent?.hex_color ?? 'none' })
+    menu.components = [
+      new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(customColorsOptions(locale, templete)),
+      ...(menu.components ?? [])
+    ]
+    return menu
   }
 })
