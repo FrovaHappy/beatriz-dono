@@ -47,7 +47,7 @@ export const validate = (
   }
 }
 
-export const parseToLatest = (data: ColorsTemplete): ColorsTempleteLatest | null => {
+export const parseToLatest = (data: ColorsTemplete): ColorsTempleteLatest => {
   if (data.version === 'v1') {
     return {
       version: 'v2',
@@ -58,5 +58,5 @@ export const parseToLatest = (data: ColorsTemplete): ColorsTempleteLatest | null
     }
   }
   if (data.version === 'v2') return data
-  return null
+  throw new Error('Colors Templete version not found')
 }
