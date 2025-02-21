@@ -32,7 +32,7 @@ export default async function getServices() {
     })()
     if (service instanceof BuildButton) globalThis.buttons.set(service.customId, service)
     if (service instanceof BuildCommand) globalThis.commands.set(service.name, service)
-    if (service instanceof BuildMenu) globalThis.menus.set(service.name, service)
+    if (service instanceof BuildMenu) globalThis.menus.set(service.customId, service)
     if (service instanceof BuildModal) globalThis.modals.set(service.name, service)
   }
   const logs = [
