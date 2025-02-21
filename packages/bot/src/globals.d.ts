@@ -5,12 +5,6 @@ import type { Config } from './config'
 import type { Button } from './shared/BuildButtons'
 import type { Command } from './shared/BuildCommand'
 import type { JsonResponse } from './api/types'
-
-declare module 'discord.js' {
-  interface Collection<K, V> extends Map<K, V> {
-    get(key: K): V | undefined
-  }
-}
 declare global {
   var commands: Collection<CommandNames | string, Command>
   var buttons: Collection<ButtonNames | string, Button>
