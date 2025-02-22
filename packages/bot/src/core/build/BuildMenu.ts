@@ -6,7 +6,6 @@ import {
   type ChannelSelectMenuInteraction,
   type ComponentEmojiResolvable,
   type Locale,
-  type MentionableSelectMenuInteraction,
   type PermissionResolvable,
   RoleSelectMenuBuilder,
   type RoleSelectMenuInteraction,
