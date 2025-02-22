@@ -9,8 +9,7 @@ import msgShowMenu from './msg.showMenu'
 import { parseToLatest, type ColorsTemplete } from '@libs/schemas/colorsTemplete'
 
 const customColorsOptions = (locale: Locale, templete: ColorsTemplete | null) => {
-  console.log(menus)
-  const menu = menus.get('selectColors').get(locale) as StringSelectMenuBuilder
+  const menu = globalThis.menus<'string'>('selectColors').get(locale)
   if (!templete) {
     return menu
   }

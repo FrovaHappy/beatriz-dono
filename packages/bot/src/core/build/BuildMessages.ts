@@ -43,7 +43,7 @@ class BuildMessages {
           ...component.map(c => {
             const { type, customId } = c
             if (type === 'button') return buttons.get(customId).getButton(locale)
-            if (type === 'menu') return menus.get(customId).get(locale)
+            if (type === 'menu') return globalThis.menus(customId).get(locale)
             // if (type === 'modal') return modals.get(customId).getModal(locale)
           })
         )

@@ -24,13 +24,6 @@ import requiresBotPermissions from './shared/requiresBotPermissions'
 import messages from '@/messages'
 import requiresUserPermissions from './shared/requiresUserPermissions'
 
-type MenuType =
-  | StringSelectMenuInteraction
-  | UserSelectMenuInteraction
-  | RoleSelectMenuInteraction
-  | MentionableSelectMenuInteraction
-  | ChannelSelectMenuInteraction
-
 type StringSelectTranslate = {
   placeholder: string
   options: {
@@ -52,14 +45,30 @@ type ChannelSelectTranslate = {
   placeholder: string
   defaultValues?: APISelectMenuDefaultValue<SelectMenuDefaultValueType.Channel>[]
 }
-type SelectTranslate = {
-  string: StringSelectTranslate
-  user: UserSelectTranslate
-  role: RoleSelectTranslate
-  channel: ChannelSelectTranslate
+export type SelectMenu = {
+  string: {
+    translate: StringSelectTranslate
+    interaction: StringSelectMenuInteraction
+    builder: StringSelectMenuBuilder
+  }
+  user: {
+    translate: UserSelectTranslate
+    interaction: UserSelectMenuInteraction
+    builder: UserSelectMenuBuilder
+  }
+  role: {
+    translate: RoleSelectTranslate
+    interaction: RoleSelectMenuInteraction
+    builder: RoleSelectMenuBuilder
+  }
+  channel: {
+    translate: ChannelSelectTranslate
+    interaction: ChannelSelectMenuInteraction
+    builder: ChannelSelectMenuBuilder
+  }
 }
 
-class BuildMenu<T extends keyof SelectTranslate> {
+class BuildMenu<T extends keyof SelectMenu = 'string'> {
   type = 'menus' as const
   customId: string
   ephemeral: boolean
@@ -69,10 +78,10 @@ class BuildMenu<T extends keyof SelectTranslate> {
   permissionsUser: PermissionResolvable[]
   typeData: 'string' | 'user' | 'role' | 'channel'
   cooldown: number
-  translates: Partial<Record<Locale, SelectTranslate[T]>> & { default: SelectTranslate[T] }
+  translates: Partial<Record<Locale, SelectMenu[T]['translate']>> & { default: SelectMenu[T]['translate'] }
   scope: Scope
   resolve: Resolve
-  execute: (e: MenuType) => Promise<MessageOptions | undefined>
+  execute: (e: SelectMenu[T]['interaction']) => Promise<MessageOptions | undefined>
   constructor(
     props: Partial<BuildMenu<T>> &
       Pick<
@@ -92,7 +101,7 @@ class BuildMenu<T extends keyof SelectTranslate> {
     this.execute = props.execute
   }
 
-  get(locale: Locale) {
+  get(locale: Locale): SelectMenu[T]['builder'] {
     const { translates, customId, minValues, maxValues, typeData } = this
     const menuData = translates[locale] || translates.default
 
@@ -108,13 +117,15 @@ class BuildMenu<T extends keyof SelectTranslate> {
     if (typeData === 'channel') {
       return new ChannelSelectMenuBuilder({ customId, minValues, maxValues, ...(menuData as ChannelSelectTranslate) })
     }
+    throw new Error(`typeData ${typeData} not found`)
   }
   static async runInteraction(i: AnySelectMenuInteraction) {
     const { customId, locale } = i
-    const menu: Menu = globalThis.menus.get(customId)
+    const menu = globalThis.menus(customId, true)
     const bot = i.guild?.members.me ?? undefined
     const user = i.guild?.members.cache.get(i.user.id)
-    if (!menu) return await i.reply({ ...messages.serviceNotFound(locale, `menu:${customId}`), ephemeral: true })
+    if (menu.customId === '')
+      return await i.reply({ ...messages.serviceNotFound(locale, `menu:${customId}`), ephemeral: true })
     if (!bot || !user) {
       return await i.reply({
         ...messages.errorInService(locale, `menu:${customId}-guildMemberNotFound`),
@@ -150,7 +161,7 @@ class BuildMenu<T extends keyof SelectTranslate> {
     }
     const getMessage = async () => {
       try {
-        return await menu.execute(i)
+        return await menu.execute(i as any)
       } catch (error) {
         console.error(error)
         return messages.errorInService(i.locale, `menu:${i.customId}-inExecute`)
