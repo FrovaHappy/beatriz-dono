@@ -10,14 +10,13 @@ export default new BuildButton({
   permissionsUser: ['ManageRoles'],
   resolve: 'update',
   cooldown: 15,
+  style: ButtonStyle.Primary,
   translates: {
     default: {
-      name: 'Start',
-      style: ButtonStyle.Primary
+      name: 'Start'
     },
     'es-ES': {
-      name: 'Iniciar',
-      style: ButtonStyle.Primary
+      name: 'Iniciar'
     }
   },
   execute: async i => {

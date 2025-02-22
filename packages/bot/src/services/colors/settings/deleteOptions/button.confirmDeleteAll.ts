@@ -12,14 +12,13 @@ export default new BuildButton({
   permissionsUser: ['ManageRoles'],
   resolve: 'update',
   cooldown: 15,
+  style: ButtonStyle.Danger,
   translates: {
     default: {
-      name: 'Delete All',
-      style: ButtonStyle.Danger
+      name: 'Delete All'
     },
     'es-ES': {
-      name: 'Eliminar todo',
-      style: ButtonStyle.Danger
+      name: 'Eliminar todo'
     }
   },
   execute: async i => {

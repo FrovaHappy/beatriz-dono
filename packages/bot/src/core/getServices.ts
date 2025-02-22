@@ -43,10 +43,10 @@ function getButton(key: string, safe = false): BuildButton {
       scope: 'owner',
       permissionsBot: [],
       permissionsUser: [],
+      style: ButtonStyle.Secondary,
       translates: {
         default: {
-          name: 'Button Not Found',
-          style: ButtonStyle.Secondary
+          name: 'Button Not Found'
         }
       },
       resolve: 'defer',

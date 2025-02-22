@@ -26,7 +26,6 @@ import requiresUserPermissions from './shared/requiresUserPermissions'
 
 interface ButtonData {
   name: string
-  style: ButtonStyle
   emoji?: ComponentEmojiResolvable
 }
 class BuildButton {
@@ -35,6 +34,7 @@ class BuildButton {
   ephemeral: boolean
   permissionsBot: PermissionResolvable[]
   permissionsUser: PermissionResolvable[]
+  style: ButtonStyle
   url: string | undefined
   cooldown: number
   customId: string
@@ -45,13 +45,14 @@ class BuildButton {
     props: Partial<BuildButton> &
       Pick<
         BuildButton,
-        'execute' | 'scope' | 'customId' | 'translates' | 'permissionsBot' | 'permissionsUser' | 'resolve'
+        'execute' | 'scope' | 'customId' | 'translates' | 'permissionsBot' | 'permissionsUser' | 'resolve' | 'style'
       >
   ) {
     this.url = props.url
     this.customId = props.customId
     this.scope = props.scope
     this.resolve = props.resolve ?? 'defer'
+    this.style = props.style
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
@@ -63,7 +64,7 @@ class BuildButton {
   get = (locale: Locale) => {
     const { translates, customId, url } = this
     const buttonData = translates[locale] ?? translates.default
-    const button = new ButtonBuilder().setCustomId(customId).setLabel(buttonData.name).setStyle(buttonData.style)
+    const button = new ButtonBuilder().setCustomId(customId).setLabel(buttonData.name).setStyle(this.style)
     if (buttonData.emoji) button.setEmoji(buttonData.emoji)
     if (url) button.setURL(url)
     return button

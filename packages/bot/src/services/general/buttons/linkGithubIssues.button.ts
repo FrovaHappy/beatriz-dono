@@ -9,15 +9,14 @@ export default new BuildButton({
   permissionsUser: [],
   resolve: 'update',
   url: `${config.setting.linkGithub}/issues`,
+  style: ButtonStyle.Link,
   translates: {
     default: {
       name: 'Report an issue',
-      style: ButtonStyle.Link,
       emoji: getEmoji('githubIssue')
     },
     'es-ES': {
       name: 'Reportar un problema',
-      style: ButtonStyle.Link,
       emoji: getEmoji('githubIssue')
     }
   },

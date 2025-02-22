@@ -6,14 +6,13 @@ import { ButtonStyle } from 'discord.js'
 export default new BuildButton({
   customId: 'editColorsTemplate',
   scope: 'private',
+  style: ButtonStyle.Primary,
   translates: {
     default: {
-      name: 'Edit Template',
-      style: ButtonStyle.Primary
+      name: 'Edit Template'
     },
     'es-ES': {
-      name: 'Editar Plantilla',
-      style: ButtonStyle.Primary
+      name: 'Editar Plantilla'
     }
   },
   permissionsBot: ['ManageRoles'],

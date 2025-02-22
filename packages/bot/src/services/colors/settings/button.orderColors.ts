@@ -7,14 +7,13 @@ import msgOrderColors from './msg.orderColors'
 export default new BuildButton({
   customId: 'orderColors',
   scope: 'private',
+  style: ButtonStyle.Primary,
   translates: {
     default: {
-      name: 'Order Colors',
-      style: ButtonStyle.Primary
+      name: 'Order Colors'
     },
     'es-ES': {
-      name: 'Ordenar colores',
-      style: ButtonStyle.Primary
+      name: 'Ordenar colores'
     }
   },
   permissionsBot: ['ManageRoles'],

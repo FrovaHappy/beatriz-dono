@@ -10,15 +10,14 @@ export default new BuildButton({
   permissionsUser: [],
   resolve: 'update',
   url: config.setting.linkDiscord,
+  style: ButtonStyle.Link,
   translates: {
     default: {
       name: 'Join Discord',
-      style: ButtonStyle.Link,
       emoji: getEmoji('kannaAwave')
     },
     'es-ES': {
       name: 'Unite a Discord',
-      style: ButtonStyle.Link,
       emoji: getEmoji('kannaAwave')
     }
   },

@@ -13,15 +13,14 @@ export default new BuildButton({
   permissionsUser: ['ManageRoles'],
   scope: 'public',
   resolve: 'update',
+  style: ButtonStyle.Secondary,
   translates: {
     default: {
       name: 'Color Cast',
-      style: ButtonStyle.Secondary,
       emoji: getEmoji('colorWand')
     },
     'es-ES': {
       name: 'Color Cast',
-      style: ButtonStyle.Secondary,
       emoji: getEmoji('colorWand')
     }
   },

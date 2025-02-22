@@ -9,15 +9,14 @@ export default new BuildButton({
   url: config.setting.linkKofi,
   permissionsUser: [],
   resolve: 'update',
+  style: ButtonStyle.Link,
   translates: {
     default: {
       name: 'Support me',
-      style: ButtonStyle.Link,
       emoji: getEmoji('kofi')
     },
     'es-ES': {
       name: 'Apóyenme',
-      style: ButtonStyle.Link,
       emoji: getEmoji('kofi')
     }
   },
