@@ -60,7 +60,7 @@ class BuildButton {
     this.execute = props.execute
   }
 
-  getButton = (locale: Locale) => {
+  get = (locale: Locale) => {
     const { translates, customId, url } = this
     const buttonData = translates[locale] ?? translates.default
     const button = new ButtonBuilder().setCustomId(customId).setLabel(buttonData.name).setStyle(buttonData.style)
@@ -71,7 +71,7 @@ class BuildButton {
 
   static async runInteraction(i: ButtonInteraction) {
     const { customId, locale } = i
-    const button: BuildButton = buttons.get(customId)
+    const button: BuildButton = buttons(customId)
     const bot = i.guild?.members.me
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user)

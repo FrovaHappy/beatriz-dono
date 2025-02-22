@@ -1,6 +1,6 @@
 import path from 'node:path'
 import readAllFiles from '@/shared/readAllFiles'
-import { Collection } from 'discord.js'
+import { ButtonStyle, Collection } from 'discord.js'
 import p from 'picocolors'
 import BuildButton from './build/BuildButtons'
 import BuildCommand from './build/BuildCommand'
@@ -35,9 +35,32 @@ function getMenus<T extends keyof SelectMenu = 'string'>(key: string, safe = fal
   return menu as any
 }
 
-export type GetMenu = typeof getMenus
+function getButton(key: string, safe = false): BuildButton {
+  const button = buttons.get(key)
+  if (!button && safe)
+    return new BuildButton({
+      customId: '',
+      scope: 'owner',
+      permissionsBot: [],
+      permissionsUser: [],
+      translates: {
+        default: {
+          name: 'Button Not Found',
+          style: ButtonStyle.Secondary
+        }
+      },
+      resolve: 'defer',
+      ephemeral: true,
+      execute: async e => undefined
+    })
+  if (!button) throw new Error(`Button ${key} not found`)
+  return button as any
+}
 
-globalThis.buttons = buttons
+export type GetMenu = typeof getMenus
+export type GetButton = typeof getButton
+
+globalThis.buttons = getButton
 globalThis.commands = commands
 globalThis.menus = getMenus
 globalThis.modals = modals
@@ -60,7 +83,11 @@ export default async function getServices() {
         return null
       }
     })()
-    if (service instanceof BuildButton) globalThis.buttons.set(service.customId, service)
+    if (service instanceof BuildButton) {
+      const existButton = !!buttons.get(service.customId)
+      if (existButton) throw new Error(`Button ${service.customId} already exists`)
+      buttons.set(service.customId, service)
+    }
     if (service instanceof BuildCommand) globalThis.commands.set(service.name, service)
     if (service instanceof BuildMenu) {
       const existMenu = !!menus.get(service.customId)
@@ -71,7 +98,7 @@ export default async function getServices() {
   }
   const logs = [
     `${p.green('[services]')} Done:`,
-    `  ∷ buttons found: ${p.bold(globalThis.buttons.size)}`,
+    `  ∷ buttons found: ${p.bold(buttons.size)}`,
     `  ∷ commands found: ${p.bold(globalThis.commands.size)}`,
     `  ∷ menus found: ${p.bold(menus.size)}`,
     `  ∷ modals found: ${p.bold(globalThis.modals.size)}`,

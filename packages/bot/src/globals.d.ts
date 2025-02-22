@@ -5,10 +5,10 @@ import type { Config } from './config'
 import type { Button } from './shared/BuildButtons'
 import type { Command } from './shared/BuildCommand'
 import type { JsonResponse } from './api/types'
-import type { GetMenu } from './core/getServices'
+import type { GetButton, GetMenu } from './core/getServices'
 declare global {
   var commands: Collection<CommandNames | string, Command>
-  var buttons: Collection<ButtonNames | string, Button>
+  var buttons: GetButton
   var menus: GetMenu
   var modals: Collection<ModalNames | string, Modal>
   var cooldowns: Collection<string, Collection<string, number>>

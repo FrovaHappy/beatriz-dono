@@ -1,6 +1,6 @@
 import type { MessageOptions } from '@/types/main'
 import formatterText, { type Rules } from '@libs/formatterText'
-import { ActionRowBuilder, type ButtonBuilder, type Locale } from 'discord.js'
+import { ActionRowBuilder, type Locale } from 'discord.js'
 
 type componentInfo = { type: 'button' | 'menu' | 'modal'; customId: string }
 interface MsgCustom extends Omit<MessageOptions, 'components'> {}
@@ -39,10 +39,10 @@ class BuildMessages {
     }
     const buildComponents = () => {
       return this.#components.map(component => {
-        return new ActionRowBuilder<ButtonBuilder>().addComponents(
+        return new ActionRowBuilder<any>().addComponents(
           ...component.map(c => {
             const { type, customId } = c
-            if (type === 'button') return buttons.get(customId).getButton(locale)
+            if (type === 'button') return buttons(customId).get(locale)
             if (type === 'menu') return globalThis.menus(customId).get(locale)
             // if (type === 'modal') return modals.get(customId).getModal(locale)
           })
