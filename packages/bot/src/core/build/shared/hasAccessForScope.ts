@@ -37,12 +37,3 @@ export function hasAccessForScope(scope: Scope, guildId: string): boolean {
   if (scope === 'private') return isPrivate || isOwner // validate if the user is owner
   return isOwner
 }
-
-export default function buildMessageErrorForScope(
-  locale: Locale,
-  scope: Scope,
-  guildId: string
-): MessageOptions | undefined {
-  if (hasAccessForScope(scope, guildId)) return
-  return messages.getMessage(locale, { '{{slot0}}': scope })
-}
