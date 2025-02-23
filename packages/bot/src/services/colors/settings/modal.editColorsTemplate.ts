@@ -1,9 +1,9 @@
-import { ModalNames } from '@/const/interactionsNames'
 import BuildModal from '@/core/build/BuildModal'
 import db from '@/database'
-import { ActionRowBuilder, ComponentType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
+import { ButtonStyle, TextInputStyle } from 'discord.js'
 import { parseToLatest, validate, type ColorsTempleteLatest } from '@libs/schemas/colorsTemplete'
-import messages, { messagesColors } from '@/messages'
+import { messagesColors } from '@/messages'
+import msgCreatePointerColor from '../msg.createPointerColor'
 
 const COLORS_PLACEHOLDER = JSON.stringify({
   version: 'v2',
@@ -13,30 +13,57 @@ const COLORS_PLACEHOLDER = JSON.stringify({
   ]
 } satisfies ColorsTempleteLatest)
 
-const textEdit = new TextInputBuilder({
-  label: 'Color',
-  placeholder: 'Color',
-  customId: 'input',
-  required: true,
-  value: COLORS_PLACEHOLDER,
-  style: TextInputStyle.Paragraph,
-  type: ComponentType.TextInput
-})
-const rows = new ActionRowBuilder<TextInputBuilder>().addComponents(textEdit)
-
 export default new BuildModal({
-  name: ModalNames.editColorDefault,
+  customId: 'editColorsTemplate',
   ephemeral: true,
   resolve: 'update',
-  data: new ModalBuilder({ title: 'Edit Color Default' }).addComponents(rows),
   permissionsBot: ['ManageRoles'],
+  permissionsUser: ['ManageRoles'],
+  translates: {
+    title: {
+      default: 'Edit Template',
+      'es-ES': 'Editar Plantilla'
+    },
+    components: [
+      {
+        customId: 'input',
+        required: true,
+        value: COLORS_PLACEHOLDER,
+        style: TextInputStyle.Paragraph,
+        translates: {
+          default: {
+            label: 'Color',
+            placeholder: 'Color'
+          },
+          'es-ES': {
+            label: 'Color',
+            placeholder: 'Color'
+          }
+        }
+      }
+    ]
+  },
+  scope: 'private',
+  dataButton: {
+    style: ButtonStyle.Primary,
+    translates: {
+      default: {
+        name: 'Edit Template'
+      },
+      'es-ES': {
+        name: 'Editar Plantilla'
+      }
+    }
+  },
+  cooldown: 15,
+
   async execute(i) {
     const { guildId, locale } = i
-    if (!guildId) return messages.guildIdNoFound(locale)
+    if (!guildId) throw new Error('Guild ID not found')
     const roles = i.guild?.roles.cache
     const { pointer_id } = await db.colors.read(guildId)
     const colorPointerId = pointer_id ?? roles?.first()?.id
-    if (!colorPointerId) return messagesColors.initColorPointer(locale)
+    if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
 
     // validate JSON color
     const colorsInput = i.fields.getTextInputValue('input')

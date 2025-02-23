@@ -1,6 +1,14 @@
-import type { ModalNames } from '@/const/interactionsNames'
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
-import type { ModalBuilder, ModalSubmitInteraction, PermissionResolvable } from 'discord.js'
+import {
+  ActionRowBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  type ButtonStyle,
+  type Locale,
+  type ModalSubmitInteraction,
+  type PermissionResolvable,
+  type TextInputStyle
+} from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import buildMessageErrorForScope from './shared/hasAccessForScope'
@@ -8,38 +16,97 @@ import isCooldownEnable from './shared/isCooldownEnable'
 import requiresBotPermissions from './shared/requiresBotPermissions'
 import messages from '@/messages'
 import requiresUserPermissions from './shared/requiresUserPermissions'
+import BuildButton, { type Button } from './BuildButtons'
+interface TextInputTranslate {
+  label: string
+  placeholder: string
+}
+interface TextInputComponent {
+  customId: string
+  required?: boolean
+  value?: string
+  style: TextInputStyle
+  translates: Partial<Record<Locale, TextInputTranslate>> & { default: TextInputTranslate }
+}
 
-/**
- * #### Constructor
- * * ` data `: The modalBuilder.customId(name) not is required.
- * * ` update `: If is true, the message where the event was triggered will be updated, otherwise it will send a new message.
- */
+type ModalData = {
+  title: Partial<Record<Locale, string>> & { default: string }
+  components?: TextInputComponent[]
+}
+
+interface ModalConstructor {
+  cooldown?: BuildModal['cooldown']
+  customId: BuildModal['customId']
+  scope?: BuildModal['scope']
+  ephemeral: BuildModal['ephemeral']
+  resolve: BuildModal['resolve']
+  permissionsBot: BuildModal['permissionsBot']
+  permissionsUser: BuildModal['permissionsUser']
+  execute: BuildModal['execute']
+  translates: ModalData
+  dataButton: { style: ButtonStyle; translates: Button['translates'] }
+}
 class BuildModal {
-  name: ModalNames
+  customId: string
+  #translates: ModalData
   scope: Scope
+  button: Button
   ephemeral: boolean
   resolve: Resolve
   permissionsBot: PermissionResolvable[]
   permissionsUser: PermissionResolvable[]
   cooldown: number
-  data: ModalBuilder
+
   execute: (e: ModalSubmitInteraction) => Promise<MessageOptions>
 
-  constructor(props: Partial<BuildModal> & Pick<BuildModal, 'name' | 'execute' | 'data'>) {
-    this.name = props.name
+  constructor(props: ModalConstructor) {
+    this.customId = props.customId
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.ephemeral = props.ephemeral ?? false
+    this.#translates = props.translates
     this.resolve = props.resolve ?? 'defer'
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
     this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
-    this.data = props.data.setCustomId(this.name)
     this.execute = props.execute
+    this.button = new BuildButton({
+      customId: `modal-${this.customId}`,
+      scope: this.scope,
+      permissionsBot: this.permissionsBot,
+      permissionsUser: this.permissionsUser,
+      resolve: 'showModal',
+      style: props.dataButton.style,
+      translates: props.dataButton.translates,
+      execute: async i => {
+        const { guildId, locale } = i
+        if (!guildId) throw new Error('Guild ID not found')
+        const modal = globalThis.modals(i.customId)
+        if (!modal) throw new Error('Modal not found')
+        await i.showModal(modal.get(locale))
+        return undefined
+      }
+    })
   }
-
+  get(locale: Locale) {
+    const titleModal = this.#translates.title[locale] ?? this.#translates.title.default
+    const componentsModal = this.#translates.components?.map(component => {
+      const { label, placeholder } = component.translates[locale] ?? component.translates.default
+      return new TextInputBuilder({
+        label,
+        placeholder,
+        customId: component.customId,
+        required: component.required,
+        value: component.value,
+        style: component.style
+      })
+    })
+    return new ModalBuilder({ title: titleModal, customId: this.customId }).addComponents(
+      new ActionRowBuilder<TextInputBuilder>().setComponents(componentsModal ?? [])
+    )
+  }
   static async runInteraction(i: ModalSubmitInteraction) {
     const { customId, locale } = i
-    const modal: Modal = globalThis.modals.get(customId)
+    const modal: Modal = globalThis.modals(customId)
     const bot = i.guild?.members.me ?? undefined
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user) {
@@ -65,7 +132,7 @@ class BuildModal {
     const messageCooldown = isCooldownEnable({
       id: i.user.id,
       cooldown: modal.cooldown,
-      name: modal.name,
+      name: modal.customId,
       type: 'modal',
       locale: i.locale
     })

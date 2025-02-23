@@ -57,13 +57,45 @@ function getButton(key: string, safe = false): BuildButton {
   return button as any
 }
 
+function getModal(key: string, safe = false): BuildModal {
+  const modal = modals.get(key)
+  if (!modal && safe)
+    return new BuildModal({
+      customId: '',
+      scope: 'owner',
+      permissionsBot: [],
+      permissionsUser: [],
+      translates: {
+        title: {
+          default: 'Modal Not Found'
+        },
+        components: []
+      },
+      cooldown: 0,
+      dataButton: {
+        style: ButtonStyle.Secondary,
+        translates: {
+          default: {
+            name: 'Modal Not Found'
+          }
+        }
+      },
+      resolve: 'defer',
+      ephemeral: true,
+      execute: async e => ({})
+    })
+  if (!modal) throw new Error(`Modal ${key} not found`)
+  return modal as any
+}
+
 export type GetMenu = typeof getMenus
 export type GetButton = typeof getButton
+export type GetModal = typeof getModal
 
 globalThis.buttons = getButton
 globalThis.commands = commands
 globalThis.menus = getMenus
-globalThis.modals = modals
+globalThis.modals = getModal
 
 const includes = ['.ts', '.js']
 const excludes = ['.test.ts', '.d.ts', '.test.js']
@@ -94,14 +126,19 @@ export default async function getServices() {
       if (existMenu) throw new Error(`Menu ${service.customId} already exists`)
       menus.set(service.customId, service)
     }
-    if (service instanceof BuildModal) globalThis.modals.set(service.name, service)
+    if (service instanceof BuildModal) {
+      const existModal = !!modals.get(service.customId)
+      if (existModal) throw new Error(`Modal ${service.customId} already exists`)
+      modals.set(service.customId, service)
+      buttons.set(`modal-${service.customId}`, service.button)
+    }
   }
   const logs = [
     `${p.green('[services]')} Done:`,
     `  ∷ buttons found: ${p.bold(buttons.size)}`,
     `  ∷ commands found: ${p.bold(globalThis.commands.size)}`,
     `  ∷ menus found: ${p.bold(menus.size)}`,
-    `  ∷ modals found: ${p.bold(globalThis.modals.size)}`,
+    `  ∷ modals found: ${p.bold(modals.size)}`,
     `  ∷ files scanned: ${p.bold(servicesPath.length)}\n`
   ]
   console.log(logs.join('\n'))
