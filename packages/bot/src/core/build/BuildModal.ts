@@ -80,7 +80,8 @@ class BuildModal {
       execute: async i => {
         const { guildId, locale } = i
         if (!guildId) throw new Error('Guild ID not found')
-        const modal = globalThis.modals(i.customId)
+        const customId = i.customId.replace('modal-', '')
+        const modal = globalThis.modals(customId)
         if (!modal) throw new Error('Modal not found')
         await i.showModal(modal.get(locale))
         return undefined
@@ -106,7 +107,7 @@ class BuildModal {
   }
   static async runInteraction(i: ModalSubmitInteraction) {
     const { customId, locale } = i
-    const modal: Modal = globalThis.modals(customId)
+    const modal = globalThis.modals(customId)
     const bot = i.guild?.members.me ?? undefined
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user) {

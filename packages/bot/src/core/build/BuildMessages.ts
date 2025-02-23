@@ -21,7 +21,7 @@ class BuildMessages {
   }
 
   getMessage(locale: Locale, parse: Partial<Rules>): MessageOptions {
-    const message = this.#messages[locale] ?? this.#messages.default
+    const message = this.#messages?.[locale] ?? this.#messages.default
     const format = (prop: any): any => {
       if (typeof prop === 'string') return formatterText(prop, parse)
       if (typeof prop === 'number') return prop
@@ -42,9 +42,9 @@ class BuildMessages {
         return new ActionRowBuilder<any>().addComponents(
           ...component.map(c => {
             const { type, customId } = c
-            if (type === 'button') return buttons(customId).get(locale)
+            if (type === 'button') return globalThis.buttons(customId).get(locale)
             if (type === 'menu') return globalThis.menus(customId).get(locale)
-            // if (type === 'modal') return modals.get(customId).getModal(locale)
+            if (type === 'modal') return globalThis.buttons(`modal-${customId}`).get(locale)
           })
         )
       })

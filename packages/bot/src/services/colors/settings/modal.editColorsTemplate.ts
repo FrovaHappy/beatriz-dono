@@ -43,7 +43,7 @@ export default new BuildModal({
       }
     ]
   },
-  scope: 'private',
+  scope: 'public',
   dataButton: {
     style: ButtonStyle.Primary,
     translates: {

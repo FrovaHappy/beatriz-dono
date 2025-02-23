@@ -3,6 +3,7 @@ import { messagesColors } from '@/messages'
 import db from '@/database'
 import msgColorPointerCreated from '../msg.ColorPointerCreated'
 import { ButtonStyle } from 'discord.js'
+import msgIndex from './msg.index'
 
 export default new BuildButton({
   customId: 'setting',
@@ -27,6 +28,6 @@ export default new BuildButton({
     const colorPointerId = roles?.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return msgColorPointerCreated.getMessage(locale, {})
 
-    return messagesColors.setting(locale)
+    return msgIndex.getMessage(locale, {})
   }
 })
