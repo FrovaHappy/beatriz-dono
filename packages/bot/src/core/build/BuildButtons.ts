@@ -120,6 +120,7 @@ class BuildButton {
     try {
       const controlDenied = controlAccess()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
+      if (button.resolve === 'showModal') return getMessage()
       if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
       if (button.resolve === 'update') await i.deferUpdate()
       const message = await getMessage()
