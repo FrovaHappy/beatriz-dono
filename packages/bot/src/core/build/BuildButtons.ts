@@ -9,20 +9,15 @@ import {
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
-import buildMessageErrorForScope from './shared/hasAccessForScope'
 import isCooldownEnable from './shared/isCooldownEnable'
-import requiresBotPermissions from './shared/requiresBotPermissions'
 import messages from '@/messages'
-import requiresUserPermissions from './shared/requiresUserPermissions'
-/**
- * #### Constructor
- * * ` data `: The buttonBuilder.customId(name) not is required.
- * * `permissions`: The permissions that the bot needs to run the command.
- * * `resolve`: The resolve of the interaction, can be `reply`, `defer` or `update`.
- *   - `reply`: Sends a new message reply, use this mode when you create the modal and do not return anything.
- *   - `defer`: Sends a new async message reply. (incompatible with Modals)
- *   - `update`: The interaction will be updated. (incompatible with Modals)
- */
+import { hasAccessForScope } from './shared/hasAccessForScope'
+import msgCaptureError from './msg.captureError'
+import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
+import parsePermissions from './shared/parsePermissions'
+import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
+import msgHasAccessToScope from './shared/msg.hasAccessToScope'
+import msgCooldownTimeout from './msg.cooldownTimeout'
 
 interface ButtonData {
   name: string
@@ -72,41 +67,50 @@ class BuildButton {
 
   static async runInteraction(i: ButtonInteraction) {
     const { customId, locale } = i
-    const button: BuildButton = buttons(customId)
+    const button: BuildButton = buttons(customId, true)
     const bot = i.guild?.members.me
     const user = i.guild?.members.cache.get(i.user.id)
-    if (!bot || !user)
+    const guildId = i.guildId
+    if (!bot || !user || button.customId === '' || !guildId) {
       return await i.reply({
-        ...messages.errorInService(locale, `button:${customId}-guildMemberNotFound`),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${customId}` }),
         ephemeral: true
       })
-    if (!button) return await i.reply(messages.serviceNotFound(locale, `button:${customId}`))
+    }
     if (button.url) return
-    const messageRequirePermissions = requiresBotPermissions({
-      permissions: button.permissionsBot,
-      bot,
-      type: 'button',
-      locale
-    })
-    const messageRequirePermissionsUser = requiresUserPermissions({
-      permissions: button.permissionsUser,
-      user,
-      type: 'button',
-      locale
-    })
-    const messageCooldown = isCooldownEnable({
-      id: i.user.id,
+
+    const hasCooldown = isCooldownEnable({
+      id: user.id,
       cooldown: button.cooldown,
       name: button.customId,
       type: 'button',
       locale
     })
-    const messageAccessForScope = buildMessageErrorForScope(i.locale, button.scope, i.guildId ?? '')
-    const controlAccess = () => {
-      if (messageRequirePermissionsUser) return messageRequirePermissionsUser
-      if (messageRequirePermissions) return messageRequirePermissions
-      if (messageCooldown) return messageCooldown
-      if (messageAccessForScope) return messageAccessForScope
+    const controlAccess = {
+      accessForScope: hasAccessForScope(button.scope, guildId),
+      accessForPermissionsBot: bot.permissions.has(button.permissionsBot),
+      accessForPermissionsUser: user.permissions.has(button.permissionsUser),
+      withoutCooldown: !hasCooldown
+    }
+    const messageControl = () => {
+      if (!controlAccess.accessForPermissionsUser) {
+        return msgPermissionsUserRequired.getMessage(locale, {
+          '{{slot0}}': parsePermissions(user.permissions.toArray(), button.permissionsUser)
+        })
+      }
+      if (!controlAccess.accessForPermissionsBot) {
+        return msgPermissionsBotRequired.getMessage(locale, {
+          '{{slot0}}': parsePermissions(bot.permissions.toArray(), button.permissionsBot)
+        })
+      }
+      if (!controlAccess.withoutCooldown) {
+        const timestamps = globalThis.cooldowns.get(button.customId)?.get(user.id) ?? 0 + button.cooldown
+        return msgCooldownTimeout.getMessage(locale, {
+          '{{slot0}}': button.cooldown.toString(),
+          '{{slot1}}': timestamps.toString()
+        })
+      }
+      if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': button.scope })
     }
     const getMessage = async () => {
       try {
@@ -118,7 +122,7 @@ class BuildButton {
     }
 
     try {
-      const controlDenied = controlAccess()
+      const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (button.resolve === 'showModal') return getMessage()
       if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
