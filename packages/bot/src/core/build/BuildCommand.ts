@@ -9,10 +9,14 @@ import type {
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 
 import type { CommandNames } from '@/const/interactionsNames'
-import buildMessageErrorForScope from './shared/hasAccessForScope'
-import isCooldownEnable from './shared/isCooldownEnable'
-import requiresBotPermissions from './shared/requiresBotPermissions'
+import { hasAccessForScope } from './shared/hasAccessForScope'
+import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
 import messages from '@/messages'
+import msgCaptureError from './msg.captureError'
+import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
+import parsePermissions from './shared/parsePermissions'
+import msgCooldownTimeout from './msg.cooldownTimeout'
+import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 /**
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional
@@ -39,38 +43,35 @@ class BuildCommand {
   }
 
   static async runInteraction(i: ChatInputCommandInteraction) {
-    const { commandName, locale } = i
+    const { commandName, locale, guildId } = i
     const command: Command = globalThis.commands.get(commandName)
-    const bot = i.guild?.members.me ?? undefined
-    if (!bot) {
+    const bot = i.guild?.members.me
+    const user = i.guild?.members.cache.get(i.user.id)
+    if (!bot || !user || !guildId || !command) {
       return await i.reply({
-        ...messages.errorInService(locale, `command:${commandName}-guildMemberNotFound`),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${commandName}` }),
         ephemeral: true
       })
     }
-
-    if (!command) return await i.reply(messages.serviceNotFound(locale, `command:${commandName}`))
-
-    // create message Access basic
-    const messageRequirePermissions = requiresBotPermissions({
-      permissions: command.permissionsBot,
-      bot,
-      type: 'command',
-      locale: i.locale
-    })
-    const messageCooldown = isCooldownEnable({
-      id: i.user.id,
-      cooldown: command.cooldown,
-      name: command.name,
-      type: 'command',
-      locale: i.locale
-    })
-    const messageAccessForScope = buildMessageErrorForScope(i.locale, command.scope, i.guildId ?? '')
-
-    const controlAccess = () => {
-      if (messageRequirePermissions) return messageRequirePermissions
-      if (messageCooldown) return messageCooldown
-      if (messageAccessForScope) return messageAccessForScope
+    const keyId = `command:${command.name}`
+    const controlAccess = {
+      accessForScope: hasAccessForScope(command.scope, guildId),
+      accessForPermissionsBot: bot.permissions.has(command.permissionsBot),
+      withoutCooldown: !isCooldownEnable({ id: user.id, cooldown: command.cooldown, keyId })
+    }
+    const messageControl = () => {
+      if (!controlAccess.accessForPermissionsBot) {
+        return msgPermissionsBotRequired.getMessage(locale, {
+          '{{slot0}}': parsePermissions(bot.permissions.toArray(), command.permissionsBot)
+        })
+      }
+      if (!controlAccess.withoutCooldown) {
+        return msgCooldownTimeout.getMessage(locale, {
+          '{{slot0}}': command.cooldown.toString(),
+          '{{slot1}}': parseTimestamp(keyId, user.id, command.cooldown).toString()
+        })
+      }
+      if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': command.scope })
     }
     const getMessage = async () => {
       try {
@@ -81,7 +82,7 @@ class BuildCommand {
       }
     }
     try {
-      const controlDenied = controlAccess()
+      const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       await i.deferReply({ ephemeral: command.ephemeral })
       const message = await getMessage()

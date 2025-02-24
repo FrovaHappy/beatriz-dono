@@ -11,12 +11,16 @@ import {
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
-import buildMessageErrorForScope from './shared/hasAccessForScope'
-import isCooldownEnable from './shared/isCooldownEnable'
-import requiresBotPermissions from './shared/requiresBotPermissions'
+import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
 import messages from '@/messages'
-import requiresUserPermissions from './shared/requiresUserPermissions'
 import BuildButton, { type Button } from './BuildButtons'
+import msgCaptureError from './msg.captureError'
+import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
+import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
+import parsePermissions from './shared/parsePermissions'
+import msgCooldownTimeout from './msg.cooldownTimeout'
+import msgHasAccessToScope from './shared/msg.hasAccessToScope'
+import { hasAccessForScope } from './shared/hasAccessForScope'
 interface TextInputTranslate {
   label: string
   placeholder: string
@@ -106,43 +110,46 @@ class BuildModal {
     )
   }
   static async runInteraction(i: ModalSubmitInteraction) {
-    const { customId, locale } = i
+    const { customId, locale, guildId } = i
     const modal = globalThis.modals(customId)
     const bot = i.guild?.members.me ?? undefined
     const user = i.guild?.members.cache.get(i.user.id)
-    if (!bot || !user) {
+    if (!bot || !user || modal.customId === '' || !guildId) {
       return await i.reply({
-        ...messages.errorInService(locale, `modal:${customId}-guildMemberNotFound`),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${customId}` }),
         ephemeral: true
       })
     }
-    if (!modal) return await i.reply(messages.serviceNotFound(locale, `modal:${customId}`))
+    const keyId = `modal:${customId}`
+    const controlAccess = {
+      accessForScope: hasAccessForScope(modal.scope, guildId),
+      accessForPermissionsBot: bot.permissions.has(modal.permissionsBot),
+      accessForPermissionsUser: user.permissions.has(modal.permissionsUser),
+      withoutCooldown: !isCooldownEnable({
+        id: i.user.id,
+        cooldown: modal.cooldown,
+        keyId
+      })
+    }
 
-    const messageRequirePermissions = requiresBotPermissions({
-      permissions: modal.permissionsBot,
-      bot,
-      type: 'modal',
-      locale
-    })
-    const messageRequirePermissionsUser = requiresUserPermissions({
-      permissions: modal.permissionsUser,
-      user,
-      type: 'modal',
-      locale
-    })
-    const messageCooldown = isCooldownEnable({
-      id: i.user.id,
-      cooldown: modal.cooldown,
-      name: modal.customId,
-      type: 'modal',
-      locale: i.locale
-    })
-    const messageAccessForScope = buildMessageErrorForScope(i.locale, modal.scope, i.guildId ?? '')
-    const controlAccess = () => {
-      if (messageRequirePermissions) return messageRequirePermissions
-      if (messageRequirePermissionsUser) return messageRequirePermissionsUser
-      if (messageAccessForScope) return messageAccessForScope
-      if (messageCooldown) return messageCooldown
+    const messageControl = () => {
+      if (!controlAccess.accessForPermissionsUser) {
+        return msgPermissionsUserRequired.getMessage(locale, {
+          '{{slot0}}': parsePermissions(user.permissions.toArray(), modal.permissionsUser)
+        })
+      }
+      if (!controlAccess.accessForPermissionsBot) {
+        return msgPermissionsBotRequired.getMessage(locale, {
+          '{{slot0}}': parsePermissions(bot.permissions.toArray(), modal.permissionsBot)
+        })
+      }
+      if (!controlAccess.withoutCooldown) {
+        return msgCooldownTimeout.getMessage(locale, {
+          '{{slot0}}': modal.cooldown.toString(),
+          '{{slot1}}': parseTimestamp(keyId, user.id, modal.cooldown).toString()
+        })
+      }
+      if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': modal.scope })
     }
     const getMessage = async () => {
       try {
@@ -154,7 +161,7 @@ class BuildModal {
     }
 
     try {
-      const controlDenied = controlAccess()
+      const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (modal.resolve === 'defer') await i.deferReply({ ephemeral: modal.ephemeral })
       if (modal.resolve === 'update') await i.deferUpdate()

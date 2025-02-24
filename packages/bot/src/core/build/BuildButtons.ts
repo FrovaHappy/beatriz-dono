@@ -9,7 +9,7 @@ import {
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
-import isCooldownEnable from './shared/isCooldownEnable'
+import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
 import messages from '@/messages'
 import { hasAccessForScope } from './shared/hasAccessForScope'
 import msgCaptureError from './msg.captureError'
@@ -78,13 +78,11 @@ class BuildButton {
       })
     }
     if (button.url) return
-
+    const keyId = `button:${customId}`
     const hasCooldown = isCooldownEnable({
       id: user.id,
       cooldown: button.cooldown,
-      name: button.customId,
-      type: 'button',
-      locale
+      keyId
     })
     const controlAccess = {
       accessForScope: hasAccessForScope(button.scope, guildId),
@@ -104,10 +102,9 @@ class BuildButton {
         })
       }
       if (!controlAccess.withoutCooldown) {
-        const timestamps = globalThis.cooldowns.get(button.customId)?.get(user.id) ?? 0 + button.cooldown
         return msgCooldownTimeout.getMessage(locale, {
           '{{slot0}}': button.cooldown.toString(),
-          '{{slot1}}': timestamps.toString()
+          '{{slot1}}': parseTimestamp(keyId, user.id, button.cooldown).toString()
         })
       }
       if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': button.scope })

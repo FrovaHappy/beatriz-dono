@@ -8,7 +8,7 @@ export default new BuildMessages({
         {
           title: 'you are too fast! ⏳',
           description:
-            'Has been put a cooldown of {{slot0}} seconds. Wait <t:{{slot0}}:R> before using that command again.',
+            'Has been put a cooldown of {{slot0}} seconds. Wait <t:{{slot1}}:R> before using that command again.',
           color: Colors.Orange
         }
       ]
@@ -18,7 +18,7 @@ export default new BuildMessages({
         {
           title: 'Vas muy rápido! ⏳',
           description:
-            'Te hemos puesto un cooldown de {{slot0}} segundos. Espera <t:{{slot0}}:R> antes de usar ese comando otra vez.',
+            'Te hemos puesto un cooldown de {{slot0}} segundos. Espera <t:{{slot1}}:R> antes de usar ese comando otra vez.',
           color: Colors.Red
         }
       ]

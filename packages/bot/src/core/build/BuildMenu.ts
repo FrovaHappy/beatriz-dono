@@ -17,11 +17,15 @@ import {
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
-import buildMessageErrorForScope from './shared/hasAccessForScope'
-import isCooldownEnable from './shared/isCooldownEnable'
-import requiresBotPermissions from './shared/requiresBotPermissions'
+import { hasAccessForScope } from './shared/hasAccessForScope'
+import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
 import messages from '@/messages'
-import requiresUserPermissions from './shared/requiresUserPermissions'
+import msgCaptureError from './msg.captureError'
+import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
+import parsePermissions from './shared/parsePermissions'
+import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
+import msgCooldownTimeout from './msg.cooldownTimeout'
+import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 
 type StringSelectTranslate = {
   placeholder: string
@@ -119,44 +123,47 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
     throw new Error(`typeData ${typeData} not found`)
   }
   static async runInteraction(i: AnySelectMenuInteraction) {
-    const { customId, locale } = i
+    const { customId, locale, guildId } = i
     const menu = globalThis.menus(customId, true)
     const bot = i.guild?.members.me ?? undefined
     const user = i.guild?.members.cache.get(i.user.id)
-    if (menu.customId === '')
-      return await i.reply({ ...messages.serviceNotFound(locale, `menu:${customId}`), ephemeral: true })
-    if (!bot || !user) {
+
+    if (!bot || !user || menu.customId === '' || !guildId) {
       return await i.reply({
-        ...messages.errorInService(locale, `menu:${customId}-guildMemberNotFound`),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${customId}` }),
         ephemeral: true
       })
     }
-    const messageRequirePermissionsBot = requiresBotPermissions({
-      permissions: menu.permissionsBot,
-      bot,
-      type: 'menu',
-      locale
-    })
-    const messageRequirePermissionsUser = requiresUserPermissions({
-      permissions: menu.permissionsUser,
-      user,
-      type: 'menu',
-      locale
-    })
-    const messageCooldown = isCooldownEnable({
-      id: i.user.id,
+    const keyId = `menu:${customId}`
+    const hasCooldown = isCooldownEnable({
+      id: user.id,
       cooldown: menu.cooldown,
-      name: menu.customId,
-      type: 'menu',
-      locale: i.locale
+      keyId
     })
-    const messageAccessForScope = buildMessageErrorForScope(i.locale, menu.scope, i.guildId ?? '')
-
-    const controlAccess = () => {
-      if (messageRequirePermissionsBot) return messageRequirePermissionsBot
-      if (messageRequirePermissionsUser) return messageRequirePermissionsUser
-      if (messageAccessForScope) return messageAccessForScope
-      if (messageCooldown) return messageCooldown
+    const controlAccess = {
+      accessForScope: hasAccessForScope(menu.scope, guildId),
+      accessForPermissionsBot: bot.permissions.has(menu.permissionsBot),
+      accessForPermissionsUser: user.permissions.has(menu.permissionsUser),
+      withoutCooldown: !hasCooldown
+    }
+    const messageControl = () => {
+      if (!controlAccess.accessForPermissionsUser) {
+        return msgPermissionsUserRequired.getMessage(locale, {
+          '{{slot0}}': parsePermissions(user.permissions.toArray(), menu.permissionsUser)
+        })
+      }
+      if (!controlAccess.accessForPermissionsBot) {
+        return msgPermissionsBotRequired.getMessage(locale, {
+          '{{slot0}}': parsePermissions(bot.permissions.toArray(), menu.permissionsBot)
+        })
+      }
+      if (!controlAccess.withoutCooldown) {
+        return msgCooldownTimeout.getMessage(locale, {
+          '{{slot0}}': menu.cooldown.toString(),
+          '{{slot1}}': parseTimestamp(keyId, user.id, menu.cooldown).toString()
+        })
+      }
+      if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': menu.scope })
     }
     const getMessage = async () => {
       try {
@@ -168,7 +175,7 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
     }
 
     try {
-      const controlDenied = controlAccess()
+      const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (menu.resolve === 'update') await i.deferUpdate()
       if (menu.resolve === 'defer') await i.deferReply({ ephemeral: menu.ephemeral })
