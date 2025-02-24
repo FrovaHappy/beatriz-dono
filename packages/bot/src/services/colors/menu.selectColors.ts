@@ -11,6 +11,7 @@ export default new BuildMenu<'string'>({
   resolve: 'update',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
+  scope: 'public',
   typeData: 'string',
   translates: {
     default: {
