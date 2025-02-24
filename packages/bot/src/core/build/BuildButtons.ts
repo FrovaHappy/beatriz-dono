@@ -59,9 +59,9 @@ class BuildButton {
   get = (locale: Locale) => {
     const { translates, customId, url } = this
     const buttonData = translates[locale] ?? translates.default
-    const button = new ButtonBuilder().setCustomId(customId).setLabel(buttonData.name).setStyle(this.style)
+    const button = new ButtonBuilder().setLabel(buttonData.name).setStyle(this.style)
     if (buttonData.emoji) button.setEmoji(buttonData.emoji)
-    if (url) button.setURL(url)
+    url ? button.setURL(url) : button.setCustomId(customId)
     return button
   }
 
