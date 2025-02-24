@@ -73,7 +73,7 @@ export const insertColors = async (props: { guild_id: string; colors: Color[] })
   let inserted = 0
   let failed = 0
   if (colors.length === 0) return { inserted, failed }
-  const id = crypto.createHash('sha256').update(guild_id).digest('hex')
+  const id = crypto.randomUUID()
   const queries = `
   INSERT INTO Colors (id, guild_id, hex_color, role_id) VALUES ${colors
     .map((color: Color) => {
