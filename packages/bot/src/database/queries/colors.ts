@@ -1,5 +1,5 @@
-import { createHash } from 'node:crypto'
-import client, { formatResponse, type ResultSet } from '../clientSQL'
+import crypto from 'node:crypto'
+import client, { formatResponse } from '../clientSQL'
 import type { ColorsTemplete } from '@libs/schemas/colorsTemplete'
 import { regexHexColor, regexRole } from '@libs/regex'
 export interface Color {
@@ -73,22 +73,23 @@ export const insertColors = async (props: { guild_id: string; colors: Color[] })
   let inserted = 0
   let failed = 0
   if (colors.length === 0) return { inserted, failed }
-
+  const id = crypto.createHash('sha256').update(guild_id).digest('hex')
+  const queries = `
+  INSERT INTO Colors (id, guild_id, hex_color, role_id) VALUES ${colors
+    .map((color: Color) => {
+      if (!regexHexColor.test(color.hex_color) || !regexRole.test(color.role_id)) {
+        failed++
+        return
+      }
+      inserted++
+      return `($id, $guild_id, '${color.hex_color}', '${color.role_id}')`
+    })
+    .filter(c => c)
+    .join(', ')};
+  `
   await client.execute({
-    queries: `
-      INSERT INTO Colors (guild_id, hex_color, role_id) VALUES ${colors
-        .map((color: Color) => {
-          if (!regexHexColor.test(color.hex_color) || !regexRole.test(color.role_id)) {
-            failed++
-            return
-          }
-          inserted++
-          return `($guild_id, ${color.hex_color}, ${color.role_id})`
-        })
-        .filter(c => c)
-        .join(', ')};
-    `,
-    args: { guild_id }
+    queries,
+    args: { guild_id, id: id.toString() }
   })
   return { inserted, failed }
 }

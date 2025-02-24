@@ -45,7 +45,7 @@ interface ErrorQuery {
 }
 
 async function execute({ queries, args = {} }: Execute) {
-  const arrQueries = queries.split(';')
+  const arrQueries = queries.replaceAll('\n', '').split(';')
   try {
     let result: ResultSet | undefined
     for (let i = 0; i < arrQueries.length; i++) {
