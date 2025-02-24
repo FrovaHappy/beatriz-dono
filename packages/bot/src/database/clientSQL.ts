@@ -37,13 +37,6 @@ interface Execute {
   args?: Record<string, Value>
 }
 
-interface ErrorQuery {
-  error: any
-  args: Record<string, Value>
-  query: string
-  fail: boolean
-}
-
 async function execute({ queries, args = {} }: Execute) {
   const arrQueries = queries.replaceAll('\n', '').split(';')
   try {
