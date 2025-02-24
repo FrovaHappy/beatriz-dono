@@ -2,7 +2,13 @@ import BuildMessages from '@/core/build/BuildMessages'
 import { Colors } from 'discord.js'
 
 export default new BuildMessages({
-  components: [[{ type: 'modal', customId: 'editColorsTemplate' }]],
+  components: [
+    [{ type: 'menu', customId: 'settingsDeleteColors' }],
+    [
+      { type: 'modal', customId: 'editColorsTemplate' },
+      { type: 'button', customId: 'orderColors' }
+    ]
+  ],
   translates: {
     default: {
       embeds: [

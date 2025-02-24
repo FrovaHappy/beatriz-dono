@@ -70,7 +70,20 @@ export type SelectMenu = {
     builder: ChannelSelectMenuBuilder
   }
 }
-
+interface MenuConstructor<T extends keyof SelectMenu = 'string'> {
+  cooldown?: BuildMenu<T>['cooldown']
+  customId: BuildMenu<T>['customId']
+  ephemeral?: BuildMenu<T>['ephemeral']
+  maxValues?: BuildMenu<T>['maxValues']
+  minValues?: BuildMenu<T>['minValues']
+  permissionsBot: BuildMenu<T>['permissionsBot']
+  permissionsUser: BuildMenu<T>['permissionsUser']
+  scope: BuildMenu<T>['scope']
+  translates: BuildMenu<T>['translates']
+  typeData: BuildMenu<T>['typeData']
+  resolve?: BuildMenu<T>['resolve']
+  execute: BuildMenu<T>['execute']
+}
 class BuildMenu<T extends keyof SelectMenu = 'string'> {
   type = 'menus' as const
   customId: string
@@ -85,17 +98,11 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
   scope: Scope
   resolve: Resolve
   execute: (e: SelectMenu[T]['interaction']) => Promise<MessageOptions | undefined>
-  constructor(
-    props: Partial<BuildMenu<T>> &
-      Pick<
-        BuildMenu<T>,
-        'execute' | 'customId' | 'translates' | 'resolve' | 'permissionsBot' | 'permissionsUser' | 'typeData'
-      >
-  ) {
+  constructor(props: MenuConstructor<T>) {
     this.customId = props.customId
     this.scope = props.scope ?? 'owner'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
-    this.resolve = props.resolve
+    this.resolve = props.resolve ?? 'defer'
     this.typeData = props.typeData
     this.ephemeral = props.ephemeral ?? false
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
