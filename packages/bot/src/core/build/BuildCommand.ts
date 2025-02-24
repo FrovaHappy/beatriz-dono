@@ -49,7 +49,7 @@ class BuildCommand {
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user || !guildId || !command) {
       return await i.reply({
-        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${commandName}` }),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildCommand ${commandName}` }),
         ephemeral: true
       })
     }

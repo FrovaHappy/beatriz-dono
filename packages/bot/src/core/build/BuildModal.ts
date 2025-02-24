@@ -116,7 +116,7 @@ class BuildModal {
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user || modal.customId === '' || !guildId) {
       return await i.reply({
-        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${customId}` }),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildModal ${customId}` }),
         ephemeral: true
       })
     }

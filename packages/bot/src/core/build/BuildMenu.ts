@@ -130,7 +130,7 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
 
     if (!bot || !user || menu.customId === '' || !guildId) {
       return await i.reply({
-        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${customId}` }),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildMenu ${customId}` }),
         ephemeral: true
       })
     }
