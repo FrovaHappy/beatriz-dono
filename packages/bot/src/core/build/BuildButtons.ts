@@ -18,10 +18,22 @@ import parsePermissions from './shared/parsePermissions'
 import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
 import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 import msgCooldownTimeout from './msg.cooldownTimeout'
-
 interface ButtonData {
   name: string
   emoji?: ComponentEmojiResolvable
+}
+interface ButtonConstructor {
+  customId: ButtonData['name']
+  execute: BuildButton['execute']
+  permissionsBot: BuildButton['permissionsBot']
+  permissionsUser: BuildButton['permissionsUser']
+  scope: BuildButton['scope']
+  style: BuildButton['style']
+  translates: BuildButton['translates']
+  resolve?: BuildButton['resolve']
+  ephemeral?: BuildButton['ephemeral']
+  url?: BuildButton['url']
+  cooldown?: BuildButton['cooldown']
 }
 class BuildButton {
   type = 'buttons'
@@ -36,13 +48,7 @@ class BuildButton {
   translates: Partial<Record<Locale, ButtonData>> & { default: ButtonData }
   execute: (e: ButtonInteraction) => Promise<MessageOptions | undefined>
   resolve: Resolve | 'showModal'
-  constructor(
-    props: Partial<BuildButton> &
-      Pick<
-        BuildButton,
-        'execute' | 'scope' | 'customId' | 'translates' | 'permissionsBot' | 'permissionsUser' | 'resolve' | 'style'
-      >
-  ) {
+  constructor(props: ButtonConstructor) {
     this.url = props.url
     this.customId = props.customId
     this.scope = props.scope
