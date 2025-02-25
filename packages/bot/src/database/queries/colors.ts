@@ -97,13 +97,11 @@ export const insertColors = async (props: { guild_id: string; colors: Color[] })
 export const deleteColors = async (guild_id: string, colors: Color[]) => {
   const colorsQuery = await client.execute({
     queries: `
-        SELECT hex_color, role_id FROM Colors
         DELETE FROM Colors
-        WHERE guild_id = $guild_id AND hex_color IN (${colors
+        WHERE guild_id = $guild_id AND role_id IN (${colors
           .map((color: Color) => {
-            if (!regexHexColor.test(color.hex_color)) return
             if (!regexRole.test(color.role_id)) return
-            return `${color.hex_color}, ${color.role_id}`
+            return `'${color.role_id}'`
           })
           .filter(c => c)
           .join(', ')});
