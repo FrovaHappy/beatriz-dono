@@ -22,5 +22,5 @@ export default new BuildMessages({
       ]
     }
   },
-  components: [[{ type: 'button', customId: 'settingsConfirmDeleteAsome' }]]
+  components: [[{ type: 'menu', customId: 'settingsConfirmDeleteAsome' }]]
 })

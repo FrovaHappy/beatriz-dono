@@ -22,5 +22,5 @@ export default new BuildMessages({
       ]
     }
   },
-  components: [[{ type: 'button', customId: 'settingsCancelDeleteAll' }]]
+  components: [[{ type: 'button', customId: 'settingsConfirmDeleteAll' }]]
 })
