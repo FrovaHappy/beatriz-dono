@@ -12,80 +12,74 @@ const commands = new Collection<string, BuildCommand>()
 const menus = new Collection<string, BuildMenu<'string'>>()
 const modals = new Collection<string, BuildModal>()
 
-function getMenus<T extends keyof SelectMenu = 'string'>(key: string, safe = false): BuildMenu<T> {
+function getMenus<T extends keyof SelectMenu = 'string'>(key: string): BuildMenu<T> {
   const menu = menus.get(key)
-  if (!menu && safe)
-    return new BuildMenu({
-      customId: '',
-      scope: 'owner',
-      permissionsBot: [],
-      permissionsUser: [],
-      typeData: 'string',
-      translates: {
-        default: {
-          placeholder: 'Menu Not Found',
-          options: []
-        }
-      },
-      resolve: 'defer',
-      ephemeral: true,
-      execute: async e => undefined
-    })
-  if (!menu) throw new Error(`Menu ${key} not found`)
-  return menu as any
+  if (menu) return menu as any
+  return new BuildMenu({
+    customId: '',
+    scope: 'owner',
+    permissionsBot: [],
+    permissionsUser: [],
+    typeData: 'string',
+    translates: {
+      default: {
+        placeholder: 'Menu Not Found',
+        options: []
+      }
+    },
+    resolve: 'defer',
+    ephemeral: true,
+    execute: async e => undefined
+  })
 }
 
-function getButton(key: string, safe = false): BuildButton {
+function getButton(key: string): BuildButton {
   const button = buttons.get(key)
-  if (!button && safe)
-    return new BuildButton({
-      customId: '',
-      scope: 'owner',
-      permissionsBot: [],
-      permissionsUser: [],
+  if (button) return button as any
+  return new BuildButton({
+    customId: '',
+    scope: 'owner',
+    permissionsBot: [],
+    permissionsUser: [],
+    style: ButtonStyle.Secondary,
+    translates: {
+      default: {
+        name: 'Button Not Found'
+      }
+    },
+    resolve: 'defer',
+    ephemeral: true,
+    execute: async e => undefined
+  })
+}
+
+function getModal(key: string): BuildModal {
+  const modal = modals.get(key)
+  if (!modal) return modal as any
+  return new BuildModal({
+    customId: '',
+    scope: 'owner',
+    permissionsBot: [],
+    permissionsUser: [],
+    translates: {
+      title: {
+        default: 'Modal Not Found'
+      },
+      components: []
+    },
+    cooldown: 0,
+    dataButton: {
       style: ButtonStyle.Secondary,
       translates: {
         default: {
-          name: 'Button Not Found'
+          name: 'Modal Not Found'
         }
-      },
-      resolve: 'defer',
-      ephemeral: true,
-      execute: async e => undefined
-    })
-  if (!button) throw new Error(`Button ${key} not found`)
-  return button as any
-}
-
-function getModal(key: string, safe = false): BuildModal {
-  const modal = modals.get(key)
-  if (!modal && safe)
-    return new BuildModal({
-      customId: '',
-      scope: 'owner',
-      permissionsBot: [],
-      permissionsUser: [],
-      translates: {
-        title: {
-          default: 'Modal Not Found'
-        },
-        components: []
-      },
-      cooldown: 0,
-      dataButton: {
-        style: ButtonStyle.Secondary,
-        translates: {
-          default: {
-            name: 'Modal Not Found'
-          }
-        }
-      },
-      resolve: 'defer',
-      ephemeral: true,
-      execute: async e => ({})
-    })
-  if (!modal) throw new Error(`Modal ${key} not found`)
-  return modal as any
+      }
+    },
+    resolve: 'defer',
+    ephemeral: true,
+    execute: async e => ({})
+  })
 }
 
 export type GetMenu = typeof getMenus

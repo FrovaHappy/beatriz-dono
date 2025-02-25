@@ -131,7 +131,7 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
   }
   static async runInteraction(i: AnySelectMenuInteraction) {
     const { customId, locale, guildId } = i
-    const menu = globalThis.menus(customId, true)
+    const menu = globalThis.menus(customId)
     const bot = i.guild?.members.me ?? undefined
     const user = i.guild?.members.cache.get(i.user.id)
 

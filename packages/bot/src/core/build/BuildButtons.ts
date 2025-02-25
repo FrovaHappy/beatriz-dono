@@ -73,7 +73,7 @@ class BuildButton {
 
   static async runInteraction(i: ButtonInteraction) {
     const { customId, locale } = i
-    const button: BuildButton = buttons(customId, true)
+    const button: BuildButton = buttons(customId)
     const bot = i.guild?.members.me
     const user = i.guild?.members.cache.get(i.user.id)
     const guildId = i.guildId
