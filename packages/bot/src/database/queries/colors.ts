@@ -23,22 +23,21 @@ const queryColorsSettings = async (guild_id: string) => {
     args: { guild_id }
   })
   if (data.rows.length === 0) {
+    const queryGuild = 'INSERT INTO Guilds (id) VALUES ($guild_id);'
+    const queryColorSetting = `
+      INSERT INTO ColorSetting (guild_id, pointer_id, templete) VALUES ($guild_id, null, null);
+      SELECT * FROM Guilds
+      JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
+      WHERE guild_id = $guild_id
+    `
     await client
       .execute({
-        queries: `
-              INSERT INTO Guilds (id) VALUES ($guild_id);
-            `,
+        queries: queryGuild,
         args: { guild_id }
       })
       .catch(e => {})
-
     data = await client.execute({
-      queries: `
-            INSERT INTO ColorSetting (guild_id, pointer_id, templete) VALUES ($guild_id, null, null);
-            SELECT * FROM Guilds
-            JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
-            WHERE guild_id = $guild_id
-          `,
+      queries: queryColorSetting,
       args: { guild_id }
     })
   }
@@ -75,18 +74,18 @@ export const insertColors = async (props: { guild_id: string; colors: Color[] })
   if (colors.length === 0) return { inserted, failed }
   const id = crypto.randomUUID()
   const queries = `
-  INSERT INTO Colors (id, guild_id, hex_color, role_id) VALUES ${colors
-    .map((color: Color) => {
-      if (!regexHexColor.test(color.hex_color) || !regexRole.test(color.role_id)) {
-        failed++
-        return
-      }
-      inserted++
-      return `($id, $guild_id, '${color.hex_color}', '${color.role_id}')`
-    })
-    .filter(c => c)
-    .join(', ')};
-  `
+    INSERT INTO Colors (id, guild_id, hex_color, role_id) VALUES ${colors
+      .map((color: Color) => {
+        if (!regexHexColor.test(color.hex_color) || !regexRole.test(color.role_id)) {
+          failed++
+          return
+        }
+        inserted++
+        return `($id, $guild_id, '${color.hex_color}', '${color.role_id}')`
+      })
+      .filter(c => c)
+      .join(', ')}
+    ;`
   await client.execute({
     queries,
     args: { guild_id, id: id.toString() }
@@ -95,17 +94,18 @@ export const insertColors = async (props: { guild_id: string; colors: Color[] })
 }
 
 export const deleteColors = async (guild_id: string, colors: Color[]) => {
+  const queries = `
+    DELETE FROM Colors
+    WHERE guild_id = $guild_id AND role_id IN (${colors
+      .map((color: Color) => {
+        if (!regexRole.test(color.role_id)) return
+        return `'${color.role_id}'`
+      })
+      .filter(c => c)
+      .join(', ')})
+    ;`
   const colorsQuery = await client.execute({
-    queries: `
-        DELETE FROM Colors
-        WHERE guild_id = $guild_id AND role_id IN (${colors
-          .map((color: Color) => {
-            if (!regexRole.test(color.role_id)) return
-            return `'${color.role_id}'`
-          })
-          .filter(c => c)
-          .join(', ')});
-      `,
+    queries,
     args: { guild_id }
   })
 
