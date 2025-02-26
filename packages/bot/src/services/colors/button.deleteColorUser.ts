@@ -7,7 +7,7 @@ import msgCreatePointerColor from './msg.createPointerColor'
 
 export default new BuildButton({
   customId: 'deleteColor',
-  scope: 'private',
+  scope: 'public',
   permissionsBot: ['ManageRoles'],
   permissionsUser: [],
   resolve: 'update',
