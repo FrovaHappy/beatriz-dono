@@ -55,7 +55,7 @@ function getButton(key: string): BuildButton {
 
 function getModal(key: string): BuildModal {
   const modal = modals.get(key)
-  if (!modal) return modal as any
+  if (modal) return modal as any
   return new BuildModal({
     customId: '',
     scope: 'owner',
