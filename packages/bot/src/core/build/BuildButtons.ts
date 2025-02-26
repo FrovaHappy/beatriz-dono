@@ -18,6 +18,7 @@ import parsePermissions from './shared/parsePermissions'
 import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
 import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 import msgCooldownTimeout from './msg.cooldownTimeout'
+import msgLoading from './msg.loading'
 interface ButtonData {
   name: string
   emoji?: ComponentEmojiResolvable
@@ -77,7 +78,7 @@ class BuildButton {
     const bot = i.guild?.members.me
     const user = i.guild?.members.cache.get(i.user.id)
     const guildId = i.guildId
-    if (!bot || !user || button.customId === '' || !guildId) {
+    if (!bot || !user || button.customId === '' || button.customId === 'modal-' || !guildId) {
       return await i.reply({
         ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildButton ${customId}` }),
         ephemeral: true
@@ -129,7 +130,15 @@ class BuildButton {
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (button.resolve === 'showModal') return getMessage()
       if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
-      if (button.resolve === 'update') await i.deferUpdate()
+      if (button.resolve === 'update') {
+        const iUpdate = await i.update({
+          ...baseMessage,
+          ...msgLoading.getMessage(locale, {})
+        })
+        const message = await getMessage()
+        if (!message) return
+        return await iUpdate.edit({ ...baseMessage, ...message })
+      }
       const message = await getMessage()
       if (!message) return
 

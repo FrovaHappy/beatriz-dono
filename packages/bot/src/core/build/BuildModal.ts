@@ -21,6 +21,7 @@ import parsePermissions from './shared/parsePermissions'
 import msgCooldownTimeout from './msg.cooldownTimeout'
 import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 import { hasAccessForScope } from './shared/hasAccessForScope'
+import msgLoading from './msg.loading'
 interface TextInputTranslate {
   label: string
   placeholder: string
@@ -164,7 +165,16 @@ class BuildModal {
       const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       if (modal.resolve === 'defer') await i.deferReply({ ephemeral: modal.ephemeral })
-      if (modal.resolve === 'update') await i.deferUpdate()
+      if (modal.resolve === 'update') {
+        const iLoad = await i.deferUpdate()
+        await i.editReply({
+          ...baseMessage,
+          ...msgLoading.getMessage(locale, {})
+        })
+        const message = await getMessage()
+        if (!message) return
+        return await iLoad.edit({ ...baseMessage, ...message })
+      }
       const message = await getMessage()
       if (!message) return
       return await i.editReply({ ...baseMessage, ...message })

@@ -26,6 +26,7 @@ import parsePermissions from './shared/parsePermissions'
 import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
 import msgCooldownTimeout from './msg.cooldownTimeout'
 import msgHasAccessToScope from './shared/msg.hasAccessToScope'
+import msgLoading from './msg.loading'
 
 type StringSelectTranslate = {
   placeholder: string
@@ -184,7 +185,16 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
     try {
       const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
-      if (menu.resolve === 'update') await i.deferUpdate()
+      if (menu.resolve === 'update') {
+        const iUpdate = await i.update({
+          ...baseMessage,
+          ...msgLoading.getMessage(locale, {})
+        })
+        const message = await getMessage()
+        if (!message) return
+        return await iUpdate.edit({ ...baseMessage, ...message })
+      }
+
       if (menu.resolve === 'defer') await i.deferReply({ ephemeral: menu.ephemeral })
       const message = await getMessage()
       if (!message) return
