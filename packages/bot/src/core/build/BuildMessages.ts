@@ -9,8 +9,8 @@ type Messages = Partial<Record<Locale, MsgCustom>> & { default: MsgCustom }
 
 /**
  * Build Messages
- * @param messages is contains all the messages for translation
- * @param defaultMessage is the default message if the locale is not found
+ * @param translates Messages to be translated, default property is required
+ * @param components Components to be added to the message
  */
 class BuildMessages {
   #messages: Messages
