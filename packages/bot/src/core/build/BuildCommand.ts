@@ -6,12 +6,11 @@ import type {
   SlashCommandOptionsOnlyBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from 'discord.js'
-import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
+import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
 
 import type { CommandNames } from '@/const/interactionsNames'
 import { hasAccessForScope } from './shared/hasAccessForScope'
 import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
-import messages from '@/messages'
 import msgCaptureError from './msg.captureError'
 import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
 import parsePermissions from './shared/parsePermissions'
@@ -49,7 +48,7 @@ class BuildCommand {
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user || !guildId || !command) {
       return await i.reply({
-        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildCommand ${commandName}` }),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildCommand ${commandName} -> essential data missing` }),
         ephemeral: true
       })
     }
@@ -73,24 +72,16 @@ class BuildCommand {
       }
       if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': command.scope })
     }
-    const getMessage = async () => {
-      try {
-        return await command.execute(i)
-      } catch (error) {
-        console.error(error)
-        return messages.errorInService(i.locale, `command:${i.commandName}-inExecute`)
-      }
-    }
     try {
       const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
       await i.deferReply({ ephemeral: command.ephemeral })
-      const message = await getMessage()
+      const message = await command.execute(i)
       if (!message) return
       return await i.editReply(message)
     } catch (error) {
       console.error(error)
-      return messages.errorInService(i.locale, `command:${i.commandName}-inReply`)
+      return msgCaptureError.getMessage(i.locale, { '{{slot0}}': `BuildCommand ${i.commandName} -> inReply` })
     }
   }
 }

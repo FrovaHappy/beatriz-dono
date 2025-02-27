@@ -10,7 +10,6 @@ import {
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
-import messages from '@/messages'
 import { hasAccessForScope } from './shared/hasAccessForScope'
 import msgCaptureError from './msg.captureError'
 import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
@@ -116,36 +115,28 @@ class BuildButton {
       }
       if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': button.scope })
     }
-    const getMessage = async () => {
-      try {
-        return await button.execute(i)
-      } catch (error) {
-        console.error(error)
-        return messages.errorInService(i.locale, `button:${i.customId}-inExecute`)
-      }
-    }
 
     try {
       const controlDenied = messageControl()
       if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
-      if (button.resolve === 'showModal') return getMessage()
+      if (button.resolve === 'showModal') return button.execute(i)
       if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
       if (button.resolve === 'update') {
         const iUpdate = await i.update({
           ...baseMessage,
           ...msgLoading.getMessage(locale, {})
         })
-        const message = await getMessage()
+        const message = await button.execute(i)
         if (!message) return
         return await iUpdate.edit({ ...baseMessage, ...message })
       }
-      const message = await getMessage()
+      const message = await button.execute(i)
       if (!message) return
 
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return messages.errorInService(i.locale, `button:${i.customId}-inReply`)
+      return msgCaptureError.getMessage(i.locale, { '{{slot0}}': `BuildButton ${i.customId} -> inReply` })
     }
   }
 }

@@ -19,7 +19,6 @@ import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/Permiss
 import baseMessage from './shared/baseMessage'
 import { hasAccessForScope } from './shared/hasAccessForScope'
 import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
-import messages from '@/messages'
 import msgCaptureError from './msg.captureError'
 import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
 import parsePermissions from './shared/parsePermissions'
@@ -138,7 +137,7 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
 
     if (!bot || !user || menu.customId === '' || !guildId) {
       return await i.reply({
-        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildMenu ${customId}` }),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildMenu ${customId}  -> essential data missing` }),
         ephemeral: true
       })
     }
@@ -173,14 +172,6 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
       }
       if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': menu.scope })
     }
-    const getMessage = async () => {
-      try {
-        return await menu.execute(i as any)
-      } catch (error) {
-        console.error(error)
-        return messages.errorInService(i.locale, `menu:${i.customId}-inExecute`)
-      }
-    }
 
     try {
       const controlDenied = messageControl()
@@ -190,18 +181,18 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
           ...baseMessage,
           ...msgLoading.getMessage(locale, {})
         })
-        const message = await getMessage()
+        const message = await menu.execute(i as any)
         if (!message) return
         return await iUpdate.edit({ ...baseMessage, ...message })
       }
 
       if (menu.resolve === 'defer') await i.deferReply({ ephemeral: menu.ephemeral })
-      const message = await getMessage()
+      const message = await menu.execute(i as any)
       if (!message) return
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return messages.errorInService(i.locale, `menu:${i.customId}-inReply`)
+      return msgCaptureError.getMessage(i.locale, { '{{slot0}}': `BuildMenu ${i.customId} -> inReply` })
     }
   }
 }

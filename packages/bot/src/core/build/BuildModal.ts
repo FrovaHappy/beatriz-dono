@@ -12,7 +12,6 @@ import {
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import baseMessage from './shared/baseMessage'
 import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
-import messages from '@/messages'
 import BuildButton, { type Button } from './BuildButtons'
 import msgCaptureError from './msg.captureError'
 import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
@@ -117,7 +116,7 @@ class BuildModal {
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user || modal.customId === '' || !guildId) {
       return await i.reply({
-        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildModal ${customId}` }),
+        ...msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildModal ${customId} -> essential data missing` }),
         ephemeral: true
       })
     }
@@ -152,14 +151,6 @@ class BuildModal {
       }
       if (!controlAccess.accessForScope) return msgHasAccessToScope.getMessage(locale, { '{{slot0}}': modal.scope })
     }
-    const getMessage = async () => {
-      try {
-        return await modal.execute(i)
-      } catch (error) {
-        console.error(error)
-        return messages.errorInService(i.locale, `modal:${i.customId}-inExecute`)
-      }
-    }
 
     try {
       const controlDenied = messageControl()
@@ -171,16 +162,16 @@ class BuildModal {
           ...baseMessage,
           ...msgLoading.getMessage(locale, {})
         })
-        const message = await getMessage()
+        const message = await modal.execute(i)
         if (!message) return
         return await iLoad.edit({ ...baseMessage, ...message })
       }
-      const message = await getMessage()
+      const message = await modal.execute(i)
       if (!message) return
       return await i.editReply({ ...baseMessage, ...message })
     } catch (error) {
       console.error(error)
-      return messages.errorInService(locale, `modal:${customId}-inReply`)
+      return msgCaptureError.getMessage(locale, { '{{slot0}}': `BuildModal ${modal.customId} -> inReply` })
     }
   }
 }
