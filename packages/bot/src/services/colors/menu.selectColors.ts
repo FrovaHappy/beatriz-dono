@@ -1,4 +1,3 @@
-import COLORS from '@/const/colors'
 import BuildMenu from '@/core/build/BuildMenu'
 import { changeColor } from './shared/changeColor'
 import db from '@db'
