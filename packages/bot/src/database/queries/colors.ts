@@ -14,34 +14,37 @@ export interface ColorSetting {
 }
 
 const queryColorsSettings = async (guild_id: string) => {
-  let data = await client.execute({
-    queries: `
-      SELECT id as guild_id, is_active, pointer_id, templete FROM Guilds
-      JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
-      WHERE guild_id = $guild_id;
-    `,
+  const queries = `
+    SELECT Guilds.id as guild_id, pointer_id, templete, Guild_Features.colors as is_active FROM Guilds
+    Left JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
+    Left JOIN Guild_Features ON Guilds.id = Guild_Features.guild_id
+    WHERE Guilds.id = $guild_id;
+  `
+  const data = await client.execute({
+    queries,
     args: { guild_id }
   })
-  if (data.rows.length === 0) {
+  let formateData = formatResponse<ColorSetting>(data)[0]
+
+  if (!formateData) {
     const queryGuild = 'INSERT INTO Guilds (id) VALUES ($guild_id);'
     const queryColorSetting = `
       INSERT INTO ColorSetting (guild_id, pointer_id, templete) VALUES ($guild_id, null, null);
-      SELECT * FROM Guilds
-      JOIN ColorSetting ON ColorSetting.guild_id = Guilds.id
-      WHERE guild_id = $guild_id
+      ${queries}
     `
-    await client
-      .execute({
-        queries: queryGuild,
-        args: { guild_id }
-      })
-      .catch(e => {})
-    data = await client.execute({
+    await client.execute({ queries: queryGuild, args: { guild_id } }).catch(e => {})
+    const newData = await client.execute({
       queries: queryColorSetting,
       args: { guild_id }
     })
+    formateData = formatResponse<ColorSetting>(newData)[0]
   }
-  return formatResponse<ColorSetting>(data)[0]
+  return {
+    guild_id: formateData.guild_id,
+    is_active: !!formateData.is_active,
+    pointer_id: formateData.pointer_id,
+    templete: formateData.templete
+  }
 }
 
 const queryColors = async (guild_id: string) => {
@@ -116,10 +119,9 @@ export const deleteColors = async (guild_id: string, colors: Color[]) => {
 }
 
 export const updateColorSetting = async (props: Partial<ColorSetting> & { guild_id: string }) => {
-  const { guild_id, pointer_id, is_active, templete } = props
+  const { guild_id, pointer_id, templete } = props
   const toUpdate = [
     ['pointer_id', pointer_id],
-    ['is_active', is_active],
     ['templete', templete]
   ].filter(([, value]) => value)
   await client.execute({
