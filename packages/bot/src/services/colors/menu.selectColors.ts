@@ -7,7 +7,8 @@ import { COLORS_PLACEHOLDER } from '@libs/schemas/colorsTemplete'
 const optionsColors = COLORS_PLACEHOLDER.colors.map(color => ({
   label: color.label,
   value: color.hex_color,
-  emoji: color.emoji
+  emoji: color.emoji,
+  description: color.description
 }))
 
 export default new BuildMenu<'string'>({
