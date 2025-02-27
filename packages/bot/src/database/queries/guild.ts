@@ -1,4 +1,3 @@
-import e from 'express'
 import client, { formatResponse } from '../clientSQL'
 
 export const readGuild = async (guild_id: string) => {
