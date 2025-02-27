@@ -3,8 +3,13 @@ import BuildMenu from '@/core/build/BuildMenu'
 import { changeColor } from './shared/changeColor'
 import db from '@db'
 import msgCreatePointerColor from './msg.createPointerColor'
+import { COLORS_PLACEHOLDER } from '@libs/schemas/colorsTemplete'
 
-const optionsColors = COLORS.map(color => ({ label: color.label, value: color.hexColor, emoji: color.emoji }))
+const optionsColors = COLORS_PLACEHOLDER.colors.map(color => ({
+  label: color.label,
+  value: color.hex_color,
+  emoji: color.emoji
+}))
 
 export default new BuildMenu<'string'>({
   customId: 'selectColors',
