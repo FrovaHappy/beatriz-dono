@@ -6,6 +6,7 @@ export default new BuildMessages({
     [{ type: 'menu', customId: 'settingsDeleteColors' }],
     [
       { type: 'modal', customId: 'editColorsTemplate' },
+      { type: 'button', customId: 'settingRestartTemplate' },
       { type: 'button', customId: 'orderColors' }
     ]
   ],
