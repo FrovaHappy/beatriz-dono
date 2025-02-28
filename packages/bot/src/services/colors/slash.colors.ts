@@ -2,19 +2,19 @@ import { CommandNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
 import { ActionRowBuilder, type Locale, SlashCommandBuilder, type StringSelectMenuBuilder } from 'discord.js'
 import db from '@db'
-import messages, { messagesColors } from '@/messages'
 import msgCreatePointerColor from './msg.createPointerColor'
 import { changeColor } from './shared/changeColor'
 import msgShowMenu from './msg.showMenu'
-import { parseToLatest, type ColorsTemplete } from '@libs/schemas/colorsTemplete'
+import { validate } from '@libs/schemas/colorsTemplete'
 
-const customColorsOptions = (locale: Locale, templete: ColorsTemplete | null) => {
+const customColorsOptions = (locale: Locale, templete: string | null) => {
   const menu = globalThis.menus<'string'>('selectColors').get(locale)
   if (!templete) {
     return menu
   }
-  const latest = parseToLatest(templete)
-  menu.setOptions(latest.colors.map(c => ({ label: c.label, value: c.hex_color, emoji: c.emoji })))
+  const latest = validate(templete)
+  if (latest.error) return menu
+  menu.setOptions(latest.data.colors.map(c => ({ label: c.label, value: c.hex_color, emoji: c.emoji })))
   return menu
 }
 
@@ -44,7 +44,7 @@ export default new BuildCommand({
   execute: async i => {
     const { guildId, locale } = i
     const roles = i.guild?.roles.cache
-    if (!guildId) return messages.guildIdNoFound(locale)
+    if (!guildId) throw new Error('Guild ID not found')
 
     const { pointer_id, colors, templete } = await db.colors.read(guildId)
     const colorPointerId = roles?.get(pointer_id ?? '0')?.id

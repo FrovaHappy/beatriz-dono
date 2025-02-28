@@ -2,9 +2,9 @@ import BuildModal from '@/core/build/BuildModal'
 import db from '@/database'
 import { ButtonStyle, TextInputStyle } from 'discord.js'
 import { validate, COLORS_PLACEHOLDER } from '@libs/schemas/colorsTemplete'
-import { messagesColors } from '@/messages'
 import msgCreatePointerColor from '../msg.createPointerColor'
 import msgErrorWithInput from './msg.errorWithInput'
+import msgUpdatedTemplete from './msg.updatedTemplete'
 
 export default new BuildModal({
   customId: 'editColorsTemplate',
@@ -70,8 +70,8 @@ export default new BuildModal({
     // update database
     await db.colors.update({
       guild_id: guildId,
-      templete: jsonColors.data
+      templete: JSON.stringify(jsonColors.data)
     })
-    return messagesColors.editColorTemplate.success(locale)
+    return msgUpdatedTemplete.getMessage(locale, {})
   }
 })
