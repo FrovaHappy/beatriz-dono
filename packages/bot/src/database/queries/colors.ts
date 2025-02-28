@@ -2,6 +2,7 @@ import crypto from 'node:crypto'
 import client, { formatResponse } from '../clientSQL'
 import type { ColorsTemplete } from '@libs/schemas/colorsTemplete'
 import { regexHexColor, regexRole } from '@libs/regex'
+import { toJson } from '@/shared/general'
 export interface Color {
   hex_color: string
   role_id: string
@@ -10,7 +11,7 @@ export interface ColorSetting {
   guild_id: string
   is_active: boolean
   pointer_id: string | null
-  templete: ColorsTemplete | null
+  templete: string | null
 }
 
 const queryColorsSettings = async (guild_id: string) => {
@@ -121,14 +122,23 @@ export const deleteColors = async (guild_id: string, colors: Color[]) => {
 export const updateColorSetting = async (props: Partial<ColorSetting> & { guild_id: string }) => {
   const { guild_id, pointer_id, templete } = props
   const toUpdate = [
-    ['pointer_id', pointer_id],
-    ['templete', templete]
-  ].filter(([, value]) => value)
+    {
+      key: 'pointer_id',
+      forUpdate: !!pointer_id,
+      value: pointer_id
+    },
+    {
+      key: 'templete',
+      forUpdate: !!templete,
+      value: templete
+    }
+  ].filter(v => v.forUpdate)
   await client.execute({
     queries: `
-      ${toUpdate.length > 0 ? `UPDATE ColorSetting SET ${toUpdate.map(([key, value]) => `${key} = ${value}`).join(', ')} WHERE guild_id = $guild_id` : ''};
+      ${toUpdate.length > 0 ? `UPDATE ColorSetting SET ${toUpdate.map(v => `${v.key} = $${v.key}`).join(', ')} WHERE guild_id = $guild_id` : ''};
     `,
-    args: { guild_id }
+    // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
+    args: { guild_id, ...toUpdate.reduce((acc, v) => ({ ...acc, [v.key]: v.value }), {}) }
   })
   const colorSetting = await queryColorsSettings(guild_id)
   return {

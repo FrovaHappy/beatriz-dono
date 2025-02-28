@@ -1,4 +1,4 @@
-import type { Client, ResultSet as Res } from '@libsql/client'
+import type { Client, ResultSet as Res, InArgs } from '@libsql/client'
 import { readFile } from 'node:fs/promises'
 const { createClient } = require('@libsql/client')
 
@@ -34,7 +34,7 @@ const Cli = createClient({
 type Value = null | string | number | bigint | ArrayBuffer | boolean
 interface Execute {
   queries: string
-  args?: Record<string, Value>
+  args?: InArgs
 }
 
 async function execute({ queries, args = {} }: Execute) {
