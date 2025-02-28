@@ -36,7 +36,8 @@ export type validateResult =
   | { error: false; data: ColorsTemplete }
   | { error: true; data: { title: string; description: string } }
 
-export const validate = (s: string): validateResult => {
+export const validate = (s: string | null): validateResult => {
+  if (!s) return { error: false, data: { version: 'v1', colors: [] } }
   try {
     const sdata = JSON.parse(s, (k, v) => {
       try {
