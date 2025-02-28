@@ -46,12 +46,8 @@ export const validate = (s: string | null): validateResult => {
         return v
       }
     })
-
     const data = schemaColorsV1.parse(sdata)
-    console.log(data)
-
     const latest = parseToLatest(data)
-
     return { error: false, data: latest }
   } catch (error) {
     if (error instanceof z.ZodError) {

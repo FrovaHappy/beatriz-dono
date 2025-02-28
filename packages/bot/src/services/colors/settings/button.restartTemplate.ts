@@ -32,7 +32,6 @@ export default new BuildButton({
     const restartTemplate = validate(templete)
     if (restartTemplate.error) return msgRestartTemplate.getMessage(locale, {})
     restartTemplate.data.colors = []
-    console.log(restartTemplate.data)
     // update database
     await db.colors.update({ guild_id: guildId, templete: JSON.stringify(restartTemplate.data) })
     return msgRestartTemplate.getMessage(locale, {})
