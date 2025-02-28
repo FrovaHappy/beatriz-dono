@@ -14,6 +14,7 @@ const customColorsOptions = (locale: Locale, templete: string | null) => {
   }
   const latest = validate(templete)
   if (latest.error) return menu
+  if (latest.data.colors.length === 0) return menu
   menu.setOptions(latest.data.colors.map(c => ({ label: c.label, value: c.hex_color, emoji: c.emoji })))
   return menu
 }
