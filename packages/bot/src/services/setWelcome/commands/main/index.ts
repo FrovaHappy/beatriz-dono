@@ -1,5 +1,5 @@
 import { CommandNames } from '@/const/interactionsNames'
-import { stringToJson } from '@/shared/general'
+import { toJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@libs/formatterText'
@@ -43,7 +43,7 @@ export default new BuildCommand({
   async execute(i) {
     const serverId = i.guild?.id
     if (!serverId) return { content: 'error with server id' }
-    const image = stringToJson(i.options.getString('image')) ?? WELCOME
+    const image = toJson(i.options.getString('image')) ?? WELCOME
     const message = i.options.getString('message') ?? ' welcome to {{server_name}} {{user_name}}'
     const channelId = i.options.getChannel('channel', true).id
     const send = i.options.getString('send', true) as SendWelcome
