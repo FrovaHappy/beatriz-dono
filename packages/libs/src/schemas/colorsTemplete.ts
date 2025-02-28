@@ -1,21 +1,21 @@
-import { regexEmoji, regexHexColor } from 'regex'
-import { z } from 'zod'
+import re from '../regex'
+import { z, literal, string, array, object } from 'zod'
 import colors from './templete.colorTemplete'
 
-const schemaColorsV1 = z.object({
-  version: z.literal('v1'),
-  colors: z.array(
-    z.object({
-      label: z.string().min(1).max(20),
-      hex_color: z.string().regex(regexHexColor),
-      emoji: z.string().regex(regexEmoji).optional(),
-      description: z.string().min(1).max(50).optional()
+const schemaColorsV1 = object({
+  version: literal('v1'),
+  colors: array(
+    object({
+      label: string(),
+      hex_color: string().toLowerCase().regex(re.hexColor),
+      emoji: string().regex(re.emoji).optional(),
+      description: string().optional()
     })
   )
 })
-const schemaColors = schemaColorsV1 //z.union([schemaColorsV1, schemaColorsV2])
+// const schemaColors = z.union([schemaColorsV1, schemaColorsV2])
 
-export type ColorsTemplete = z.infer<typeof schemaColors>
+export type ColorsTemplete = z.infer<typeof schemaColorsV1>
 export type ColorsTempleteLatest = z.infer<typeof schemaColorsV1>
 
 const parseToLatest = (data: ColorsTemplete): ColorsTempleteLatest => {
@@ -38,7 +38,16 @@ export type validateResult =
 
 export const validate = (s: string): validateResult => {
   try {
-    const data = schemaColors.parse(schemaColors.parse(JSON.parse(s)))
+    const sdata = JSON.parse(s, (k, v) => {
+      try {
+        return JSON.parse(v)
+      } catch (error) {
+        return v
+      }
+    })
+
+    const data = schemaColorsV1.parse(sdata)
+    console.log(data)
 
     const latest = parseToLatest(data)
 
@@ -53,6 +62,7 @@ export const validate = (s: string): validateResult => {
         }
       }
     }
+    console.log(error)
     return {
       error: true,
       data: {
