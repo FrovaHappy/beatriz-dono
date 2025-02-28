@@ -4,7 +4,7 @@
       "es2024",
       "DOM"
     ],
-    "module": "node16",
+    "module": "ESNext",
     "target": "es2024",
     "outDir": "dist",
     "rootDirs": [
@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": [
       "vitest/globals",
