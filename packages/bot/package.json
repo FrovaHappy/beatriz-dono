@@ -6,14 +6,16 @@
     "start": "tsx src/index.ts"
   },
   "paths": {
-    "@/libs/*": ["../libs/dist/*"]
+    "@/libs/*": [
+      "../libs/dist/*"
+    ]
   },
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.64",
+    "@napi-rs/canvas": "^0.1.67",
     "cors": "2.8.5",
-    "discord.js": "^14.16.3",
-    "dotenv": "^16.4.5",
-    "express": "4.21.1",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "express": "4.21.2",
     "express-rate-limit": "^7.5.0",
     "express-session": "1.18.1",
     "module-alias": "^2.2.3",
@@ -28,7 +30,6 @@
     "@types/module-alias": "^2.0.4",
     "@types/passport": "^1.0.17",
     "@types/passport-discord": "^0.1.14",
-    "nodemon": "3.1.7",
     "ts-node": "10.9.2"
   }
 }

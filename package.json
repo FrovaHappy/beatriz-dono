@@ -21,12 +21,12 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "22.13.5",
+    "@types/node": "22.13.9",
     "@vitest/ui": "3.0.7",
     "nodemon": "3.1.9",
     "tsx": "4.19.3",
     "turbo": "2.4.4",
-    "typescript": "5.7.3",
+    "typescript": "5.8.2",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.0.7"
   },
