@@ -1,6 +1,3 @@
-import getPixels from 'get-pixels'
-
-type PixelData = Parameters<Parameters<typeof getPixels>[2]>[1]
 type Color = {
   r: number
   g: number
@@ -8,7 +5,7 @@ type Color = {
 }
 const TOLERANCE = 0.1
 
-function createPixelArray(imgData: PixelData['data']) {
+function createPixelArray(imgData: Uint8Array<ArrayBufferLike>) {
   const rgbValues = []
   // note that we are loop in every 4!
   // for every Red, Green, Blue and Alpha
@@ -25,17 +22,6 @@ function createPixelArray(imgData: PixelData['data']) {
   return rgbValues
 }
 
-function loadImg(img: string) {
-  return new Promise<PixelData>((resolve, reject) => {
-    getPixels(img, (err, data) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(data)
-      }
-    })
-  })
-}
 const findBiggestColorRange = (rgbValues: Color[]) => {
   /**
    * Min is initialized to the maximum value posible
@@ -147,9 +133,19 @@ export async function getPallete(url: string, colorCount: number, quality: numbe
   const options = { quality, colorCount }
   if (options.quality > 10) options.quality = 10
   if (options.colorCount > 100) options.colorCount = 100
-  const pixels = await loadImg(url)
-  if (!pixels) return null
-  const pixelArray = createPixelArray(pixels.data)
+
+  const data = await fetch(url)
+    .then(res => {
+      if (res.status !== 200 || !res.ok) return null
+      return res.arrayBuffer()
+    })
+    .catch(err => {
+      return null
+    })
+  if (!data) return null
+  const pixels = new Uint8Array(data)
+
+  const pixelArray = createPixelArray(pixels)
   const palette = quantization(pixelArray, options.quality)
   return options.colorCount >= 1 ? palette.slice(0, options.colorCount) : palette
 }
