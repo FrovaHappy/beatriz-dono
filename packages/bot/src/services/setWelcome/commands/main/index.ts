@@ -4,7 +4,6 @@ import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import BuildCommand from '@core/build/BuildCommand'
 import formatterText from '@libs/formatterText'
 import WELCOME from '@libs/PaintCanvas/template.welcome'
-import { SendWelcome } from '@prisma/client'
 import { Colors, EmbedBuilder, type GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { validateCanvas } from '@libs/PaintCanvas/schema.welcome.v1'
 import { formattedErrorZod } from '@/shared/formattedErrorZod'
@@ -27,12 +26,7 @@ export default new BuildCommand({
       op
         .setName('send')
         .setDescription('send the message with')
-        .addChoices(
-          { name: 'All', value: SendWelcome.all },
-          { name: 'alone message', value: SendWelcome.alone_message },
-          { name: 'Alone Image', value: SendWelcome.alone_image },
-          { name: 'none', value: SendWelcome.none }
-        )
+        .addChoices({ name: 'All', value: 'all' })
         .setRequired(true)
     )
     .addStringOption(op => op.setName('message').setDescription('message to send').setRequired(false))
@@ -46,7 +40,7 @@ export default new BuildCommand({
     const image = toJson(i.options.getString('image')) ?? WELCOME
     const message = i.options.getString('message') ?? ' welcome to {{server_name}} {{user_name}}'
     const channelId = i.options.getChannel('channel', true).id
-    const send = i.options.getString('send', true) as SendWelcome
+    const send = i.options.getString('send', true)
     const validate = validateCanvas(image)
     console.log({ validate, image })
     if (!validate.ok) {
