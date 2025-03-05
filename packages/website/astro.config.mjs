@@ -11,6 +11,7 @@ export default defineConfig({
     starlight({
       plugins: [starlightThemeRapide()],
       title: 'Beatriz Dono',
+      favicon: 'public/favicon.jpg',
       lastUpdated: true,
       social: {
         github: 'https://github.com/FrovaHappy/beatriz-dono',
