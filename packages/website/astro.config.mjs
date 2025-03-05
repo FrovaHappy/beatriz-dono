@@ -21,6 +21,9 @@ export default defineConfig({
       }
     },
     disable404Route: true,
-    editLink: { baseUrl: 'https://github.com/FrovaHappy/beatriz-dono/tree/main/packages/website/' }
+    editLink: { baseUrl: 'https://github.com/FrovaHappy/beatriz-dono/tree/main/packages/website/' },
+    customCss: [
+      'src/assets/docs.css'
+    ]
   })]
 })
