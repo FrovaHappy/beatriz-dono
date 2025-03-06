@@ -7,7 +7,6 @@ enum Status {
   ERROR = 'error'
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function postSetting(apiUrl: string, guildId: string, body: Partial<SettingContract>, deps: any[]) {
   const [status, setStatus] = useState<Status>(Status.LOADING)
   const [setting, setSetting] = useState<SettingContract>()

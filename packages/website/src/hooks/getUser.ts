@@ -7,7 +7,6 @@ export enum Status {
   ERROR = 'error'
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function getUser(apiUrl: string, deps: any[]) {
   const [user, setUser] = useState<UserContract>()
   const [status, setStatus] = useState<Status>(Status.LOADING)
@@ -35,7 +34,6 @@ export default function getUser(apiUrl: string, deps: any[]) {
           id: data.id,
           username: data.username,
           avatar: data.avatar,
-          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
           guilds: data.guilds.map((guild: any) => {
             return {
               id: guild.id,

@@ -3,7 +3,6 @@ import { z } from 'zod'
 
 export default function getPublic(string: string) {
   try {
-    console.log(string)
     const data = JSON.parse(string)
     return z
       .object({

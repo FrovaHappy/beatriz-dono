@@ -6,7 +6,6 @@ enum Status {
   ERROR = 'error'
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function usSetting(apiUrl: string, id: string, deps: any[]) {
   const [status, setStatus] = useState<Status>(Status.LOADING)
   const [setting, setSetting] = useState<SettingContract>()
