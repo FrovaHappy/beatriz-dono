@@ -1,6 +1,6 @@
 ---
 import Contributions from "../components/Landing/Contributions.astro";
-import Feacture from "../components/Landing/Feacture.astro";
+import Feature from "../components/Landing/Feature.astro";
 import Hero from "../components/Landing/Hero.astro";
 import RoadMap from "../components/Landing/RoadMap.astro";
 import Layout from "../layouts/Layout.astro";
@@ -10,7 +10,7 @@ import Layout from "../layouts/Layout.astro";
   <main>
     <Hero />
     <Contributions />
-    <Feacture title="Gestión de colores" image="/assets/feacture_color.png">
+    <Feature title="Gestión de colores" image="/assets/feacture_color.png">
       <p>
         Con Beatriz~Dono, puedes personalizar el color de tu nickname con más de <span
           >16 mil opciones</span
@@ -25,8 +25,8 @@ import Layout from "../layouts/Layout.astro";
       <a href="/es/modules/colors" class="button button--secondary"
         >Aprende más sobre los Roles de Colores</a
       >
-    </Feacture>
-    <Feacture
+    </Feature>
+    <Feature
       title="Bienvenidas"
       image="/assets/feacture_welcome.png"
       imageAlign="right"
@@ -45,7 +45,7 @@ import Layout from "../layouts/Layout.astro";
       <a href="/es/modules/welcome" class="button button--secondary"
         >Aprende más sobre Bienvenidas</a
       >
-    </Feacture>
+    </Feature>
     <RoadMap />
   </main>
 </Layout>
