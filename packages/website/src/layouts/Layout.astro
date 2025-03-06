@@ -3,17 +3,22 @@ import Nav from "../components/Nav.astro";
 
 interface Props {
   title: string;
+  description?: string;
   showFooter?: boolean;
 }
 
-const { title, showFooter = true } = Astro.props;
+const {
+  title,
+  showFooter = true,
+  description = "Best bot for Discord, Beatriz Dono.",
+} = Astro.props as Props;
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
+    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/jpg" href="/favicon.jpg" />
     <link
