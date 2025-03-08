@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import type { Setting } from '@prisma/client'
 import { z } from 'zod'
 import p from 'picocolors'
 ;(() => {
@@ -77,7 +76,7 @@ const setting = {
   linkKofi: 'https://ko-fi.com/frovahappy',
   linkTopgg: 'https://top.gg/bot/971562890702237766',
   linkBotList: 'https://discordbotlist.com/bots/beatrizdono-beta'
-} as Omit<Setting, 'id'>
+}
 
 const config = {
   setting,
