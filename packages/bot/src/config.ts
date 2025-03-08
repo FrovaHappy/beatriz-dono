@@ -1,7 +1,8 @@
 import 'dotenv/config'
-import { z } from 'zod'
 import p from 'picocolors'
-;(() => {
+
+import { z } from 'zod'
+const runValidation = () => {
   const envSchema = z.object({
     DATABASE_URL: z.string(),
     PRIVATE: z.string(),
@@ -19,7 +20,8 @@ import p from 'picocolors'
     }
     process.exit(1)
   }
-})()
+}
+runValidation()
 
 const parsePrivate = (s: string) => {
   const privateSchema = z
