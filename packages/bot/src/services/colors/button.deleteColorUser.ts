@@ -1,9 +1,9 @@
 import BuildButton from '@/core/build/BuildButtons'
-import { messagesColors } from '@/messages'
 import db from '@db'
 import { ButtonStyle } from 'discord.js'
 import msgCreatePointerColor from './msg.createPointerColor'
 import { removeRolesOfUser } from './shared/removeRoles'
+import msgColorOfUserDeleted from './msg.colorOfUserDeleted'
 
 export default new BuildButton({
   customId: 'deleteColor',
@@ -30,6 +30,6 @@ export default new BuildButton({
     if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
 
     const logDeleteRoles = await removeRolesOfUser(roles, colors, i)
-    return messagesColors.deleteColorUser(locale, logDeleteRoles.total)
+    return msgColorOfUserDeleted.getMessage(locale, { '{{slot0}}': logDeleteRoles.total.toString() })
   }
 })

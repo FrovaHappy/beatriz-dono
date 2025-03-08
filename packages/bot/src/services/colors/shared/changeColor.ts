@@ -1,5 +1,4 @@
 import type { Color } from '@/database/queries/colors'
-import { messagesColors } from '@/messages'
 import type { GuildMemberRoleManager, Interaction, Locale } from 'discord.js'
 import createColorRole from './createColorRole'
 import msgColorChanged from './msg.colorChanged'

@@ -1,7 +1,7 @@
 import { CommandNames } from '@/const/interactionsNames'
-import { messagesAboutMe } from '@/messages'
 import BuildCommand from '@core/build/BuildCommand'
 import { SlashCommandBuilder } from 'discord.js'
+import msgAboutMe from './msg.aboutMe'
 
 const command = new BuildCommand({
   data: new SlashCommandBuilder()
@@ -18,7 +18,7 @@ const command = new BuildCommand({
   scope: 'public',
   ephemeral: true,
   execute: async i => {
-    return messagesAboutMe.main(i.locale)
+    return msgAboutMe.getMessage(i.locale, {})
   }
 })
 
