@@ -1,4 +1,3 @@
-import { CommandNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
 import { SlashCommandBuilder } from 'discord.js'
 import msgAboutMe from './msg.aboutMe'
@@ -14,7 +13,7 @@ const command = new BuildCommand({
       'es-ES': 'Obtén información sobre mí.',
       'en-US': 'Get information about me.'
     }),
-  name: CommandNames.aboutMe,
+  name: 'about-me',
   scope: 'public',
   ephemeral: true,
   execute: async i => {

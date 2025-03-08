@@ -1,4 +1,3 @@
-import { CommandNames } from '@/const/interactionsNames'
 import { formattedErrorZod } from '@/shared/formattedErrorZod'
 import { toJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
@@ -10,7 +9,7 @@ import { Colors, EmbedBuilder, type GuildMember, PermissionFlagsBits, SlashComma
 
 export default new BuildCommand({
   cooldown: 0,
-  name: CommandNames.welcomeSet,
+  name: 'welcome',
   ephemeral: true,
   scope: 'owner',
   data: new SlashCommandBuilder()

@@ -1,4 +1,3 @@
-import { CommandNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
 import db from '@db'
 import { validate } from '@libs/schemas/colorsTemplete'
@@ -20,7 +19,7 @@ const customColorsOptions = (locale: Locale, templete: string | null) => {
 }
 
 export default new BuildCommand({
-  name: CommandNames.colors,
+  name: 'colors',
   ephemeral: true,
   scope: 'public',
   permissionsBot: ['ManageRoles'],
