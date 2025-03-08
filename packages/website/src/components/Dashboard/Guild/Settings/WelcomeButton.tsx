@@ -17,7 +17,6 @@ export default function welcomeButton(props: Props) {
   const [check, setCheck] = useState(checked)
   const { setting, status } = postSetting(apiUrl, guildId, updateSetting, [check])
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleChange = (e: any) => {
     setUpdateSetting({ welcomeActive: e.target.checked })
     setCheck(e.target.checked)

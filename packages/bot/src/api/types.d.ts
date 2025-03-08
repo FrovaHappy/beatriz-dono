@@ -1,7 +1,6 @@
 export interface JsonResponse {
   ok: boolean
   message: string
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: any
 }
 

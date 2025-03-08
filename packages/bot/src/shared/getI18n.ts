@@ -1,6 +1,5 @@
 import { Locale } from 'discord.js'
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function rewriteObjet<T>(original: any, remplace: any): T {
   const newObjet = original
   if (!remplace) return newObjet

@@ -18,7 +18,6 @@ export async function putGuildCommands(guildsIds: string[], commands: CommandDat
       await rest.put(Routes.applicationGuildCommands(config.env.discord.applicationId, guildId), {
         body: commands
       })
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       errors.push(guildId)
     }
@@ -32,7 +31,6 @@ export async function putGlobalCommands(commands: CommandDataJson[]) {
     await rest.put(Routes.applicationCommands(config.env.discord.applicationId), {
       body: commands
     })
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (error: any) {
     console.log(`  ∷ error deploying global commands: ${pc.bold(error.message)}`)
     return

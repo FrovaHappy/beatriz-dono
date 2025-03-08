@@ -5,7 +5,7 @@
   "packageManager": "npm@11.1.0",
   "workspaces": ["packages/*"],
   "scripts": {
-    "lint": "biome check --write --diagnostic-level=error",
+    "lint": "biome check --write --diagnostic-level=warn",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "dev": "env-cmd turbo dev",

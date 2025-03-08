@@ -141,7 +141,6 @@ export function isShape(layer: Text | Shape): layer is Shape {
   return layer.type === 'shape'
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function validateCanvas(data: any) {
   try {
     canvasSchema.parse(data)
