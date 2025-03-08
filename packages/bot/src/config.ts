@@ -73,8 +73,8 @@ const setting = {
   ownersServers: [env.discord.guildOwner],
   linkDiscord: 'https://discord.gg/JRpHsGC8YQ',
   linkGithub: 'https://github.com/FrovaHappy/beatriz-dono',
-  linkDocumentation: 'https://frovahappy.gitbook.io/beatriz-bot-docs/',
-  linkWebsite: 'https://beatriz-dono.vercel.app/',
+  linkDocumentation: 'https://beatrizbot.vercel.app/home',
+  linkWebsite: 'https://beatrizbot.vercel.app/',
   linkKofi: 'https://ko-fi.com/frovahappy',
   linkTopgg: 'https://top.gg/bot/971562890702237766',
   linkBotList: 'https://discordbotlist.com/bots/beatrizdono-beta'
