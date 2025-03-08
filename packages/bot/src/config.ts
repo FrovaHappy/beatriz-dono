@@ -67,7 +67,7 @@ const env = {
 }
 const setting = {
   cooldown: 5, // 5 segundos
-  privatesServers: [],
+  privatesServers: [] as string[],
   ownersServers: [env.discord.guildOwner],
   linkDiscord: 'https://discord.gg/JRpHsGC8YQ',
   linkGithub: 'https://github.com/FrovaHappy/beatriz-dono',
