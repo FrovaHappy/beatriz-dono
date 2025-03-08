@@ -1,12 +1,12 @@
 import { CommandNames } from '@/const/interactionsNames'
+import { formattedErrorZod } from '@/shared/formattedErrorZod'
 import { toJson } from '@/shared/general'
 import SendWelcomeWith from '@/shared/sendWelcomeWith'
 import BuildCommand from '@core/build/BuildCommand'
-import formatterText from '@libs/formatterText'
-import WELCOME from '@libs/PaintCanvas/template.welcome'
-import { Colors, EmbedBuilder, type GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { validateCanvas } from '@libs/PaintCanvas/schema.welcome.v1'
-import { formattedErrorZod } from '@/shared/formattedErrorZod'
+import WELCOME from '@libs/PaintCanvas/template.welcome'
+import formatterText from '@libs/formatterText'
+import { Colors, EmbedBuilder, type GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 
 export default new BuildCommand({
   cooldown: 0,

@@ -1,9 +1,9 @@
 import { ButtonNames, MenuNames } from '@/const/interactionsNames'
+import getI18n, { type I18ns } from '@/shared/getI18n'
 import type { MessageOptions } from '@/types/main'
 import formatterText from '@libs/formatterText'
 import { type ColorsTemplete, parseToLatest } from '@libs/schemas/colorsTemplete'
-import { ActionRowBuilder, Colors, StringSelectMenuBuilder, type Locale } from 'discord.js'
-import getI18n, { type I18ns } from '@/shared/getI18n'
+import { ActionRowBuilder, Colors, type Locale, StringSelectMenuBuilder } from 'discord.js'
 
 interface I18n {
   title: string

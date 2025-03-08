@@ -1,12 +1,12 @@
 /* Dark mode colors. */
 :root {
-	--sl-color-accent-low: #440d10 !important;
-	--sl-color-accent: #b30047 !important;
-	--sl-color-accent-high: #ff0066 !important;
+  --sl-color-accent-low: #440d10 !important;
+  --sl-color-accent: #b30047 !important;
+  --sl-color-accent-high: #ff0066 !important;
 }
 /* Light mode colors. */
-:root[data-theme='light'] {
-	--sl-color-accent-low: #ff837a !important;
-	--sl-color-accent: #db022a !important;
-	--sl-color-accent-high: #ff0066 !important;
+:root[data-theme="light"] {
+  --sl-color-accent-low: #ff837a !important;
+  --sl-color-accent: #db022a !important;
+  --sl-color-accent-high: #ff0066 !important;
 }

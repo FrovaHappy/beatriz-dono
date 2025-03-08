@@ -6,9 +6,7 @@
     "start": "tsx src/index.ts"
   },
   "paths": {
-    "@/libs/*": [
-      "../libs/dist/*"
-    ]
+    "@/libs/*": ["../libs/dist/*"]
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.67",

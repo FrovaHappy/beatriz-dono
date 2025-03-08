@@ -9,13 +9,13 @@ import type {
 import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
 
 import type { CommandNames } from '@/const/interactionsNames'
+import msgCaptureError from './msg.captureError'
+import msgCooldownTimeout from './msg.cooldownTimeout'
 import { hasAccessForScope } from './shared/hasAccessForScope'
 import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
-import msgCaptureError from './msg.captureError'
+import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
 import parsePermissions from './shared/parsePermissions'
-import msgCooldownTimeout from './msg.cooldownTimeout'
-import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 /**
  * #### Constructor
  * * ` data `: The SlashCommandBuilder.setName(name) is Optional

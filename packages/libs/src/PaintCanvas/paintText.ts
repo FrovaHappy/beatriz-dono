@@ -1,7 +1,7 @@
-import type { Text } from './schema.welcome.v1'
 import type { Guild, User } from '@type/index'
 import { formatterTextUser } from '../formatterText'
 import { buildFilter } from './buildFilter'
+import type { Text } from './schema.welcome.v1'
 
 interface PaintTextProps {
   ctx: CanvasRenderingContext2D

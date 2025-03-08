@@ -1,9 +1,9 @@
 import BuildButton from '@/core/build/BuildButtons'
-import { ButtonStyle } from 'discord.js'
-import { removeRolesOfUser } from './shared/removeRoles'
 import { messagesColors } from '@/messages'
 import db from '@db'
+import { ButtonStyle } from 'discord.js'
 import msgCreatePointerColor from './msg.createPointerColor'
+import { removeRolesOfUser } from './shared/removeRoles'
 
 export default new BuildButton({
   customId: 'deleteColor',

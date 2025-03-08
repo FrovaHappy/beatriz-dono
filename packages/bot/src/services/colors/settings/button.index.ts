@@ -1,8 +1,8 @@
 import BuildButton from '@/core/build/BuildButtons'
-import { messagesColors } from '@/messages'
 import db from '@/database'
-import msgColorPointerCreated from '../msg.ColorPointerCreated'
+import { messagesColors } from '@/messages'
 import { ButtonStyle } from 'discord.js'
+import msgColorPointerCreated from '../msg.ColorPointerCreated'
 import msgIndex from './msg.index'
 
 export default new BuildButton({

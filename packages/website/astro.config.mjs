@@ -1,8 +1,8 @@
+import react from '@astrojs/react'
+import starlight from '@astrojs/starlight'
 // @ts-check
 import { defineConfig } from 'astro/config'
 import starlightThemeRapide from 'starlight-theme-rapide'
-import starlight from '@astrojs/starlight'
-import react from '@astrojs/react'
 
 // https://astro.build/config
 export default defineConfig({

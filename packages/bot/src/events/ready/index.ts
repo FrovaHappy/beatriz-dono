@@ -1,8 +1,8 @@
+import startApi from '@/api'
 import BuildEvent from '@core/build/BuildEvent'
 import { Events } from 'discord.js'
 import pc from 'picocolors'
 import updateBot from './updateBot'
-import startApi from '@/api'
 
 export default new BuildEvent({
   name: Events.ClientReady,

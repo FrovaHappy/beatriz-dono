@@ -1,5 +1,5 @@
+import type { NextFunction, Request, Response } from 'express'
 import z, { type ZodAny } from 'zod'
-import type { Request, Response, NextFunction } from 'express'
 
 export interface ValidateZodProps {
   body?: z.ZodTypeAny

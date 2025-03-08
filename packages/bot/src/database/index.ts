@@ -1,5 +1,5 @@
-import { readColors, deleteColors, insertColors, updateColorSetting } from './queries/colors'
-import { readGuild, getGuilds } from './queries/guild'
+import { deleteColors, insertColors, readColors, updateColorSetting } from './queries/colors'
+import { getGuilds, readGuild } from './queries/guild'
 import { readWelcome } from './queries/welcome'
 
 export default {

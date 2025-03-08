@@ -1,8 +1,8 @@
 import Loader from '@components/General/Loader'
 import getSetting from '@hooks/getSetting'
 import { useMemo } from 'react'
-import ColorsButton from '../Settings/ColorsButton'
 import cssButtonsEnabledInLine from '../ButtonsEnabledInLine.module.scss'
+import ColorsButton from '../Settings/ColorsButton'
 
 interface Props {
   apiUrl: string

@@ -1,6 +1,6 @@
 import getUser, { Status } from '../../hooks/getUser'
-import css from './ContainerGuilds.module.scss'
 import CardGuild from './CardGuild'
+import css from './ContainerGuilds.module.scss'
 
 interface ContainerGuildsProps {
   apiUrl: string

@@ -1,8 +1,8 @@
 import BuildMenu from '@/core/build/BuildMenu'
-import { Collection } from 'discord.js'
-import { removeRolesOfServer } from '../../shared/removeRoles'
 import db from '@/database'
+import { Collection } from 'discord.js'
 import msgCreatePointerColor from '../../msg.createPointerColor'
+import { removeRolesOfServer } from '../../shared/removeRoles'
 import msgQuestDeleteAll from './msg.questDeleteAll'
 import msgQuestDeleteAsome from './msg.questDeleteAsome'
 

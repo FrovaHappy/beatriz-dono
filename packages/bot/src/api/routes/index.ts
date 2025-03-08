@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { getUser } from '../controllers/user'
-import session from '../controllers/session'
 import getSetting, { validateGetSetting } from '../controllers/guild/getSetting'
 import postSetting, { validatePostSetting } from '../controllers/guild/postSetting'
+import session from '../controllers/session'
+import { getUser } from '../controllers/user'
 import isAuthenticated from '../shared/isAuthenticated'
 import validateZod from '../shared/validateZod'
 

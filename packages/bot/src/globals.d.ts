@@ -1,11 +1,11 @@
 /* eslint-disable no-var */
 import type { Collection } from 'discord.js'
-import type { ButtonNames, CommandNames, MenuNames, ModalNames } from './const/interactionsNames'
+import type { JsonResponse } from './api/types'
 import type { Config } from './config'
+import type { ButtonNames, CommandNames, MenuNames, ModalNames } from './const/interactionsNames'
+import type { GetButton, GetMenu, GetModal } from './core/getServices'
 import type { Button } from './shared/BuildButtons'
 import type { Command } from './shared/BuildCommand'
-import type { JsonResponse } from './api/types'
-import type { GetButton, GetMenu, GetModal } from './core/getServices'
 declare global {
   var commands: Collection<CommandNames | string, Command>
   var buttons: GetButton

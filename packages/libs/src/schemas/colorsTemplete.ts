@@ -1,5 +1,5 @@
+import { array, literal, object, string, z } from 'zod'
 import re from '../regex'
-import { z, literal, string, array, object } from 'zod'
 import colors from './templete.colorTemplete'
 
 const schemaColorsV1 = object({

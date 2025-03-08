@@ -10,7 +10,7 @@ export default async function startClient(): Promise<void> {
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
   })
   globalThis.cooldowns = new Collection()
-  
+
   await loadFonts()
   await getServices()
   await deployCommand(globalThis.commands)

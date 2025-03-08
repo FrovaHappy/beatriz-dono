@@ -1,5 +1,5 @@
-import { mkdir, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
+import { mkdir, writeFile } from 'node:fs/promises'
 import { format, join } from 'node:path'
 
 // TODO: move to config to Database

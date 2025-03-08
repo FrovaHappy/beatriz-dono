@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
 import { Switch } from '@components/General/Switch'
 import type { SettingContract } from '@hooks/contractApi'
 import postSetting from '@hooks/postSetting'
 import { toastCustom } from '@layouts/LayoutReact'
 import type { ComponentProps } from '@src/types'
+import { useEffect, useState } from 'react'
 
 interface Props extends ComponentProps {
   actionCard?: (e: unknown) => void

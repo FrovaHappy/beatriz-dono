@@ -1,6 +1,6 @@
+import { join } from 'node:path'
 import { getFonts } from '@libs/getFonts'
 import { GlobalFonts } from '@napi-rs/canvas'
-import { join } from 'node:path'
 
 export default async function loadFonts() {
   console.time('loadFonts')

@@ -1,13 +1,13 @@
-import paintCanvas from '.'
-import { createCanvas, loadImage, Path2D as Patch } from '@napi-rs/canvas'
-import template from './template.welcome'
-import { formatterTextUser } from '../formatterText'
-import { type Canvas, isShape, MAX_WIDTH_CANVAS, validateCanvas } from './schema.welcome.v1'
-import type { Guild, User } from '../types/index'
 import fs from 'node:fs/promises'
+import { Path2D as Patch, createCanvas, loadImage } from '@napi-rs/canvas'
+import paintCanvas from '.'
+import { formatterTextUser } from '../formatterText'
+import type { Guild, User } from '../types/index'
+import { type Canvas, MAX_WIDTH_CANVAS, isShape, validateCanvas } from './schema.welcome.v1'
+import template from './template.welcome'
 
-import { GlobalFonts } from '@napi-rs/canvas'
 import { join } from 'node:path'
+import { GlobalFonts } from '@napi-rs/canvas'
 import { getFonts } from '../getFonts'
 
 beforeEach(async () => {

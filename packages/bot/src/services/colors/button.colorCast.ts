@@ -1,11 +1,11 @@
 import { getEmoji } from '@/const/emojis'
 import BuildButton from '@/core/build/BuildButtons'
+import db from '@db'
 import { getDominanteColor, rgbToHex } from '@libs/colors'
 import { ButtonStyle } from 'discord.js'
-import { changeColor } from './shared/changeColor'
-import db from '@db'
-import msgCreatePointerColor from './msg.createPointerColor'
 import msgColorCastNotFound from './msg.ColorCastNotFound'
+import msgCreatePointerColor from './msg.createPointerColor'
+import { changeColor } from './shared/changeColor'
 
 export default new BuildButton({
   customId: 'colorCast',

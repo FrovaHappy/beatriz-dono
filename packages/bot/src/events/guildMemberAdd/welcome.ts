@@ -1,6 +1,6 @@
-import type { GuildMember } from 'discord.js'
-import db from '@db'
 import emojis from '@/const/emojis'
+import db from '@db'
+import type { GuildMember } from 'discord.js'
 export default async function welcome(member: GuildMember): Promise<void> {
   const welcomeDb = await db.welcome.read(member.guild.id)
   const channel_id = welcomeDb.channel_id

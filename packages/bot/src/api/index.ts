@@ -1,10 +1,10 @@
-import express from 'express'
-import session from 'express-session'
 import cors from 'cors'
-import passport from 'passport'
-import routers from './routes'
-import discordStrategy from './discordStrategy'
+import express from 'express'
 import { rateLimit } from 'express-rate-limit'
+import session from 'express-session'
+import passport from 'passport'
+import discordStrategy from './discordStrategy'
+import routers from './routes'
 const app = express()
 
 export default async function startApi() {

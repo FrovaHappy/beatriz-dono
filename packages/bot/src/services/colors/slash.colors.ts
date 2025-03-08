@@ -1,11 +1,11 @@
 import { CommandNames } from '@/const/interactionsNames'
 import BuildCommand from '@core/build/BuildCommand'
-import { ActionRowBuilder, type Locale, SlashCommandBuilder, type StringSelectMenuBuilder } from 'discord.js'
 import db from '@db'
-import msgCreatePointerColor from './msg.createPointerColor'
-import { changeColor } from './shared/changeColor'
-import msgShowMenu from './msg.showMenu'
 import { validate } from '@libs/schemas/colorsTemplete'
+import { ActionRowBuilder, type Locale, SlashCommandBuilder, type StringSelectMenuBuilder } from 'discord.js'
+import msgCreatePointerColor from './msg.createPointerColor'
+import msgShowMenu from './msg.showMenu'
+import { changeColor } from './shared/changeColor'
 
 const customColorsOptions = (locale: Locale, templete: string | null) => {
   const menu = globalThis.menus<'string'>('selectColors').get(locale)

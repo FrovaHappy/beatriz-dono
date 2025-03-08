@@ -1,7 +1,7 @@
-import type { Request, Response } from 'express'
+import type { ValidateZodProps } from '@/api/shared/validateZod'
 import rest from '@/rest'
 import db from '@db'
-import type { ValidateZodProps } from '@/api/shared/validateZod'
+import type { Request, Response } from 'express'
 import z from 'zod'
 
 const schemaParams = z.object({ guildId: z.string().max(24) })

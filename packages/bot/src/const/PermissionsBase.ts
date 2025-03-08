@@ -9,4 +9,3 @@ export const PERMISSIONS_BASE_BOT: PermissionResolvable[] = [
   'ReadMessageHistory'
 ]
 export const PERMISSIONS_BASE_USER: PermissionResolvable[] = ['SendMessages', 'ReadMessageHistory']
-

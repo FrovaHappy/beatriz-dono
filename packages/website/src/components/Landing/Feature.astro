@@ -1,13 +1,13 @@
 ---
-import Tag from "../Tag.astro";
+import Tag from '../Tag.astro'
 
 interface Props {
-  title: string;
-  image: string;
-  imageAlign?: "left" | "right";
-  tagTitle?: string;
+  title: string
+  image: string
+  imageAlign?: 'left' | 'right'
+  tagTitle?: string
 }
-const { title, image, imageAlign = "left", tagTitle } = Astro.props;
+const { title, image, imageAlign = 'left', tagTitle } = Astro.props
 ---
 
 <section class={imageAlign} style=":where(span) { color: red; }">

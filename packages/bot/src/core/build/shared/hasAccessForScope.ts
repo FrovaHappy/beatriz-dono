@@ -1,6 +1,6 @@
-import messages from './msg.hasAccessToScope'
 import type { MessageOptions, Scope } from '@/types/main'
 import type { Locale } from 'discord.js'
+import messages from './msg.hasAccessToScope'
 
 export function reorderScope(priv: string[], owner: string[]) {
   const dicc: Record<string, Scope> = {}

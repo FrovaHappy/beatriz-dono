@@ -1,26 +1,26 @@
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import {
   ActionRowBuilder,
-  ModalBuilder,
-  TextInputBuilder,
   type ButtonStyle,
   type Locale,
+  ModalBuilder,
   type ModalSubmitInteraction,
   type PermissionResolvable,
+  TextInputBuilder,
   type TextInputStyle
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
-import baseMessage from './shared/baseMessage'
-import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
 import BuildButton, { type Button } from './BuildButtons'
 import msgCaptureError from './msg.captureError'
-import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
-import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
-import parsePermissions from './shared/parsePermissions'
 import msgCooldownTimeout from './msg.cooldownTimeout'
-import msgHasAccessToScope from './shared/msg.hasAccessToScope'
-import { hasAccessForScope } from './shared/hasAccessForScope'
 import msgLoading from './msg.loading'
+import baseMessage from './shared/baseMessage'
+import { hasAccessForScope } from './shared/hasAccessForScope'
+import isCooldownEnable, { parseTimestamp } from './shared/isCooldownEnable'
+import msgHasAccessToScope from './shared/msg.hasAccessToScope'
+import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
+import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
+import parsePermissions from './shared/parsePermissions'
 interface TextInputTranslate {
   label: string
   placeholder: string

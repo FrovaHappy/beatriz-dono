@@ -1,8 +1,8 @@
 import crypto from 'node:crypto'
-import client, { formatResponse } from '../clientSQL'
-import type { ColorsTemplete } from '@libs/schemas/colorsTemplete'
-import { regexHexColor, regexRole } from '@libs/regex'
 import { toJson } from '@/shared/general'
+import { regexHexColor, regexRole } from '@libs/regex'
+import type { ColorsTemplete } from '@libs/schemas/colorsTemplete'
+import client, { formatResponse } from '../clientSQL'
 export interface Color {
   hex_color: string
   role_id: string

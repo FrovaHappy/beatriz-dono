@@ -1,5 +1,5 @@
+import { ZodError, z } from 'zod'
 import { type FontsFamily, fontsFamily } from '../getFonts'
-import { z, ZodError } from 'zod'
 
 export const MAX_WIDTH_CANVAS = 2000
 

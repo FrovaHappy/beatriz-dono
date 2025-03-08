@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
 import getSetting from '@hooks/getSetting'
+import LayoutReact from '@layouts/LayoutReact'
+import { useEffect, useMemo, useState } from 'react'
+import cssCardSetting from './CardSetting.module.scss'
 import ColorsButton from './ColorsButton'
 import WelcomeButton from './WelcomeButton'
-import LayoutReact from '@layouts/LayoutReact'
-import cssCardSetting from './CardSetting.module.scss'
 interface Props {
   apiUrl: string
   oauthCallback: string

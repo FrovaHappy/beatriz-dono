@@ -1,7 +1,7 @@
 import BuildModal from '@/core/build/BuildModal'
 import db from '@/database'
+import { COLORS_PLACEHOLDER, validate } from '@libs/schemas/colorsTemplete'
 import { ButtonStyle, TextInputStyle } from 'discord.js'
-import { validate, COLORS_PLACEHOLDER } from '@libs/schemas/colorsTemplete'
 import msgCreatePointerColor from '../msg.createPointerColor'
 import msgErrorWithInput from './msg.errorWithInput'
 import msgUpdatedTemplete from './msg.updatedTemplete'

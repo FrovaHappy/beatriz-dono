@@ -1,12 +1,12 @@
 import { Path2D as Path, createCanvas, loadImage } from '@napi-rs/canvas'
 import { AttachmentBuilder, type GuildMember } from 'discord.js'
 
-import type { Canvas } from '@type/index'
 import PaintCanvas from '@libs/PaintCanvas'
-import type { User, Guild } from '@type/index'
-import { rgbToHex, getPallete } from '@libs/colors'
 import { isShape } from '@libs/PaintCanvas/schema.welcome.v1'
+import { getPallete, rgbToHex } from '@libs/colors'
 import { formatterTextUser } from '@libs/formatterText'
+import type { Canvas } from '@type/index'
+import type { Guild, User } from '@type/index'
 
 const getColorCast = async (layerId: string | undefined, layers: Canvas['layers']) => {
   if (!layerId) return undefined

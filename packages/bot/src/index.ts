@@ -1,9 +1,9 @@
 import './paths'
 import './config'
-import startClient from './core/client'
-import getGuilds from './getGuilds'
 import { exit } from 'node:process'
+import startClient from './core/client'
 import { loadTables } from './database/clientSQL'
+import getGuilds from './getGuilds'
 
 const run = async () => {
   await loadTables()

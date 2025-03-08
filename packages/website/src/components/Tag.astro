@@ -1,10 +1,10 @@
 ---
 interface Props {
-  type: "small" | "big";
-  text: string;
-  class?: string;
+  type: 'small' | 'big'
+  text: string
+  class?: string
 }
-const { type, text, class: className } = Astro.props;
+const { type, text, class: className } = Astro.props
 ---
 
 <p class={`tag tag--${type} ${className}`}>{text}</p>

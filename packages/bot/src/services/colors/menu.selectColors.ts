@@ -1,8 +1,8 @@
 import BuildMenu from '@/core/build/BuildMenu'
-import { changeColor } from './shared/changeColor'
 import db from '@db'
-import msgCreatePointerColor from './msg.createPointerColor'
 import { COLORS_PLACEHOLDER } from '@libs/schemas/colorsTemplete'
+import msgCreatePointerColor from './msg.createPointerColor'
+import { changeColor } from './shared/changeColor'
 
 const optionsColors = COLORS_PLACEHOLDER.colors.map(color => ({
   label: color.label,

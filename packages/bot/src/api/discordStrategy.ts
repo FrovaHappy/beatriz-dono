@@ -1,7 +1,7 @@
 import type { DataUser } from '@/api/types'
+import { getGuild } from '@/rest/guild'
 import { PermissionsBitField } from 'discord.js'
 import { Strategy } from 'passport-discord'
-import { getGuild } from '@/rest/guild'
 
 export default new Strategy(
   {

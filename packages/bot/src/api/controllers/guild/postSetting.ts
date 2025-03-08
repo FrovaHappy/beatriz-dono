@@ -1,8 +1,8 @@
-import z from 'zod'
-import type { Request, Response } from 'express'
 import type { ValidateZodProps } from '@/api/shared/validateZod'
 import rest from '@/rest'
 import db from '@db'
+import type { Request, Response } from 'express'
+import z from 'zod'
 
 const schemaBody = z
   .object({

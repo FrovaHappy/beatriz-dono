@@ -1,5 +1,5 @@
-import type { Client, ResultSet as Res, InArgs } from '@libsql/client'
 import { readFile } from 'node:fs/promises'
+import type { Client, InArgs, ResultSet as Res } from '@libsql/client'
 const { createClient } = require('@libsql/client')
 
 export async function loadTables() {
