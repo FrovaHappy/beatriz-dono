@@ -21,7 +21,7 @@
       "suspicious": { "noExplicitAny": "off" },
       "complexity": { "noForEach": "warn" },
       "performance": { "noAccumulatingSpread": "warn" },
-      "correctness": { "useExhaustiveDependencies": "warn" },
+      "correctness": { "useExhaustiveDependencies": "info" },
       "style": { "noNonNullAssertion": "off" },
       "a11y": { "noSvgWithoutTitle": "off" }
     },
