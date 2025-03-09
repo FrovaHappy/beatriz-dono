@@ -3,7 +3,7 @@ import { type FontsFamily, fontsFamily } from '../getFonts'
 import re from '../regex'
 
 export const MAX_WIDTH_CANVAS = 2000
-
+const reUrlImage = re.buildUrlImage(['imgur.com', 'media.discordapp.net', 'i.pinimg.com'])
 const validateColor = z.union([
   z.string().refine((val: string) => re.hexColor.test(val), 'the format has to be #RGB or #RRGGBB'),
   z.literal('transparent')
@@ -63,7 +63,6 @@ const textSchema = z.object({
     .optional(),
   filter: filterSchema.optional()
 })
-const reUrlImage = re.buildUrlImage(['imgur.com', 'media.discordapp.net', 'i.pinimg.com'])
 const shapeSchema = z
   .object({
     id: z.string().min(1).max(100),
