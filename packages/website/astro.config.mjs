@@ -11,6 +11,9 @@ export default defineConfig({
     starlight({
       plugins: [starlightThemeRapide()],
       title: 'Beatriz Dono',
+      logo: {
+        src: 'public/logo.webp'
+      },
       favicon: 'public/favicon.jpg',
       lastUpdated: true,
       social: {
@@ -29,7 +32,33 @@ export default defineConfig({
       },
       disable404Route: true,
       editLink: { baseUrl: 'https://github.com/FrovaHappy/beatriz-dono/tree/main/packages/website/' },
-      customCss: ['src/assets/docs.css']
+      customCss: ['src/assets/docs.css'],
+      sidebar: [
+        {
+          label: 'Getting Started',
+          translations: {
+            en: 'Getting Started',
+            es: 'Empezando'
+          },
+          items: ['home']
+        },
+        {
+          label: 'Modules',
+          translations: {
+            en: 'Modules',
+            es: 'Módulos'
+          },
+          autogenerate: { directory: 'modules' }
+        },
+        {
+          label: 'About Me',
+          translations: {
+            en: 'About Me',
+            es: 'Sobre mi'
+          },
+          autogenerate: { directory: 'about-me' }
+        }
+      ]
     })
   ]
 })
