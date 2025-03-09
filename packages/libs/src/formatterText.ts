@@ -2,7 +2,7 @@ import type { Guild, User } from './types'
 
 type UserRules = '{{user_name}}' | '{{user_global}}' | '{{user_id}}' | '{{user_avatar}}' | '{{user_discriminator}}'
 type ServerRules = '{{server_name}}' | '{{server_id}}' | '{{server_icon}}' | '{{server_banner}}' | '{{server_count}}'
-type Slot = `{{slot${number}}}`
+type Slot = `{{${string}}}`
 
 export type Rules = Record<UserRules, string> & Record<Slot, string> & Record<ServerRules, string>
 
@@ -20,7 +20,17 @@ export function formatterTextUser(strToFormat: string, param: User & Guild): str
     '{{server_id}}': param.guildId
   })
 }
-
+/**
+ *
+ * @param strToFormat string to format
+ * @param formats
+ * This is a dictionary of rules to format the string.
+ * The rules to format can be {{anyText}} but for convenience, you can use the following rules:
+ * - Rules for user: `{{user_name}}`, `{{user_global}}`, `{{user_id}}`, `{{user_avatar}}`, `{{user_discriminator}}`
+ * - Rules for server: `{{server_name}}`, `{{server_id}}`, `{{server_icon}}`, `{{server_banner}}`, `{{server_count}}`
+ * - Rules for slot: `{{slot1}}`, `{{slot2}}`, `{{slotN}}...`
+ * @returns
+ */
 export default function formatterText(strToFormat: string, formats: Partial<Rules>): string {
   let str = strToFormat
   const formatsKeys = Object.keys(formats) as Array<keyof Rules>
