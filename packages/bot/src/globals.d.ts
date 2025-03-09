@@ -1,4 +1,3 @@
-/* eslint-disable no-var */
 import type { Collection } from 'discord.js'
 import type { JsonResponse } from './api/types'
 import type { Config } from './config'
