@@ -1,18 +1,11 @@
 import { ZodError, z } from 'zod'
 import { type FontsFamily, fontsFamily } from '../getFonts'
+import re from '../regex'
 
 export const MAX_WIDTH_CANVAS = 2000
 
-const regex = {
-  hexColor: /^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/,
-  patch: /^([mxywhcvzsqtalMXYWHCVZSQTAL0-9 ,.-]+)$/,
-  urlImage: () => {
-    const domains = ['imgur.com', 'media.discordapp.net', 'i.pinimg.com']
-    return new RegExp(`^https?://${domains.join('|')}/\\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)$`)
-  }
-}
 const validateColor = z.union([
-  z.string().refine((val: string) => regex.hexColor.test(val), 'the format has to be #RGB or #RRGGBB'),
+  z.string().refine((val: string) => re.hexColor.test(val), 'the format has to be #RGB or #RRGGBB'),
   z.literal('transparent')
 ])
 
@@ -70,7 +63,7 @@ const textSchema = z.object({
     .optional(),
   filter: filterSchema.optional()
 })
-
+const reUrlImage = re.buildUrlImage(['imgur.com', 'media.discordapp.net', 'i.pinimg.com'])
 const shapeSchema = z
   .object({
     id: z.string().min(1).max(100),
@@ -82,7 +75,7 @@ const shapeSchema = z
     dw: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
     image: z
       .union([
-        z.string().url().regex(regex.urlImage()),
+        z.string().url().regex(reUrlImage),
         z.literal('{{user_avatar}}'),
         z.literal('{{user_banner}}'),
         z.literal('{{server_avatar}}'),
@@ -93,7 +86,7 @@ const shapeSchema = z
     imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).optional(), // TODO: for implement
     clip: z
       .object({
-        d: z.string().regex(regex.patch),
+        d: z.string().regex(re.dispatch),
         h: z.number().min(1).max(MAX_WIDTH_CANVAS),
         w: z.number().min(1).max(MAX_WIDTH_CANVAS),
         align: z
