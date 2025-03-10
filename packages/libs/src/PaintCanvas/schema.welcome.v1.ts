@@ -10,9 +10,9 @@ const validateColor = z.union([
 ])
 
 const filterSchema = z.object({
-  blur: z.number().min(0).max(100).optional(),
-  brightness: z.number().min(-100).max(100).optional(),
-  contrast: z.number().min(-100).max(100).optional(),
+  blur: z.number().min(0).step(1).max(100).optional(),
+  brightness: z.number().step(1).min(-100).max(100).optional(),
+  contrast: z.number().step(1).min(-100).max(100).optional(),
   dropShadow: z
     .object({
       offsetX: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
@@ -21,12 +21,12 @@ const filterSchema = z.object({
       color: validateColor
     })
     .optional(),
-  grayscale: z.number().min(0).max(100).optional(),
-  hueRotate: z.number().min(-360).max(360).optional(),
-  invert: z.number().min(0).max(100).optional(),
-  opacity: z.number().min(0).max(100).optional(),
-  saturate: z.number().min(-100).max(100).optional(),
-  sepia: z.number().min(0).max(100).optional()
+  grayscale: z.number().step(1).min(0).max(100).optional(),
+  hueRotate: z.number().step(1).min(-360).max(360).optional(),
+  invert: z.number().step(1).min(0).max(100).optional(),
+  opacity: z.number().step(1).min(0).max(100).optional(),
+  saturate: z.number().step(1).min(-100).max(100).optional(),
+  sepia: z.number().step(1).min(0).max(100).optional()
 })
 /* Features Futures
   - support for gradient
@@ -81,8 +81,8 @@ const shapeSchema = z
         z.literal('{{server_banner}}')
       ])
       .optional(),
-    imageSmoothingEnabled: z.boolean().optional(), // TODO: for implement
-    imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).optional(), // TODO: for implement
+    // imageSmoothingEnabled: z.boolean().optional(), // TODO: for implement
+    // imageSmoothingQuality: z.union([z.literal('low'), z.literal('medium'), z.literal('high')]).optional(), // TODO: for implement
     clip: z
       .object({
         d: z.string().regex(re.dispatch),
