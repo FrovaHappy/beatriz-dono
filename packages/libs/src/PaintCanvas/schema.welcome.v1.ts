@@ -119,7 +119,7 @@ const canvasSchema = z.object({
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
   bgColor: validateColor.optional(),
   layerCastColor: z.string().optional(),
-  layers: z.array(z.union([textSchema, shapeSchema]))
+  layers: z.array(z.union([textSchema, shapeSchema])).max(50)
 })
 export type Canvas = z.infer<typeof canvasSchema>
 export type Text = z.infer<typeof textSchema>
