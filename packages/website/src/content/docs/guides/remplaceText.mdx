@@ -1,0 +1,64 @@
+---
+title: Reemplazo de Texto
+description: Algunos módulos permiten reemplazar texto en un mensaje con otro texto.
+---
+
+import { Aside } from '@astrojs/starlight/components'
+
+## Introducción
+
+Algunos módulos admiten el reemplazo de texto, lo que significa que puedes sustituir partes de un mensaje por otro contenido dinámico.
+<Aside type="note" title="Nota">
+  En algunos casos, estas reglas pueden no funcionar correctamente.
+</Aside>
+
+## Caracteres Especiales
+
+Estos caracteres permiten agregar saltos de línea y tabulaciones en el texto:
+
+- `\n` → Salto de línea  
+- `\t` → Tabulación  
+- `\r` → Salto de línea  
+
+## Variables de Usuario
+
+Estas variables insertan información del usuario en los mensajes:
+
+- `{{user_name}}` → Nombre del usuario  
+- `{{user_global}}` → Nombre global del usuario  
+- `{{user_id}}` → ID del usuario  
+- `{{user_avatar}}` → URL del avatar del usuario  
+- `{{user_discriminator}}` → Discriminador del usuario  
+
+## Variables del Servidor
+
+Estas variables insertan información del servidor en los mensajes:
+
+- `{{server_name}}` → Nombre del servidor  
+- `{{server_id}}` → ID del servidor  
+- `{{server_icon}}` → URL del icono del servidor  
+- `{{server_banner}}` → URL del banner del servidor  
+- `{{server_count}}` → Número de miembros en el servidor  
+
+## Variables Especiales
+
+Estas variables permiten referencias más avanzadas:
+
+- `{{slotN}}` → Reemplaza el contenido del slot N, donde `N` es un número. los slots son utilizados por el bot, si los ves no te asustes.
+- `{{canvas:[title]}}` → Referencia un canvas específico.  
+  - `title`: Título del canvas a referenciar, definido por su autor.  
+  - Se usa en respuestas de comandos como bienvenida y despedida.  
+
+## Ejemplo de Uso
+
+Si usas el siguiente texto en un mensaje:  
+
+```text
+Hola {{user_name}}, ¿cómo estás?
+```
+
+Y el usuario se llama "Beatriz-dono", el mensaje final será:
+
+```text
+Hola Beatriz-dono, ¿cómo estás?
+```

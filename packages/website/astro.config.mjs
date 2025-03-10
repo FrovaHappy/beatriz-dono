@@ -10,7 +10,10 @@ export default defineConfig({
     react(),
     starlight({
       plugins: [starlightThemeRapide()],
-      title: 'Beatriz Dono',
+      title: {
+        en: 'Documentation',
+        es: 'Documentación'
+      },
       logo: {
         src: 'public/logo.webp'
       },
@@ -41,6 +44,14 @@ export default defineConfig({
             es: 'Empezando'
           },
           items: ['home']
+        },
+        {
+          label: 'Guides',
+          translations: {
+            en: 'Guides',
+            es: 'Guías'
+          },
+          autogenerate: { directory: 'guides' }
         },
         {
           label: 'Modules',
