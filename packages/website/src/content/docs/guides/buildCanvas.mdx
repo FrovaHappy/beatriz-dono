@@ -1,0 +1,181 @@
+---
+title: Crear un Canvas
+description: Aprende a crear un Canvas para tus comandos.
+---
+import { Tabs, TabItem, Badge } from '@astrojs/starlight/components';
+
+## Introducción
+
+Los Canvas son una representación de objetos que se usa para renderizar una imagen, este no tiene relación con los comandos, sino con la funcionalidad que ofrece Beatriz-dono.
+
+## Estructura de un Canvas
+
+Un Canvas es un objeto JSON que contiene los siguientes campos:
+
+<Tabs>
+  <TabItem label="Canvas">
+    Es la representación de un Canvas y las datos de trazabilidad.
+  
+    ```typescript
+      interface Canvas {
+        id?: string | undefined;
+        version: string;
+        title: string;
+        author?: string | undefined;
+        forkedFrom?: string | undefined;
+        visible?: boolean | undefined;
+        h: number;
+        w: number;
+        bgColor: string;
+        layerCastColor: string;
+        layers: Layer[];
+      }
+      type Layer = LayerText | LayerShape;
+    ```
+
+    - `id`: <Badge text="Opcional" variant="tip" /> <Badge text="No Editable" variant="caution" /> Identificador único del Canvas.
+    - `version`: La versión del Canvas, esto sera importante en el futuro, por defecto usara la ultima versión. 
+    - `title`: Título del Canvas. es usada como identificador para los módulos de comandos. la longitud máxima es de 100 caracteres.
+    - `author`: <Badge text="Opcional" variant="tip" /> <Badge text="No Editable" variant="caution" />  Indica quien creó el Canvas, la longitud máxima es de 100 caracteres.
+    - `forkedFrom`: <Badge text="Opcional" variant="tip" /> <Badge text="No Editable" variant="caution" /> Indica el id del canvas original, la longitud máxima es de 100 caracteres.
+    - `visible`: <Badge text="Opcional" variant="tip" /> Esta propiedad indicara si el canvas puede ser visto por la comunidad (no implementado). por defecto es `true`.
+    - `h`: Altura del Canvas.
+    - `w`: Ancho del Canvas.
+    - `bgColor`: <Badge text="Opcional" variant="tip" /> Color de fondo del Canvas.
+    - `layerCastColor`: <Badge text="Opcional" variant="tip" /> id del slayer que se usara para usar como trazabilidad, si no se especifica, no se usara trazabilidad.
+    - `layers`: Lista de capas del Canvas. por ahora tiene un limite de 50 capas.
+
+  </TabItem>
+
+  <TabItem label="LayerText">
+    Es la representación de un texto.
+
+    ```typescript
+      interface LayerText {
+        type: 'text';
+        dx: number;
+        dy: number;
+        text: string;
+        size: number;
+        family: string;
+        color?: string | undefined;
+        globalAlpha?: number | undefined;
+        letterSpacing?: number | undefined;
+        maxWidth?: number | undefined;
+        weight?: number | undefined;
+        align?: 'start' | 'end' | 'left' | 'right' | 'center' | 'button' | undefined;
+        baseline?: 'top' | 'hanging' | 'middle' | 'alphabetic' | 'ideographic' | 'bottom' | undefined;
+        filter?: Filter | undefined;
+      }
+    ```
+    - `type`: Tipo de texto, puede ser `text` o `shape`.
+    - `dx`: Posición horizontal del texto.
+    - `dy`: Posición vertical del texto.
+    - `text`: texto a renderizar, este soporta las variables de usuario y de servidor.
+    - `size`: Tamaño del texto. este esta expresado en pixeles. por ejemplo, si el texto es de 10 pixeles, el valor será 10.
+    - `family`: Familia de fuentes a usar, esta feature esta hecha para soportar muchas fuentes, pero por el momento solo agregamos algunas fuentes. aquí algunas:
+      - `Roboto`, `Inter`,  `Montserrat`, `Open Sans`, `Arvo`, `Lato`, `Nunito`, `Caveat`, `Karla`, `Dancing Script`
+    - `color`: <Badge text="Opcional" variant="tip" /> Color del texto, puede ser un color hexadecimal , la palabra `auto` o `transparent`.
+      - Si es `auto`, el texto usara el color que se usara es de colorCast.
+      - Si es `transparent`, el texto usara el color transparente.
+    - `globalAlpha`: <Badge text="Opcional" variant="tip" /> Opacidad del texto, por defecto es `1`.
+    - `letterSpacing`: <Badge text="Opcional" variant="tip" /> Espacio entre letras.
+    - `maxWidth`: <Badge text="Opcional" variant="tip" /> Ancho máximo del texto, por defecto es `0`, esto significa que el texto no tiene límite de ancho.
+    - `weight`: <Badge text="Opcional" variant="tip" /> Peso del texto, por defecto es `400`.
+    - `align`: <Badge text="Opcional" variant="tip" /> Alineación del texto, por defecto es `left`.
+    - `baseline`: <Badge text="Opcional" variant="tip" /> Alineación de la línea base, por defecto es `top`.
+    - `filter`: <Badge text="Opcional" variant="tip" /> Un conjunto de filtros que se aplican sobre el texto, por defecto es `undefined`.
+
+  </TabItem>
+  <TabItem label="LayerShape">
+    Es la representación de una figura, puede ser una imagen, una linea, un rectángulo, etc.
+
+    ```typescript
+      interface LayerShape {
+        type: 'shape';
+        color?: string | undefined;
+        dx: number;
+        dy: number;
+        dh?: number | undefined;
+        dw?: number | undefined;
+        image?: string | undefined;
+        clip?: Clip | undefined;
+        filter?: Filter | undefined;
+      }
+    ```
+    - `type`: Tipo de figura, puede ser `text` o `shape`.
+    - `color`: <Badge text="Opcional" variant="tip" /> Color de la figura, puede ser un color hexadecimal , la palabra `auto` o `transparent`.
+      - Si es `auto`, la figura usara el color que se usara es de colorCast.
+      - Si es `transparent`, la figura usara el color transparente.
+    - `dx`: Posición horizontal de la figura.
+    - `dy`: Posición vertical de la figura.
+    - `dh`: Altura de la figura.
+    - `dw`: Ancho de la figura.
+    - `image`: <Badge text="Opcional" variant="tip" /> URL de la imagen o `{{user_avatar}}` o `{{user_banner}}` o `{{server_avatar}}` o `{{server_banner}}`.
+    - `clip`: <Badge text="Opcional" variant="tip" /> Un SVG clipPath que usara de mascara para el clip.
+    - `filter`: <Badge text="Opcional" variant="tip" /> Un conjunto de filtros que se aplican sobre la figura, por defecto es `undefined`.
+  </TabItem>
+  <TabItem label="Clip">
+      Representa un SVG clipPath que usara de mascara para el clip.
+
+    ```typescript
+      type Clip = {
+        d: string;
+        h: number;
+        w: number;
+        align?: 'top' | 'left' | 'right' | 'center' | 'button' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | undefined;
+      };
+    ```
+    - `d`: estructura SVG del clipPath.
+    - `h`: Altura del viewport del clipPath.
+    - `w`: Ancho del viewport del clipPath.
+    - `align`: <Badge text="Opcional" variant="tip" /> este es usado para alinear la imagen si este existe.
+  </TabItem>
+  <TabItem label="Filter">
+
+    ```typescript
+      type Filter = {
+        blur?: number | undefined;
+        brightness?: number | undefined;
+        contrast?: number | undefined;
+        dropShadow?: DropShadow | undefined;
+        grayscale?: number | undefined;
+        hueRotate?: number | undefined;
+        invert?: number | undefined;
+        opacity?: number | undefined;
+        saturate?: number | undefined;
+        sepia?: number | undefined;
+      };
+
+      type DropShadow = {
+        offsetX: number;
+        offsetY: number;
+        blurRadius: number;
+        color?: string | undefined;
+      };
+    ```
+    - `blur`: <Badge text="Opcional" variant="tip" /> Blur de la imagen. una escala de 1 a 100.
+    - `brightness`: <Badge text="Opcional" variant="tip" /> Brillo de la imagen. una escala de -100 a 100.
+    - `contrast`: <Badge text="Opcional" variant="tip" /> Contraste de la imagen. una escala de -100 a 100.
+    - `dropShadow`: <Badge text="Opcional" variant="tip" /> Un shadow de la imagen. 
+      - `offsetX`: Posición horizontal del shadow. limite de MAX_WIDTH_CANVAS.
+      - `offsetY`:  Posición vertical del shadow. limite de MAX_WIDTH_CANVAS.
+      - `blurRadius`:  Radio del blur del shadow. una escala de 0 a 100.
+      - `color`: Color del shadow. puede ser un color hexadecimal , la palabra `auto` o `transparent`.
+        - Si es `auto`, el texto usara el color que se usara es de colorCast.
+        - Si es `transparent`, el texto usara el color transparente.
+    - `grayscale`: <Badge text="Opcional" variant="tip" /> Escala de grises de la imagen. una escala de 0 a 100.
+    - `hueRotate`: <Badge text="Opcional" variant="tip" /> Rotación de color de la imagen. una escala de -360 a 360.
+    - `invert`: <Badge text="Opcional" variant="tip" /> Invertir la imagen. una escala de 0 a 100.
+    - `opacity`: <Badge text="Opcional" variant="tip" /> Opacidad de la imagen. una escala de 0 a 100.
+    - `saturate`: <Badge text="Opcional" variant="tip" /> Saturación de la imagen. una escala de 0 a 100.
+    - `sepia`: <Badge text="Opcional" variant="tip" /> Sepia de la imagen. una escala de 0 a 100.
+  </TabItem>
+
+</Tabs>
+
+## Cosas que tener en cuenta
+
+### Tamaño máximo del Canvas
+
+el tamaño máximo de la imagen es de 2000 pixeles por cada lado. esto lo veras representado por `MAX_WIDTH_CANVAS`.
