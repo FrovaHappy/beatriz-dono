@@ -1,9 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro'
+import getPublic from "@utils/getPublic";
+import Layout from "../layouts/Layout.astro";
 
-const title = '404 - Page Not Found'
+const title = "404 - Page Not Found";
+const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
 
-<Layout title={title}>
+<Layout title={title} pub={pub}>
   <h1>404</h1>
 </Layout>

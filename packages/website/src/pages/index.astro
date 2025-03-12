@@ -1,14 +1,17 @@
 ---
-import Contributions from '../components/Landing/Contributions.astro'
-import Feature from '../components/Landing/Feature.astro'
-import Hero from '../components/Landing/Hero.astro'
-import RoadMap from '../components/Landing/RoadMap.astro'
-import Layout from '../layouts/Layout.astro'
+import getPublic from "@utils/getPublic";
+import Contributions from "../components/Landing/Contributions.astro";
+import Feature from "../components/Landing/Feature.astro";
+import Hero from "../components/Landing/Hero.astro";
+import RoadMap from "../components/Landing/RoadMap.astro";
+import Layout from "../layouts/Layout.astro";
+
+const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
 
-<Layout title="Welcome to Beatriz Dono">
+<Layout title="Welcome to Beatriz Dono" pub={pub}>
   <main>
-    <Hero />
+    <Hero discordBot={pub.urlJoinBot} />
     <Contributions />
     <Feature title="Gestión de colores" image="/assets/feacture_color.png">
       <p>

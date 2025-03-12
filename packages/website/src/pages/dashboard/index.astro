@@ -1,11 +1,11 @@
 ---
-import getPublic from '@utils/getPublic'
-import ContainerGuilds from '../../components/Dashboard/ContainerGuilds'
-import Layout from '../../layouts/Layout.astro'
-const { urlApi } = getPublic(import.meta.env.PUBLIC_VARIABLES)
+import getPublic from "@utils/getPublic";
+import ContainerGuilds from "../../components/Dashboard/ContainerGuilds";
+import Layout from "../../layouts/Layout.astro";
+const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
 
-<Layout title="Dashboard">
+<Layout title="Dashboard" pub={pub}>
   <h1>Dashboard</h1>
-  <ContainerGuilds apiUrl={urlApi} client:load />
+  <ContainerGuilds apiUrl={pub.urlApi} client:load />
 </Layout>

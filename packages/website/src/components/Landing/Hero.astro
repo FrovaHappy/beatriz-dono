@@ -1,8 +1,9 @@
 ---
-import Tag from '../Tag.astro'
-
-const discordBot =
-  'https://discord.com/oauth2/authorize?client_id=964321676651266138&permissions=8&integration_type=0&scope=bot'
+import Tag from "../Tag.astro";
+interface Props {
+  discordBot: string;
+}
+const { discordBot } = Astro.props;
 ---
 
 <section class="container">
@@ -29,7 +30,7 @@ const discordBot =
         d="M21.8907 259.748C-1.75122 238.569 -3.72141 193.009 4.15924 155.822C12.2861 118.389 30.2638 88.8367 53.9057 64.2097C77.5477 39.5827 107.1 19.6349 147.488 8.55273C188.123 -2.77567 239.839 -4.9921 262.743 19.6349C285.892 44.2619 280.228 95.9785 276.78 144.247C273.578 192.763 272.347 237.584 249.444 258.763C226.295 280.188 181.474 277.479 136.16 277.726C91.0925 277.972 45.5326 280.927 21.8907 259.748Z"
         fill="currentColor"></path>
     </svg>
-    <img src="/logo.webp" alt="logo" />
+    <img src="/logo.webp" alt="Logo Beatriz Dono" />
   </div>
 </section>
 
