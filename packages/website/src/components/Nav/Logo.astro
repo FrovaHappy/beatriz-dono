@@ -1,0 +1,28 @@
+---
+
+---
+
+<a href="/" class="logo">
+  <x-logo>
+    <img src="/logo.webp" alt="Logo Beatriz Dono" />
+    <p>Beatriz Dono</p>
+  </x-logo>
+</a>
+<style lang="scss">
+  x-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    gap: 0.5rem;
+    & img {
+      width: 2.5rem;
+      aspect-ratio: 1;
+    }
+    & p {
+      font-size: 1.25rem;
+      font-weight: var(--semi-bold);
+      color: var(--primary-color);
+    }
+  }
+</style>
