@@ -1,0 +1,44 @@
+---
+interface Props {
+  text?: string;
+  id?: string;
+  type?: "primary" | "secondary" | "only-icon";
+  href?: string;
+  icon?: keyof typeof icons;
+}
+const icons = {
+  github: "ti ti-brand-github",
+  discord: "ti ti-brand-discord",
+  kofi: "ti ti-cup",
+  moon: "ti ti-moon-stars",
+};
+
+const { text, href, icon, type = "primary", id } = Astro.props as Props;
+
+let typeClass = "";
+if (type === "primary") typeClass = "button button--primary";
+if (type === "secondary") typeClass = "button button--secondary";
+if (type === "only-icon") typeClass = "button button--without-text";
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      class={typeClass}
+      id={id}
+    >
+      {icon && <i class={`${icons[icon]} button--icon`} />}
+      {text && <span class="button--text">{text}</span>}
+      <slot />
+    </a>
+  ) : (
+    <button class={typeClass} id={id}>
+      {icon && <i class={`${icons[icon]} button--icon`} />}
+      {text && <span class="button--text">{text}</span>}
+      <slot />
+    </button>
+  )
+}
