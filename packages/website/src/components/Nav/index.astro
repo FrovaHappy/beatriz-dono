@@ -2,8 +2,9 @@
 import getPublic from "@utils/getPublic";
 import LoginButton from "./LoginButton";
 import Logo from "./Logo.astro";
+import LinkDonate from "./LinkDonate.astro";
 
-const { urlApi, urlOathCallback, urlGithub } = getPublic(
+const { urlApi, urlOathCallback, urlGithub, urlDonate, urlDiscord } = getPublic(
   import.meta.env.PUBLIC_VARIABLES,
 );
 ---
@@ -11,8 +12,9 @@ const { urlApi, urlOathCallback, urlGithub } = getPublic(
 <nav>
   <meta data-url-api={urlApi} />
   <Logo />
-  <ul class="links--actives">
+  <ul class="links">
     <li><a href="/home">Wiki</a></li>
+    <li><a href="/roadmap">Roadmap</a></li>
   </ul>
 
   <span class="spacer"></span>
@@ -20,15 +22,16 @@ const { urlApi, urlOathCallback, urlGithub } = getPublic(
   <a href={urlGithub} target="_blank" class="button button--without-text">
     <i class="ti ti-brand-github button--icon"></i>
   </a>
+  <a href={urlDiscord} target="_blank" class="button button--without-text">
+    <i class="ti ti-brand-discord button--icon"></i>
+  </a>
+  <span class="line"></span>
   <!-- button light/dark mode -->
   <button class="button button--without-text" id="button-theme">
     <i class="ti ti-moon-stars button--icon"></i>
   </button>
-  <span class="line"></span>
-  <a href="" class="button button--primary">
-    <i class="ti ti-cup button--icon"></i>
-    <span class="button--text">Regalame un Café</span>
-  </a>
+
+  <LinkDonate kofi={urlDonate.kofi} />
   <LoginButton apiUrl={urlApi} oauthCallback={urlOathCallback} client:only />
 </nav>
 <x-phone>
@@ -63,11 +66,12 @@ const { urlApi, urlOathCallback, urlGithub } = getPublic(
 <style lang="scss">
   nav {
     display: flex;
+    height: 4rem;
     align-items: center;
     justify-content: space-between;
     gap: 0.625rem;
     padding: 1rem;
-    border-bottom: 0.0625rem solid var(--font-color-50);
+    border-bottom: 0.0313rem solid var(--font-color-10);
     @media (max-width: 768px) {
       display: none;
     }
@@ -108,45 +112,25 @@ const { urlApi, urlOathCallback, urlGithub } = getPublic(
       backdrop-filter: blur(0.25rem);
     }
   }
+
   .links {
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 1rem;
     a {
-      padding: 0.375rem;
+      padding: 0.375rem 0.85rem;
       border-radius: var(--border-radius);
       transition: all 0.2s ease-in-out;
     }
-    @media (max-width: 768px) {
-      flex-direction: column;
-      a {
-        font-size: 1.5rem;
-      }
-    }
-  }
-  .links--actives {
-    @extend .links;
     a:hover {
       background: color-mix(in srgb, var(--font-color) 25%, transparent);
       color: var(--font-color);
     }
-  }
-  .links--inactive {
-    @extend .links;
-    $color: color-mix(in srgb, var(--secondary-color) 50%, black);
-    border: 0.0625rem dashed $color;
-    padding: 0.375rem;
-    border-radius: var(--border-radius);
-    color: $color;
-    cursor: not-allowed;
-    .line {
-      background: $color;
-      height: 1rem;
-    }
+
     @media (max-width: 768px) {
-      .line {
-        display: none;
+      flex-direction: column;
+      a {
+        font-size: 1.5rem;
       }
     }
   }
@@ -160,51 +144,6 @@ const { urlApi, urlOathCallback, urlGithub } = getPublic(
     background: var(--font-color-50);
     @media (max-width: 768px) {
       display: none;
-    }
-  }
-  #login {
-    display: flex;
-    align-items: center;
-    .avatar {
-      position: relative;
-      img {
-        cursor: pointer;
-        width: 2.275rem;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        background: var(--font-color-10);
-      }
-      .options {
-        cursor: pointer;
-        display: none;
-        position: absolute;
-        top: 110%;
-        right: 0;
-        gap: 0.5rem;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem;
-        border-radius: var(--border-radius);
-        background: var(--font-color-10);
-        backdrop-filter: blur(0.5rem);
-        li {
-          a {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            border-radius: var(--border-radius);
-            transition: all 0.2s ease-in-out;
-          }
-          a:hover {
-            background: color-mix(in srgb, var(--font-color) 25%, transparent);
-            color: var(--font-color);
-          }
-        }
-      }
-      img[active="true"] + .options {
-        display: block;
-      }
     }
   }
 </style>
