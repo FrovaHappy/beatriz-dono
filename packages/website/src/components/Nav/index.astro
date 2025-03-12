@@ -1,22 +1,20 @@
 ---
-import getPublic from '@utils/getPublic'
-import LoginButton from './Nav/LoginButton'
+import getPublic from "@utils/getPublic";
+import LoginButton from "./LoginButton";
+import Logo from "./Logo.astro";
 
-const { urlApi, urlOathCallback, urlGithub } = getPublic(import.meta.env.PUBLIC_VARIABLES)
+const { urlApi, urlOathCallback, urlGithub } = getPublic(
+  import.meta.env.PUBLIC_VARIABLES,
+);
 ---
 
 <nav>
   <meta data-url-api={urlApi} />
-  <x-logo></x-logo>
+  <Logo />
   <ul class="links--actives">
-    <li><a href="#">Soporte</a></li>
     <li><a href="/home">Wiki</a></li>
   </ul>
-  <ul class="links--inactives">
-    <span>Pronto</span>
-    <span class="line"></span>
-    <li><a href="#">Galeria</a></li>
-  </ul>
+
   <span class="spacer"></span>
   <!-- button github -->
   <a href={urlGithub} target="_blank" class="button button--without-text">
@@ -134,7 +132,7 @@ const { urlApi, urlOathCallback, urlGithub } = getPublic(import.meta.env.PUBLIC_
       color: var(--font-color);
     }
   }
-  .links--inactives {
+  .links--inactive {
     @extend .links;
     $color: color-mix(in srgb, var(--secondary-color) 50%, black);
     border: 0.0625rem dashed $color;
