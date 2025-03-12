@@ -1,0 +1,51 @@
+---
+interface Props {
+  kofi: string;
+}
+const { kofi } = Astro.props;
+---
+
+<a
+  href={kofi}
+  target="_blank"
+  class="button button--without-text"
+  rel="noopener noreferrer"
+>
+  <p id="donate">
+    <i class="ti ti-cup button--icon"></i>
+  </p>
+</a>
+
+<style lang="scss">
+  #donate {
+    display: flex;
+    align-items: center;
+
+    // animation rainbow infinite
+    animation: rainbow 10s linear infinite;
+    background: linear-gradient(
+      90deg,
+      #aa2c19 0%,
+      #c91919 17%,
+      #be9717 33%,
+      #b4b414 50%,
+      #17bd33 67%,
+      #14abb3 83%,
+      #281cd1 100%
+    );
+    background-size: 300% 300%;
+    color: transparent;
+    background-clip: text;
+    @keyframes rainbow {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  }
+</style>
