@@ -6,7 +6,7 @@ interface Props extends ComponentProps {}
 
 const Login = ({ apiUrl, oauthCallback }: ComponentProps) => {
   return (
-    <a href={`${apiUrl}${oauthCallback}`} className='button button--secondary'>
+    <a href={oauthCallback} className='button button--secondary'>
       Iniciar sesión
     </a>
   )
