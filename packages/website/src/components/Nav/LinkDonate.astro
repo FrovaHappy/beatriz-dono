@@ -1,20 +1,17 @@
 ---
+import Button from "@components/Button.astro";
+
 interface Props {
   kofi: string;
 }
 const { kofi } = Astro.props;
 ---
 
-<a
-  href={kofi}
-  target="_blank"
-  class="button button--without-text"
-  rel="noopener noreferrer"
->
+<Button href={kofi} type="only-icon">
   <p id="donate">
-    <i class="ti ti-cup button--icon"></i>
+    <i class="ti ti-cup"></i>
   </p>
-</a>
+</Button>
 
 <style lang="scss">
   #donate {
