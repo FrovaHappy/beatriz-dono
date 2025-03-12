@@ -54,6 +54,14 @@ export default defineConfig({
           autogenerate: { directory: 'guides' }
         },
         {
+          label: 'Building Canvas',
+          translations: {
+            en: 'Building Canvas',
+            es: 'Creando Canvas'
+          },
+          autogenerate: { directory: 'build-canvas' }
+        },
+        {
           label: 'Modules',
           translations: {
             en: 'Modules',
