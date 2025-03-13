@@ -1,6 +1,5 @@
 ---
 import getPublic from "@utils/getPublic";
-import Contributions from "../components/Landing/Contributions.astro";
 import Feature from "../components/Landing/Feature.astro";
 import Hero from "../components/Landing/Hero.astro";
 import RoadMap from "../components/Landing/RoadMap.astro";
@@ -12,7 +11,6 @@ const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 <Layout title="Welcome to Beatriz Dono" pub={pub}>
   <main>
     <Hero discordBot={pub.urlJoinBot} />
-    <Contributions />
     <Feature title="Gestión de colores" image="/assets/feacture_color.png">
       <p>
         Con Beatriz~Dono, puedes personalizar el color de tu nickname con más de <span
