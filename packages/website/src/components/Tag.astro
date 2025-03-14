@@ -1,32 +1,48 @@
 ---
 interface Props {
-  type: 'small' | 'big'
-  text: string
-  class?: string
+  tag?: "p" | "span";
+  text: string;
+  size?: `${number}${"px" | "rem"}`;
+  color?: {
+    text: "primary" | "secondary" | `#${string}`;
+    background: "primary" | "secondary" | `#${string}`;
+  };
 }
-const { type, text, class: className } = Astro.props
+
+const {
+  tag: T = "span",
+  text,
+  size = "1rem",
+  color = {
+    background: "secondary",
+    text: "black",
+  },
+} = Astro.props as Props;
+const reColor = /(primary)|(secondary)/;
+const colorText = reColor.test(color.text)
+  ? `var(--${color.text}-color)`
+  : color.text;
+const colorBackground = reColor.test(color.background)
+  ? `var(--${color.background}-color)`
+  : color.background;
+console.log(colorText, colorBackground);
+
+const style: astroHTML.JSX.CSSProperties = {
+  fontSize: size,
+  padding: `calc(${size} / 5) calc(${size} * 1.15)`,
+  color: colorText,
+  backgroundColor: colorBackground,
+};
 ---
 
-<p class={`tag tag--${type} ${className}`}>{text}</p>
+<T class=`tag` style={style}>{text}</T>
 
 <style lang="scss">
   .tag {
     display: inline-block;
-    background: var(--secondary-color);
     text-wrap: nowrap;
     flex-shrink: 0;
-    box-shadow: 0 5px 1rem var(--font-color-50);
-    color: black;
-    &--small {
-      padding: 0.15rem 0.5rem;
-      font-size: 0.875rem;
-      font-weight: var(--semi-bold);
-      border-radius: var(--border-radius);
-    }
-    &--big {
-      padding: 0.5rem 1rem;
-      font-weight: var(--bold);
-      border-radius: var(--border-radius);
-    }
+    box-shadow: 0.3125rem 0.3125rem 0.5rem var(--font-color-10);
+    border-radius: var(--border-radius);
   }
 </style>
