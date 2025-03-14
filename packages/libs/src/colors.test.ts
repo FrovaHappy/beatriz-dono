@@ -1,42 +1,22 @@
-import { getDominanteColor, getPallete } from './colors'
+import { getPallete, loadImage } from './colors'
 
-describe('getDominanteColor', () => {
-  it('should return the dominante color of an image', async () => {
-    const url = 'https://imgur.com/FNw87Rm.png'
-    const color = await getDominanteColor(url, 10)
-    expect(color).toEqual({
-      b: 13,
-      g: 11,
-      r: 6
-    })
-  })
-  it('should return null if the image is not found', async () => {
-    const url = 'notFound.png'
-    const color = await getDominanteColor(url, 10)
-    expect(color).toBeFalsy()
-  })
-})
+describe('get palete ', async () => {
+  const url =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMUAAACUCAMAAAAUNB2QAAAAA1BMVEXuLCwP78c9AAAAM0lEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4NHJ4AAF0e6e2AAAAAElFTkSuQmCC'
+  const data = await loadImage(url)
 
-describe('getPallete', () => {
   it('should return the dominante color of an image', async () => {
-    const url = 'https://imgur.com/FNw87Rm.png'
-    const color = await getPallete(url, 3, 10)
+    const color = await getPallete({ data, length: 1 })
     expect(color).toEqual([
       {
-        b: 13,
-        g: 11,
-        r: 6
-      },
-      {
-        b: 15,
-        g: 13,
-        r: 21
-      },
-      {
-        b: 16,
-        g: 32,
-        r: 14
+        b: 65,
+        g: 68,
+        r: 73
       }
     ])
+  })
+  it('should return null if the image is not found', async () => {
+    const color = await getPallete({ data: null })
+    expect(color).toBeFalsy()
   })
 })

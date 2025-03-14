@@ -30,17 +30,18 @@ const findBiggestColorRange = (rgbValues: Color[]) => {
    * Max is initialized to the minimum value posible
    * from there we proceed to fin the maximum value for that color channel
    */
-  let rMin = Number.MAX_VALUE
-  let gMin = Number.MAX_VALUE
-  let bMin = Number.MAX_VALUE
+  let rMin = 255
+  let gMin = 255
+  let bMin = 255
 
-  let rMax = Number.MIN_VALUE
-  let gMax = Number.MIN_VALUE
-  let bMax = Number.MIN_VALUE
+  let rMax = 0
+  let gMax = 0
+  let bMax = 0
 
   // biome-ignore lint/complexity/noForEach: <explanation>
   rgbValues.forEach((pixel: { r: number; g: number; b: number }) => {
     const sumPixel = pixel.r + pixel.g + pixel.b
+    if (sumPixel === 0) return
     const skipBlack = sumPixel / (255 * 3) < TOLERANCE
     const skipWhite = sumPixel / (255 * 3) > 1 - TOLERANCE
     if (skipBlack || skipWhite) return
@@ -121,19 +122,8 @@ export const orderByLuminance = (rgbValues: Color[]) => {
     return calculateLuminance(p2) - calculateLuminance(p1)
   })
 }
-/**
- *  Quantization function
- * @param url - url of the image
- * @param colorCount - number of colors to return (1 is the dominante color and 0 is all colors)
- * @param quality - quality of the image (10 is the best quality and 1 is the worst)
- * @returns - array of colors in the format { r: number, g: number, b: number }
- **/
 
-export async function getPallete(url: string, colorCount: number, quality: number) {
-  const options = { quality, colorCount }
-  if (options.quality > 10) options.quality = 10
-  if (options.colorCount > 100) options.colorCount = 100
-
+export const loadImage = async (url: string) => {
   const data = await fetch(url)
     .then(res => {
       if (res.status !== 200 || !res.ok) return null
@@ -143,13 +133,28 @@ export async function getPallete(url: string, colorCount: number, quality: numbe
       return null
     })
   if (!data) return null
-  const pixels = new Uint8Array(data)
-
-  const pixelArray = createPixelArray(pixels)
-  const palette = quantization(pixelArray, options.quality)
-  return options.colorCount >= 1 ? palette.slice(0, options.colorCount) : palette
+  return new Uint8Array(data)
 }
+interface Options {
+  data: Uint8Array<ArrayBufferLike> | null
+  length?: number
+  quality?: number
+}
+/**
+ *  Quantization function
+ * @param url - url of the image
+ * @param length - number of colors to return (1 is the dominante color and 0 is all colors) (default: 0)
+ * @param quality - quality of the image (10 is the best quality and 1 is the worst) (default: 10)
+ * @returns - array of colors in the format { r: number, g: number, b: number }
+ **/
+export async function getPallete({ data, length = 0, quality = 10 }: Options) {
+  const options = { quality, length }
+  if (options.quality > 10) options.quality = 10
+  if (options.length > 100) options.length = 100
 
-export async function getDominanteColor(url: string, quality: number) {
-  return (await getPallete(url, 1, quality))?.[0]
+  if (!data) return null
+
+  const pixelArray = createPixelArray(data)
+  const palette = quantization(pixelArray, options.quality).filter(c => c.r !== 0 && c.g !== 0 && c.b !== 0)
+  return options.length >= 1 ? palette.slice(0, options.length) : palette
 }
