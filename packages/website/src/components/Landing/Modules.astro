@@ -1,16 +1,18 @@
 ---
 import Button from "@components/Button.astro";
 import modules from "./modules";
+import Tag from "@components/Tag.astro";
 ---
 
 <section class="container">
-  <h2>Descubre los módulos de Beatriz Dono</h2>
+  <h2>Que puedo hacer con Beatriz Dono?</h2>
   <section class="modules">
     {
       modules.map((mod) => (
         <article class="module">
           <img src={mod.image} alt={mod.title} />
           <div class="module-info">
+            <Tag text={mod.status} size="0.625rem" />
             <h3>{mod.title}</h3>
             <p>{mod.description}</p>
             <Button
@@ -27,6 +29,12 @@ import modules from "./modules";
 </section>
 
 <style lang="scss">
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
   .modules {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
