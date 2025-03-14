@@ -30,6 +30,16 @@ const mod: Modules[] = [
       url: '/build-canvas/beforeofstart',
       text: 'Como crear un canvas?'
     }
+  },
+  {
+    title: 'Sistema de Ranking',
+    description: 'Impulsa la actividad de tu servidor, con un ranking que te permite ver quién es el mejor.',
+    image: '/assets/feacture_ranking.png',
+    status: 'planned',
+    link: {
+      url: '/modules/ranking',
+      text: 'Como crear un canvas?'
+    }
   }
 ]
 export default mod
