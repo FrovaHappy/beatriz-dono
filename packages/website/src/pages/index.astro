@@ -1,9 +1,9 @@
 ---
 import getPublic from "@utils/getPublic";
-import Feature from "../components/Landing/Feature.astro";
 import Hero from "../components/Landing/Hero.astro";
 import RoadMap from "../components/Landing/RoadMap.astro";
 import Layout from "../layouts/Layout.astro";
+import Modules from "@components/Landing/Modules.astro";
 
 const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
@@ -11,42 +11,7 @@ const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 <Layout title="Welcome to Beatriz Dono" pub={pub}>
   <main>
     <Hero discordBot={pub.urlJoinBot} kofi={pub.urlDonate.kofi} />
-    <Feature title="Gestión de colores" image="/assets/feacture_color.png">
-      <p>
-        Con Beatriz~Dono, puedes personalizar el color de tu nickname con más de <span
-          >16 mil opciones</span
-        >, utilizando valores hexadecimales para crear roles únicos.
-      </p>
-      <p>¡Dale un toque personal a tu perfil!</p>
-      <p>
-        Además, puedes cambiarlo cuantas veces quieras, ¡<span
-          >sin limitaciones</span
-        >!
-      </p>
-      <a href="/es/modules/colors" class="button button--secondary"
-        >Aprende más sobre los Roles de Colores</a
-      >
-    </Feature>
-    <Feature
-      title="Bienvenidas"
-      image="/assets/feacture_welcome.png"
-      imageAlign="right"
-      tagTitle="En breve"
-    >
-      <p>
-        ¡Haz que cada bienvenida en tu servidor sea única con nuestro avanzado
-        sistema de <span>personalización de mensajes</span>!
-      </p>
-      <p>
-        Dale un toque especial y memorable a tus usuarios. Además, utiliza
-        nuestro potente <span>editor de imágenes</span> para crear diseños personalizados
-        y destacar aún más.
-      </p>
-      <p>¡Empieza a transformar tu servidor hoy mismo!</p>
-      <a href="/es/modules/welcome" class="button button--secondary"
-        >Aprende más sobre Bienvenidas</a
-      >
-    </Feature>
+    <Modules />
     <RoadMap />
   </main>
 </Layout>
