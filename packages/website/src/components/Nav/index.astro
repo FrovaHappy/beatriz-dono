@@ -22,12 +22,15 @@ const { pub } = Astro.props as Props;
 
   <span class="spacer"></span>
   <!-- button github -->
-  <Button type="only-icon" icon="discord" href={pub.urlDiscord} />
-  <Button type="only-icon" icon="github" href={pub.urlGithub} />
-  <span class="line"></span>
-  <!-- button light/dark mode -->
-  <Button type="only-icon" icon="moon" id="button-theme" />
-  <LinkDonate kofi={pub.urlDonate.kofi} />
+  <div class="button-group">
+    <Button type="only-icon" icon="discord" href={pub.urlDiscord} />
+    <Button type="only-icon" icon="github" href={pub.urlGithub} />
+    <span class="line"></span>
+    <!-- button light/dark mode -->
+
+    <Button type="only-icon" icon="moon" id="button-theme" />
+    <LinkDonate kofi={pub.urlDonate.kofi} />
+  </div>
   <LoginButton
     apiUrl={pub.urlApi}
     oauthCallback={pub.urlOathCallback}
@@ -123,24 +126,34 @@ const { pub } = Astro.props as Props;
       background: color-mix(in srgb, var(--font-color) 25%, transparent);
       color: var(--font-color);
     }
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-      a {
-        font-size: 1.5rem;
-      }
-    }
   }
   .spacer {
     flex-grow: 1;
+  }
+  .button-group {
+    display: flex;
+    gap: 0.625rem;
   }
   .line {
     width: 1px;
     height: 1.5rem;
     flex-shrink: 0;
     background: var(--font-color-10);
-    @media (max-width: 768px) {
-      display: none;
+  }
+  @media (max-width: 48rem) {
+    .links {
+      flex-direction: column;
+      gap: 0.5rem;
+      a {
+        display: flex;
+        font-size: 1.5rem;
+        width: 50vw;
+        justify-content: center;
+        border-bottom: 1px solid var(--font-color-10);
+      }
+    }
+    .button-group {
+      flex-direction: row;
     }
   }
 </style>
