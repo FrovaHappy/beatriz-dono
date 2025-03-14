@@ -1,28 +1,36 @@
 ---
-import Tag from "../Tag.astro";
+import Button from "@components/Button.astro";
 interface Props {
   discordBot: string;
+  kofi: string;
 }
-const { discordBot } = Astro.props;
+const { discordBot, kofi } = Astro.props;
 ---
 
 <section class="container">
   <article>
-    <h1>La asistente perfecta para hacer de tu servidor un lugar especial</h1>
+    <h3>¡ Hola, soy Beatriz Dono!</h3>
+    <h1>
+      Una asistente de discord que llevara a tu servidor a la siguiente nivel
+    </h1>
     <h2>
-      gestión de colores, saludos acogedores y muchas sorpresas por venir.
+      Con una gran variedad de funciones para hacer tu servidor más divertido y
+      personalizado.
     </h2>
     <div class="button-group">
-      <a href={discordBot} class="button button--primary">
-        <i class="ti ti-brand-discord button--icon"></i>
-        <span class="button--text"> Instalar el bot </span>
-      </a>
-      <a href="/dashboard" class="button button--secondary">
-        <i class="ti ti-tools button--icon"></i>
-        <span class="button--text"> Ir a mi panel </span>
-      </a>
+      <Button
+        href={discordBot}
+        type="primary"
+        text="Agrega al bot"
+        icon="apps"
+      />
+      <Button
+        href={kofi}
+        type="secondary"
+        text="Apoya al proyecto"
+        icon="kofi"
+      />
     </div>
-    <Tag type="big" text="On Beta" class="rotate" />
   </article>
   <div class="logo">
     <svg viewBox="0 0 280 278" fill="none">
@@ -37,23 +45,15 @@ const { discordBot } = Astro.props;
 <style lang="scss">
   section {
     max-width: var(--max-width);
+    height: 85vh;
     display: flex;
-    padding: 4rem 0;
-    flex-direction: row;
     gap: 2rem;
-    justify-content: space-between;
     align-items: center;
     article {
-      position: relative;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
       max-width: 750px;
-      .rotate {
-        position: absolute;
-        top: -4rem;
-        left: 0;
-      }
     }
     .logo {
       position: relative;
@@ -69,6 +69,7 @@ const { discordBot } = Astro.props;
         transform: translate(-50%, -50%);
         height: 80%;
         aspect-ratio: 1;
+        filter: drop-shadow(0 0 2rem rgba(0, 0, 0, 0.2));
       }
     }
 
@@ -81,9 +82,11 @@ const { discordBot } = Astro.props;
     h2 {
       font-weight: var(--regular);
     }
-    @media (max-width: 768px) {
+    @media (max-width: 64rem) {
       flex-direction: column;
       gap: 1rem;
+      position: relative;
+      justify-content: center;
       .button-group {
         flex-wrap: wrap;
       }
@@ -93,8 +96,16 @@ const { discordBot } = Astro.props;
       h2 {
         font-size: 1.25rem;
       }
+      article {
+        display: flex;
+        flex-direction: column;
+      }
       .logo {
-        width: max-content;
+        position: absolute;
+        right: -15%;
+        bottom: 25%;
+        filter: opacity(0.5);
+        z-index: -1;
       }
     }
   }

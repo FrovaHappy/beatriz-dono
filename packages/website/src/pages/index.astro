@@ -10,7 +10,7 @@ const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 
 <Layout title="Welcome to Beatriz Dono" pub={pub}>
   <main>
-    <Hero discordBot={pub.urlJoinBot} />
+    <Hero discordBot={pub.urlJoinBot} kofi={pub.urlDonate.kofi} />
     <Feature title="Gestión de colores" image="/assets/feacture_color.png">
       <p>
         Con Beatriz~Dono, puedes personalizar el color de tu nickname con más de <span
@@ -53,10 +53,9 @@ const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 
 <style>
   main {
-    margin: 10%;
+    margin: 0 10%;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
     align-items: center;
     line-height: 1.6;
   }
