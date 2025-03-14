@@ -1,0 +1,71 @@
+---
+import Button from "@components/Button.astro";
+import modules from "./modules";
+---
+
+<section class="container">
+  <h2>Descubre los módulos de Beatriz Dono</h2>
+  <section class="modules">
+    {
+      modules.map((mod) => (
+        <article class="module">
+          <img src={mod.image} alt={mod.title} />
+          <div class="module-info">
+            <h3>{mod.title}</h3>
+            <p>{mod.description}</p>
+            <Button
+              text={mod.link.text}
+              href={mod.link.url}
+              icon="link"
+              type="secondary"
+            />
+          </div>
+        </article>
+      ))
+    }
+  </section>
+</section>
+
+<style lang="scss">
+  .modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  .module {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--font-color-10);
+
+    img {
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: var(--border-radius-lg);
+      box-shadow: 0 0 1rem rgba(255, 255, 255, 0.2);
+    }
+    .module-info {
+      display: flex;
+      padding: 2rem;
+      height: 100%;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      h3 {
+        font-size: 1.25rem;
+        font-weight: var(--semi-bold);
+        width: 100%;
+        text-align: center;
+      }
+      p {
+        font-size: 1rem;
+        width: 100%;
+        height: 100%;
+        text-wrap: balance;
+        text-align: center;
+      }
+    }
+  }
+</style>
