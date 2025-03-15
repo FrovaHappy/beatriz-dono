@@ -3,7 +3,6 @@ type Color = {
   g: number
   b: number
 }
-const TOLERANCE = 0.1
 
 function createPixelArray(imgData: Uint8Array<ArrayBufferLike>) {
   const rgbValues = []
@@ -22,7 +21,15 @@ function createPixelArray(imgData: Uint8Array<ArrayBufferLike>) {
   return rgbValues
 }
 
-const findBiggestColorRange = (rgbValues: Color[]) => {
+export const filterColorTolerance = (rgbValues: Color[]) => {
+  return rgbValues.filter(({ r, g, b }) => {
+    const sum = r + g + b
+    const diff = sum / (255 * 3)
+    return diff > 0.01 && diff < 0.99
+  })
+}
+
+export const findBiggestColorRange = (rgbValues: Color[]) => {
   /**
    * Min is initialized to the maximum value posible
    * from there we proceed to find the minimum value for that color channel
@@ -30,28 +37,25 @@ const findBiggestColorRange = (rgbValues: Color[]) => {
    * Max is initialized to the minimum value posible
    * from there we proceed to fin the maximum value for that color channel
    */
-  let rMin = 255
-  let gMin = 255
-  let bMin = 255
+  const max = 256
+  const mix = -1
+  let rMin = max
+  let gMin = max
+  let bMin = max
 
-  let rMax = 0
-  let gMax = 0
-  let bMax = 0
+  let rMax = mix
+  let gMax = mix
+  let bMax = mix
 
   // biome-ignore lint/complexity/noForEach: <explanation>
   rgbValues.forEach((pixel: { r: number; g: number; b: number }) => {
-    const sumPixel = pixel.r + pixel.g + pixel.b
-    if (sumPixel === 0) return
-    const skipBlack = sumPixel / (255 * 3) < TOLERANCE
-    const skipWhite = sumPixel / (255 * 3) > 1 - TOLERANCE
-    if (skipBlack || skipWhite) return
-    rMin = Math.min(rMin, pixel.r)
-    gMin = Math.min(gMin, pixel.g)
-    bMin = Math.min(bMin, pixel.b)
+    rMin = pixel.r
+    gMin = pixel.g
+    bMin = pixel.b
 
-    rMax = Math.max(rMax, pixel.r)
-    gMax = Math.max(gMax, pixel.g)
-    bMax = Math.max(bMax, pixel.b)
+    rMax = pixel.r
+    gMax = pixel.g
+    bMax = pixel.b
   })
 
   const rRange = rMax - rMin
@@ -68,7 +72,8 @@ const findBiggestColorRange = (rgbValues: Color[]) => {
 const quantization = (rgbValues: Color[], depth: number): Color[] => {
   // Base case
   if (depth <= 0 || rgbValues.length <= 2) {
-    const color = rgbValues.reduce(
+    const values = filterColorTolerance(rgbValues)
+    const color = values.reduce(
       (prev, curr) => {
         prev.r += curr.r
         prev.g += curr.g
@@ -78,10 +83,9 @@ const quantization = (rgbValues: Color[], depth: number): Color[] => {
       },
       { r: 0, g: 0, b: 0 }
     )
-
-    color.r = Math.round(color.r / rgbValues.length)
-    color.g = Math.round(color.g / rgbValues.length)
-    color.b = Math.round(color.b / rgbValues.length)
+    color.r = Math.round(color.r / values.length) || 0
+    color.g = Math.round(color.g / values.length) || 0
+    color.b = Math.round(color.b / values.length) || 0
 
     return [color]
   }
@@ -103,14 +107,14 @@ const quantization = (rgbValues: Color[], depth: number): Color[] => {
 }
 
 //  Convert each pixel value ( number ) to hexadecimal ( string ) with base 16
-export function rgbToHex(pixel: Color | undefined) {
-  if (!pixel) return '#000001'
+export function rgbToHex(pixel: Color) {
   const componentToHex = (c: number) => {
     const hex = c.toString(16)
     return hex.padStart(2, '0')
   }
-
-  return `#${componentToHex(pixel.r)}${componentToHex(pixel.g)}${componentToHex(pixel.b)}`.toLowerCase()
+  const color = `#${componentToHex(pixel.r)}${componentToHex(pixel.g)}${componentToHex(pixel.b)}`.toLowerCase()
+  if (color === '#000000') return '#000001'
+  return color
 }
 
 export const orderByLuminance = (rgbValues: Color[]) => {
@@ -147,14 +151,14 @@ interface Options {
  * @param quality - quality of the image (10 is the best quality and 1 is the worst) (default: 10)
  * @returns - array of colors in the format { r: number, g: number, b: number }
  **/
-export async function getPallete({ data, length = 0, quality = 10 }: Options) {
+export async function getPallete({ data, length = 0, quality = 5 }: Options) {
   const options = { quality, length }
-  if (options.quality > 10) options.quality = 10
+  if (options.quality > 50) options.quality = 50
   if (options.length > 100) options.length = 100
 
   if (!data) return null
 
   const pixelArray = createPixelArray(data)
-  const palette = quantization(pixelArray, options.quality).filter(c => c.r !== 0 && c.g !== 0 && c.b !== 0)
+  const palette = quantization(pixelArray, options.quality).reverse()
   return options.length >= 1 ? palette.slice(0, options.length) : palette
 }
