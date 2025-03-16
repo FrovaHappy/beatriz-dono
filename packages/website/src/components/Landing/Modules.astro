@@ -12,7 +12,14 @@ import Tag from "@components/Tag.astro";
         <article class="module">
           <img src={mod.image} alt={mod.title} />
           <div class="module-info">
-            <Tag text={mod.status} size="0.625rem" />
+            <Tag
+              text={mod.status.text}
+              size="0.625rem"
+              color={{
+                background: mod.status.color ?? "secondary",
+                text: "#000",
+              }}
+            />
             <h3>{mod.title}</h3>
             <p>{mod.description}</p>
             <Button
@@ -37,7 +44,7 @@ import Tag from "@components/Tag.astro";
   }
   .modules {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     gap: 1rem;
   }
   .module {
