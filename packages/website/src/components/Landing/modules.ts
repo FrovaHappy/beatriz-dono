@@ -13,7 +13,7 @@ const mod: Modules[] = [
   {
     title: 'Colores Infinitos',
     description: 'Personaliza tu nombre con cualquier color, puedes usar cualquier color que te lo cambio.',
-    image: '/assets/feacture_color.png',
+    image: '/assets/feature_color.webp',
     status: 'complete',
     link: {
       url: '/modules/colors',
@@ -24,7 +24,7 @@ const mod: Modules[] = [
     title: 'Bienvenidas Únicas',
     description:
       'Personaliza tus mensajes de bienvenida con un sistema que te permite personalizar como quieras, el limite es el cielo.',
-    image: '/assets/feacture_welcome.png',
+    image: '/assets/feature_canvas.webp',
     status: 'in progress',
     link: {
       url: '/build-canvas/beforeofstart',
@@ -34,7 +34,7 @@ const mod: Modules[] = [
   {
     title: 'Sistema de Ranking',
     description: 'Impulsa la actividad de tu servidor, con un ranking que te permite ver quién es el mejor.',
-    image: '/assets/feacture_ranking.png',
+    image: '/assets/feature_ranking.webp',
     status: 'planned',
     link: {
       url: '/modules/ranking',
