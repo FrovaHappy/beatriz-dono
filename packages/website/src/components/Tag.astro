@@ -25,7 +25,6 @@ const colorText = reColor.test(color.text)
 const colorBackground = reColor.test(color.background)
   ? `var(--${color.background}-color)`
   : color.background;
-console.log(colorText, colorBackground);
 
 const style: astroHTML.JSX.CSSProperties = {
   fontSize: size,
