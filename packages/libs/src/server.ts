@@ -8,6 +8,5 @@ export const getImageData = async (url: string) => {
   const ctx = canvas.getContext('2d')
   ctx.drawImage(data, 0, 0, data.width, data.height)
   const imageData = ctx.getImageData(0, 0, data.width, data.height)
-
-  return imageData.data
+  return imageData
 }
