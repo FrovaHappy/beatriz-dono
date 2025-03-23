@@ -1,6 +1,7 @@
 import { createCanvas, loadImage } from '@napi-rs/canvas'
 
-export const getImageData = async (url: string) => {
+export const getImageData = async (url: string | null) => {
+  if (!url) return null
   const dataFetch = await fetch(url).then(async res => (await res.blob()).arrayBuffer())
 
   const data = await loadImage(dataFetch)

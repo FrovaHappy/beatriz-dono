@@ -5,10 +5,13 @@ import { formatterTextUser } from '../formatterText'
 import type { Guild, User } from '../types/index'
 import { type Canvas, MAX_WIDTH_CANVAS, isShape, validateCanvas } from './schema.welcome.v1'
 import template from './template.welcome'
+import dataUri from './imagesDataUri'
 
 import { join } from 'node:path'
 import { GlobalFonts } from '@napi-rs/canvas'
 import { getFonts } from '../getFonts'
+import { getPallete, rgbToHex } from 'colors'
+import { getImageData } from '../server'
 
 beforeEach(async () => {
   console.time('loadFonts')
@@ -24,11 +27,11 @@ const filterText = {
   userId: '1234567890',
   userDiscriminator: '1234',
   userDisplayName: 'userName',
-  userAvatar: 'https://i.pinimg.com/736x/d9/ba/9b/d9ba9b2f95bea749bc2c5289087fbdc4.jpg',
-  userBanner: 'https://i.pinimg.com/736x/5d/9f/69/5d9f69a552b37e9909f9d825edc56f11.jpg',
+  userAvatar: dataUri.userAvatar,
+  userBanner: dataUri.userBanner,
   membersCount: '343',
-  guildAvatar: 'https://i.pinimg.com/736x/bc/a6/f6/bca6f6362ca065a41699a913ba0cedfe.jpg',
-  guildBanner: 'https://i.pinimg.com/736x/02/f7/6b/02f76b4cf0d2ea81ea33e7573d8ef10b.jpg',
+  guildAvatar: dataUri.guildAvatar,
+  guildBanner: dataUri.guildBanner,
   guildName: 'Server Name',
   guildId: '46234567890'
 }
@@ -56,7 +59,12 @@ describe('PaintCanvas', () => {
     const ctx = canvas.getContext('2d')
     const ctxSupport = canvasSupport.getContext('2d')
     const images = await getImages(template.layers, filterText)
-    const castColor = '#ff0'
+    const data = (await getImageData(dataUri.userAvatar))?.data ?? null
+    console.log(Number(template.layerCastColor))
+    const castColor = getPallete({
+      data,
+      format: 'hex'
+    })
     paintCanvas({
       ctx: ctx as unknown as CanvasRenderingContext2D,
       ctxSupport: ctxSupport as unknown as CanvasRenderingContext2D,
@@ -64,7 +72,7 @@ describe('PaintCanvas', () => {
       Path2D: Patch as unknown as typeof Path2D,
       images: images,
       filterText,
-      castColor
+      castColor: castColor[0] as string
     })
     const imageBuffer = await canvas.encode('webp', 100)
 

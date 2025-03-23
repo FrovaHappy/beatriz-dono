@@ -1,4 +1,5 @@
-import { getPallete, loadImage, filterColorTolerance } from './colors'
+import { getImageData } from './server'
+import { getPallete, filterColorTolerance } from './colors'
 
 describe('find biggest color range ', () => {
   it('should return the dominante color of an image with a black background', async () => {
@@ -22,20 +23,14 @@ describe('find biggest color range ', () => {
 describe('get pallete ', async () => {
   const url =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMUAAACUCAMAAAAUNB2QAAAAA1BMVEXuLCwP78c9AAAAM0lEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4NHJ4AAF0e6e2AAAAAElFTkSuQmCC'
-  const data = await loadImage(url)
+  const data = (await getImageData(url))?.data ?? null
 
   it('should return the dominante color of an image', async () => {
-    const color = await getPallete({ data, length: 1 })
-    expect(color).toEqual([
-      {
-        b: 0,
-        g: 0,
-        r: 160
-      }
-    ])
+    const color = getPallete({ data, length: 1, format: 'hex' })
+    expect(color).toEqual(['#ee2c2c'])
   })
   it('should return null if the image is not found', async () => {
-    const color = await getPallete({ data: null })
-    expect(color).toBeFalsy()
+    const color = getPallete({ data: null })
+    expect(color).toEqual([])
   })
 })
