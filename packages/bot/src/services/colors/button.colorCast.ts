@@ -1,7 +1,8 @@
 import { getEmoji } from '@/const/emojis'
 import BuildButton from '@/core/build/BuildButtons'
 import db from '@db'
-import { getPallete, rgbToHex, loadImage } from '@libs/colors'
+import { getPallete, rgbToHex } from '@libs/colors'
+import { getImageData } from '@libs/server'
 import { ButtonStyle } from 'discord.js'
 import msgColorCastNotFound from './msg.ColorCastNotFound'
 import msgCreatePointerColor from './msg.createPointerColor'
@@ -31,7 +32,7 @@ export default new BuildButton({
     const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
     const url = i.user.displayAvatarURL({ extension: 'png', size: 512 })
-    const data = await loadImage(url)
+    const data = await getImageData(url)
     const color = await getPallete({
       data
     })

@@ -4,7 +4,7 @@ type Color = {
   b: number
 }
 
-function createPixelArray(imgData: Uint8Array<ArrayBufferLike>) {
+function createPixelArray(imgData: Uint8ClampedArray<ArrayBufferLike>) {
   const rgbValues = []
   // note that we are loop in every 4!
   // for every Red, Green, Blue and Alpha
@@ -22,11 +22,26 @@ function createPixelArray(imgData: Uint8Array<ArrayBufferLike>) {
 }
 
 export const filterColorTolerance = (rgbValues: Color[]) => {
+  const toleranceMin = 100 // is equal to 0x03
+
   return rgbValues.filter(({ r, g, b }) => {
-    const sum = r + g + b
-    const diff = sum / (255 * 3)
-    return diff > 0.01 && diff < 0.99
+    const rMin = r > toleranceMin ? r : 0
+    const gMin = g > toleranceMin ? g : 0
+    const bMin = b > toleranceMin ? b : 0
+
+    const sumMax = (r + g + b) / (255 * 3)
+    const sumMin = rMin + gMin + bMin
+
+    return sumMax < 0.8 && sumMin > 0
   })
+}
+
+const orderByBiggestColorRange = (rgbValues: Color[]) => {
+  const componentToSortBy = findBiggestColorRange(rgbValues)
+  rgbValues.sort((p1: { [x: string]: number }, p2: { [x: string]: number }) => {
+    return p1[componentToSortBy] - p2[componentToSortBy]
+  })
+  return rgbValues
 }
 
 export const findBiggestColorRange = (rgbValues: Color[]) => {
@@ -97,10 +112,7 @@ const quantization = (rgbValues: Color[], depth: number): Color[] => {
    *  3. Divide in half the rgb colors list
    *  4. Repeat process again, until desired depth or base case
    */
-  const componentToSortBy = findBiggestColorRange(rgbValues)
-  rgbValues.sort((p1: { [x: string]: number }, p2: { [x: string]: number }) => {
-    return p1[componentToSortBy] - p2[componentToSortBy]
-  })
+  orderByBiggestColorRange(rgbValues)
 
   const mid = rgbValues.length / 2
   return [...quantization(rgbValues.slice(0, mid), depth - 1), ...quantization(rgbValues.slice(mid + 1), depth - 1)]
@@ -126,23 +138,11 @@ export const orderByLuminance = (rgbValues: Color[]) => {
     return calculateLuminance(p2) - calculateLuminance(p1)
   })
 }
-
-export const loadImage = async (url: string) => {
-  const data = await fetch(url)
-    .then(res => {
-      if (res.status !== 200 || !res.ok) return null
-      return res.arrayBuffer()
-    })
-    .catch(err => {
-      return null
-    })
-  if (!data) return null
-  return new Uint8Array(data)
-}
-interface Options {
-  data: Uint8Array<ArrayBufferLike> | null
+type Options = {
+  data: Uint8ClampedArray<ArrayBufferLike> | null
   length?: number
   quality?: number
+  format?: 'hex' | 'rgb'
 }
 /**
  *  Quantization function
@@ -151,14 +151,20 @@ interface Options {
  * @param quality - quality of the image (10 is the best quality and 1 is the worst) (default: 10)
  * @returns - array of colors in the format { r: number, g: number, b: number }
  **/
-export async function getPallete({ data, length = 0, quality = 5 }: Options) {
+export function getPallete(props: Options) {
+  const { data, length = 0, quality = 5, format = 'rgb' } = props
   const options = { quality, length }
   if (options.quality > 50) options.quality = 50
   if (options.length > 100) options.length = 100
 
-  if (!data) return null
+  if (!data) return []
 
   const pixelArray = createPixelArray(data)
-  const palette = quantization(pixelArray, options.quality).reverse()
-  return options.length >= 1 ? palette.slice(0, options.length) : palette
+  let palette = quantization(pixelArray, options.quality).filter(({ r, g, b }) => {
+    return r !== 0 && g !== 0 && b !== 0
+  })
+  palette = orderByBiggestColorRange(palette)
+  const colors = options.length >= 1 ? palette.slice(0, options.length) : palette
+  if (format === 'hex') return colors.map(rgbToHex)
+  return colors
 }
