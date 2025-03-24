@@ -1,4 +1,4 @@
-import '@core/config'
+import '../../../config'
 import { hasAccessForScope, reorderScope } from './hasAccessForScope'
 
 globalThis.config = {
