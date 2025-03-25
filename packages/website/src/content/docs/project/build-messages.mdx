@@ -1,0 +1,105 @@
+---
+title: Clase BuildMessages 
+---
+
+# Modo de uso
+
+## Implementar la clase
+
+crea un fichero en el mismo directorio que el archivo donde se implementa la clase
+
+```ts
+// msg.hello.ts
+import { BuildMessages } from '@libs/build'
+
+export default new BuildMessages({
+  messages: {
+    default: {
+      content: 'Hola {user_name}'
+    },
+    es: {
+      content: 'Hola {user_name}'
+    }
+  },
+  components: [[{ type: 'button', customId: 'setup' }]] // agregara un botón al mensaje
+})
+```
+
+importa la instancia creada en el archivo donde se implementara.
+
+```ts
+// command.hello.ts
+import BuildCommand from '@core/build/BuildCommand'
+import msgHello from './msg.hello'
+// implementacion previa de un slash, botón, etc
+
+export default new BuildCommand({
+  ... // propiedades de la clase
+  execute(i) {
+    const { locale } = i
+    return msgHello.getMessage(locale, {}) // devuelve un mensaje de discord.js
+  }
+}
+
+```
+
+# Propiedades de la clase
+
+| Propiedad | Tipo | Descripción |
+| --- | --- | --- |
+| messages | `Record<Locale, MessageOptions>` | Objeto de mensajes |
+| components | Component[] | Arreglo de componentes |
+
+## Propiedad Mensajes
+
+Esta propiedad es un objeto con las traducciones de los mensajes, cada uno de ellos es un objeto de mensajes con las traducciones en diferentes idiomas.
+
+### Clave Locale
+
+> `default` es obligatorio y es el idioma principal
+la propiedad `default` es el idioma principal y la propiedad `es` es el idioma español. Te recomendamos mirar el contrato [Locale](https://discord.js.org/docs/packages/discord.js/main/Locale:Enum) de discord.js.
+
+### Propiedad MessageOptions
+
+> El objeto `MessageOptions` soporta las siguientes propiedades
+
+| Estado | Propiedad | Tipo | Descripción |
+| --- | --- | --- | --- |
+| ✅ | content | `string` | Contenido del mensaje |
+| ✅ | embeds | `Embed[]` | Arreglo de objetos de mensajes |
+| ❌ | files | `File[]` | Arreglo de objetos de archivos (no testeado) |
+
+### Propiedad Embed
+
+> El objeto `Embed` soporta las siguientes propiedades
+
+| Estado | Propiedad | Tipo | Descripción |
+| --- | --- | --- | --- |
+| ✅ | title | `string` | Título del mensaje |
+| ✅ | description | `string` | Descripción del mensaje |
+| ✅ | color | `ColorResolvable` | Color del mensaje |
+| ✅ | author | `EmbedAuthor` | Autor del mensaje |
+| ✅ | footer | `EmbedFooter` | Pie de página del mensaje |
+| ✅ | image | `string` | Imagen del mensaje |
+| ✅ | thumbnail | `string` | Miniatura del mensaje |
+| ✅ | video | `string` | Vídeo del mensaje |
+| ✅ | provider | `Provider` | Proveedor del mensaje |
+| ✅ | timestamp | `Date` | Marca de tiempo del mensaje |
+| ✅ | url | `string` | URL del mensaje |
+
+## Propiedad Componentes
+
+Esta propiedad es un arreglo de componentes que hacen referencia a los componentes.
+
+| Propiedad | Tipo | Descripción |
+| --- | --- | --- |
+| type | string | Tipo de componente |
+| customId | `string` | ID personalizada del componente |
+
+### Propiedad *Type*
+
+> `'button' \| 'menu' \| 'modal'`
+
+### Propiedad *customId*
+
+> El ID personalizado del componente, por ejemplo `setup` o `colorPointer`

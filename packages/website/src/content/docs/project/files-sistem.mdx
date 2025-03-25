@@ -1,0 +1,77 @@
+---
+title: Distribución de Ficheros
+description: Se muestra la estructura de directorios y ficheros que se utilizan para la distribución del bot.
+---
+import { FileTree, Aside } from '@astrojs/starlight/components'
+
+# Introducción
+
+El sistema de ficheros consta de dos secciones, el **[bot/src/services/**][linkServices]** y el **[bot/src/events/**][linkEvents]**.
+en estos directorios se buscaran las instancias de clases que se encuentran en el directorio `bot/src/core/build/`. los ficheros que se buscan y como se instancian lo encontraras en cada seccion.
+
+## Services
+
+Los build que se pueden utilizar en el directorio `bot/src/services/` son los siguientes:
+
+| Clase | nombre de archivo | Descripción |
+| --- | --- | --- |
+| BuildCommand | slash.any.ts |  Clase que implementa la clase BuildCommand |
+| BuildModal | modal.any.ts | Clase que implementa la clase BuildModal |
+| BuildMenu | menu.any.ts | Clase que implementa la clase BuildMenu |
+| BuildButton | button.any.ts | Clase que implementa la clase BuildButton |
+
+El escaneo de los archivos busca hasta una profundidad de 5 carpetas, en estas se buscan los ficheros que retornen la instancias de las clases anteriormente mencionadas.
+
+Los nombres de archivos se usan para identificar rápidamente la implementación de la clase.
+
+### Estructura que se debe seguir
+
+Aca te mostraremos las diferentes estructuras que se deben seguir para cada los casos de uso.
+
+#### Ordenado Por Modulo o Sistema Complejo
+
+<Aside type="note"> Para dar referencia al fichero root de cada modulo o sub-modulo, se utiliza `[component].index.ts`</Aside>
+
+<FileTree>
+
+- services/
+  - colors/ por modulo
+    - anyFileOfSupport/index.ts
+    - settings/
+      - button.index.ts
+    - button.anyButton.ts
+    - slash.index.ts
+</FileTree>
+
+#### Funciones Simples
+
+Estos se colocaran en la carpeta `bot/src/services/general/` y estarán contenidas dentro de una carpeta por clase.
+
+<FileTree>
+
+- services/
+  - general/
+    - command/
+      - slash.feature1.ts
+      - slash.feature2.ts
+    - modal/
+      - modal.feature1.ts
+      - modal.feature2.ts
+    - ... etc
+
+</FileTree>
+
+## Events
+
+En la carpeta `bot/src/events/`
+
+<FileTree>
+- events/
+  - interactionCreate/
+    index.ts instancia de la clase BuildEvent
+  - ... Otros eventos
+</FileTree>
+
+[linkServices]: https://github.com/FrovaHappy/beatriz-dono/tree/main/packages/bot/src/services (link a github)
+
+[linkEvents]: https://github.com/FrovaHappy/beatriz-dono/tree/main/packages/bot/src/events (link a github)

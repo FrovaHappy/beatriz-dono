@@ -1,0 +1,93 @@
+---
+title: Iniciar el proyecto
+description: Encuentra aquí toda la documentación para iniciar el proyecto.
+---
+import { Aside } from '@astrojs/starlight/components'
+
+# Iniciar el proyecto
+
+lo primero es clonar/forkear el repositorio
+
+```bash
+git clone https://github.com/FrovaHappy/beatriz-dono.git
+```
+
+y luego instalar las dependencias
+
+```bash
+npm install
+```
+
+# Configurar las variables de entorno
+
+Crear un archivo `.env` en la raíz del proyecto con las siguientes variables
+> [!NOTE]
+> Las variables de entorno que usan objetos deben estar en formato JSON y sin saltos de linea.
+> Ejemplo: `PRIVATE= '{"key":"value"} '`
+
+```bash
+PRIVATE = '{
+  "discord": {
+    "token": "",
+    "applicationId": ""
+    "oAuthSecret": ""
+    "guildOwner": ""
+    "userOwner": ""
+  },
+  "api": {
+    "secretKey": "",
+    "urlClientDomain": "",
+  },
+  "sql": {
+    "syncUrl": "",
+    "url": "",
+    "token": ""
+  },
+}'
+PUBLIC_VARIABLES = '{
+  "urlApi" : "",
+  "urlJoinBot": "",
+  "urlOathCallback": "",
+  "urlDiscord": "",
+  "urlGithub": "",
+  "urlDonate":{
+    "kofi": "",
+  }
+}'
+PORT = '3000'
+```
+
+# Iniciar el servidor en local
+
+tienes dos formas de iniciar el servidor en local
+
+## Iniciarlo con Docker
+
+```bash
+docker-compose up -d
+```
+
+## Iniciarlo con npm
+
+```bash
+npm run dev
+```
+
+# Iniciar el servidor en producción
+
+las configuraciones de env en producción dependera del servidor que usemos en este caso usaremos [Vercel](https://vercel.com/) para el despliegue del website y [Railway](https://railway.app/) para el despliegue del bot usando la configuracion de Docker personalizada.
+
+## Iniciarlo El Website con Vercel
+
+1. Crear una cuenta en [Vercel](https://vercel.com/)
+2. Agregar el repositorio como repositorio de origen
+3. Ten en cuenta las variables de entorno que necesitas
+4. configura el build de la aplicación 'npm run build' ya se ejecutará, pero ten en cuenta de seleccionar la ruta raíz de la aplicación.
+5. listo.
+
+## Iniciarlo El Bot con Railway
+
+<Aside type="warning">
+  Actualmente el archivo de docker no esta correctamente configurado, por lo que no se puede usar el bot en producción.
+  `problema con las variables de entorno`
+</Aside>

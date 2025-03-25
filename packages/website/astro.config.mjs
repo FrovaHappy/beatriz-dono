@@ -69,6 +69,15 @@ export default defineConfig({
           },
           autogenerate: { directory: 'modules' }
         },
+
+        {
+          label: 'Project',
+          translations: {
+            en: 'Project',
+            es: 'Proyecto'
+          },
+          autogenerate: { directory: 'project' }
+        },
         {
           label: 'About Me',
           translations: {
