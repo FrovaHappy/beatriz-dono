@@ -40,7 +40,6 @@ const parsePrivate = (s: string) => {
         urlClientDomain: z.string()
       }),
       sql: z.object({
-        url: z.string(),
         syncUrl: z.string(),
         token: z.string()
       })

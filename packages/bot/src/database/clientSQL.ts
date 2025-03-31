@@ -23,9 +23,8 @@ export function formatResponse<T = Record<string, any>>(response: ResultSet): Ar
   }
   return data
 }
-
-const Cli = createClient({
-  url: config.env.sql.url,
+const cli = createClient({
+  url: 'file:local.db',
   authToken: config.env.sql.token,
   syncUrl: config.env.sql.syncUrl,
   syncInterval: 60
