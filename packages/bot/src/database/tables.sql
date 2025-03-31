@@ -18,10 +18,15 @@ CREATE TABLE IF NOT EXISTS Canvas (
   user_id text NOT NULL,
   guild_id text NOT NULL,
   title varchar(150) NOT NULL,
-  forked integer,
-  public boolean NOT NULL,
-  base JSON,
+  forked TEXT,
+  version varchar(10) NOT NULL,
+  visibility text CHECK (visibility IN ('public', 'private')) NOT NULL DEFAULT 'private',
+  w integer NOT NULL,
+  h integer NOT NULL,
+  bg_color text,
+  layer_cast_color text,
   layers JSON,
+  FOREIGN KEY (forked) REFERENCES Canvas (id),
   FOREIGN KEY (user_id) REFERENCES Users (id),
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );

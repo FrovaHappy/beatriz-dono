@@ -3,6 +3,7 @@ import { type FontsFamily, fontsFamily } from '../getFonts'
 import re from '../regex'
 
 export const MAX_WIDTH_CANVAS = 2000
+export const LAST_VERSION = '1'
 const reUrlImage = re.buildUrlImage(['imgur.com', 'media.discordapp.net', 'i.pinimg.com'])
 const validateColor = z.union([
   z.string().refine((val: string) => re.hexColor.test(val), 'the format has to be #RGB or #RRGGBB'),
@@ -112,15 +113,17 @@ const canvasSchema = z.object({
   id: z.string().min(10).max(100).optional(),
   version: z.literal('1'),
   title: z.string().min(1).max(100),
-  author: z.string().min(10).max(100),
-  forkedFrom: z.string().min(1).max(100).optional(),
-  visible: z.boolean().optional(),
+  author: z.string().min(10).max(100).optional(),
+  forked: z.string().min(1).max(100).optional(),
+  visibility: z.union([z.literal('public'), z.literal('private')]).optional(),
   h: z.number().min(0).max(MAX_WIDTH_CANVAS),
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
   bgColor: validateColor.optional(),
   layerCastColor: z.string().optional(),
   layers: z.array(z.union([textSchema, shapeSchema])).max(50)
 })
+
+// this canvas type is used to validate the canvas data input from the user
 export type Canvas = z.infer<typeof canvasSchema>
 export type Text = z.infer<typeof textSchema>
 export type Shape = z.infer<typeof shapeSchema>
