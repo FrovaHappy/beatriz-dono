@@ -15,3 +15,4 @@ _lib
 *.db-client_wal_index
 *.db-shm
 *.db-wal
+*.db-info
