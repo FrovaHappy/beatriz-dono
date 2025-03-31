@@ -31,7 +31,6 @@ const Cli = createClient({
   syncInterval: 60
 }) as Client
 
-type Value = null | string | number | bigint | ArrayBuffer | boolean
 interface Execute {
   queries: string
   args?: InArgs
