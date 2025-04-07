@@ -16,3 +16,4 @@ _lib
 *.db-shm
 *.db-wal
 *.db-info
+drizzle
