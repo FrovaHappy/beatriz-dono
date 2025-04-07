@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS Guilds (
   id text NOT NULL PRIMARY KEY,
   scope_bot TEXT CHECK (scope_bot IN ('public', 'private', 'owner')) NOT NULL DEFAULT 'public'
 );
-CREATE TABLE IF NOT EXISTS Guild_Features (
+CREATE TABLE IF NOT EXISTS Guilds_Features (
   guild_id text NOT NULL PRIMARY KEY,
   welcome boolean NOT NULL DEFAULT false,
   goodbye boolean NOT NULL DEFAULT false,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS Colors (
   role_id text NOT NULL,
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
-CREATE TABLE IF NOT EXISTS ColorSetting (
+CREATE TABLE IF NOT EXISTS ColorsSettings (
   guild_id text NOT NULL PRIMARY KEY,
   is_active boolean DEFAULT false,
   pointer_id text,
@@ -46,15 +46,13 @@ CREATE TABLE IF NOT EXISTS ColorSetting (
 );
 CREATE TABLE IF NOT EXISTS Goodbyes (
   guild_id text NOT NULL PRIMARY KEY,
-  content text,
-  embed JSON,
+  message JSON NOT NULL,
   channel_id text,
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
 CREATE TABLE IF NOT EXISTS Welcomes (
   guild_id text NOT NULL PRIMARY KEY,
-  content text,
-  embed JSON,
+  message JSON NOT NULL,
   channel_id text,
   FOREIGN KEY (guild_id) REFERENCES Guilds (id)
 );
