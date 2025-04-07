@@ -4,7 +4,6 @@ import p from 'picocolors'
 import { z } from 'zod'
 const runValidation = () => {
   const envSchema = z.object({
-    DATABASE_URL: z.string(),
     PRIVATE: z.string(),
     PORT: z.string()
   })
