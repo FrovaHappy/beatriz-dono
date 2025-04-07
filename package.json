@@ -8,6 +8,8 @@
     "lint": "biome check --write --diagnostic-level=warn",
     "test": "vitest",
     "test:ui": "vitest --ui",
+    "db:push": "env-cmd npm run db:push --workspace=packages/bot",
+    "db:migrate": "env-cmd npm run db:migrate --workspace=packages/bot",
     "dev": "env-cmd turbo dev",
     "build": "env-cmd turbo build",
     "build:lib": "env-cmd npm run build --workspace=packages/lib",
@@ -32,6 +34,8 @@
   },
   "dependencies": {
     "@libsql/client": "0.15.2",
+    "drizzle-kit": "0.30.6",
+    "drizzle-orm": "0.41.0",
     "env-cmd": "10.1.0",
     "zod": "3.24.2"
   }
