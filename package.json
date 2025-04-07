@@ -21,17 +21,17 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "22.13.14",
+    "@types/node": "22.14.0",
     "@vitest/ui": "3.1.1",
     "nodemon": "3.1.9",
     "tsx": "4.19.3",
-    "turbo": "2.4.4",
+    "turbo": "2.5.0",
     "typescript": "5.8.2",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.1.1"
   },
   "dependencies": {
-    "@libsql/client": "0.15.1",
+    "@libsql/client": "0.15.2",
     "env-cmd": "10.1.0",
     "zod": "3.24.2"
   }
