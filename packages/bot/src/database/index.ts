@@ -1,4 +1,5 @@
-import { deleteColors, insertColors, readColors, updateColorSetting } from './queries/colors'
+import { readCanvas, upsertCanvas } from './queries/canvas'
+import { deleteColors, insertColors, readColors, updateColorSetting, readColorsSettings } from './queries/colors'
 import { getGuilds, readGuild } from './queries/guild'
 import { readWelcome } from './queries/welcome'
 
@@ -6,7 +7,10 @@ export default {
   colors: {
     read: readColors,
     delete: deleteColors,
-    insert: insertColors,
+    insert: insertColors
+  },
+  colorsSettings: {
+    read: readColorsSettings,
     update: updateColorSetting
   },
   welcome: {
@@ -17,5 +21,10 @@ export default {
   },
   guilds: {
     read: getGuilds
+  },
+  canvas: {
+    read: readCanvas,
+    upsert: upsertCanvas
+    // delete: deleteCanvas
   }
 }
