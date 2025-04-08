@@ -19,13 +19,9 @@ export default defineConfig({
       },
       favicon: 'public/favicon.jpg',
       lastUpdated: true,
-      social: {
-        github: 'https://github.com/FrovaHappy/beatriz-dono',
-        discord: 'https://discord.gg/JRpHsGC8YQ'
-      },
-      defaultLocale: 'es',
+      defaultLocale: 'root',
       locales: {
-        es: {
+        root: {
           label: 'Español',
           lang: 'es'
         },
