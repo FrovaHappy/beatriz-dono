@@ -23,8 +23,9 @@ export default defineConfig({
         github: 'https://github.com/FrovaHappy/beatriz-dono',
         discord: 'https://discord.gg/JRpHsGC8YQ'
       },
+      defaultLocale: 'es',
       locales: {
-        root: {
+        es: {
           label: 'Español',
           lang: 'es'
         },
@@ -73,8 +74,8 @@ export default defineConfig({
         {
           label: 'Project',
           translations: {
-            en: 'Project',
-            es: 'Proyecto'
+            en: 'About the Project',
+            es: 'Sobre el Proyecto'
           },
           autogenerate: { directory: 'project' }
         },
