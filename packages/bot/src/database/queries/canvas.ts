@@ -23,23 +23,19 @@ export async function readCanvas(guildId: string | null) {
 
 export async function upsertCanvas(props: InsertCanvas) {
   const { guildId, canvas, userId } = props
-  console.log(canvas.id)
   let id = canvas.id || crypto.randomUUID()
-
   const existCanvas = (
     await cli
       .select()
       .from(schemaCanvas)
       .where(and(eq(schemaCanvas.id, id), eq(schemaCanvas.guild_id, guildId)))
   )[0]
-  console.log(existCanvas)
   if (!existCanvas) id = crypto.randomUUID()
   const guild = await readGuild(guildId)
   const user = await readUser({ id: userId })
   if (!user || !guild) return null
-
   const uniqueValues = {
-    id: id.slice(0, 5),
+    id,
     user_id: user.id,
     guild_id: guild.guild_id
   }
