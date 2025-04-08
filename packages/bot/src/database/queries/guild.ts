@@ -33,7 +33,6 @@ export type Guild = {
 export async function readGuild(guild_id: string) {
   try {
     const match = guild_id.match(re.guildId)
-    console.log({ match, guild_id })
     if (!match) null
 
     await cli.insert(schemaGuilds).values({ id: guild_id }).onConflictDoNothing()

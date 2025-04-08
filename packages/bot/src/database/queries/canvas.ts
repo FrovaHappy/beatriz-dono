@@ -23,7 +23,7 @@ export async function readCanvas(guildId: string | null) {
 
 export async function upsertCanvas(props: InsertCanvas) {
   const { guildId, canvas, userId } = props
-
+  console.log(canvas.id)
   let id = canvas.id || crypto.randomUUID()
 
   const existCanvas = (
@@ -32,14 +32,18 @@ export async function upsertCanvas(props: InsertCanvas) {
       .from(schemaCanvas)
       .where(and(eq(schemaCanvas.id, id), eq(schemaCanvas.guild_id, guildId)))
   )[0]
+  console.log(existCanvas)
   if (!existCanvas) id = crypto.randomUUID()
   const guild = await readGuild(guildId)
   const user = await readUser({ id: userId })
   if (!user || !guild) return null
+
+  const uniqueValues = {
+    id: id.slice(0, 5),
+    user_id: user.id,
+    guild_id: guild.guild_id
+  }
   const values = {
-    id, // value not editable by user
-    guild_id: guild?.guild_id, // value not editable by user
-    user_id: existCanvas?.user_id || user.id, // value not editable by user
     forked: existCanvas?.forked || null,
     version: canvas.version || existCanvas?.version || LAST_VERSION,
     title: canvas.title || existCanvas?.title || id.slice(0, 5),
@@ -52,11 +56,16 @@ export async function upsertCanvas(props: InsertCanvas) {
     created_at: existCanvas?.created_at || Date.now().toString(),
     updated_at: !existCanvas ? Date.now().toString() : existCanvas.updated_at
   }
-  const { id: idUn, ...valuesWithoutId } = values
-  const result = await cli.insert(schemaCanvas).values(values).onConflictDoUpdate({
-    target: schemaCanvas.id,
-    set: valuesWithoutId
-  })
-  console.log({ result })
-  return result
+  if (!existCanvas) {
+    await cli
+      .insert(schemaCanvas)
+      .values({ ...uniqueValues, ...values })
+      .onConflictDoNothing()
+    return { operation: 'insert', id }
+  }
+  await cli
+    .update(schemaCanvas)
+    .set(values)
+    .where(and(eq(schemaCanvas.id, id), eq(schemaCanvas.guild_id, guildId)))
+  return { operation: 'update', id }
 }
