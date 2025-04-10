@@ -4,12 +4,12 @@ description: Cómo empezar con el despliegue del proyecto en local.
 ---
 import { Aside, Steps } from '@astrojs/starlight/components'
 
-# Requisitos
+## Requisitos
 
 - [Node.js](https://nodejs.org/es/) >= 22
 - [Docker](https://www.docker.com/) (opcional)
 
-# Como empezar a desarrollar
+## Como empezar a desarrollar
 
 Lo primero es clonar o hacer fork del repositorio, si lo que quieres es colaborar puedes leer el [/about/contributing](/about/contributing) para más información.
 
@@ -40,10 +40,10 @@ Ahora toca instalar las dependencias y configurar el entorno de desarrollo.
 </Steps>
 
 <Aside type="note">
-  Si estás usando Docker, solo necesitas ejecutar el paso 2 y 3 para configurar las variables de entorno y ejecutar el comando `docker:dev` para iniciar el servidor en local.
+  Si estás usando Docker, solo necesitas ejecutar el paso `2` y `3`, y ejecutar el comando `docker:dev` para iniciar el servidor en local.
 </Aside>
 
-# Que Variables de Entorno necesito?
+## Que Variables de Entorno necesito?
 
 Crear un archivo `.env` en la raíz del proyecto con las siguientes variables
 <Aside type="caution">
@@ -70,12 +70,11 @@ PRIVATE = '{
   },
 }'
 PORT = '3000'
-PUBLIC_URL_OATH_CALLBACK = 'http://localhost:3000/oauth/callback'
 PUBLIC_URL_API = 'http://localhost:3000',
-PUBLIC_URL_JOIN_BOT = '',
+PUBLIC_APPLICATION_ID = '',
 ```
 
-## `PRIVATE.discord`
+### `PRIVATE.discord`
 
 Lo primero es tener un bot creado en discord, para ello puedes usar el bot de [Discord Developer Portal](https://discord.com/developers/applications) o puedes seguir el tutorial de [Discord](https://discord.com/developers/docs/quick-start/getting-started) para crear un bot.
 
@@ -85,30 +84,31 @@ Lo primero es tener un bot creado en discord, para ello puedes usar el bot de [D
 - **guildOwner**: id del servidor donde se encuentra el bot (el bot debe estar en el servidor)
 - **userOwner**: id del usuario que tiene el rol de administrador del bot (el usuario debe ser el dueño del bot)
 
-## `PRIVATE.api`
+### `PRIVATE.api`
 
 Esto es para comunicar el front con el back.
 
 - **secretKey**: secreto para el api, te recomendamos usar un hash generado con comando porque toda la aplicación depende es esto.
 - **urlClientDomain**: dominio del cliente, en local sera `http://localhost:4321`
 
-## `PRIVATE.sql`
+### `PRIVATE.sql`
 
 En este caso utilizamos [Turso](https://turso.tech/) y [Drizzle](https://www.drizzle.team/) como ORM, pero internamente se usa [libSQL](https://docs.turso.tech/libsql), ahi tienes mas información sobre que entorno usar.
 
 - **syncUrl**: url de la base de datos
 - **token**: token de la base de datos
 
-## `PORT`
+### `PORT`
 
 Puerto en el que se ejecutara el servidor en local
 
-## `PUBLIC_URL_*`
+### `PUBLIC_URL_*`
 
 Estas variables son utilizadas para configurar las URLs del Frontend.
 
-- **PUBLIC_URL_OATH_CALLBACK**: url de la aplicación para la autenticación de discord, configura la aplicación en `OAuth2`, luego asigna la url de retorno en `Redirect URIs` en este caso es `http://localhost:3000/oauth/discord`
 - **PUBLIC_URL_API**: url de la aplicación para el api
-- **PUBLIC_URL_JOIN_BOT**:
-  url de la aplicación para el bot de discord, puedes usar la herramienta que te facilita el portal
-  accede a la sección de `OAuth2`, luego a `URL Generator`, en el scopes selecciona `bot`, luego en los permisos selecciona `administrator`  (o lo que quieras) y copia la url
+- **PUBLIC_APPLICATION_ID**: id de la aplicación de discord, esto se usa para construir el link de OAuth y join bot de discord
+
+    <Aside type="note">
+      Si necesitas editar los permisos, puedes ir al archivo `website/src/utils/urls.ts` y editar los valores, solo ten en cuenta que respeten la estructura de la url
+    </Aside>
