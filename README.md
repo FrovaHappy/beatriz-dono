@@ -12,11 +12,11 @@ A Bot multipurpose for discord that you can use to manage your server adding a l
 
 ## Installation of the project and dependencies
 
-This has moved to the [wiki](https://beatrizbot.vercel.app/project/installation)
+This has moved to the [wiki](https://beatrizbot.vercel.app/project/)
 
 ## Contributing
 
-This has moved to the [wiki](https://beatrizbot.vercel.app/project/contributing)
+This has moved to the [wiki](https://beatrizbot.vercel.app/about-me/contributing/)
 
 ## License
 
