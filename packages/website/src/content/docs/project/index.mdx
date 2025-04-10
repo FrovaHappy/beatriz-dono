@@ -1,29 +1,55 @@
 ---
-title: Iniciar el proyecto
-description: Encuentra aquí toda la documentación para iniciar el proyecto.
+title: Cómo Empezar?
+description: Cómo empezar con el despliegue del proyecto en local.
 ---
-import { Aside } from '@astrojs/starlight/components'
+import { Aside, Steps } from '@astrojs/starlight/components'
 
-# Iniciar el proyecto
+# Requisitos
 
-lo primero es clonar/forkear el repositorio
+- [Node.js](https://nodejs.org/es/) >= 22
+- [Docker](https://www.docker.com/) (opcional)
 
-```bash
-git clone https://github.com/FrovaHappy/beatriz-dono.git
-```
+# Como empezar a desarrollar
 
-y luego instalar las dependencias
+Lo primero es clonar o hacer fork del repositorio, si lo que quieres es colaborar puedes leer el [/about/contributing](/about/contributing) para más información.
 
-```bash
-npm install
-```
+Ahora toca instalar las dependencias y configurar el entorno de desarrollo.
 
-# Configurar las variables de entorno
+<Steps>
+
+  1. Instalar las dependencias
+
+      ```bash
+      npm install
+      ```
+
+  2. Configurar las variables de entorno, para ello crea un archivo `.env` en la raíz del proyecto con las variables explicadas en la sección [que variables de entorno necesito?](#que-variables-de-entorno-necesito)
+
+  3. Ejecutar el push de la base de datos
+
+      ```bash
+      npm run db:push
+      ```
+
+  4. Iniciar el servidor en local
+
+      ```bash
+      npm run dev
+      ```
+
+</Steps>
+
+<Aside type="note">
+  Si estás usando Docker, solo necesitas ejecutar el paso 2 y 3 para configurar las variables de entorno y ejecutar el comando `docker:dev` para iniciar el servidor en local.
+</Aside>
+
+# Que Variables de Entorno necesito?
 
 Crear un archivo `.env` en la raíz del proyecto con las siguientes variables
-> [!NOTE]
-> Las variables de entorno que usan objetos deben estar en formato JSON y sin saltos de linea.
-> Ejemplo: `PRIVATE= '{"key":"value"} '`
+<Aside type="caution">
+  Las variables de entorno que usan objetos deben estar en formato JSON y sin saltos de linea.
+  Ejemplo: `PRIVATE= '{"key":"value"}'`. Para conocer mas sobre los formatos JSON puedes leer [este enlace](https://es.wikipedia.org/wiki/JSON#Sintaxis)
+</Aside>
 
 ```bash
 PRIVATE = '{
@@ -40,54 +66,49 @@ PRIVATE = '{
   },
   "sql": {
     "syncUrl": "",
-    "url": "",
     "token": ""
   },
 }'
-PUBLIC_VARIABLES = '{
-  "urlApi" : "",
-  "urlJoinBot": "",
-  "urlOathCallback": "",
-  "urlDiscord": "",
-  "urlGithub": "",
-  "urlDonate":{
-    "kofi": "",
-  }
-}'
 PORT = '3000'
+PUBLIC_URL_OATH_CALLBACK = 'http://localhost:3000/oauth/callback'
+PUBLIC_URL_API = 'http://localhost:3000',
+PUBLIC_URL_JOIN_BOT = '',
 ```
 
-# Iniciar el servidor en local
+## `PRIVATE.discord`
 
-tienes dos formas de iniciar el servidor en local
+Lo primero es tener un bot creado en discord, para ello puedes usar el bot de [Discord Developer Portal](https://discord.com/developers/applications) o puedes seguir el tutorial de [Discord](https://discord.com/developers/docs/quick-start/getting-started) para crear un bot.
 
-## Iniciarlo con Docker
+- **token**: token de autenticación de discord
+- **applicationId**: id de la aplicación de discord
+- **oAuthSecret**: secreto de autenticación de discord para OAuth
+- **guildOwner**: id del servidor donde se encuentra el bot (el bot debe estar en el servidor)
+- **userOwner**: id del usuario que tiene el rol de administrador del bot (el usuario debe ser el dueño del bot)
 
-```bash
-docker-compose up -d
-```
+## `PRIVATE.api`
 
-## Iniciarlo con npm
+Esto es para comunicar el front con el back.
 
-```bash
-npm run dev
-```
+- **secretKey**: secreto para el api, te recomendamos usar un hash generado con comando porque toda la aplicación depende es esto.
+- **urlClientDomain**: dominio del cliente, en local sera `http://localhost:4321`
 
-# Iniciar el servidor en producción
+## `PRIVATE.sql`
 
-las configuraciones de env en producción dependera del servidor que usemos en este caso usaremos [Vercel](https://vercel.com/) para el despliegue del website y [Railway](https://railway.app/) para el despliegue del bot usando la configuracion de Docker personalizada.
+En este caso utilizamos [Turso](https://turso.tech/) y [Drizzle](https://www.drizzle.team/) como ORM, pero internamente se usa [libSQL](https://docs.turso.tech/libsql), ahi tienes mas información sobre que entorno usar.
 
-## Iniciarlo El Website con Vercel
+- **syncUrl**: url de la base de datos
+- **token**: token de la base de datos
 
-1. Crear una cuenta en [Vercel](https://vercel.com/)
-2. Agregar el repositorio como repositorio de origen
-3. Ten en cuenta las variables de entorno que necesitas
-4. configura el build de la aplicación 'npm run build' ya se ejecutará, pero ten en cuenta de seleccionar la ruta raíz de la aplicación.
-5. listo.
+## `PORT`
 
-## Iniciarlo El Bot con Railway
+Puerto en el que se ejecutara el servidor en local
 
-<Aside type="danger">
-  Actualmente el archivo de docker no esta correctamente configurado, por lo que no se puede usar el bot en producción.
-  `problema con las variables de entorno`
-</Aside>
+## `PUBLIC_URL_*`
+
+Estas variables son utilizadas para configurar las URLs del Frontend.
+
+- **PUBLIC_URL_OATH_CALLBACK**: url de la aplicación para la autenticación de discord, configura la aplicación en `OAuth2`, luego asigna la url de retorno en `Redirect URIs` en este caso es `http://localhost:3000/oauth/discord`
+- **PUBLIC_URL_API**: url de la aplicación para el api
+- **PUBLIC_URL_JOIN_BOT**:
+  url de la aplicación para el bot de discord, puedes usar la herramienta que te facilita el portal
+  accede a la sección de `OAuth2`, luego a `URL Generator`, en el scopes selecciona `bot`, luego en los permisos selecciona `administrator`  (o lo que quieras) y copia la url
