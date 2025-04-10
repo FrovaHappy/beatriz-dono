@@ -1,16 +1,13 @@
 ---
-import getPublic from "@utils/getPublic";
 import Hero from "../components/Landing/Hero.astro";
 import RoadMap from "../components/Landing/RoadMap.astro";
 import Layout from "../layouts/Layout.astro";
 import Modules from "@components/Landing/Modules.astro";
-
-const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
 
-<Layout title="Welcome to Beatriz Dono" pub={pub}>
+<Layout title="Welcome to Beatriz Dono">
   <main>
-    <Hero discordBot={pub.urlJoinBot} kofi={pub.urlDonate.kofi} />
+    <Hero />
     <Modules />
     <RoadMap />
   </main>

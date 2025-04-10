@@ -1,19 +1,17 @@
 ---
-import type { EnvPublic } from "@utils/getPublic";
 import Nav from "../components/Nav/index.astro";
+import urls from "@utils/urls";
 
 interface Props {
   title: string;
   description?: string;
   showFooter?: boolean;
-  pub: EnvPublic;
 }
 
 const {
   title,
   showFooter = true,
   description = "Best bot for Discord, Beatriz Dono.",
-  pub,
 } = Astro.props as Props;
 ---
 
@@ -32,7 +30,7 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <Nav pub={pub} />
+    <Nav urls={urls} />
     <slot />
     {
       showFooter && (

@@ -1,17 +1,18 @@
+import type { Urls } from '@utils/urls'
 import getUser, { Status } from '../../hooks/getUser'
 import CardGuild from './CardGuild'
 import css from './ContainerGuilds.module.scss'
 
 interface ContainerGuildsProps {
-  apiUrl: string
+  urls: Urls
 }
 
 export default function ContainerGuilds(props: ContainerGuildsProps) {
-  const { apiUrl } = props
-  const { user, status } = getUser(apiUrl, [])
+  const { urls } = props
+  const { user, status } = getUser(urls.api, [])
 
   if (status === Status.LOADING) {
-    return <div>Loading... {apiUrl}</div>
+    return <div>Loading... {urls.api}</div>
   }
   if (status === Status.ERROR) {
     return <div>Error</div>

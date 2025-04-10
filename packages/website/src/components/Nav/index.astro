@@ -1,19 +1,19 @@
 ---
-import type { EnvPublic } from "@utils/getPublic";
 import LoginButton from "./LoginButton";
 import Logo from "./Logo.astro";
 import LinkDonate from "./LinkDonate.astro";
 import Button from "@components/Button.astro";
+import type { Urls } from "@utils/urls";
 
 interface Props {
-  pub: EnvPublic;
+  urls: Urls;
 }
 
-const { pub } = Astro.props as Props;
+const { urls } = Astro.props as Props;
 ---
 
 <nav>
-  <meta data-url-api={pub.urlApi} />
+  <meta data-url-api={urls.api} />
   <Logo />
   <ul class="links">
     <li><a href="/home">Wiki</a></li>
@@ -23,19 +23,15 @@ const { pub } = Astro.props as Props;
   <span class="spacer"></span>
   <!-- button github -->
   <div class="button-group">
-    <Button type="only-icon" icon="discord" href={pub.urlDiscord} />
-    <Button type="only-icon" icon="github" href={pub.urlGithub} />
+    <Button type="only-icon" icon="discord" href={urls.discord} />
+    <Button type="only-icon" icon="github" href={urls.github} />
     <span class="line"></span>
     <!-- button light/dark mode -->
 
     <Button type="only-icon" icon="moon" id="button-theme" />
-    <LinkDonate kofi={pub.urlDonate.kofi} />
+    <LinkDonate kofi={urls.kofi} />
   </div>
-  <LoginButton
-    apiUrl={pub.urlApi}
-    oauthCallback={pub.urlOathCallback}
-    client:only
-  />
+  <LoginButton apiUrl={urls.api} oauthCallback={urls.oAuth} client:only />
 </nav>
 <x-phone>
   <i class="ti ti-menu button--icon"></i>

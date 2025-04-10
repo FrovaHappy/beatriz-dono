@@ -1,15 +1,9 @@
 ---
 import ColorsSettings from "@components/Dashboard/Guild/ColorsSettings";
 import Layout from "@layouts/Layout.astro";
-import getPublic from "@utils/getPublic";
-
-const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
+import urls from "@utils/urls";
 ---
 
-<Layout title="Colors" pub={pub}>
-  <ColorsSettings
-    client:only
-    apiUrl={pub.urlApi}
-    oauthCallback={pub.urlOathCallback}
-  />
+<Layout title="Colors">
+  <ColorsSettings urls={urls} client:only />
 </Layout>

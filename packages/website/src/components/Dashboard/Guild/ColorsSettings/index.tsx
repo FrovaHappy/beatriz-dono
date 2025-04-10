@@ -3,20 +3,20 @@ import getSetting from '@hooks/getSetting'
 import { useMemo } from 'react'
 import cssButtonsEnabledInLine from '../ButtonsEnabledInLine.module.scss'
 import ColorsButton from '../Settings/ColorsButton'
+import type { Urls } from '@utils/urls'
 
 interface Props {
-  apiUrl: string
-  oauthCallback: string
+  urls: Urls
 }
 
 export default function ColorsSettings(props: Props) {
-  const { apiUrl, oauthCallback } = props
+  const { urls } = props
   const guildId = useMemo(() => {
     const id = new URLSearchParams(document.location.search).get('id')
     if (!id) document.location.href = '/dashboard'
     return id as string
   }, [])
-  const { setting, status } = getSetting(apiUrl, guildId, [guildId])
+  const { setting, status } = getSetting(urls.api, guildId, [guildId])
   if (status === 'loading') return <Loader height='50vh' form='infinite' />
   if (status === 'error') return <div>Error</div>
 
@@ -26,10 +26,10 @@ export default function ColorsSettings(props: Props) {
       <h2>Colors</h2>
       <ColorsButton
         guildId={guildId}
-        apiUrl={apiUrl}
+        apiUrl={urls.api}
         checked={!!setting?.colorActive}
         css={cssButtonsEnabledInLine}
-        oauthCallback={oauthCallback}
+        oauthCallback={urls.oAuth}
       />
     </div>
   )

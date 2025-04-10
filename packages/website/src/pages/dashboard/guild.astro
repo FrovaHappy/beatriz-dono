@@ -1,17 +1,11 @@
 ---
-import getPublic from "@utils/getPublic";
+import urls from "@utils/urls";
 import Settings from "../../components/Dashboard/Guild/Settings";
 
 import Layout from "../../layouts/Layout.astro";
-
-const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
 
-<Layout title="Guild Management" pub={pub}>
+<Layout title="Guild Management">
   <h1>Guild Management</h1>
-  <Settings
-    apiUrl={pub.urlApi}
-    oauthCallback={pub.urlOathCallback}
-    client:only
-  />
+  <Settings apiUrl={urls.api} oauthCallback={urls.oAuth} client:only />
 </Layout>

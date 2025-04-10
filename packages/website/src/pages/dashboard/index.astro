@@ -1,11 +1,21 @@
 ---
-import getPublic from "@utils/getPublic";
+import urls from "@utils/urls";
 import ContainerGuilds from "../../components/Dashboard/ContainerGuilds";
 import Layout from "../../layouts/Layout.astro";
-const pub = getPublic(import.meta.env.PUBLIC_VARIABLES);
 ---
 
-<Layout title="Dashboard" pub={pub}>
+<Layout title="Dashboard">
   <h1>Dashboard</h1>
-  <ContainerGuilds apiUrl={pub.urlApi} client:load />
+  <span>
+    Las funciones no están implementadas todavía esto tardara un poco mas en
+    llegar</span
+  >
+  <ContainerGuilds urls={urls} client:load />
 </Layout>
+
+<style lang="scss">
+  span {
+    text-align: center;
+    color: var(--font-color-50);
+  }
+</style>
