@@ -9,4 +9,10 @@ const cli = createClient({
   syncInterval: 60
 }) as Client
 
+export const syncCli = async () => {
+  console.time('cli sync')
+  cli.sync()
+  console.timeEnd('cli sync')
+}
+
 export default drizzle(cli)

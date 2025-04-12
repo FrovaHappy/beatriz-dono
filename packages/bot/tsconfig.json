@@ -5,6 +5,7 @@
       "DOM"
     ],
     "module": "ESNext",
+    "target": "ES2022",
     "outDir": "dist",
     "rootDirs": [
       "src",

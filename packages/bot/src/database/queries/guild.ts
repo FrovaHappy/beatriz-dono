@@ -5,7 +5,7 @@ import re from '@libs/regex'
 
 export type Guild = {
   guild_id: string
-  scope_bot: string
+  scope_bot: 'free' | 'premium' | 'developer'
   features: {
     welcome: string
     goodbye: string
@@ -79,6 +79,7 @@ export async function readGuild(guild_id: string) {
  * @throws {Error} If the database query or data formatting fails.
  */
 export async function getGuilds(): Promise<Guild[]> {
+  console.log('getGuilds')
   const guilds = await cli
     .select({
       id: schemaGuilds.id,
