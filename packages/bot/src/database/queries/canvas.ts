@@ -65,3 +65,8 @@ export async function upsertCanvas(props: InsertCanvas) {
     .where(and(eq(schemaCanvas.id, id), eq(schemaCanvas.guild_id, guildId)))
   return { operation: 'update', id }
 }
+
+export async function deleteCanvas({ guild_id, id }: { guild_id: string; id: string }) {
+  await cli.delete(schemaCanvas).where(and(eq(schemaCanvas.id, id), eq(schemaCanvas.guild_id, guild_id)))
+  return { operation: 'delete', id }
+}

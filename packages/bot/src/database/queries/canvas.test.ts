@@ -1,4 +1,4 @@
-import { readCanvas, upsertCanvas } from './canvas'
+import { deleteCanvas, readCanvas, upsertCanvas } from './canvas'
 
 describe('test to canvas query', { sequential: true, timeout: 10_000 }, () => {
   const staticValue = {
@@ -35,5 +35,9 @@ describe('test to canvas query', { sequential: true, timeout: 10_000 }, () => {
     canvas.canvas.id = staticValue.id
     const result = await upsertCanvas(canvas)
     expect(result?.operation).equal('update')
+  })
+  test('deleteCanvas: intended to delete a canvas', async () => {
+    const result = await deleteCanvas({ guild_id: staticValue.guildId, id: staticValue.id })
+    expect(result?.operation).equal('delete')
   })
 })
