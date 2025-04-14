@@ -1,6 +1,6 @@
 import { deleteCanvas, readCanvas, upsertCanvas } from './canvas'
 
-describe('test to canvas query', { sequential: true, timeout: 10_000 }, () => {
+describe('test to canvas query', { sequential: true }, () => {
   const staticValue = {
     id: '234532',
     guildId: '123456789012345678',
