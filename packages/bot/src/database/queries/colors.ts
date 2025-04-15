@@ -4,7 +4,7 @@ import schemaColorsSettings from '../schemas/colorsSettings'
 import schemaColors from '../schemas/colors'
 import schemaGuilds from '../schemas/guilds'
 import { readGuild } from './guild'
-import { and, eq, inArray } from 'drizzle-orm'
+import { and, eq, inArray, isNull } from 'drizzle-orm'
 import { toJson } from '@/shared/general'
 import type { ColorsTempleteLatest } from '@libs/schemas/colorsTemplete'
 
@@ -20,30 +20,36 @@ export interface ColorSetting {
 }
 
 export async function readColorsSettings(guild_id: string) {
-  console.log(guild_id)
   const guild = await readGuild(guild_id)
   if (!guild) return null
-  await client
-    .insert(schemaColorsSettings)
-    .values({
-      guild_id
-    })
-    .onConflictDoNothing()
-  const data = (
+  const getQuery = async () =>
+    (
+      await client
+        .select({
+          pointer_id: schemaColorsSettings.pointer_id,
+          templete: schemaColorsSettings.templete
+        })
+        .from(schemaColorsSettings)
+        .where(eq(schemaColorsSettings.guild_id, guild_id))
+    )[0]
+  let data = await getQuery()
+  if (!data) {
     await client
-      .select({
-        pointer_id: schemaColorsSettings.pointer_id,
-        templete: schemaColorsSettings.templete
+      .insert(schemaColorsSettings)
+      .values({
+        guild_id
       })
-      .from(schemaColorsSettings)
-      .where(eq(schemaColorsSettings.guild_id, guild_id))
-  )[0]
+      .onConflictDoNothing({
+        where: eq(schemaColorsSettings.guild_id, guild_id)
+      })
+  }
+  data = await getQuery()
   if (!data) return null
   return {
     guild_id: guild.guild_id,
     is_active: guild.features.colors,
     pointer_id: data.pointer_id,
-    templete: toJson<ColorsTempleteLatest | null>(data.templete)
+    templete: data.templete as string | null
   }
 }
 
@@ -58,10 +64,9 @@ const queryColors = async (guild_id: string) => {
   }))
 }
 
-export const readColors = async (guild_id: string) => {
+export const readColors = async ({ guild_id }: { guild_id: string }) => {
   try {
     const colors = await queryColors(guild_id)
-    if (!colors) return null
     const colorSetting = await readColorsSettings(guild_id)
     if (!colorSetting) return null
     return {
@@ -97,9 +102,11 @@ export const insertColors = async (props: { guild_id: string; colors: Color[] })
   return { inserted: colorsFiltered.length }
 }
 
-export const deleteColors = async (guild_id: string, colors: Color[]) => {
-  const colorsFiltered = colors.filter(color => regexRole.test(color.role_id))
-  const colorsQuery = await client.delete(schemaColors).where(
+export const deleteColors = async (props: { guild_id: string; colors: Color[] }) => {
+  const { guild_id, colors } = props
+  const passReg = (color: Color) => color.role_id.match(regexRole) && color.hex_color.match(regexHexColor)
+  const colorsFiltered = colors.filter(passReg)
+  await client.delete(schemaColors).where(
     and(
       eq(schemaColors.guild_id, guild_id),
       inArray(
@@ -108,17 +115,22 @@ export const deleteColors = async (guild_id: string, colors: Color[]) => {
       )
     )
   )
-  return { deleted: colorsQuery.rowsAffected }
+  const colorsTotal = await queryColors(guild_id)
+  return {
+    filtered: colors.length - colorsFiltered.length,
+    received: colorsTotal.length,
+    colors: colorsTotal.map(c => ({ hex_color: c.hex_color, role_id: c.role_id }))
+  }
 }
 
 export const updateColorSetting = async (props: Partial<ColorSetting> & { guild_id: string }) => {
   const { guild_id, pointer_id, templete } = props
-  const colorSetting = await readColorsSettings(guild_id)
+  let colorSetting = await readColorsSettings(guild_id)
   if (!colorSetting) return null
   const updateColorSetting = {
     guild_id,
-    pointer_id: pointer_id ?? colorSetting.pointer_id,
-    templete: templete ?? colorSetting.templete,
+    pointer_id: pointer_id ?? (pointer_id === null ? null : colorSetting.pointer_id),
+    templete: templete ?? (templete === null ? null : colorSetting.templete),
     is_active: colorSetting.is_active
   }
   if (
@@ -139,6 +151,8 @@ export const updateColorSetting = async (props: Partial<ColorSetting> & { guild_
       .set({ feature_welcome: updateColorSetting.is_active })
       .where(eq(schemaGuilds.id, updateColorSetting.guild_id))
   }
+  colorSetting = await readColorsSettings(guild_id)
+  if (!colorSetting) return null
   return {
     guild_id,
     is_active: colorSetting.is_active,
