@@ -60,7 +60,7 @@ describe('PaintCanvas', () => {
     const ctxSupport = canvasSupport.getContext('2d')
     const images = await getImages(template.layers, filterText)
     const data = (await getImageData(dataUri.userAvatar))?.data ?? null
-    console.log(Number(template.layerCastColor))
+    console.log(Number(template.layer_cast_color))
     const castColor = getPallete({
       data,
       format: 'hex'

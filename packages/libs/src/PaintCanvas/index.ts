@@ -21,9 +21,9 @@ export default function paintCanvas(props: PaintCanvasProps) {
   ctx.clearRect(0, 0, base.w, base.h) // reset canvas in the Frontend
   ctxSupport.clearRect(0, 0, base.w, base.h) // reset canvas in the Frontend
   ctx.save()
-  if (base.bgColor) {
+  if (base.bg_color) {
     // save the current state of the canvas
-    ctx.fillStyle = !!castColor && base.bgColor === 'auto' ? castColor : base.bgColor
+    ctx.fillStyle = !!castColor && base.bg_color === 'auto' ? castColor : base.bg_color
     ctx.fillRect(0, 0, base.w, base.h)
   }
   ctx.restore() // restore the previous state of the canvas
