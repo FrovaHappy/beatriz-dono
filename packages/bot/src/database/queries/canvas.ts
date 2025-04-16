@@ -7,7 +7,6 @@ import { and, eq } from 'drizzle-orm'
 import crypto from 'node:crypto'
 import schemaCanvas from '../schemas/canvas'
 import { readUser } from './users'
-import { create } from 'node:domain'
 
 type InsertCanvas = {
   guildId: string
