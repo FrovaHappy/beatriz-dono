@@ -5,8 +5,8 @@ export default {
   author: '653429940502659111',
   h: 140,
   w: 500,
-  layerCastColor: '3',
-  bgColor: '#212121',
+  layer_cast_color: '3',
+  bg_color: '#212121',
   layers: [
     {
       type: 'text',

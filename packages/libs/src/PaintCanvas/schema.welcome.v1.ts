@@ -118,8 +118,8 @@ const canvasSchema = z.object({
   visibility: z.union([z.literal('public'), z.literal('private')]).optional(),
   h: z.number().min(0).max(MAX_WIDTH_CANVAS),
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
-  bgColor: validateColor.optional(),
-  layerCastColor: z.string().optional(),
+  bg_color: validateColor.optional(),
+  layer_cast_color: z.string().optional(),
   layers: z.array(z.union([textSchema, shapeSchema])).max(50)
 })
 
