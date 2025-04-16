@@ -22,47 +22,52 @@ export async function readCanvas(guildId: string | null) {
 
 export async function upsertCanvas(props: InsertCanvas) {
   const { guildId, canvas, userId } = props
-  let id = canvas.id || crypto.randomUUID()
+  const guild = await readGuild(guildId)
+  const user = await readUser({ id: userId })
+  if (!user || !guild) return { operation: null }
+  const id = canvas.id || crypto.randomUUID()
   const existCanvas = (
     await cli
       .select()
       .from(schemaCanvas)
       .where(and(eq(schemaCanvas.id, id), eq(schemaCanvas.guild_id, guildId)))
   )[0]
-  if (!existCanvas) id = crypto.randomUUID()
-  const guild = await readGuild(guildId)
-  const user = await readUser({ id: userId })
-  if (!user || !guild) return null
-  const uniqueValues = {
-    id,
+  const operation = existCanvas ? 'update' : 'insert'
+
+  const values = {
+    forked: existCanvas?.forked || canvas.forked || null,
+    version: canvas.version || existCanvas?.version || LAST_VERSION,
+    title: canvas.title,
+    visibility: canvas.visibility || existCanvas?.visibility || 'public',
+    w: canvas.w || existCanvas?.w || 0,
+    h: canvas.h || existCanvas?.h || 0,
+    bg_color: canvas.bg_color || existCanvas?.bg_color || null,
+    layer_cast_color: canvas.layer_cast_color || existCanvas?.layer_cast_color || null,
+    layers: canvas.layers || existCanvas?.layers || null,
+    created_at: existCanvas?.created_at || Date.now().toString(),
+    updated_at: Date.now().toString()
+  }
+
+  const inmutableValues = {
+    id: existCanvas?.id || crypto.randomUUID(),
     user_id: user.id,
     guild_id: guild.guild_id
   }
-  const values = {
-    forked: existCanvas?.forked || null,
-    version: canvas.version || existCanvas?.version || LAST_VERSION,
-    title: canvas.title || existCanvas?.title || id.slice(0, 5),
-    visibility: canvas?.visibility || existCanvas?.visibility || 'private',
-    w: canvas.w,
-    h: canvas.h,
-    bg_color: canvas?.bgColor || existCanvas?.bg_color || null,
-    layer_cast_color: canvas?.layerCastColor || existCanvas?.layer_cast_color || null,
-    layers: JSON.stringify(canvas?.layers || existCanvas?.layers || []),
-    created_at: existCanvas?.created_at || Date.now().toString(),
-    updated_at: !existCanvas ? Date.now().toString() : existCanvas.updated_at
-  }
-  if (!existCanvas) {
+
+  if (operation === 'insert') {
     await cli
       .insert(schemaCanvas)
-      .values({ ...uniqueValues, ...values })
-      .onConflictDoNothing()
-    return { operation: 'insert', id }
+      .values({ ...inmutableValues, ...values })
+      .onConflictDoNothing({
+        where: and(eq(schemaCanvas.id, inmutableValues.id), eq(schemaCanvas.guild_id, guildId))
+      })
+  } else {
+    await cli
+      .update(schemaCanvas)
+      .set(values)
+      .where(and(eq(schemaCanvas.id, inmutableValues.id), eq(schemaCanvas.guild_id, guildId)))
   }
-  await cli
-    .update(schemaCanvas)
-    .set(values)
-    .where(and(eq(schemaCanvas.id, id), eq(schemaCanvas.guild_id, guildId)))
-  return { operation: 'update', id }
+  return { operation, canvas: inmutableValues }
 }
 
 export async function deleteCanvas({ guild_id, id }: { guild_id: string; id: string }) {

@@ -27,7 +27,7 @@ describe('test to canvas query', { sequential: true }, () => {
 
   test('upsertCanvas: add a new canvas', async () => {
     const result = await upsertCanvas(canvas)
-    staticValue.id = result?.id || staticValue.id
+    staticValue.id = result?.canvas?.id || staticValue.id
     expect(result?.operation).equal('insert')
   })
   test('upsertCanvas: update a canvas', async () => {
