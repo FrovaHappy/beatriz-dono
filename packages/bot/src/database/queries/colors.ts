@@ -5,8 +5,6 @@ import schemaColors from '../schemas/colors'
 import schemaGuilds from '../schemas/guilds'
 import { readGuild } from './guild'
 import { and, eq, inArray, isNull } from 'drizzle-orm'
-import { toJson } from '@/shared/general'
-import type { ColorsTempleteLatest } from '@libs/schemas/colorsTemplete'
 
 export interface Color {
   hex_color: string
