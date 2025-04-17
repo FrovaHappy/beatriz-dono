@@ -1,3 +1,4 @@
+import { Timer } from '@/shared/general'
 import type { Client, ResultSet as Res } from '@libsql/client'
 const { createClient } = require('@libsql/client')
 import { drizzle } from 'drizzle-orm/libsql'
@@ -10,9 +11,9 @@ const cli = createClient({
 }) as Client
 
 export const syncCli = async () => {
-  console.time('cli sync')
+  const timer = new Timer()
   cli.sync()
-  console.timeEnd('cli sync')
+  console.log(`[database] syncing tables in ${timer.final()}`)
 }
 
 export default drizzle(cli)
