@@ -1,17 +1,11 @@
 import fs from 'node:fs/promises'
-import { Path2D as Patch, createCanvas, loadImage } from '@napi-rs/canvas'
-import paintCanvas from '.'
-import { formatterTextUser } from '../formatterText'
-import type { Guild, User } from '../types/index'
-import { type Canvas, MAX_WIDTH_CANVAS, isShape, validateCanvas } from './schema.welcome.v1'
+import { validateCanvas } from './schema.welcome.v1'
 import template from './template.welcome'
-import dataUri from './imagesDataUri'
 
 import { join } from 'node:path'
 import { GlobalFonts } from '@napi-rs/canvas'
 import { getFonts } from '../getFonts'
-import { getPallete, rgbToHex } from '@libs/colors'
-import { getImageData } from '../server'
+import { generateImage } from '../server'
 
 beforeEach(async () => {
   console.time('loadFonts')
@@ -27,57 +21,22 @@ const filterText = {
   userId: '1234567890',
   userDiscriminator: '1234',
   userDisplayName: 'userName',
-  userAvatar: dataUri.userAvatar,
-  userBanner: dataUri.userBanner,
+  userAvatar: 'https://i.pinimg.com/236x/3c/6c/cb/3c6ccb83716d1e4fb91d3082f6b21d77.jpg',
+  userBanner: 'https://i.pinimg.com/236x/62/26/02/6226029e25df51a44a81cd856211e76c.jpg',
   membersCount: '343',
-  guildAvatar: dataUri.guildAvatar,
-  guildBanner: dataUri.guildBanner,
+  guildAvatar: 'https://i.pinimg.com/474x/a2/26/c4/a226c48e2fae2c466194df90069299e7.jpg',
+  guildBanner: 'https://i.pinimg.com/236x/06/35/bf/0635bf6e3bbbe6d85b0f167c3ade5614.jpg',
   guildName: 'Server Name',
   guildId: '46234567890'
 }
-const getImages = async (layers: Canvas['layers'], filterText: User & Guild) => {
-  const images: Record<string, HTMLImageElement> = {}
-  const resolveImages = []
-  for (const layer of layers) {
-    if (!isShape(layer)) continue
-    resolveImages.push(async () => {
-      if (!layer.image) return
-      const url = formatterTextUser(layer.image, filterText)
-      images[layer.id] = (await loadImage(url)) as unknown as HTMLImageElement
-    })
-  }
-  await Promise.allSettled(resolveImages.map(fn => fn()))
-  return images
-}
+
 describe('PaintCanvas', () => {
-  it('run test', async () => {
+  it('pass validation zod test', async () => {
     expect(validateCanvas(template)).toEqual({ ok: true, errors: undefined })
   })
   it('should paint the canvas', async () => {
-    const canvas = createCanvas(template.w, template.h)
-    const canvasSupport = createCanvas(MAX_WIDTH_CANVAS, MAX_WIDTH_CANVAS)
-    const ctx = canvas.getContext('2d')
-    const ctxSupport = canvasSupport.getContext('2d')
-    const images = await getImages(template.layers, filterText)
-    const data = (await getImageData(dataUri.userAvatar))?.data ?? null
-    console.log(Number(template.layer_cast_color))
-    const castColor = getPallete({
-      data,
-      format: 'hex'
-    })
-    paintCanvas({
-      ctx: ctx as unknown as CanvasRenderingContext2D,
-      ctxSupport: ctxSupport as unknown as CanvasRenderingContext2D,
-      canvas: template,
-      Path2D: Patch as unknown as typeof Path2D,
-      images: images,
-      filterText,
-      castColor: castColor[0] as string
-    })
-    const imageBuffer = await canvas.encode('webp', 100)
-
+    const imageBuffer = await generateImage({ template, filterText })
     await fs.writeFile('test.webp', imageBuffer)
-
-    expect(true).toBe(true)
+    expect(imageBuffer).instanceOf(Buffer)
   })
 })

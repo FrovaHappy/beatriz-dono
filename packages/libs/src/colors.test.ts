@@ -1,36 +1,52 @@
 import { getImageData } from './server'
-import { getPallete, filterColorTolerance } from './colors'
+import { getPallete, hexToRgb, rgbToHex } from './colors'
 
-describe('find biggest color range ', () => {
-  it('should return the dominante color of an image with a black background', async () => {
-    const color = filterColorTolerance([
-      { r: 0, g: 0, b: 0 },
-      { r: 0, g: 0, b: 0 },
-      { r: 0, g: 0, b: 255 }
-    ])
-    expect(color).toHaveLength(1)
-  })
-  it('should return the dominante color of an image with a white background', async () => {
-    const color = filterColorTolerance([
-      { r: 255, g: 255, b: 255 },
-      { r: 255, g: 255, b: 255 },
-      { r: 0, g: 0, b: 244 }
-    ])
-    expect(color).toHaveLength(1)
-  })
-})
+const colorsUri = {
+  red: {
+    hex: '#ff0000',
+    uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAA1BMVEX/AAAZ4gk3AAAAPUlEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvgyZwAABCrx9CgAAAABJRU5ErkJggg=='
+  },
+  green: {
+    hex: '#00ff00',
+    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvu_INDlD8hUsDSTN57PE0kYRw07rDTNfOcPySlIyDzw&s'
+  },
+  blue: {
+    hex: '#295592',
+    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNRoEqICjVBoHd8uNTOYCtMPs7JcuwJ_fUUNVOO0HIaQTvDIx-HBJ8uQM&s'
+  }
+}
 
-describe('get pallete ', async () => {
-  const url =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMUAAACUCAMAAAAUNB2QAAAAA1BMVEXuLCwP78c9AAAAM0lEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4NHJ4AAF0e6e2AAAAAElFTkSuQmCC'
-  const data = (await getImageData(url))?.data ?? null
-
-  it('should return the dominante color of an image', async () => {
-    const color = getPallete({ data, length: 1, format: 'hex' })
-    expect(color).toEqual(['#ee2c2c'])
-  })
+describe('colors: getPallete', async () => {
   it('should return null if the image is not found', async () => {
     const color = getPallete({ data: null })
     expect(color).toEqual([])
+  })
+  for (const color of Object.values(colorsUri)) {
+    it(`should return ${color.hex}`, async () => {
+      const data = (await getImageData(color.uri))?.data ?? null
+      const getterColor = getPallete({ data, length: 1 })
+      expect(getterColor).toEqual([color.hex])
+    })
+  }
+})
+describe('colors: hexToRgb', () => {
+  it('should return null if the hex is not valid', () => {
+    const color = hexToRgb('#ff')
+    expect(color).toBeNull()
+  })
+  it('should return the correct color', () => {
+    const color = hexToRgb('#ff0000')
+    expect(color).toEqual({ r: 255, g: 0, b: 0 })
+  })
+})
+
+describe('colors: rgbToHex', () => {
+  it('should return the correct hex', () => {
+    const color = rgbToHex({ r: 255, g: 0, b: 0 })
+    expect(color).toEqual('#ff0000')
+  })
+  it('should return the color #000001 if the color is black', () => {
+    const color = rgbToHex({ r: 0, g: 0, b: 0 })
+    expect(color).toEqual('#000001')
   })
 })
