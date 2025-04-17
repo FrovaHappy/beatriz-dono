@@ -21,21 +21,6 @@ function createPixelArray(imgData: Uint8ClampedArray<ArrayBufferLike>) {
   return rgbValues
 }
 
-export const filterColorTolerance = (rgbValues: Color[]) => {
-  const toleranceMin = 100 // is equal to 0x03
-
-  return rgbValues.filter(({ r, g, b }) => {
-    const rMin = r > toleranceMin ? r : 0
-    const gMin = g > toleranceMin ? g : 0
-    const bMin = b > toleranceMin ? b : 0
-
-    const sumMax = (r + g + b) / (255 * 3)
-    const sumMin = rMin + gMin + bMin
-
-    return sumMax < 0.8 && sumMin > 0
-  })
-}
-
 const orderByBiggestColorRange = (rgbValues: Color[]) => {
   const componentToSortBy = findBiggestColorRange(rgbValues)
   rgbValues.sort((p1: { [x: string]: number }, p2: { [x: string]: number }) => {
@@ -87,8 +72,7 @@ export const findBiggestColorRange = (rgbValues: Color[]) => {
 const quantization = (rgbValues: Color[], depth: number): Color[] => {
   // Base case
   if (depth <= 0 || rgbValues.length <= 2) {
-    const values = filterColorTolerance(rgbValues)
-    const color = values.reduce(
+    const color = rgbValues.reduce(
       (prev, curr) => {
         prev.r += curr.r
         prev.g += curr.g
@@ -98,9 +82,9 @@ const quantization = (rgbValues: Color[], depth: number): Color[] => {
       },
       { r: 0, g: 0, b: 0 }
     )
-    color.r = Math.round(color.r / values.length) || 0
-    color.g = Math.round(color.g / values.length) || 0
-    color.b = Math.round(color.b / values.length) || 0
+    color.r = Math.round(color.r / rgbValues.length) || 0
+    color.g = Math.round(color.g / rgbValues.length) || 0
+    color.b = Math.round(color.b / rgbValues.length) || 0
 
     return [color]
   }
@@ -129,6 +113,17 @@ export function rgbToHex(pixel: Color) {
   return color
 }
 
+export const hexToRgb = (hex: string): Color | null => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return result
+    ? {
+        r: Number.parseInt(result[1], 16),
+        g: Number.parseInt(result[2], 16),
+        b: Number.parseInt(result[3], 16)
+      }
+    : null
+}
+
 export const orderByLuminance = (rgbValues: Color[]) => {
   const calculateLuminance = (p: Color) => {
     return 0.2126 * p.r + 0.7152 * p.g + 0.0722 * p.b
@@ -142,29 +137,22 @@ type Options = {
   data: Uint8ClampedArray<ArrayBufferLike> | null
   length?: number
   quality?: number
-  format?: 'hex' | 'rgb'
 }
 /**
  *  Quantization function
  * @param url - url of the image
  * @param length - number of colors to return (1 is the dominante color and 0 is all colors) (default: 0)
- * @param quality - quality of the image (10 is the best quality and 1 is the worst) (default: 10)
- * @returns - array of colors in the format { r: number, g: number, b: number }
+ * @param quality - quality of the image (10 is the best quality and 1 is the worst) (default: 4)
+ * @returns - returns an array of colors in hexadecimal format (e.g. #ff0000)
  **/
 export function getPallete(props: Options) {
-  const { data, length = 0, quality = 5, format = 'rgb' } = props
+  const { data, length = 0, quality = 4 } = props
   const options = { quality, length }
-  if (options.quality > 50) options.quality = 50
+  if (options.quality > 10) options.quality = 10
   if (options.length > 100) options.length = 100
-
   if (!data) return []
-
   const pixelArray = createPixelArray(data)
-  let palette = quantization(pixelArray, options.quality).filter(({ r, g, b }) => {
-    return r !== 0 && g !== 0 && b !== 0
-  })
-  palette = orderByBiggestColorRange(palette)
+  const palette = quantization(pixelArray, options.quality)
   const colors = options.length >= 1 ? palette.slice(0, options.length) : palette
-  if (format === 'hex') return colors.map(rgbToHex)
-  return colors
+  return colors.map(rgbToHex)
 }
