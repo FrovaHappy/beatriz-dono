@@ -1,4 +1,17 @@
-import { min } from 'drizzle-orm'
+import fs from 'node:fs'
+
+export async function readAllFiles(path: string, arrayOfFiles: string[] = []) {
+  const files = fs.readdirSync(path)
+  for (const file of files) {
+    const stat = fs.statSync(`${path}/${file}`)
+    if (stat.isDirectory()) {
+      readAllFiles(`${path}/${file}`, arrayOfFiles)
+    } else {
+      arrayOfFiles.push(`${path}/${file}`)
+    }
+  }
+  return arrayOfFiles
+}
 
 export function toJson<T = any>(str: any, limitOfRecursion = 1000): T | null {
   if (!str) return null

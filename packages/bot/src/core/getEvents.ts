@@ -1,5 +1,5 @@
 import path from 'node:path'
-import readAllFiles from '@/shared/readAllFiles'
+import { readAllFiles } from '@/shared/general'
 import { type ClientEvents, Collection } from 'discord.js'
 import p from 'picocolors'
 import BuildEvent from './build/BuildEvent'

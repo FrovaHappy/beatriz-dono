@@ -1,5 +1,5 @@
 import path from 'node:path'
-import readAllFiles from '@/shared/readAllFiles'
+import { readAllFiles } from '@/shared/general'
 import { ButtonStyle, Collection } from 'discord.js'
 import p from 'picocolors'
 import BuildButton from './build/BuildButtons'
