@@ -1,4 +1,4 @@
-import type { Guild, User } from '@type/index'
+import type { Guild, User } from '@libs/types'
 import { formatterTextUser } from '../formatterText'
 import { buildFilter } from './buildFilter'
 import type { Text } from './schema.welcome.v1'

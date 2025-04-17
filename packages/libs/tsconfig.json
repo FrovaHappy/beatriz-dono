@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "module": "ESNext",
     "target": "ESNext",
     "rootDir": "./src",
@@ -13,12 +16,20 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
-    "types": ["vitest/globals"],
+    "baseUrl": ".",
+    "types": [
+      "vitest/globals"
+    ],
     "paths": {
-      "@type/*": ["./types/*"]
+      "@libs/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["src"],
-  "exclude": ["dist"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "dist"
+  ]
 }

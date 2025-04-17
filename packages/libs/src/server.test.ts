@@ -1,4 +1,4 @@
-import { getPallete } from 'colors'
+import { getPallete } from '@libs/colors'
 import { getImageData } from './server'
 describe('server', () => {
   it('should return an image data of a dataUri', async () => {

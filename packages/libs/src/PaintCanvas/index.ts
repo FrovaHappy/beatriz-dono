@@ -1,4 +1,4 @@
-import type { Guild, User } from '@type/index'
+import type { Guild, User } from '@libs/types'
 import paintShape from './paintShape'
 import paintText from './paintText'
 import { type Canvas, isShape, isText } from './schema.welcome.v1'

@@ -10,7 +10,7 @@ import dataUri from './imagesDataUri'
 import { join } from 'node:path'
 import { GlobalFonts } from '@napi-rs/canvas'
 import { getFonts } from '../getFonts'
-import { getPallete, rgbToHex } from 'colors'
+import { getPallete, rgbToHex } from '@libs/colors'
 import { getImageData } from '../server'
 
 beforeEach(async () => {
