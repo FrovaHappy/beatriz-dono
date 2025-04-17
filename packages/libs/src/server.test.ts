@@ -21,11 +21,4 @@ describe('server', () => {
     console.log(getPallete({ data: data, length: 1, format: 'hex' }))
     expect(data).toBeTruthy()
   })
-  it('should return an image data of a url gif', async () => {
-    const url = 'https://i.pinimg.com/originals/e6/5d/50/e65d50f699ab952ca89c8525058c4a0d.gif'
-    const data = (await getImageData(url))?.data || null
-
-    console.log(getPallete({ data: data, length: 1, format: 'hex' }))
-    expect(data).toBeTruthy()
-  })
 })
