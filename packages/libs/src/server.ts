@@ -53,14 +53,8 @@ export async function generateImage(props: GenerateImageProps) {
   const ctx = canvas.getContext('2d')
   const ctxSupport = canvasSupport.getContext('2d')
   const { images } = await getImages(template.layers, filterText)
-
-  console.log(Number(template.layer_cast_color))
-  const castColor = template.layer_cast_color
-    ? getPallete({
-        data: (await getImageData(images[template.layer_cast_color]?.baseURI))?.data ?? null
-      })
-    : undefined
-
+  const imageData = await getImageData(images[`${template.layer_cast_color}`]?.src)
+  const castColor = template.layer_cast_color ? getPallete({ data: imageData?.data ?? null }) : undefined
   paintCanvas({
     ctx: ctx as unknown as CanvasRenderingContext2D,
     ctxSupport: ctxSupport as unknown as CanvasRenderingContext2D,
@@ -68,8 +62,8 @@ export async function generateImage(props: GenerateImageProps) {
     Path2D: Patch as unknown as typeof Path2D,
     images: images,
     filterText,
-    castColor: (castColor?.[0] as string) ?? '#000000'
+    castColor: castColor?.[0]
   })
-  const imageBuffer = await canvas.encode('webp', 100)
+  const imageBuffer = await canvas.encode('webp', quality)
   return imageBuffer
 }
