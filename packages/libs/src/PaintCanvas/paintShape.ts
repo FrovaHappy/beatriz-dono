@@ -70,7 +70,6 @@ export default function paintShape(props: PaintShapeProps) {
   const imageCanvas = renderImage()
 
   if (filter) ctx.filter = filter
-  console.log(layer.dx, layer.dy)
   ctx.translate(layer.dx, layer.dy)
   if (imageCanvas) ctx.drawImage(imageCanvas, 0, 0, dimension.w, dimension.h)
   else {
