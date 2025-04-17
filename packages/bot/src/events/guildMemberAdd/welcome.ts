@@ -3,7 +3,7 @@ import db from '@db'
 import type { GuildMember } from 'discord.js'
 export default async function welcome(member: GuildMember): Promise<void> {
   const welcomeDb = await db.welcome.read(member.guild.id)
-  const channel_id = welcomeDb.channel_id
+  const channel_id = welcomeDb?.channel_id
   if (!channel_id) return
 
   const webhook = member.guild.channels.cache.get(channel_id) as any
