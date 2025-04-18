@@ -22,7 +22,9 @@ export default new BuildButton({
   execute: async i => {
     const { guildId, locale } = i
     if (!guildId) throw new Error('Guild ID not found')
-    const { pointer_id } = await db.colors.read(guildId)
+    const query = await db.colors.read({ guild_id: guildId })
+    if (!query) throw new Error('error in query Database')
+    const { pointer_id } = query
     const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
 
     if (!colorPointerId) {
@@ -33,7 +35,7 @@ export default new BuildButton({
         permissions: '0'
       })
       if (!role) throw new Error('Role not created, see permissions')
-      await db.colors.update({
+      await db.colorsSettings.update({
         guild_id: guildId,
         pointer_id: role.id
       })

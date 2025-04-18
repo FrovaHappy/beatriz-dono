@@ -23,7 +23,9 @@ export default new BuildButton({
     const { guildId, locale } = i
     const roles = i.guild?.roles.cache
     if (!guildId) throw new Error('Guild ID not found')
-    const { pointer_id } = await db.colors.read(guildId)
+    const query = await db.colors.read({ guild_id: guildId })
+    if (!query) throw new Error('error in query Database')
+    const { pointer_id } = query
     const colorPointerId = roles?.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return msgColorPointerCreated.getMessage(locale, {})
 

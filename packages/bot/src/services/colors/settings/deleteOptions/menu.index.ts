@@ -42,7 +42,9 @@ export default new BuildMenu<'string'>({
     const value = i.values[0] as DeleteColors
     const roles = i.guild?.roles.cache ?? new Collection()
     if (!guildId) throw new Error('Guild ID not found')
-    const { colors, pointer_id } = await db.colors.read(guildId)
+    const query = await db.colors.read({ guild_id: guildId })
+    if (!query) throw new Error('error in query Database')
+    const { colors, pointer_id } = query
     const colorPointerId = roles?.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
 
@@ -52,7 +54,7 @@ export default new BuildMenu<'string'>({
       const colorsUnused = colors.filter(color => !roles.get(color.role_id))
       const rolesUnused = colors.filter(color => roles.get(color.role_id)?.members.size === 0)
       await removeRolesOfServer(roles, rolesUnused, i)
-      await db.colors.delete(guildId, [...colorsUnused, ...rolesUnused])
+      await db.colors.delete({ guild_id: guildId, colors: [...colorsUnused, ...rolesUnused] })
       return {
         content: `Se eliminaron ${rolesUnused.length + colorsUnused.length} roles de colores of ${colors.length} colores.`
       }

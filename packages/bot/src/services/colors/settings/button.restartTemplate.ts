@@ -24,7 +24,9 @@ export default new BuildButton({
     const { guildId, locale } = i
     if (!guildId) throw new Error('Guild ID not found')
     const roles = i.guild?.roles.cache
-    const { pointer_id, templete } = await db.colors.read(guildId)
+    const query = await db.colors.read({ guild_id: guildId })
+    if (!query) throw new Error('error in query Database')
+    const { pointer_id, templete } = query
     const colorPointerId = pointer_id ?? roles?.first()?.id
     if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
     if (!templete) return msgRestartTemplate.getMessage(locale, {})
@@ -33,7 +35,7 @@ export default new BuildButton({
     if (restartTemplate.error) return msgRestartTemplate.getMessage(locale, {})
     restartTemplate.data.colors = []
     // update database
-    await db.colors.update({ guild_id: guildId, templete: JSON.stringify(restartTemplate.data) })
+    await db.colorsSettings.update({ guild_id: guildId, templete: JSON.stringify(restartTemplate.data) })
     return msgRestartTemplate.getMessage(locale, {})
   }
 })

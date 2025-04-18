@@ -28,18 +28,18 @@ export default new BuildButton({
   async execute(i) {
     const { guildId, locale } = i
     if (!guildId) throw new Error('Guild ID not found')
-    const { colors, pointer_id } = await db.colors.read(guildId)
+    const query = await db.colors.read({ guild_id: guildId })
+    if (!query) throw new Error('error in query Database')
+    const { colors, pointer_id } = query
     const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
     if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
     const url = i.user.displayAvatarURL({ extension: 'png', size: 512 })
-    const data = await getImageData(url)
-    const color = await getPallete({
+    const data = (await getImageData(url))?.data ?? null
+    const color = getPallete({
       data
     })
-    if (!color) return msgColorCastNotFound.getMessage(locale, {})
+    if (color.length === 0) return msgColorCastNotFound.getMessage(locale, {})
     console.log(color)
-
-    const hex = rgbToHex(color[0])
-    return changeColor({ colorCustom: hex, colorPointerId, colors, guildId, i, locale })
+    return changeColor({ colorCustom: color[0], colorPointerId, colors, guildId, i, locale })
   }
 })

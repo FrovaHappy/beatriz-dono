@@ -24,12 +24,14 @@ export default new BuildButton({
   execute: async i => {
     const { guildId, locale } = i
     if (!guildId) throw new Error('Guild ID not found')
-    const { pointer_id, colors } = await db.colors.read(guildId)
+    const query = await db.colors.read({ guild_id: guildId })
+    if (!query) throw new Error('error in query Database')
+    const { colors, pointer_id } = query
     const colorPointerId = i.guild?.roles.cache.get(pointer_id ?? '0')?.id
     const roles = i.guild?.roles.cache
     if (!colorPointerId) return msgCreatePointerColor.getMessage(locale, {})
     await removeRolesOfServer(roles, colors, i)
-    await db.colors.delete(guildId, colors)
+    await db.colors.delete({ guild_id: guildId, colors })
     return msgDeleteAll.getMessage(locale, { '{{slot0}}': colors.length.toString() })
   }
 })
