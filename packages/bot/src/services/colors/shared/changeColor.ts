@@ -1,9 +1,53 @@
 import type { Color } from '@/database/queries/colors'
-import type { GuildMemberRoleManager, Interaction, Locale } from 'discord.js'
-import createColorRole from './createColorRole'
+import {
+  type ChatInputCommandInteraction,
+  resolveColor,
+  type GuildMemberRoleManager,
+  type Interaction,
+  type Locale
+} from 'discord.js'
 import msgColorChanged from './msg.colorChanged'
 import msgColorIncorrect from './msg.colorIncorrect'
 import { removeRolesOfUser } from './removeRoles'
+import db from '@db'
+import re from '@libs/regex'
+
+interface CreateColorRoleProps<T> {
+  hexColor: `#${string}`
+  colors: Color[]
+  guildId: string
+  colorPointerId: string
+  i: T extends ChatInputCommandInteraction ? T : any
+}
+
+export default async function createColorRole<T>(props: CreateColorRoleProps<T>) {
+  const { hexColor, guildId, colors, colorPointerId, i } = props
+  const guildRoles = i.guild?.roles.cache
+  const color = colors?.find(color => color.hex_color === hexColor)
+  let colorRole = guildRoles?.find(role => role.id === color?.role_id)
+  const position = guildRoles?.get(colorPointerId)?.position ?? 0
+  // for that not insert the color in the database
+  if (colorRole) {
+    await colorRole.edit({ position: position, color: resolveColor(hexColor) })
+    return colorRole
+  }
+
+  colorRole = await i.guild?.roles.create({
+    name: `🌿${hexColor}🌼 `,
+    color: resolveColor(hexColor),
+    permissions: '0',
+    reason: 'Beatriz-Dono to create a new role color'
+  })
+
+  if (!colorRole) return null
+  // update the color and position of the role
+  await colorRole.edit({ position: position, color: resolveColor(hexColor) })
+
+  // upsert the color in the database
+  await db.colors.insert({ guild_id: guildId, colors: [{ hex_color: hexColor, role_id: colorRole.id }] })
+
+  return colorRole
+}
 
 interface ChangeColorProps {
   colorCustom: string
@@ -14,12 +58,11 @@ interface ChangeColorProps {
   locale: Locale
 }
 
-const regexColors = /^#([a-f0-9]{6})$/
 export async function changeColor(props: ChangeColorProps) {
   const { colorCustom, guildId, i, locale, colors, colorPointerId } = props
   const roles = i.guild?.roles.cache
   // Logic
-  if (!regexColors.test(colorCustom)) return msgColorIncorrect.getMessage(locale, { '{{slot0}}': colorCustom })
+  if (!colorCustom.match(re.hexColor)) return msgColorIncorrect.getMessage(locale, { '{{slot0}}': colorCustom })
   const colorRole = await createColorRole({
     hexColor: colorCustom as `#${string}`,
     guildId,
