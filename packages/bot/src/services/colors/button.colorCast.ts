@@ -39,7 +39,6 @@ export default new BuildButton({
       data
     })
     if (color.length === 0) return msgColorCastNotFound.getMessage(locale, {})
-    console.log(color)
     return changeColor({ colorCustom: color[0], colorPointerId, colors, guildId, i, locale })
   }
 })
