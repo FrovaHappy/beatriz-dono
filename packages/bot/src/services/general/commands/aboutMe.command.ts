@@ -13,7 +13,7 @@ const command = new BuildCommand({
       'es-ES': 'Obtén información sobre mí.',
       'en-US': 'Get information about me.'
     }),
-  name: 'about-me',
+  name: 'aboutme',
   scope: 'public',
   ephemeral: true,
   execute: async i => {
