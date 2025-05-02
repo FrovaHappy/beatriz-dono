@@ -1,6 +1,6 @@
 import { Timer } from '@/shared/general'
 import type { Client, ResultSet as Res } from '@libsql/client'
-const { createClient } = require('@libsql/client')
+import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 
 const cli = createClient({

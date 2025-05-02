@@ -3,13 +3,16 @@
   "version": "2.0.0",
   "description": "A Bot multipurpose for discord",
   "packageManager": "npm@11.2.0",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "lint": "biome check --write --diagnostic-level=warn",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "db:push": "env-cmd npm run db:push --workspace=packages/bot",
     "db:migrate": "env-cmd npm run db:migrate --workspace=packages/bot",
+    "bot:generateListServices": "env-cmd npm run generateListServices --workspace=packages/bot",
     "dev": "env-cmd turbo dev",
     "build": "env-cmd turbo build",
     "build:lib": "env-cmd npm run build --workspace=packages/lib",
@@ -23,9 +26,16 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@rollup/plugin-alias": "5.1.1",
+    "@rollup/plugin-json": "6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@types/node": "22.14.0",
     "@vitest/ui": "3.1.1",
     "nodemon": "3.1.9",
+    "rollup": "4.40.0",
+    "rollup-plugin-typescript-paths": "1.5.0",
+    "rollup-plugin-typescript2": "0.36.0",
+    "tslib": "2.8.1",
     "tsx": "4.19.3",
     "turbo": "2.5.0",
     "typescript": "5.8.2",
@@ -34,9 +44,12 @@
   },
   "dependencies": {
     "@libsql/client": "0.15.2",
+    "chalk": "^5.4.1",
     "drizzle-kit": "0.30.6",
     "drizzle-orm": "0.41.0",
     "env-cmd": "10.1.0",
+    "glob": "11.0.1",
+    "module-alias": "2.2.3",
     "zod": "3.24.2"
   }
 }

@@ -1,14 +1,18 @@
 {
   "name": "bot",
-  "version": "2.0.0",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon -L --exec tsx src/index.ts",
+    "dev": "nodemon",
+    "generateListServices": "tsx src/generateListServices.ts",
     "start": "tsx src/index.ts",
     "db:push": "npx drizzle-kit push",
     "db:migrate": "npx drizzle-kit generate && npx drizzle-kit migrate"
   },
-  "paths": {
-    "@/libs/*": ["../libs/dist/*"]
+  "nodemonConfig": {
+    "watch": ["src"],
+    "ext": "ts",
+    "exec": "rollup -c && tsx index.js"
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.67",

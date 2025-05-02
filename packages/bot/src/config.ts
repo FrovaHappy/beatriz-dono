@@ -22,7 +22,7 @@ const runValidation = () => {
 }
 runValidation()
 
-const parsePrivate = (s: string) => {
+function parsePrivate(s: string) {
   const privateSchema = z
     .object({
       discord: z.object({

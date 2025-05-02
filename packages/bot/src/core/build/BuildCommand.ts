@@ -8,7 +8,6 @@ import type {
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
 
-import type { CommandNames } from '@/const/interactionsNames'
 import msgCaptureError from './msg.captureError'
 import msgCooldownTimeout from './msg.cooldownTimeout'
 import { hasAccessForScope } from './shared/hasAccessForScope'
@@ -22,7 +21,7 @@ import parsePermissions from './shared/parsePermissions'
  */
 class BuildCommand {
   type = 'commands' as const
-  name: CommandNames
+  name: string
   scope: Scope
   ephemeral: boolean
   permissionsBot: PermissionResolvable[]

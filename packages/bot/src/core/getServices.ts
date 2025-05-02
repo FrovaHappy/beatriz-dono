@@ -1,11 +1,10 @@
-import path from 'node:path'
-import { readAllFiles } from '@/shared/general'
 import { ButtonStyle, Collection } from 'discord.js'
 import p from 'picocolors'
 import BuildButton from './build/BuildButtons'
-import BuildCommand from './build/BuildCommand'
+import type BuildCommand from './build/BuildCommand'
 import BuildMenu, { type SelectMenu } from './build/BuildMenu'
 import BuildModal from './build/BuildModal'
+import * as listImports from '@/listImports'
 
 const buttons = new Collection<string, BuildButton>()
 const commands = new Collection<string, BuildCommand>()
@@ -29,7 +28,7 @@ function getMenus<T extends keyof SelectMenu = 'string'>(key: string): BuildMenu
     },
     resolve: 'defer',
     ephemeral: true,
-    execute: async e => undefined
+    execute: async _e => undefined
   })
 }
 
@@ -49,7 +48,7 @@ function getButton(key: string): BuildButton {
     },
     resolve: 'defer',
     ephemeral: true,
-    execute: async e => undefined
+    execute: async _e => undefined
   })
 }
 
@@ -78,7 +77,7 @@ function getModal(key: string): BuildModal {
     },
     resolve: 'defer',
     ephemeral: true,
-    execute: async e => ({})
+    execute: async _e => ({})
   })
 }
 
@@ -91,49 +90,37 @@ globalThis.commands = commands
 globalThis.menus = getMenus
 globalThis.modals = getModal
 
-const includes = ['.ts', '.js']
-const excludes = ['.test.ts', '.d.ts', '.test.js']
 export default async function getServices() {
   console.log(`${p.green('[services]')} Loading services`)
-  const absolutePath = path.join(config.env.rootPath, 'services')
-  const servicesPath = (await readAllFiles(absolutePath)).filter(
-    file => includes.some(include => file.endsWith(include)) && !excludes.some(exclude => file.endsWith(exclude))
-  )
-
-  for (const servicePath of servicesPath) {
-    const service = (() => {
-      try {
-        return require(servicePath).default
-      } catch (error) {
-        console.log(`${p.red('[services]')} Error loading service ${servicePath}\n${error}`)
-        return null
-      }
-    })()
-    if (service instanceof BuildButton) {
-      const existButton = !!buttons.get(service.customId)
-      if (existButton) throw new Error(`Button ${service.customId} already exists`)
-      buttons.set(service.customId, service)
-    }
-    if (service instanceof BuildCommand) globalThis.commands.set(service.name, service)
-    if (service instanceof BuildMenu) {
-      const existMenu = !!menus.get(service.customId)
-      if (existMenu) throw new Error(`Menu ${service.customId} already exists`)
-      menus.set(service.customId, service)
-    }
-    if (service instanceof BuildModal) {
-      const existModal = !!modals.get(service.customId)
-      if (existModal) throw new Error(`Modal ${service.customId} already exists`)
-      modals.set(service.customId, service)
-      buttons.set(`modal-${service.customId}`, service.button)
-    }
+  for (const command of Object.entries(listImports.commands)) {
+    const [, instance] = command
+    globalThis.commands.set(instance.name, instance)
+  }
+  for (const menu of Object.entries(listImports.menus)) {
+    const [, service] = menu
+    const existMenu = !!menus.get(service.customId)
+    if (existMenu) throw new Error(`Menu ${service.customId} already exists`)
+    menus.set(service.customId, service)
+  }
+  for (const button of Object.entries(listImports.buttons)) {
+    const [, service] = button
+    const existButton = !!buttons.get(service.customId)
+    if (existButton) throw new Error(`Button ${service.customId} already exists`)
+    buttons.set(service.customId, service)
+  }
+  for (const modal of Object.entries(listImports.modals)) {
+    const [, service] = modal
+    const existModal = !!modals.get(service.customId)
+    if (existModal) throw new Error(`Modal ${service.customId} already exists`)
+    modals.set(service.customId, service)
+    buttons.set(`modal-${service.customId}`, service.button)
   }
   const logs = [
     `${p.green('[services]')} Done:`,
     `  ∷ buttons found: ${p.bold(buttons.size)}`,
     `  ∷ commands found: ${p.bold(globalThis.commands.size)}`,
     `  ∷ menus found: ${p.bold(menus.size)}`,
-    `  ∷ modals found: ${p.bold(modals.size)}`,
-    `  ∷ files scanned: ${p.bold(servicesPath.length)}\n`
+    `  ∷ modals found: ${p.bold(modals.size)}`
   ]
   console.log(logs.join('\n'))
 }

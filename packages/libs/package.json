@@ -1,7 +1,8 @@
 {
   "name": "libs",
+  "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "rollup -c",
     "dev": " tsc --preserveWatchOutput --watch"
   }
 }

@@ -2,7 +2,8 @@ import path from 'node:path'
 import { readAllFiles } from '@/shared/general'
 import { type ClientEvents, Collection } from 'discord.js'
 import p from 'picocolors'
-import BuildEvent from './build/BuildEvent'
+import type BuildEvent from './build/BuildEvent'
+import * as listImports from '@/listImports'
 
 const includes = ['.ts', '.js']
 const excludes = ['.test.ts', '.d.ts', '.test.js']
@@ -14,17 +15,9 @@ export default async function getEvents() {
   const eventsPath = (await readAllFiles(absolutePath)).filter(
     file => includes.some(include => file.endsWith(include)) && !excludes.some(exclude => file.endsWith(exclude))
   )
-  for (const eventPath of eventsPath) {
-    const event = (() => {
-      try {
-        return require(eventPath).default
-      } catch (error) {
-        console.error(error)
-        console.log(`${p.red('[events]:')} Error loading event ${eventPath}`)
-        return null
-      }
-    })()
-    if (event instanceof BuildEvent) events.set(event.name, event)
+  for (const event of Object.entries(listImports.events)) {
+    const [, instance] = event
+    events.set(instance.name, instance)
   }
   const logs = [
     `${p.green('[events]')} Done:`,

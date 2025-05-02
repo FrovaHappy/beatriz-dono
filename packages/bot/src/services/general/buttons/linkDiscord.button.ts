@@ -1,7 +1,6 @@
 import { getEmoji } from '@/const/emojis'
-import { ButtonNames } from '@/const/interactionsNames'
 import BuildButton from '@/core/build/BuildButtons'
-import { ButtonBuilder, ButtonStyle } from 'discord.js'
+import { ButtonStyle } from 'discord.js'
 
 export default new BuildButton({
   customId: 'linkDiscord',
