@@ -1,10 +1,11 @@
 import { ButtonStyle, Collection } from 'discord.js'
-import p from 'picocolors'
 import BuildButton from './build/BuildButtons'
 import type BuildCommand from './build/BuildCommand'
 import BuildMenu, { type SelectMenu } from './build/BuildMenu'
 import BuildModal from './build/BuildModal'
 import * as listImports from '@/listImports'
+import { Timer } from '@/shared/general'
+import logger from '@/shared/logger'
 
 const buttons = new Collection<string, BuildButton>()
 const commands = new Collection<string, BuildCommand>()
@@ -91,7 +92,7 @@ globalThis.menus = getMenus
 globalThis.modals = getModal
 
 export default async function getServices() {
-  console.log(`${p.green('[services]')} Loading services`)
+  const timer = new Timer()
   for (const command of Object.entries(listImports.commands)) {
     const [, instance] = command
     globalThis.commands.set(instance.name, instance)
@@ -115,12 +116,16 @@ export default async function getServices() {
     modals.set(service.customId, service)
     buttons.set(`modal-${service.customId}`, service.button)
   }
-  const logs = [
-    `${p.green('[services]')} Done:`,
-    `  ∷ buttons found: ${p.bold(buttons.size)}`,
-    `  ∷ commands found: ${p.bold(globalThis.commands.size)}`,
-    `  ∷ menus found: ${p.bold(menus.size)}`,
-    `  ∷ modals found: ${p.bold(modals.size)}`
-  ]
-  console.log(logs.join('\n'))
+  logger({
+    type: 'info',
+    head: 'Services',
+    title: 'Loading services',
+    body: `
+      buttons found: ${buttons.size}  
+      commands found: ${globalThis.commands.size}  
+      menus found: ${menus.size}  
+      modals found: ${modals.size}  
+      finished in ${timer.final()}
+    `
+  })
 }

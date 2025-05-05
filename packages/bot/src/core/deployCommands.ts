@@ -5,14 +5,15 @@ import {
   REST,
   Routes
 } from 'discord.js'
-import pc from 'picocolors'
 import type { Command } from './build/BuildCommand'
+import logger, { decoreLog } from '@/shared/logger'
+import { Timer } from '@/shared/general'
 
 export const rest = new REST().setToken(config.env.discord.token)
 
 export async function putGuildCommands(guildsIds: string[], commands: CommandDataJson[], scope: Scope) {
+  const time = new Timer()
   const errors: string[] = []
-  console.log(`  ∷ deploying ${pc.bold(scope)} commands ...`)
   for await (const guildId of guildsIds) {
     try {
       await rest.put(Routes.applicationGuildCommands(config.env.discord.applicationId, guildId), {
@@ -22,20 +23,44 @@ export async function putGuildCommands(guildsIds: string[], commands: CommandDat
       errors.push(guildId)
     }
   }
-  console.log(`  ∷ done deploying ${pc.bold(scope)} commands with ${pc.bold(errors.length)} errors`)
+  if (errors.length === 0) {
+    logger({
+      type: 'info',
+      head: 'Deploy Commands',
+      title: `Deploying ${decoreLog.info(scope)} commands`,
+      body: `deployed without errors.\n received: ${commands.length}\n finished in ${time.final()}`
+    })
+    return
+  }
+  logger({
+    type: 'error',
+    head: 'Deploy Commands',
+    title: `Deploying ${decoreLog.info(scope)} commands`,
+    body: `deployed with errors.\n received: ${commands.length}\n errors: ${errors.join(', ')} \n finished in ${time.final()}`
+  })
 }
 
 export async function putGlobalCommands(commands: CommandDataJson[]) {
-  console.log('  ∷ deploying global commands ...')
+  const time = new Timer()
   try {
     await rest.put(Routes.applicationCommands(config.env.discord.applicationId), {
       body: commands
     })
   } catch (error: any) {
-    console.log(`  ∷ error deploying global commands: ${pc.bold(error.message)}`)
+    logger({
+      type: 'error',
+      head: 'Deploy Commands',
+      title: `Deploying ${decoreLog.info('global')} commands`,
+      body: `deployed with errors.\n received: ${commands.length}\n errors: ${error.message}\n finished in ${time.final()}`
+    })
     return
   }
-  console.log('  ∷ done deploying global commands')
+  logger({
+    type: 'info',
+    head: 'Deploy Commands',
+    title: `Deploying ${decoreLog.info('global')} commands`,
+    body: `deployed without errors.\n received: ${commands.length}\n finished in ${time.final()}`
+  })
 }
 
 function getCommands(collection: Collection<string, Command>) {
@@ -55,20 +80,21 @@ export default async function deployCommand(collection: Collection<string, Comma
   const excludeOwnerOfPrivates = config.setting.privatesServers.filter(
     guildId => !config.setting.ownersServers.includes(guildId)
   )
-  const logsCommands = [
-    `${pc.green('[commands]:')} Deploying commands ...`,
-    `   - public commands found: ${pc.bold(commands.public.length)}`,
-    `   - owner commands found: ${pc.bold(commands.owner.length)}`,
-    `   - private commands found: ${pc.bold(commands.private.length)}`,
-    `   - privates servers found: ${pc.bold(config.setting.privatesServers.length)}`,
-    `   - owners servers found: ${pc.bold(config.setting.ownersServers.length)}`,
-    `   - exclude owners servers of private: ${pc.bold(config.setting.privatesServers.length - excludeOwnerOfPrivates.length)}`
-  ]
-  console.log(logsCommands.join('\n'))
+  logger({
+    type: 'info',
+    head: 'Deploy Commands',
+    title: 'Deploying commands ...',
+    body: `
+      public commands found: ${commands.public.length}  
+      owner commands found: ${commands.owner.length}  
+      private commands found: ${commands.private.length}  
+      privates servers found: ${config.setting.privatesServers.length}  
+      owners servers found: ${config.setting.ownersServers.length}  
+      exclude owners servers of private: ${config.setting.privatesServers.length - excludeOwnerOfPrivates.length}
+    `
+  })
 
   await putGlobalCommands(commands.public) // update public commands
   await putGuildCommands(config.setting.ownersServers, [...commands.private, ...commands.owner], 'owner') // update owner commands
   await putGuildCommands(excludeOwnerOfPrivates, commands.private, 'private') // update private commands
-
-  console.log()
 }

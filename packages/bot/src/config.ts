@@ -1,7 +1,7 @@
 import 'dotenv/config'
-import p from 'picocolors'
 
 import { z } from 'zod'
+import logger, { info } from './shared/logger'
 const runValidation = () => {
   const envSchema = z.object({
     PRIVATE: z.string(),
@@ -11,11 +11,11 @@ const runValidation = () => {
     envSchema.parse(process.env)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      let message = `${p.bgRedBright(' Error ')} Invalid environment variables:\n\n`
+      let body = ''
       for (const issue of error.issues) {
-        message += `${p.gray('┃')} ${issue.path.join(' → ')} ${p.gray(`(${issue.message})`)}\n`
+        body += `${issue.path.join(' → ')} ${`(${issue.message})`}\n`
       }
-      console.log(message)
+      logger({ type: 'error', head: 'Load Env', title: 'Invalid env config:', body })
     }
     process.exit(1)
   }
@@ -49,13 +49,13 @@ function parsePrivate(s: string) {
     return privateSchema.parse(JSON.parse(s)) as Private
   } catch (error: any) {
     if (error instanceof z.ZodError) {
-      let message = `${p.bgRedBright(' Error ')}  Invalid env.PRIVATE config:\n\n`
+      let body = ''
       for (const issue of error.issues) {
-        message += `${p.gray('┃')} ${issue.path.join(' → ')} ${p.gray(`(${issue.message})`)}\n`
+        body += `${issue.path.join(' → ')} ${info(`(${issue.message})`)}\n`
       }
-      console.log(message)
+      logger({ type: 'error', head: 'Load Env', title: 'Invalid env.PRIVATE config:', body })
     } else {
-      console.log({ message: error.message, string: s })
+      logger({ type: 'error', head: 'Load Env', title: 'Invalid env.PRIVATE config:', body: error.message })
     }
     process.exit(1)
   }

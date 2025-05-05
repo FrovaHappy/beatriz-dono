@@ -1,4 +1,3 @@
-import chalk, { type ChalkInstance } from 'chalk'
 import fs from 'node:fs'
 
 export async function readAllFiles(path: string, arrayOfFiles: string[] = []) {
@@ -60,30 +59,4 @@ export class Timer {
     if (time.seconds > 0) return `${time.seconds}.${time.milliseconds} (s.ms)`
     return `${time.milliseconds}ms`
   }
-}
-
-interface LogProps {
-  type: 'info' | 'warn' | 'error' | 'success'
-  head: string
-  run?: string
-  body?: string
-}
-export function log(props: LogProps) {
-  const { type, head, body, run } = props
-
-  const defineType: Record<LogProps['type'], ChalkInstance> = {
-    info: chalk.bgGreenBright,
-    error: chalk.bgRedBright,
-    success: chalk.bgBlueBright,
-    warn: chalk.bgYellowBright
-  }
-
-  console.log(`${defineType[type](run ?? '')} ${head}`)
-  if (body)
-    console.log(
-      body
-        .split('\n')
-        .map(s => `    ${s}`)
-        .join('\n')
-    )
 }
