@@ -1,4 +1,5 @@
 import { Timer } from '@/shared/general'
+import logger from '@/shared/logger'
 import type { Client, ResultSet as Res } from '@libsql/client'
 import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
@@ -13,7 +14,14 @@ const cli = createClient({
 export const syncCli = async () => {
   const timer = new Timer()
   cli.sync()
-  console.log(`[database] syncing tables in ${timer.final()}`)
+  logger({
+    type: 'info',
+    head: 'Database',
+    title: 'Syncing database',
+    body: `
+      finished in ${timer.final()}
+    `
+  })
 }
 
 export default drizzle(cli)
