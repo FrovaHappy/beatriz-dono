@@ -4,7 +4,7 @@ import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import { globSync } from 'glob'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { nodeResolve } from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 export default defineConfig({
   input: Object.fromEntries(
     globSync('src/**/*.ts', {
@@ -22,5 +22,5 @@ export default defineConfig({
     format: 'es',
     dir: 'dist'
   },
-  plugins: [typescript(), typescriptPaths(), nodeResolve()]
+  plugins: [typescript(), typescriptPaths(), commonjs()]
 })
