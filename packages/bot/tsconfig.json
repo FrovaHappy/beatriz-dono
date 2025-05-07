@@ -33,9 +33,6 @@
       "@libs/*": [
         "../libs/dist/*"
       ],
-      "libs/*": [
-        "../libs/dist/*"
-      ],
       "@type/*": [
         "../libs/src/types/*"
       ],
