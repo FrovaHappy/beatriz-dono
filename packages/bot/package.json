@@ -5,14 +5,16 @@
   "scripts": {
     "dev": "nodemon",
     "generateListServices": "tsx src/generateListServices.ts",
-    "start": "tsx src/index.ts",
+    "build": "rollup -c",
+    "start": "tsx index.js",
     "db:push": "npx drizzle-kit push",
     "db:migrate": "npx drizzle-kit generate && npx drizzle-kit migrate"
   },
   "nodemonConfig": {
     "watch": ["src"],
     "ext": "ts",
-    "exec": "rollup -c && tsx index.js"
+    "wait": 1000,
+    "exec": "npm run build && npm run start"
   },
   "dependencies": {
     "cors": "2.8.5",
@@ -22,6 +24,11 @@
     "express-session": "1.18.1",
     "module-alias": "^2.2.3",
     "passport": "0.7.0",
+    "discord.js": "^14.19.3",
+    "@napi-rs/canvas": "^0.1.70",
+    "@libsql/client": "0.15.4",
+    "drizzle-kit": "0.31.1",
+    "drizzle-orm": "0.43.1",
     "passport-discord": "0.1.4"
   },
   "devDependencies": {
@@ -31,11 +38,6 @@
     "@types/module-alias": "^2.0.4",
     "@types/passport": "^1.0.17",
     "@types/passport-discord": "^0.1.14",
-    "ts-node": "10.9.2",
-    "discord.js": "^14.19.3",
-    "@napi-rs/canvas": "^0.1.70",
-    "@libsql/client": "0.15.4",
-    "drizzle-kit": "0.31.1",
-    "drizzle-orm": "0.43.1"
+    "ts-node": "10.9.2"
   }
 }
