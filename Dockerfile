@@ -1,22 +1,19 @@
-ARG VERSION="22"
-FROM node:${VERSION}-alpine AS deploy
+ARG PRIVATE
+ARG PORT
+
+FROM node:22-alpine AS build
 WORKDIR /app
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
-ARG DISCORD_TOKEN
-ENV DISCORD_TOKEN=${DISCORD_TOKEN}
-ARG DISCORD_CLIENT
-ENV DISCORD_CLIENT=${DISCORD_CLIENT}
-ARG DISCORD_OWNER
-ENV DISCORD_OWNER=${DISCORD_OWNER}
-
 COPY . .
-COPY <<EOF .env
-DATABASE_URL=${DATABASE_URL}
-DISCORD_TOKEN=${DISCORD_TOKEN}
-DISCORD_CLIENT=${DISCORD_CLIENT}
-DISCORD_OWNER=${DISCORD_OWNER}
-EOF
-
 RUN npm install
-CMD npm run start:bot
+RUN PRIVATE=${PRIVATE} PORT=${PORT} npm run build:libs && npm run build:bot
+
+FROM node:22-alpine AS production
+WORKDIR /app
+COPY --from=build app/package*.json ./
+COPY --from=build app/packages/bot/package*.json ./packages/bot/
+COPY --from=build app/packages/bot/dist ./packages/bot/dist
+COPY --from=build app/packages/bot/index.js ./packages/bot/
+COPY --from=build app/packages/bot/tsconfig.json ./packages/bot/
+COPY --from=build app/packages/libs/dist ./packages/libs/dist
+RUN npm install --only=production
+CMD ["npm", "run", "start:bot"]

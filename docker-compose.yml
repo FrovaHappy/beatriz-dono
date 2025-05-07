@@ -1,13 +1,9 @@
 services:
   bot:
+    env_file: .env
+    environment:
+      - PRIVATE=${PRIVATE}
+      - PORT=${PORT}
     build:
       context: .
-      target: deploy
-      args:
-        - DATABASE_URL=${DATABASE_URL}
-        - DISCORD_TOKEN=${DISCORD_TOKEN}
-        - DISCORD_CLIENT=${DISCORD_CLIENT}
-        - DISCORD_OWNER=${DISCORD_OWNER}
-    env_file:
-      - .env
-    container_name: bot
+      target: production
