@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { format, join } from 'node:path'
+import { join } from 'node:path'
 
 // TODO: move to config to Database
 const fonts = {
@@ -66,8 +66,7 @@ const fonts = {
   }
 }
 
-export type FontsFamily = keyof typeof fonts
-export const fontsFamily = Object.keys(fonts) as FontsFamily[]
+export const fontsFamily = Object.keys(fonts)
 
 export const getFonts = async (root: string) => {
   if (!existsSync(root)) await mkdir(root, { recursive: true })

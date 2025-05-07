@@ -4,7 +4,7 @@ export const regexRole = /^[0-9]{5,30}$/
 export const regexDispatch = /^([mxywhcvzsqtalMXYWHCVZSQTAL0-9 ,.-]+)$/
 export const regexGuildId = /^[0-9]{10,20}$/
 
-export const regexBuildUrlImage = (domains: string[]) => {
+export function regexBuildUrlImage(domains: string[]) {
   return new RegExp(`^https?://${domains.join('|')}/\\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)$`)
 }
 

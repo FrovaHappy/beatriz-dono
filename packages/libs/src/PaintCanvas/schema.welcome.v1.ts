@@ -1,5 +1,5 @@
 import { ZodError, z } from 'zod'
-import { type FontsFamily, fontsFamily } from '../getFonts'
+import { fontsFamily } from '@libs/getFonts'
 import re from '../regex'
 
 export const MAX_WIDTH_CANVAS = 2000
@@ -43,7 +43,7 @@ const textSchema = z.object({
     .min(10)
     .max(MAX_WIDTH_CANVAS * 3)
     .optional(),
-  family: z.custom<FontsFamily>(val => fontsFamily.some(f => f === val), 'This Font is not available'),
+  family: z.custom<string>(val => fontsFamily.some(f => f === val), 'This Font is not available'),
   color: z.union([validateColor, z.literal('auto')]).optional(),
   globalAlpha: z.number().min(0).max(1).multipleOf(0.01).optional(),
   letterSpacing: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
