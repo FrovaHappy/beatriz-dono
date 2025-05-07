@@ -1,7 +1,16 @@
-import 'dotenv/config'
-
 import { z } from 'zod'
 import logger, { info } from './shared/logger'
+
+try {
+  process.loadEnvFile('../../.env')
+} catch (_) {
+  try {
+    process.loadEnvFile()
+  } catch (_) {
+    logger({ type: 'warn', head: 'Load Env', title: 'This is working without .env file' })
+  }
+}
+
 const runValidation = () => {
   const envSchema = z.object({
     PRIVATE: z.string(),
