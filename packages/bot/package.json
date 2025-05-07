@@ -2,10 +2,13 @@
   "name": "bot",
   "version": "1.0.0",
   "type": "module",
+  "_moduleAliases": {
+    "@libs": "file:../libs/dist"
+  },
   "scripts": {
     "dev": "nodemon",
     "generateListServices": "tsx src/generateListServices.ts",
-    "build": "rollup -c",
+    "build": "rollup -c && tsc-alias",
     "start": "tsx index.js",
     "db:push": "npx drizzle-kit push",
     "db:migrate": "npx drizzle-kit generate && npx drizzle-kit migrate"
