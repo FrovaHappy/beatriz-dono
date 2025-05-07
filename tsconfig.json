@@ -1,19 +1,26 @@
 {
   "compilerOptions": {
-    "lib": ["es2024", "DOM"],
-    "module": "node16",
+    "lib": [
+      "es2024",
+      "DOM"
+    ],
+    "module": "ES2022",
     "target": "es2024",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": ["vitest/globals"],
+    "types": [
+      "vitest/globals"
+    ],
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   }
 }
