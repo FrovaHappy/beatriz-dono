@@ -4,7 +4,7 @@ import getEvents from './getEvents'
 import getServices from './getServices'
 import loadFonts from './loadFonts'
 
-export default async function startClient(): Promise<void> {
+export default async function startClient() {
   const { config } = globalThis
   const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
