@@ -1,4 +1,4 @@
-type Color = {
+interface Color {
   r: number
   g: number
   b: number
@@ -23,7 +23,7 @@ function createPixelArray(imgData: Uint8ClampedArray<ArrayBufferLike>) {
 
 const orderByBiggestColorRange = (rgbValues: Color[]) => {
   const componentToSortBy = findBiggestColorRange(rgbValues)
-  rgbValues.sort((p1: { [x: string]: number }, p2: { [x: string]: number }) => {
+  rgbValues.sort((p1: Color, p2: Color) => {
     return p1[componentToSortBy] - p2[componentToSortBy]
   })
   return rgbValues
