@@ -4,6 +4,10 @@ services:
     environment:
       - PRIVATE=${PRIVATE}
       - PORT=${PORT}
+
     build:
+      args:
+        - PRIVATE=$PRIVATE
+        - PORT=$PORT
       context: .
       target: production

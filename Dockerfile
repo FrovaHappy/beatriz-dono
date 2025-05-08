@@ -1,11 +1,12 @@
+FROM node:22-alpine AS build
 ARG PRIVATE
 ARG PORT
-
-FROM node:22-alpine AS build
+ENV PRIVATE=$PRIVATE
+ENV PORT=$PORT
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN PRIVATE=${PRIVATE} PORT=${PORT} npm run build:libs && npm run build:bot
+RUN npm run build:libs && npm run build:bot
 
 FROM node:22-alpine AS production
 WORKDIR /app
