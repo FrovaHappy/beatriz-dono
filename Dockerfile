@@ -6,6 +6,7 @@ ENV PORT=$PORT
 WORKDIR /app
 COPY . .
 RUN npm install
+RUN npm run db:push
 RUN npm run build:libs && npm run build:bot
 
 FROM node:22-alpine AS production

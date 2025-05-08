@@ -7,8 +7,7 @@
     "generateListServices": "tsx src/generateListServices.ts",
     "build": " npm run generateListServices && rollup -c",
     "start": "tsx index.js",
-    "db:push": "npx drizzle-kit push",
-    "db:migrate": "npx drizzle-kit generate && npx drizzle-kit migrate"
+    "db:push": "npx drizzle-kit push"
   },
   "nodemonConfig": {
     "watch": ["src"],

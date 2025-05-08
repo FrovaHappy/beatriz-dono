@@ -3,15 +3,12 @@
   "version": "2.0.0",
   "description": "A Bot multipurpose for discord",
   "packageManager": "npm@11.2.0",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "lint": "biome check --write --diagnostic-level=warn",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "db:push": "npm run db:push --workspace=packages/bot",
-    "db:migrate": "npm run db:migrate --workspace=packages/bot",
     "bot:generateListServices": "env-cmd npm run generateListServices --workspace=packages/bot",
     "dev": "env-cmd turbo dev",
     "build": "env-cmd turbo build",
