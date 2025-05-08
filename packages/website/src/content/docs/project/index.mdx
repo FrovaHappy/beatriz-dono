@@ -68,6 +68,7 @@ PRIVATE = '{
     "token": "",
     "applicationId": ""
     "oAuthSecret": ""
+    "oAuthCallback": "/auth0/discord" 
     "guildOwner": ""
     "userOwner": ""
   },
@@ -93,6 +94,7 @@ Lo primero es tener un bot creado en discord, para ello puedes usar el bot de [D
 - **applicationId**: id de la aplicación de discord
 - **oAuthSecret**: secreto de autenticación de discord para OAuth
 - **guildOwner**: id del servidor donde se encuentra el bot (el bot debe estar en el servidor)
+- **oAuthCallback**: callback de OAuth, por defecto es `/auth0/discord` esto es la sub-ruta que se configura en discord portal -> OAuth2 -> Redirect URLs
 - **userOwner**: id del usuario que tiene el rol de administrador del bot (el usuario debe ser el dueño del bot)
 
 ### `PRIVATE.api`
