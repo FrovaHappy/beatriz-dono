@@ -1,6 +1,6 @@
 {
   "name": "bot",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "nodemon",
@@ -32,7 +32,7 @@
     "passport-discord": "0.1.4"
   },
   "devDependencies": {
-    "@types/cors": "2.8.17",
+    "@types/cors": "2.8.18",
     "@types/express": "5.0.1",
     "@types/express-session": "1.18.1",
     "@types/module-alias": "2.0.4",
