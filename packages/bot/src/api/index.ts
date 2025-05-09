@@ -6,9 +6,9 @@ import passport from 'passport'
 import discordStrategy from './discordStrategy'
 import routers from './routes'
 const app = express()
-
 export default async function startApi() {
   app.use(cors({ origin: config.env.api.urlClientDomain, credentials: true }))
+  app.set('trust proxy', config.utils.isProduction)
   app.use(
     session({
       secret: config.env.api.secretKey,
@@ -22,6 +22,7 @@ export default async function startApi() {
       }
     })
   )
+
   app.use(rateLimit({ windowMs: config.utils.middleMinutes, max: 100, legacyHeaders: false }))
   app.use(express.json())
 
