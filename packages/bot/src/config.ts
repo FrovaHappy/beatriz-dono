@@ -45,7 +45,7 @@ function parsePrivate(s: string) {
       }),
       api: z.object({
         secretKey: z.string(),
-        urlClientDomain: z.string()
+        urlClientDomain: z.string().url()
       }),
       sql: z.object({
         syncUrl: z.string(),
