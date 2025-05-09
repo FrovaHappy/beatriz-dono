@@ -1,8 +1,20 @@
+import { loadEnvFile } from 'node:process'
 import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
 // @ts-check
 import { defineConfig } from 'astro/config'
 import starlightThemeRapide from 'starlight-theme-rapide'
+import { join } from 'node:path'
+
+try {
+  loadEnvFile(`${process.cwd()}/.env`)
+} catch (e) {
+  try {
+    loadEnvFile(join(process.cwd(), '../../.env'))
+  } catch (e) {
+    console.log('No .env file found')
+  }
+}
 
 // https://astro.build/config
 export default defineConfig({
