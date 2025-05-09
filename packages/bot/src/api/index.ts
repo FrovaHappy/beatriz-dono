@@ -5,10 +5,11 @@ import session from 'express-session'
 import passport from 'passport'
 import discordStrategy from './discordStrategy'
 import routers from './routes'
+import logger from '@/shared/logger'
+
 const app = express()
 export default async function startApi() {
   app.use(cors({ origin: config.env.api.urlClientDomain, credentials: true }))
-  app.set('trust proxy', config.utils.isProduction)
   app.use(
     session({
       secret: config.env.api.secretKey,
@@ -17,13 +18,19 @@ export default async function startApi() {
       cookie: {
         path: '/',
         httpOnly: false,
-        maxAge: config.utils.oneDay,
-        secure: config.utils.isProduction
+        maxAge: config.utils.oneDay
       }
     })
   )
-
-  app.use(rateLimit({ windowMs: config.utils.middleMinutes, max: 100, legacyHeaders: false }))
+  app.use(
+    rateLimit({
+      windowMs: config.utils.middleMinutes,
+      max: 100,
+      legacyHeaders: false,
+      message: 'Too many requests',
+      standardHeaders: 'draft-8'
+    })
+  )
   app.use(express.json())
 
   // Passport config
@@ -46,6 +53,14 @@ export default async function startApi() {
   })
 
   app.listen(config.env.port, () => {
-    console.log(`Server is running on port ${config.env.port}`)
+    logger({
+      type: 'info',
+      head: 'Api',
+      body: `
+        Server is running on port ${config.env.port}
+        urlClientDomain: ${config.env.api.urlClientDomain}
+        urlDiscordAuthCallback: ${config.env.discord.oAuthCallback}
+        `
+    })
   })
 }
