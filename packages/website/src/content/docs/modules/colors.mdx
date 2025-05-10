@@ -2,7 +2,7 @@
 title: Módulo de Colores
 description: Usamos colores para dar vida a tu nombre de usuario y facilitar su personalización.
 ---
-import { Steps, Badge } from '@astrojs/starlight/components'
+import { Steps, Badge, Aside } from '@astrojs/starlight/components'
 
 ## ¿Qué hace este módulo?
 
@@ -20,6 +20,7 @@ Este módulo te permite gestionar los colores del servidor de forma práctica y 
 
 Al escribir `/colors` en el chat, el bot mostrará un menú interactivo con las opciones por defecto para cambiar tu color.
 
+<Aside type="tip">Ten en cuenta que los roles que estén por encima de un puntero no deben tener colores personalizados.</Aside>
 ### Uso personalizado
 
 Si usas `/colors custom`, podrás personalizar tu color eligiendo uno desde un código hexadecimal o creando una plantilla propia.
