@@ -6,47 +6,86 @@ import { Steps, Badge } from '@astrojs/starlight/components'
 
 ## ¿Qué hace este módulo?
 
-- Organiza los colores del servidor para que sean fáciles de mantener y reutilizar.
-- Optimiza el uso de colores sin necesidad de crear roles manualmente.
-- Permite elegir entre una plantilla de colores predefinida o personalizarla.
-- *(Función futura)*: Ofrecerá una opción para limitar el acceso al comando de colores personalizados mediante un rol de membresía.
+Este módulo te permite gestionar los colores del servidor de forma práctica y flexible:
 
-## ¿Cómo funciona?
+- 📚 **Organiza los colores del servidor** para que sean fáciles de mantener y reutilizar.
+- 🔧 **Evita la creación manual de roles de colores**, automatizando el proceso.
+- 🎨 **Permite elegir entre una plantilla predefinida o personalizar tus propios colores.**
 
-Con escribir `/colors` en el chat, el bot te mostrará un menu con las opciones por defecto.
-Pero si le pasas el comando `/colors` con el argumento `custom`, podrás personalizar tu nombre de usuario con los colores que desees.
+---
 
-## Configuración
+## 🚀 ¿Cómo usar el comando `/colors`?
 
-### Iniciar el módulo
+### Uso básico
 
-Iniciar el módulo es sencillo: simplemente ejecuta el comando `/colors` en el servidor por primera vez y sigue los pasos que se te indicarán.
-este tiene un opcion `custom` para crear un color personalizado.
+Al escribir `/colors` en el chat, el bot mostrará un menú interactivo con las opciones por defecto para cambiar tu color.
 
-### Cómo personalizar la plantilla de colores
+### Uso personalizado
 
+Si usas `/colors custom`, podrás personalizar tu color eligiendo uno desde un código hexadecimal o creando una plantilla propia.
+
+---
+
+## ⚙️ Configuración
+
+### 1. Iniciar el módulo
+
+Solo necesitas ejecutar el comando `/colors` por primera vez en el servidor. El bot te guiará con instrucciones paso a paso.
+
+---
+
+### 2. Personalizar la plantilla de colores
 <Steps>
-  1. Ejecuta el comando `/colors`. Aparecerá un botón de `configuración`; haz clic en él para abrir el menú. En el menú, selecciona la opción `Editar Templete` para personalizar los colores de la plantilla
+
+  1. Ejecuta el comando `/colors`. Aparecerá un botón de `Configuración`; haz clic en él para abrir el menú. En el menú, selecciona la opción `Editar Template` para personalizar los colores de la plantilla.
 
   2. En el menú emergente, se te pedirá un JSON con los colores que deseas modificar. Por ejemplo:
 
       ```json
       {
         "version": "v1",
-         "values": [
+        "values": [
           { "hex_color": "#000000", "label": "Black", "emoji": "<:black:1002412843090736640>" },
           { "hex_color": "#ffffff", "label": "White", "description": "this color is white :0" },
-          { "hex_color": "#ff0000", "label": "Red" },
+          { "hex_color": "#ff0000", "label": "Red" }
         ]
       }
-       ```
+      ```
 
       - `version`: <Badge text="Opcional" variant="note" /> Si no lo especificas, se usará la última versión del esquema.
-      - `values`: <Badge text="Obligatorio" variant="caution" /> arreglo de objetos con los colores a personalizar.
-        - `hexcolor`: <Badge text="Obligatorio" variant="caution" /> Especifica el color en formato hexadecimal.
+      - `values`: <Badge text="Obligatorio" variant="caution" /> Arreglo de objetos con los colores a personalizar.
+        - `hex_color`: <Badge text="Obligatorio" variant="caution" /> Especifica el color en formato hexadecimal.
         - `label`: <Badge text="Obligatorio" variant="caution" /> Nombre descriptivo del color.
         - `emoji`: <Badge text="Opcional" variant="note" /> El formato que soporta es el emoji de Discord.
         - `description`: <Badge text="Opcional" variant="note" /> Puedes agregar una descripción adicional para el color.
 
   3. ¡Listo! Ahora puedes ejecutar el comando `/colors` nuevamente para ver tus colores personalizados en acción.
+
 </Steps>
+
+## ✅ Funcionalidades actuales
+
+### 👤 Para usuarios
+
+- Cambiar el color mediante un código hexadecimal.
+- Usar colores desde plantillas predefinidas.
+- Obtener un color automáticamente desde la foto de perfil.
+- Quitar el color actual del perfil.
+
+### 🛠️ Para administradores
+
+- Eliminar colores no utilizados.
+- Eliminar colores específicos.
+- Borrar todos los colores del servidor.
+- Gestionar y editar la plantilla de colores.
+- Ordenar los colores (roles) debajo de un puntero para mantener la jerarquía.
+
+---
+
+## 🔮 Funcionalidades futuras
+
+- [ ] Permitir a los administradores cambiar el color de un usuario.
+- [ ] Permitir añadir colores a usuarios directamente.
+- [ ] Mostrar una lista de colores creados en el servidor.
+- [ ] Limitar el acceso al comando de colores personalizados mediante roles especiales.
+
