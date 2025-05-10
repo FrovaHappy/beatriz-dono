@@ -22,6 +22,7 @@ export default defineConfig({
     react(),
     starlight({
       plugins: [starlightThemeRapide()],
+      customCss: ['src/assets/docs.css'],
       title: {
         en: 'Documentation',
         es: 'Documentación'
@@ -30,7 +31,6 @@ export default defineConfig({
         src: 'public/logo.webp'
       },
       favicon: 'public/favicon.jpg',
-      lastUpdated: true,
       defaultLocale: 'root',
       locales: {
         root: {
@@ -44,7 +44,6 @@ export default defineConfig({
       },
       disable404Route: true,
       editLink: { baseUrl: 'https://github.com/FrovaHappy/beatriz-dono/tree/main/packages/website/' },
-      customCss: ['src/assets/docs.css'],
       sidebar: [
         {
           label: 'Getting Started',
