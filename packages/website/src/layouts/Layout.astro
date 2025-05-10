@@ -65,6 +65,20 @@ const {
     --z-menu: 100;
     --z-menu-button: 10;
   }
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #ff006680;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent; /* Optional: Adjust for better contrast */
+  }
+
   [data-theme="light"] {
     --bg-color: #fff;
     --font-color: #000;

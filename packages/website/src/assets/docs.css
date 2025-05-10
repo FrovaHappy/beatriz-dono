@@ -10,3 +10,17 @@
   --sl-color-accent: #db022a !important;
   --sl-color-accent-high: #ff0066 !important;
 }
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ff006680;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Optional: Adjust for better contrast */
+}
