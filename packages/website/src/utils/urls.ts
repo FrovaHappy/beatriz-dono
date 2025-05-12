@@ -1,5 +1,4 @@
 const { PUBLIC_APPLICATION_ID: applicationId, PUBLIC_URL_API: urlApi } = import.meta.env
-console.log(import.meta.env)
 
 const urls = {
   github: 'https://github.com/FrovaHappy/beatriz-dono',
