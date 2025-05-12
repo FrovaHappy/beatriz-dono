@@ -2,7 +2,7 @@
 title: Cómo Empezar?
 description: Cómo empezar con el despliegue del proyecto en local.
 ---
-import { Aside, Steps } from '@astrojs/starlight/components'
+import { Aside, Steps, LinkCard } from '@astrojs/starlight/components'
 
 ## Requisitos
 
@@ -19,6 +19,15 @@ import { Aside, Steps } from '@astrojs/starlight/components'
 - Drizzle
 - LibSQL
 - Turso
+
+## Recursos
+
+<LinkCard href="https://deepwiki.com/FrovaHappy/beatriz-dono" title="Mira el proyecto en DeepWiki" />
+<LinkCard href="https://github.com/FrovaHappy/beatriz-dono" title="Sigue el proyecto en GitHub ⭐" />
+<LinkCard
+  href="https://www.figma.com/design/uIddm4mEIhGzmZa35QzyEv/Beatriz-bot?node-id=172-217&t=quFBS9xlRt0kQ2PY-1"
+  title="Mira el proyecto en Figma"
+/>
 
 ## Como empezar a desarrollar
 
@@ -51,7 +60,7 @@ Ahora toca instalar las dependencias y configurar el entorno de desarrollo.
 </Steps>
 
 <Aside type="note">
-  Si estás usando Docker, solo necesitas ejecutar el paso `2` y `3`, y ejecutar el comando `docker:dev` para iniciar el servidor en local.
+  Si estás usando Docker, solo necesitas ejecutar el paso `2` y ejecutar el comando `docker:production` (puedes hacer un pull request para agregar la opción de `docker:dev` para que se ejecute el servidor en local)
 </Aside>
 
 ## Que Variables de Entorno necesito?
