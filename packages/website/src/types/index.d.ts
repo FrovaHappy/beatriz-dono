@@ -1,3 +1,4 @@
+import type { Icon } from '@utils/icons'
 export interface ComponentProps {
   apiUrl: string
   oauthCallback: string
@@ -10,5 +11,7 @@ export interface ButtonProps {
     type: 'anchor' | 'button'
     text: string
   }
-  icon?: keyof typeof icons
+  small?: boolean
+  left?: boolean
+  icon?: Icon
 }
