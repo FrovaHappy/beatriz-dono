@@ -17,7 +17,6 @@ const decoratedText = text.replace(reColor, (match, p1, p2, p3) => {
 <>
   {
     decoratedText.split(/[%]{2}/).map((word, i) => {
-      console.log(word);
       if (word === "__point__") {
         return <span class="decore-text">{matched.shift()}</span>;
       }
