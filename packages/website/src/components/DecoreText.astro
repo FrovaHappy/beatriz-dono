@@ -1,0 +1,32 @@
+---
+interface Props {
+  text?: string;
+}
+
+const { text = "" } = Astro.props as Props;
+
+const reColor = /({{)(.*?)(}})/;
+const matched: string[] = [];
+
+const decoratedText = text.replace(reColor, (match, p1, p2, p3) => {
+  matched.push(p2);
+  return "%%__point__%%";
+});
+---
+
+<>
+  {
+    decoratedText.split(/[%]{2}/).map((word, i) => {
+      console.log(word);
+      if (word === "__point__") {
+        return <span class="decore-text">{matched.shift()}</span>;
+      }
+      return word;
+    })
+  }
+</>
+<style>
+  .decore-text {
+    color: var(--secondary-color);
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import type { ButtonProps } from "../types";
 import { icons } from "@utils/icons";
+import DecoreText from "./DecoreText.astro";
 
 interface Props extends ButtonProps {
   class?: string;
@@ -30,10 +31,11 @@ if (action.type === "anchor") {
 <TagHtml
   id={id}
   {...customProps}
-  class={`button ${small ? " button--small" : ""} ${className ?? ""} ${left ? "button--left" : ""}`}
+  class={`button ${small ? " button--small" : ""} ${className ?? ""}`}
 >
-  <i class={`${icons[icon ?? "none"]} button--icon`}></i>
-  {text}
+  {!left && <i class={`${icons[icon ?? "none"]} button--icon`} />}
+  <DecoreText text={text} />
+  {left && <i class={`${icons[icon ?? "none"]} button--icon`} />}
 </TagHtml>
 
 <style lang="scss">
@@ -51,10 +53,6 @@ if (action.type === "anchor") {
     }
     &--icon {
       font-size: 120%;
-    }
-    &--left {
-      flex-direction: row-reverse !important;
-      gap: 0.5rem;
     }
     &--small {
       font-size: 0.875rem;
