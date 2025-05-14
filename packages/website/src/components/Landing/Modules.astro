@@ -61,9 +61,13 @@ import SecondaryButton from "@components/SecondaryButton.astro";
     const $description = document.querySelector(".module-info--description");
     const $p = $description.querySelector("p");
     const $button = $description.querySelector("a");
+    const decoreText = text.replaceAll(
+      /{{(.*?)}}/g,
+      '<span class="decore-text">$1</span>',
+    );
     $p.innerHTML = description;
     $button.href = url;
-    $button.innerHTML = text;
+    $button.querySelector("p").innerHTML = decoreText;
   }
 </script>
 <style lang="scss">

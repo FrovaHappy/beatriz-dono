@@ -34,7 +34,9 @@ if (action.type === "anchor") {
   class={`button ${small ? " button--small" : ""} ${className ?? ""}`}
 >
   {!left && <i class={`${icons[icon ?? "none"]} button--icon`} />}
-  <DecoreText text={text} />
+  <p>
+    <DecoreText text={text} />
+  </p>
   {left && <i class={`${icons[icon ?? "none"]} button--icon`} />}
 </TagHtml>
 
@@ -47,6 +49,9 @@ if (action.type === "anchor") {
     display: flex;
     gap: 0.5rem;
     transition: all 0.2s ease-in-out;
+    p {
+      text-wrap: nowrap;
+    }
     &:hover {
       background-color: var(--bg-color-10);
       color: var(--text-color);
