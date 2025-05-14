@@ -1,0 +1,68 @@
+---
+import type { ButtonProps } from "../types";
+import { icons } from "@utils/icons";
+
+interface Props extends ButtonProps {
+  class?: string;
+}
+const {
+  text,
+  action,
+  icon,
+  id,
+  small = false,
+  left = false,
+  class: className,
+} = Astro.props as Props;
+
+const TagHtml = action.type === "anchor" ? "a" : "button";
+
+const customProps: Record<string, any> = {};
+if (action.type === "anchor") {
+  customProps.href = action.text;
+  customProps.target = "_blank";
+  customProps.rel = "noopener noreferrer";
+} else {
+  customProps.onclick = action.text;
+}
+---
+
+<TagHtml
+  id={id}
+  {...customProps}
+  class={`button ${small ? " button--small" : ""} ${className ?? ""} ${left ? "button--left" : ""}`}
+>
+  <i class={`${icons[icon ?? "none"]} button--icon`}></i>
+  {text}
+</TagHtml>
+
+<style lang="scss">
+  .button {
+    font-size: 1rem;
+    background-color: transparent;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--bg-color-10);
+    display: flex;
+    gap: 0.5rem;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      background-color: var(--bg-color-10);
+      color: var(--text-color);
+    }
+    &--icon {
+      font-size: 120%;
+    }
+    &--left {
+      flex-direction: row-reverse !important;
+      gap: 0.5rem;
+    }
+    &--small {
+      font-size: 0.875rem;
+      padding: 3px 6px;
+    }
+  }
+  .active {
+    background-color: var(--font-color);
+    color: var(--bg-color);
+  }
+</style>
