@@ -15,5 +15,5 @@ export default defineConfig({
   },
   external: ['discord.js', '@napi-rs/canvas'],
 
-  plugins: [typescript(), commonjs(), json()]
+  plugins: [typescript({ exclude: ['**/*.test.ts', '**/*.d.ts'] }), json(), commonjs()]
 })
