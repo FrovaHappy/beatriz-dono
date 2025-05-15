@@ -5,7 +5,7 @@ export default async function getGuilds() {
   const time = new Timer()
   const { guildOwner } = config.env.discord
 
-  const guildsQuery = (await db.guilds.read()) ?? []
+  const guildsQuery = await db.guilds.read()
   const premiumGuilds = guildsQuery.filter(g => g.scope_bot === 'premium').map(g => g.guild_id)
   const developerGuilds = guildsQuery.filter(g => g.scope_bot === 'developer').map(g => g.guild_id)
 
