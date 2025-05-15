@@ -20,8 +20,8 @@ const customColorsOptions = (locale: Locale, templete: string | null) => {
 
 export default new BuildCommand({
   name: 'colors',
+  scope: 'free',
   ephemeral: true,
-  scope: 'public',
   permissionsBot: ['ManageRoles'],
   resolve: 'defer',
   cooldown: 15,

@@ -31,7 +31,7 @@ class BuildCommand {
   execute: (e: ChatInputCommandInteraction) => Promise<MessageOptions | undefined>
   constructor(props: Partial<BuildCommand> & Pick<BuildCommand, 'name' | 'execute' | 'data'>) {
     this.name = props.name
-    this.scope = props.scope ?? 'owner'
+    this.scope = props.scope ?? 'dev'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.resolve = props.resolve ?? 'defer'
     this.ephemeral = props.ephemeral ?? false

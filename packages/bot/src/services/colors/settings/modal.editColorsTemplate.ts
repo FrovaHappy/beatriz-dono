@@ -8,6 +8,7 @@ import msgUpdatedTemplete from './msg.updatedTemplete'
 
 export default new BuildModal({
   customId: 'editColorsTemplate',
+  scope: 'free',
   ephemeral: true,
   resolve: 'update',
   permissionsBot: ['ManageRoles'],
@@ -36,7 +37,6 @@ export default new BuildModal({
       }
     ]
   },
-  scope: 'public',
   dataButton: {
     style: ButtonStyle.Primary,
     translates: {

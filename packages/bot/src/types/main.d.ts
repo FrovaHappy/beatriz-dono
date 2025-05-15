@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Interaction, type InteractionReplyOptions, type PermissionResolvable } from 'discord.js'
 
-export type Scope = 'public' | 'private' | 'owner'
+export type Scope = 'free' | 'premium' | 'dev'
 export type Resolve = 'update' | 'defer'
 export type Types = 'menus' | 'commands' | 'buttons' | 'modals'
 

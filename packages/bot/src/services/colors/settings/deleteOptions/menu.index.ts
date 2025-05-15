@@ -14,10 +14,10 @@ enum DeleteColors {
 
 export default new BuildMenu<'string'>({
   customId: 'settingsDeleteColors',
+  scope: 'free',
   resolve: 'update',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
-  scope: 'public',
   typeData: 'string',
   translates: {
     default: {

@@ -2,10 +2,11 @@ import { eq } from 'drizzle-orm'
 import cli from '../clientSQL'
 import schemaGuilds from '../schemas/guilds'
 import re from '@libs/regex'
+import type { Scope } from '@/types/main'
 
 export type Guild = {
   guild_id: string
-  scope_bot: 'free' | 'premium' | 'developer'
+  scope_bot: Scope
   features: {
     welcome: string
     goodbye: string

@@ -6,7 +6,7 @@ import msgOrderColors from './msg.orderColors'
 
 export default new BuildButton({
   customId: 'orderColors',
-  scope: 'private',
+  scope: 'free',
   style: ButtonStyle.Primary,
   translates: {
     default: {

@@ -10,9 +10,9 @@ import { changeColor } from './shared/changeColor'
 
 export default new BuildButton({
   customId: 'colorCast',
+  scope: 'free',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
-  scope: 'public',
   resolve: 'update',
   style: ButtonStyle.Secondary,
   translates: {

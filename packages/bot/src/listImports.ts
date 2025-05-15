@@ -29,13 +29,12 @@ import linkDiscord from '@/services/general/buttons/linkDiscord.button'
 import linkGithubIssues from '@/services/general/buttons/linkGithubIssues.button'
 import linkKofi from '@/services/general/buttons/linkKofi.button'
 import aboutme from '@/services/general/commands/aboutMe.command'
-import test from '@/services/general/commands/test.command'
 
     export const events: Record<string, BuildEvent<any>> = {
       guildMemberAdd, interactionCreate, ready, 
     }
     export const commands: Record<string, BuildCommand> = {
-      canvas, colors, aboutme, test, 
+      canvas, colors, aboutme, 
     }
     export const menus: Record<string, BuildMenu<any>> = {
       selectColors, settingsConfirmDeleteAsome, settingsDeleteColors, 

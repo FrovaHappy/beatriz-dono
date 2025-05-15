@@ -7,17 +7,17 @@ export function reorderScope(priv: string[], owner: string[]) {
 
   // biome-ignore lint/complexity/noForEach: <explanation>
   priv.forEach(s => {
-    dicc[s] = 'private'
+    dicc[s] = 'free'
   })
   // biome-ignore lint/complexity/noForEach: <explanation>
   owner.forEach(s => {
-    dicc[s] = 'owner'
+    dicc[s] = 'dev'
   })
   const grouping = Object.groupBy(Object.entries(dicc), ([, v]) => v)
 
   return {
-    privates: grouping.private?.map(([k]) => k) ?? [],
-    owners: grouping.owner?.map(([k]) => k) ?? []
+    premium: grouping.premium?.map(([k]) => k) ?? [],
+    dev: grouping.dev?.map(([k]) => k) ?? []
   }
 }
 
@@ -29,11 +29,11 @@ export function reorderScope(priv: string[], owner: string[]) {
  */
 export function hasAccessForScope(scope: Scope, guildId: string): boolean {
   const { config } = globalThis
-  const { privates, owners } = reorderScope(config.setting.privatesServers, config.setting.ownersServers)
-  const isPrivate = privates.includes(guildId)
-  const isOwner = owners.includes(guildId)
+  const { dev, premium } = reorderScope(config.setting.privatesServers, config.setting.ownersServers)
+  const isPrivate = premium.includes(guildId)
+  const isOwner = dev.includes(guildId)
 
-  if (scope === 'public') return true
-  if (scope === 'private') return isPrivate || isOwner // validate if the user is owner
+  if (scope === 'free') return true
+  if (scope === 'premium') return isPrivate || isOwner // validate if the user is owner
   return isOwner
 }

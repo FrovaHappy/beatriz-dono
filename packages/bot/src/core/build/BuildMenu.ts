@@ -100,7 +100,7 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
   execute: (e: SelectMenu[T]['interaction']) => Promise<MessageOptions | undefined>
   constructor(props: MenuConstructor<T>) {
     this.customId = props.customId
-    this.scope = props.scope ?? 'owner'
+    this.scope = props.scope ?? 'dev'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.resolve = props.resolve ?? 'defer'
     this.typeData = props.typeData

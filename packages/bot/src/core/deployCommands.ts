@@ -65,9 +65,9 @@ export async function putGlobalCommands(commands: CommandDataJson[]) {
 
 function getCommands(collection: Collection<string, Command>) {
   const commands: Record<Scope, CommandDataJson[]> = {
-    owner: [],
-    private: [],
-    public: []
+    free: [],
+    premium: [],
+    dev: []
   }
   for (const command of collection.values()) {
     commands[command.scope] = [command.data.toJSON(), ...(commands[command.scope] ?? [])]
@@ -85,16 +85,16 @@ export default async function deployCommand(collection: Collection<string, Comma
     head: 'Deploy Commands',
     title: 'Deploying commands ...',
     body: `
-      public commands found: ${commands.public.length}  
-      owner commands found: ${commands.owner.length}  
-      private commands found: ${commands.private.length}  
+      public commands found: ${commands.free.length}  
+      owner commands found: ${commands.dev.length}  
+      private commands found: ${commands.premium.length}  
       privates servers found: ${config.setting.privatesServers.length}  
       owners servers found: ${config.setting.ownersServers.length}  
       exclude owners servers of private: ${config.setting.privatesServers.length - excludeOwnerOfPrivates.length}
     `
   })
 
-  await putGlobalCommands(commands.public) // update public commands
-  await putGuildCommands(config.setting.ownersServers, [...commands.private, ...commands.owner], 'owner') // update owner commands
-  await putGuildCommands(excludeOwnerOfPrivates, commands.private, 'private') // update private commands
+  await putGlobalCommands(commands.free) // update public commands
+  await putGuildCommands(config.setting.ownersServers, [...commands.premium, ...commands.dev], 'dev') // update owner commands
+  await putGuildCommands(excludeOwnerOfPrivates, commands.premium, 'premium') // update private commands
 }

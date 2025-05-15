@@ -7,7 +7,7 @@ import { removeRolesOfUser } from './shared/removeRoles'
 
 export default new BuildButton({
   customId: 'deleteColor',
-  scope: 'public',
+  scope: 'free',
   permissionsBot: ['ManageRoles'],
   permissionsUser: [],
   resolve: 'update',

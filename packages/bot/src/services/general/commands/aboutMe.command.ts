@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from 'discord.js'
 import msgAboutMe from './msg.aboutMe'
 
 const command = new BuildCommand({
+  scope: 'free',
   data: new SlashCommandBuilder()
     .setNameLocalizations({
       'es-ES': 'sobre-mi',
@@ -14,7 +15,6 @@ const command = new BuildCommand({
       'en-US': 'Get information about me.'
     }),
   name: 'aboutme',
-  scope: 'public',
   ephemeral: true,
   execute: async i => {
     return msgAboutMe.getMessage(i.locale, {})

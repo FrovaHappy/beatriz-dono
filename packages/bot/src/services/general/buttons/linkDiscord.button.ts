@@ -4,7 +4,7 @@ import { ButtonStyle } from 'discord.js'
 
 export default new BuildButton({
   customId: 'linkDiscord',
-  scope: 'public',
+  scope: 'free',
   permissionsBot: [],
   permissionsUser: [],
   resolve: 'update',

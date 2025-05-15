@@ -5,7 +5,7 @@ import msgColorPointerCreated from './msg.ColorPointerCreated'
 
 export default new BuildButton({
   customId: 'colorPointer',
-  scope: 'public',
+  scope: 'free',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
   resolve: 'update',

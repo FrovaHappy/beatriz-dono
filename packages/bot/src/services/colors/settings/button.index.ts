@@ -6,7 +6,7 @@ import msgIndex from './msg.index'
 
 export default new BuildButton({
   customId: 'setting',
-  scope: 'public',
+  scope: 'free',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
   resolve: 'update',

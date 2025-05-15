@@ -65,7 +65,7 @@ class BuildModal {
 
   constructor(props: ModalConstructor) {
     this.customId = props.customId
-    this.scope = props.scope ?? 'owner'
+    this.scope = props.scope ?? 'dev'
     this.cooldown = props.cooldown ?? config.env.discord.cooldown
     this.ephemeral = props.ephemeral ?? false
     this.#translates = props.translates

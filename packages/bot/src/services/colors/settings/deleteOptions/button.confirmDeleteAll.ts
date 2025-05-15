@@ -7,7 +7,7 @@ import msgDeleteAll from './msg.deleteAll'
 
 export default new BuildButton({
   customId: 'settingsConfirmDeleteAll',
-  scope: 'public',
+  scope: 'free',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
   resolve: 'update',

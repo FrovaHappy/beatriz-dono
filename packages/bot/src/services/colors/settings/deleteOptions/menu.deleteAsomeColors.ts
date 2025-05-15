@@ -17,7 +17,7 @@ export default new BuildMenu<'role'>({
   },
   ephemeral: true,
   resolve: 'update',
-  scope: 'public',
+  scope: 'free',
   cooldown: 15,
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],

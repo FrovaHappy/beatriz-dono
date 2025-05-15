@@ -17,7 +17,7 @@ function getMenus<T extends keyof SelectMenu = 'string'>(key: string): BuildMenu
   if (menu) return menu as any
   return new BuildMenu({
     customId: '',
-    scope: 'owner',
+    scope: 'free',
     permissionsBot: [],
     permissionsUser: [],
     typeData: 'string',
@@ -38,7 +38,7 @@ function getButton(key: string): BuildButton {
   if (button) return button as any
   return new BuildButton({
     customId: '',
-    scope: 'owner',
+    scope: 'free',
     permissionsBot: [],
     permissionsUser: [],
     style: ButtonStyle.Secondary,
@@ -58,7 +58,7 @@ function getModal(key: string): BuildModal {
   if (modal) return modal as any
   return new BuildModal({
     customId: '',
-    scope: 'owner',
+    scope: 'free',
     permissionsBot: [],
     permissionsUser: [],
     translates: {

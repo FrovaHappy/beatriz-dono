@@ -7,7 +7,7 @@ import msgRestartTemplate from './msg.restartTemplate'
 
 export default new BuildButton({
   customId: 'settingRestartTemplate',
-  scope: 'public',
+  scope: 'free',
   permissionsBot: ['ManageRoles'],
   permissionsUser: ['ManageRoles'],
   resolve: 'update',
