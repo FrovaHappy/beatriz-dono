@@ -14,14 +14,7 @@ const cli = createClient({
 export const syncCli = async () => {
   const timer = new Timer()
   cli.sync()
-  logger({
-    type: 'info',
-    head: 'Database',
-    title: 'Syncing database',
-    body: `
-      finished in ${timer.final()}
-    `
-  })
+  return timer.final()
 }
 
 export default drizzle(cli)
