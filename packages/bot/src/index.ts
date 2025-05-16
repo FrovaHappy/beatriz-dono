@@ -1,9 +1,9 @@
-import './config'
+import '@/config'
 import { exit } from 'node:process'
 import startClient from '@/core/client'
 import syncGuilds from '@/database/syncGuilds'
 import { syncCli } from '@/database/clientSQL'
-import logger from './shared/logger'
+import logger from '@/shared/logger'
 
 const run = async () => {
   try {
