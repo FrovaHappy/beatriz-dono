@@ -92,27 +92,20 @@ globalThis.menus = getMenus
 globalThis.modals = getModal
 
 export default async function getServices() {
-  const timer = new Timer()
   for (const command of Object.entries(listImports.commands)) {
     const [, instance] = command
     globalThis.commands.set(instance.name, instance)
   }
   for (const menu of Object.entries(listImports.menus)) {
     const [, service] = menu
-    const existMenu = !!menus.get(service.customId)
-    if (existMenu) throw new Error(`Menu ${service.customId} already exists`)
     menus.set(service.customId, service)
   }
   for (const button of Object.entries(listImports.buttons)) {
     const [, service] = button
-    const existButton = !!buttons.get(service.customId)
-    if (existButton) throw new Error(`Button ${service.customId} already exists`)
     buttons.set(service.customId, service)
   }
   for (const modal of Object.entries(listImports.modals)) {
     const [, service] = modal
-    const existModal = !!modals.get(service.customId)
-    if (existModal) throw new Error(`Modal ${service.customId} already exists`)
     modals.set(service.customId, service)
     buttons.set(`modal-${service.customId}`, service.button)
   }
@@ -124,8 +117,7 @@ export default async function getServices() {
       buttons found: ${buttons.size}  
       commands found: ${globalThis.commands.size}  
       menus found: ${menus.size}  
-      modals found: ${modals.size}  
-      finished in ${timer.final()}
+      modals found: ${modals.size}
     `
   })
 }
