@@ -5,6 +5,8 @@ import BuildCommand from './core/build/BuildCommand'
 import BuildMenu from './core/build/BuildMenu'
 import BuildModal from './core/build/BuildModal'
 import BuildButton from './core/build/BuildButtons'
+import logger from './shared/logger'
+import { Timer } from './shared/general'
 
 async function readAllFiles(path: string, arrayOfFiles: string[] = [], typeFiles: string[] = ['.ts']) {
   const files = fs.readdirSync(path)
@@ -25,9 +27,11 @@ interface Import {
 }
 
 export default async function generateListServices() {
+  const time = new Timer()
   const rootPath = process.cwd()
   const eventsFiles = await readAllFiles(path.join(rootPath, 'src/events'))
   const servicesFiles = await readAllFiles(path.join(rootPath, 'src/services'))
+  const idInConflict: string[] = []
   let files = {} as Record<string, Import>
   for (const file of eventsFiles) {
     const relativePath = path.relative(path.resolve(rootPath, 'src'), path.resolve(file))
@@ -40,6 +44,7 @@ export default async function generateListServices() {
   for (const file of servicesFiles) {
     const relativePath = path.relative(path.resolve(rootPath, 'src'), path.resolve(file))
     const instFile = (await import(`./${relativePath}`))?.default
+    if (files[instFile?.name ?? instFile?.customId]) idInConflict.push(instFile.name ?? instFile.customId)
     if (instFile instanceof BuildCommand) {
       files = { ...files, [instFile.name]: { name: instFile.name, path: relativePath, father: 'commands' } }
     }
@@ -52,6 +57,19 @@ export default async function generateListServices() {
     if (instFile instanceof BuildButton) {
       files = { ...files, [instFile.customId]: { name: instFile.customId, path: relativePath, father: 'buttons' } }
     }
+  }
+  if (idInConflict.length > 0) {
+    logger({
+      type: 'error',
+      head: 'Resources',
+      title: 'Found services and resources',
+      body: `
+        Root path: ${rootPath}
+        Files found: ${Object.keys(files).length}
+        Name/CustomId in conflict: [${idInConflict.join(', ')}]
+      `
+    })
+    process.exit(1)
   }
 
   let listHeader = `
@@ -96,5 +114,15 @@ export default async function generateListServices() {
   `
   const listFile = listHeader + listBody
   fs.writeFileSync(path.join(rootPath, 'src', 'listImports.ts'), listFile)
+  logger({
+    type: 'info',
+    head: 'Resources',
+    title: 'Found services and resources',
+    body: `
+      Root path: ${rootPath}
+      Files found: ${Object.keys(files).length}
+      Finished in ${time.final()}
+    `
+  })
 }
 generateListServices()
