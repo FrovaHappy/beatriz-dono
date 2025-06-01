@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon",
-    "generateListServices": "tsx src/generateListServices.ts",
+    "generateListServices": "tsx src/generateListServices.ts && npx biome check --write --diagnostic-level=warn src/listImports.ts",
     "build": " npm run generateListServices && rollup -c",
     "start": "tsx index.js",
     "db:push": "npx drizzle-kit generate && drizzle-kit up"
