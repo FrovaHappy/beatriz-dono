@@ -19,7 +19,7 @@
     "resolveJsonModule": true,
     "types": [
       "vitest/globals",
-      "./src/globals"
+      "./src/global"
     ],
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
