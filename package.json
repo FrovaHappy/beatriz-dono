@@ -9,9 +9,13 @@
     "test:ui": "vitest --ui",
     "db:push": "npm run db:push --workspace=packages/bot",
     "dev": "turbo dev",
+    "dev:bot": "npm run dev --workspace=packages/bot",
+    "dev:libs": "npm run dev --workspace=packages/libs",
+    "dev:web": "npm run dev --workspace=packages/website",
     "build": "turbo build",
     "build:libs": "npm run build --workspace=packages/libs",
     "build:bot": "npm run build --workspace=packages/bot",
+    "build:bot:list": "npm run generateListServices --workspace=packages/bot",
     "start:bot": "npm run start --workspace=packages/bot",
     "start:production": "docker compose up --build"
   },
