@@ -42,9 +42,9 @@ class BuildMessages {
         return new ActionRowBuilder<any>().addComponents(
           ...component.map(c => {
             const { type, customId } = c
-            if (type === 'button') return globalThis.buttons(customId).get(locale)
-            if (type === 'menu') return globalThis.menus(customId).get(locale)
-            if (type === 'modal') return globalThis.buttons(`modal-${customId}`).get(locale)
+            if (type === 'button') return globalThis?.buttons(customId).get(locale)
+            if (type === 'menu') return globalThis?.menus(customId).get(locale)
+            if (type === 'modal') return globalThis?.buttons(`modal-${customId}`).get(locale)
           })
         )
       })
