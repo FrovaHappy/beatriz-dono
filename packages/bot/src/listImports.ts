@@ -22,7 +22,7 @@ import menu_settingsDeleteColors from '@/services/colors/settings/deleteOptions/
 import modal_editColorsTemplate from '@/services/colors/settings/modal.editColorsTemplate'
 
 import button_colorCast from '@/services/colors/button.colorCast'
-import button_colors from '@/services/colors/button.deleteColorUser'
+import button_deleteColor from '@/services/colors/button.deleteColorUser'
 import button_colorPointer from '@/services/colors/button.startColors'
 import button_setting from '@/services/colors/settings/button.index'
 import button_orderColors from '@/services/colors/settings/button.orderColors'
@@ -52,7 +52,7 @@ export const menus: Record<string, BuildMenu<any>> = {
 export const modals: Record<string, BuildModal> = { editColorsTemplate: modal_editColorsTemplate }
 export const buttons: Record<string, BuildButton> = {
   colorCast: button_colorCast,
-  colors: button_colors,
+  deleteColor: button_deleteColor,
   colorPointer: button_colorPointer,
   setting: button_setting,
   orderColors: button_orderColors,
@@ -64,3 +64,5 @@ export const buttons: Record<string, BuildButton> = {
   linkGithubIssues: button_linkGithubIssues,
   linkKofi: button_linkKofi
 }
+
+export default { commands, events, menus, modals, buttons }
