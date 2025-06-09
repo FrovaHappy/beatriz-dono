@@ -60,7 +60,6 @@ const fileToWrite = {
     export const buttons: Record<string, BuildButton> = { <buttons> }
 
     export default { commands, events, menus, modals, buttons }
-    globalThis.menus = menus
   `
 }
 export default async function generateListServices() {
