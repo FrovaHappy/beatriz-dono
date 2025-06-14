@@ -73,26 +73,10 @@ class BuildModal {
     this.permissionsBot = [...new Set([...PERMISSIONS_BASE_BOT, ...(props.permissionsBot ?? [])])]
     this.permissionsUser = [...new Set([...PERMISSIONS_BASE_USER, ...(props.permissionsUser ?? [])])]
     this.execute = props.execute
-    this.button = new BuildButton({
-      customId: `modal-${this.customId}`,
-      scope: this.scope,
-      permissionsBot: this.permissionsBot,
-      permissionsUser: this.permissionsUser,
-      resolve: 'showModal',
-      style: props.dataButton.style,
-      translates: props.dataButton.translates,
-      execute: async i => {
-        const { guildId, locale } = i
-        if (!guildId) throw new Error('Guild ID not found')
-        const customId = i.customId.replace('modal-', '')
-        const modal = globalThis.modals(customId)
-        if (!modal) throw new Error('Modal not found')
-        await i.showModal(modal.get(locale))
-        return undefined
-      }
-    })
+    this.button = this.#setButton(props.dataButton)
   }
-  get(locale: Locale) {
+
+  translate(locale: Locale) {
     const titleModal = this.#translates.title[locale] ?? this.#translates.title.default
     const componentsModal = this.#translates.components?.map(component => {
       const { label, placeholder } = component.translates[locale] ?? component.translates.default
@@ -109,6 +93,28 @@ class BuildModal {
       new ActionRowBuilder<TextInputBuilder>().setComponents(componentsModal ?? [])
     )
   }
+
+  #setButton(props: ModalConstructor['dataButton']) {
+    return new BuildButton({
+      customId: `modal-${this.customId}`,
+      scope: this.scope,
+      permissionsBot: this.permissionsBot,
+      permissionsUser: this.permissionsUser,
+      resolve: 'showModal',
+      style: props.style,
+      translates: props.translates,
+      execute: async i => {
+        const { guildId, locale } = i
+        if (!guildId) throw new Error('Guild ID not found')
+        const customId = i.customId.replace('modal-', '')
+        const modal = globalThis.modals(customId)
+        if (!modal) throw new Error('Modal not found')
+        await i.showModal(modal.translate(locale))
+        return undefined
+      }
+    })
+  }
+
   static async runInteraction(i: ModalSubmitInteraction) {
     const { customId, locale, guildId } = i
     const modal = globalThis.modals(customId)
