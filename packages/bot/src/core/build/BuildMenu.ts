@@ -13,7 +13,8 @@ import {
   StringSelectMenuBuilder,
   type StringSelectMenuInteraction,
   UserSelectMenuBuilder,
-  type UserSelectMenuInteraction
+  type UserSelectMenuInteraction,
+  MessageFlags
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import msgCaptureError from './msg.captureError'
@@ -175,7 +176,7 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
 
     try {
       const controlDenied = messageControl()
-      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
+      if (controlDenied) return await i.reply({ ...controlDenied, flags: [MessageFlags.Ephemeral] })
       if (menu.resolve === 'update') {
         const iUpdate = await i.update({
           ...baseMessage,
@@ -186,7 +187,7 @@ class BuildMenu<T extends keyof SelectMenu = 'string'> {
         return await iUpdate.edit({ ...baseMessage, ...message })
       }
 
-      if (menu.resolve === 'defer') await i.deferReply({ ephemeral: menu.ephemeral })
+      if (menu.resolve === 'defer') await i.deferReply({ flags: [MessageFlags.Ephemeral] })
       const message = await menu.execute(i as any)
       if (!message) return
       return await i.editReply({ ...baseMessage, ...message })

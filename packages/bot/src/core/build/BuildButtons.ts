@@ -5,7 +5,8 @@ import {
   type ButtonStyle,
   type ComponentEmojiResolvable,
   type Locale,
-  type PermissionResolvable
+  type PermissionResolvable,
+  MessageFlags
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import msgCaptureError from './msg.captureError'
@@ -18,6 +19,7 @@ import msgHasAccessToScope from './shared/msg.hasAccessToScope'
 import msgPermissionsBotRequired from './shared/msg.permissionsBotRequired'
 import msgPermissionsUserRequired from './shared/msg.permissionsUserRequired'
 import parsePermissions from './shared/parsePermissions'
+
 interface ButtonData {
   name: string
   emoji?: ComponentEmojiResolvable
@@ -118,9 +120,9 @@ class BuildButton {
 
     try {
       const controlDenied = messageControl()
-      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
+      if (controlDenied) return await i.reply({ ...controlDenied, flags: [MessageFlags.Ephemeral] })
       if (button.resolve === 'showModal') return button.execute(i)
-      if (button.resolve === 'defer') await i.deferReply({ ephemeral: button.ephemeral })
+      if (button.resolve === 'defer') await i.deferReply({ flags: [MessageFlags.Ephemeral] })
       if (button.resolve === 'update') {
         const iUpdate = await i.update({
           ...baseMessage,

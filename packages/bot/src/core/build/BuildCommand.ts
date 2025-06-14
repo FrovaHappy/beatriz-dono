@@ -1,10 +1,11 @@
 import type { MessageOptions, Resolve, Scope } from '@/types/main'
-import type {
-  ChatInputCommandInteraction,
-  PermissionResolvable,
-  SlashCommandBuilder,
-  SlashCommandOptionsOnlyBuilder,
-  SlashCommandSubcommandsOnlyBuilder
+import {
+  type ChatInputCommandInteraction,
+  MessageFlags,
+  type SlashCommandBuilder,
+  type SlashCommandOptionsOnlyBuilder,
+  type SlashCommandSubcommandsOnlyBuilder,
+  type PermissionResolvable
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
 
@@ -73,8 +74,8 @@ class BuildCommand {
     }
     try {
       const controlDenied = messageControl()
-      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
-      await i.deferReply({ ephemeral: command.ephemeral })
+      if (controlDenied) return await i.reply({ ...controlDenied, flags: [MessageFlags.Ephemeral] })
+      if (command.resolve === 'defer') await i.deferReply({ flags: [MessageFlags.Ephemeral] })
       const message = await command.execute(i)
       if (!message) return
       return await i.editReply(message)

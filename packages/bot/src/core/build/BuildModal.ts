@@ -7,7 +7,8 @@ import {
   type ModalSubmitInteraction,
   type PermissionResolvable,
   TextInputBuilder,
-  type TextInputStyle
+  type TextInputStyle,
+  MessageFlags
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import BuildButton, { type Button } from './BuildButtons'
@@ -60,7 +61,6 @@ class BuildModal {
   permissionsBot: PermissionResolvable[]
   permissionsUser: PermissionResolvable[]
   cooldown: number
-
   execute: (e: ModalSubmitInteraction) => Promise<MessageOptions>
 
   constructor(props: ModalConstructor) {
@@ -95,8 +95,9 @@ class BuildModal {
   }
 
   #setButton(props: ModalConstructor['dataButton']) {
+    const buttonId = `modal-${this.customId}`
     return new BuildButton({
-      customId: `modal-${this.customId}`,
+      customId: buttonId,
       scope: this.scope,
       permissionsBot: this.permissionsBot,
       permissionsUser: this.permissionsUser,
@@ -160,8 +161,8 @@ class BuildModal {
 
     try {
       const controlDenied = messageControl()
-      if (controlDenied) return await i.reply({ ...controlDenied, ephemeral: true })
-      if (modal.resolve === 'defer') await i.deferReply({ ephemeral: modal.ephemeral })
+      if (controlDenied) return await i.reply({ ...controlDenied, flags: [MessageFlags.Ephemeral] })
+      if (modal.resolve === 'defer') await i.deferReply({ flags: [MessageFlags.Ephemeral] })
       if (modal.resolve === 'update') {
         const iLoad = await i.deferUpdate()
         await i.editReply({
