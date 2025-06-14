@@ -1,6 +1,7 @@
 import BuildMessages from '@/core/build/BuildMessages'
 
 export default new BuildMessages({
+  customId: 'service-colorIncorrect',
   translates: {
     default: {
       embeds: [

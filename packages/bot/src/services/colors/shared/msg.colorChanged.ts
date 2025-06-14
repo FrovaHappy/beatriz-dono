@@ -2,6 +2,7 @@ import BuildMessages from '@/core/build/BuildMessages'
 import { resolveColor } from 'discord.js'
 
 export default new BuildMessages({
+  customId: 'service-colorChanged',
   translates: {
     default: {
       embeds: [

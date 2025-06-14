@@ -2,6 +2,7 @@ import BuildMessages from '@/core/build/BuildMessages'
 import { Colors } from 'discord.js'
 
 export default new BuildMessages({
+  customId: 'service-colorCastNotFound',
   translates: {
     default: {
       embeds: [

@@ -2,6 +2,7 @@ import { Colors } from 'discord.js'
 import BuildMessages from '../BuildMessages'
 
 export default new BuildMessages({
+  customId: 'global-permissionsBotRequired',
   translates: {
     default: {
       embeds: [

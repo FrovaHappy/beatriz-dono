@@ -7,17 +7,34 @@ interface MsgCustom extends Omit<MessageOptions, 'components'> {}
 
 type Messages = Partial<Record<Locale, MsgCustom>> & { default: MsgCustom }
 
+type IdString = `${'global' | 'service' | 'event'}-${string}`
+
+interface MessagesConstructor {
+  customId: IdString
+  translates: Messages
+  components?: componentInfo[][]
+}
+
 /**
  * Build Messages
  * @param translates Messages to be translated, default property is required
  * @param components Components to be added to the message
  */
 class BuildMessages {
+  customId: string
   #messages: Messages
   #components: componentInfo[][]
-  constructor(props: { translates: Messages; components?: componentInfo[][] }) {
+  constructor(props: MessagesConstructor) {
+    this.customId = this.#parseId(props.customId)
     this.#messages = props.translates
     this.#components = props.components ?? []
+  }
+
+  #parseId(id: string) {
+    const reg = /^(global|service|event)-([a-zA-Z]+)$/
+    const match = id.match(reg)
+    if (!match) throw new Error('Invalid ID, must be in the format: global-<name>, service-<name>, event-<name>')
+    return id
   }
 
   getMessage(locale: Locale, parse: Partial<Rules>): MessageOptions {

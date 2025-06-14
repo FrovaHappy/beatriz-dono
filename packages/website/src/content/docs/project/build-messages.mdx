@@ -13,12 +13,23 @@ crea un fichero en el mismo directorio que el archivo donde se implementa la cla
 import { BuildMessages } from '@libs/build'
 
 export default new BuildMessages({
+  customId: 'service-hello',
   messages: {
     default: {
-      content: 'Hola {user_name}'
+      embeds: [
+        {
+          title: 'Hello',
+          description: 'Hello {user_name}'
+        }
+      ]
     },
-    es: {
-      content: 'Hola {user_name}'
+    'es-ES': {
+      embeds: [
+        {
+          title: 'Hola',
+          description: 'Hola {user_name}'
+        }
+      ]
     }
   },
   components: [[{ type: 'button', customId: 'setup' }]] // agregara un botón al mensaje
