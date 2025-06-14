@@ -1,6 +1,4 @@
-import type { MessageOptions, Scope } from '@/types/main'
-import type { Locale } from 'discord.js'
-import messages from './msg.hasAccessToScope'
+import type { Scope } from '@/types/main'
 
 export function reorderScope(priv: string[], owner: string[]) {
   const dicc: Record<string, Scope> = {}
@@ -13,11 +11,19 @@ export function reorderScope(priv: string[], owner: string[]) {
   owner.forEach(s => {
     dicc[s] = 'dev'
   })
-  const grouping = Object.groupBy(Object.entries(dicc), ([, v]) => v)
+
+  const grouping = Object.entries(dicc).reduce(
+    (acc, [key, value]) => {
+      if (!acc[value]) acc[value] = []
+      acc[value].push(key)
+      return acc
+    },
+    {} as Record<Scope, string[]>
+  )
 
   return {
-    premium: grouping.premium?.map(([k]) => k) ?? [],
-    dev: grouping.dev?.map(([k]) => k) ?? []
+    premium: grouping.premium ?? [],
+    dev: grouping.dev ?? []
   }
 }
 
