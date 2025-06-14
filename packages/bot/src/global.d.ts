@@ -6,7 +6,7 @@ import type { GetButton, GetMenu, GetModal } from './core/getServices'
 import type { Button } from './shared/BuildButtons'
 import type { Command } from './shared/BuildCommand'
 declare global {
-  var commands: Collection<CommandNames | string, Command>
+  var commands: Record<CommandNames | string, Command>
   var buttons: GetButton
   var menus: GetMenu
   var modals: GetModal

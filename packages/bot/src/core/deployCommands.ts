@@ -1,10 +1,5 @@
 import type { Scope } from '@/types/main'
-import {
-  type Collection,
-  type RESTPostAPIChatInputApplicationCommandsJSONBody as CommandDataJson,
-  REST,
-  Routes
-} from 'discord.js'
+import { type RESTPostAPIChatInputApplicationCommandsJSONBody as CommandDataJson, REST, Routes } from 'discord.js'
 import type { Command } from './build/BuildCommand'
 import logger, { decoreLog } from '@/shared/logger'
 import { Timer } from '@/shared/general'
@@ -63,19 +58,19 @@ export async function putGlobalCommands(commands: CommandDataJson[]) {
   })
 }
 
-function getCommands(collection: Collection<string, Command>) {
+function getCommands(collection: Record<string, Command>) {
   const commands: Record<Scope, CommandDataJson[]> = {
     free: [],
     premium: [],
     dev: []
   }
-  for (const command of collection.values()) {
+  for (const command of Object.values(collection)) {
     commands[command.scope] = [command.data.toJSON(), ...(commands[command.scope] ?? [])]
   }
   return commands
 }
 
-export default async function deployCommand(collection: Collection<string, Command>): Promise<void> {
+export default async function deployCommand(collection: Record<string, Command>): Promise<void> {
   const commands = getCommands(collection)
   const excludeOwnerOfPrivates = config.setting.privatesServers.filter(
     guildId => !config.setting.ownersServers.includes(guildId)

@@ -43,7 +43,7 @@ class BuildCommand {
 
   static async runInteraction(i: ChatInputCommandInteraction) {
     const { commandName, locale, guildId } = i
-    const command: Command = globalThis.commands.get(commandName)
+    const command = globalThis.commands[commandName]
     const bot = i.guild?.members.me
     const user = i.guild?.members.cache.get(i.user.id)
     if (!bot || !user || !guildId || !command) {
