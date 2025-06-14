@@ -69,12 +69,21 @@ export default async function generateListServices() {
   const servicesFiles = await readAllFiles(path.join(rootPath, 'src/services'))
   const idInConflict: string[] = []
 
+  const stats = {
+    events: 0,
+    commands: 0,
+    menus: 0,
+    modals: 0,
+    buttons: 0
+  }
+
   // build list of imports
   const filesPromise = [...eventsFiles, ...servicesFiles].map(async (rawFile): Promise<File | undefined> => {
     const file = rawFile.replace(rootPath, '').replace('.ts', '').replaceAll('\\', '/').replace('src/', '')
     const resolve = (await import(`./${file}`))?.default
     if (!resolve) return
     if (resolve instanceof BuildEvent) {
+      stats.events++
       return {
         type: 'events',
         name: resolve.name,
@@ -82,6 +91,7 @@ export default async function generateListServices() {
       }
     }
     if (resolve instanceof BuildCommand) {
+      stats.commands++
       return {
         type: 'services',
         category: 'commands',
@@ -90,6 +100,7 @@ export default async function generateListServices() {
       }
     }
     if (resolve instanceof BuildMenu) {
+      stats.menus++
       return {
         type: 'services',
         category: 'menus',
@@ -98,6 +109,7 @@ export default async function generateListServices() {
       }
     }
     if (resolve instanceof BuildModal) {
+      stats.modals++
       return {
         type: 'services',
         category: 'modals',
@@ -106,6 +118,7 @@ export default async function generateListServices() {
       }
     }
     if (resolve instanceof BuildButton) {
+      stats.buttons++
       return {
         type: 'services',
         category: 'buttons',
@@ -173,6 +186,12 @@ export default async function generateListServices() {
       body: `
         Root path: ${rootPath}
         Files found: ${Object.keys(files).length}
+        Events: ${stats.events}
+        Services:
+        - Commands: ${stats.commands}
+        - Menus: ${stats.menus}
+        - Modals: ${stats.modals}
+        - Buttons: ${stats.buttons}
         Finished in ${time.final()}
       `
     })
@@ -186,6 +205,12 @@ export default async function generateListServices() {
     body: `
       Root path: ${rootPath}
       Files found: ${Object.keys(files).length}
+      Events: ${stats.events}
+      Services:
+      - Commands: ${stats.commands}
+      - Menus: ${stats.menus}
+      - Modals: ${stats.modals}
+      - Buttons: ${stats.buttons}
       Finished in ${time.final()}
     `
   })
