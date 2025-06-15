@@ -12,6 +12,7 @@ export function formatterTextUser(strToFormat: string, param: User & Guild): str
     '{{user_global}}': param.userDisplayName,
     '{{user_id}}': param.userId,
     '{{user_avatar}}': param.userAvatar,
+    '{{user_banner}}': param.userBanner ?? '',
     '{{user_discriminator}}': param.userDiscriminator,
     '{{server_banner}}': param.guildBanner ?? '',
     '{{server_icon}}': param.guildAvatar,
