@@ -11,7 +11,7 @@ interface PaintShapeProps {
 }
 
 export default function paintShape(props: PaintShapeProps) {
-  const { ctx, ctxSupport, layer, Path2D, image, castColor } = props
+  const { ctx, layer, Path2D, image, castColor } = props
   const color = !!castColor && layer.color === 'auto' ? castColor : layer.color
   const patch = layer.clip
   const filter = buildFilter(layer.filter)
@@ -23,40 +23,42 @@ export default function paintShape(props: PaintShapeProps) {
     w: layer.dw ?? image?.width ?? 100
   }
 
-  const renderImage = () => {
-    if (!patch) return null
-    const { width: dataWidth, height: dataHeight } = ctxSupport.canvas
-    const maxPatch = Math.max(patch.w, patch.h)
+  if (filter) ctx.filter = filter
+  ctx.translate(layer.dx, layer.dy)
 
-    ctxSupport.clearRect(0, 0, dataWidth, dataHeight)
-    ctxSupport.save()
-    ctxSupport.fillStyle = color ?? 'transparent'
-    ctxSupport.scale(dataWidth / maxPatch, dataHeight / maxPatch)
-    ctxSupport.clip(new Path2D(patch.d))
-    ctxSupport.fillRect(0, 0, patch.w, patch.h)
+  if (patch) {
+    ctx.save()
+    // Scale the clip path according to the shape dimensions
+    const scaleX = dimension.w / patch.w
+    const scaleY = dimension.h / patch.h
+    ctx.scale(scaleX, scaleY)
+    ctx.clip(new Path2D(patch.d))
+    ctx.fillStyle = color ?? 'transparent'
+    ctx.fillRect(0, 0, patch.w, patch.h)
 
     if (image) {
+      // Calculate image scaling to fit within the clip path dimensions
       const scaleImage = {
-        w: (image.width * maxPatch) / Math.min(image.width, image.height),
-        h: (image.height * maxPatch) / Math.min(image.width, image.height)
+        w: (image.width * patch.w) / Math.min(image.width, image.height),
+        h: (image.height * patch.h) / Math.min(image.width, image.height)
       }
       const middle = {
-        w: Math.round((maxPatch - scaleImage.w) / 2),
-        h: Math.round((maxPatch - scaleImage.h) / 2)
+        w: Math.round((patch.w - scaleImage.w) / 2),
+        h: Math.round((patch.h - scaleImage.h) / 2)
       }
       const aligns = {
         top: [middle.w, 0],
-        button: [middle.w, maxPatch - scaleImage.h],
+        button: [middle.w, patch.h - scaleImage.h],
         left: [0, middle.h],
         right: [0, 0],
         center: [middle.w, middle.h],
-        'top-left': [0, 0], // ok
-        'top-right': [maxPatch - scaleImage.w, 0],
-        'bottom-left': [0, maxPatch - scaleImage.h],
-        'bottom-right': [maxPatch - scaleImage.w, maxPatch - scaleImage.h]
+        'top-left': [0, 0],
+        'top-right': [patch.w - scaleImage.w, 0],
+        'bottom-left': [0, patch.h - scaleImage.h],
+        'bottom-right': [patch.w - scaleImage.w, patch.h - scaleImage.h]
       }
 
-      ctxSupport.drawImage(
+      ctx.drawImage(
         image,
         aligns[patch.align ?? 'center'][0],
         aligns[patch.align ?? 'center'][1],
@@ -64,15 +66,8 @@ export default function paintShape(props: PaintShapeProps) {
         scaleImage.h
       )
     }
-    ctxSupport.restore()
-    return ctxSupport.canvas
-  }
-  const imageCanvas = renderImage()
-
-  if (filter) ctx.filter = filter
-  ctx.translate(layer.dx, layer.dy)
-  if (imageCanvas) ctx.drawImage(imageCanvas, 0, 0, dimension.w, dimension.h)
-  else {
+    ctx.restore()
+  } else {
     ctx.fillStyle = color ?? 'transparent'
     ctx.fillRect(0, 0, dimension.w, dimension.h)
     if (image) ctx.drawImage(image, 0, 0, dimension.w, dimension.h)
