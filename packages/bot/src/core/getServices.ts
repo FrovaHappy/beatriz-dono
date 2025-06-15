@@ -5,11 +5,14 @@ import type { SelectMenu } from './build/BuildMenu'
 import type BuildModal from './build/BuildModal'
 import * as listImports from '@/listImports'
 import defaultGenerics from './generics'
+import type BuildEvent from './build/BuildEvent'
+import type { ClientEvents } from 'discord.js'
 
 let buttons = {} as Record<string, BuildButton>
 let commands = {} as Record<string, BuildCommand>
 let menus = {} as Record<string, BuildMenu>
 let modals = {} as Record<string, BuildModal>
+let events = {} as Record<string, BuildEvent<keyof ClientEvents>>
 
 function getMenus<T extends keyof SelectMenu = 'string'>(key: string): BuildMenu<T> {
   const menu = menus[key]
@@ -36,6 +39,7 @@ export type GetModal = typeof getModal
 export default async function getServices() {
   buttons = listImports.buttons
   commands = listImports.commands
+  events = listImports.events
   menus = listImports.menus
   modals = listImports.modals
 
@@ -47,4 +51,5 @@ export default async function getServices() {
   globalThis.commands = commands
   globalThis.menus = getMenus
   globalThis.modals = getModal
+  globalThis.events = events
 }

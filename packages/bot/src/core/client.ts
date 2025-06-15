@@ -1,6 +1,5 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import deployCommand from './deployCommands'
-import getEvents from './getEvents'
 import getServices from './getServices'
 import loadFonts from './loadFonts'
 
@@ -15,9 +14,7 @@ export default async function startClient() {
   await getServices()
   await deployCommand(globalThis.commands)
 
-  const events = await getEvents()
-
-  for (const event of events.values()) {
+  for (const event of Object.values(globalThis.events)) {
     if (event.once) {
       client.once(event.name, (...args) => event.execute(...args))
     } else {

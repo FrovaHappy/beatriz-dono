@@ -1,7 +1,7 @@
 import type { Scope } from '@/types/main'
 import { type RESTPostAPIChatInputApplicationCommandsJSONBody as CommandDataJson, REST, Routes } from 'discord.js'
 import type { Command } from './build/BuildCommand'
-import logger, { decoreLog } from '@/shared/logger'
+import logger from '@/shared/logger'
 import { Timer } from '@/shared/general'
 
 export const rest = new REST().setToken(config.env.discord.token)
