@@ -2,12 +2,39 @@
 // This file is used to the backend of the bot
 // It is not used in the frontend, it show a error
 
+import { existsSync } from 'node:fs'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+
 import { createCanvas, loadImage, Path2D as Patch } from '@napi-rs/canvas'
 import paintCanvas from '@libs/PaintCanvas'
-import { type Canvas, isShape, MAX_WIDTH_CANVAS } from '@libs/PaintCanvas/schema.welcome.v1'
+import { type Canvas, isShape } from '@libs/PaintCanvas/schema.welcome.v1'
 import { formatterTextUser } from '@libs/formatterText'
 import { getPallete } from '@libs/colors'
 import type { Guild, User } from '@libs/types'
+import fonts from '@libs/constants/fonts'
+
+export const getFonts = async (root: string) => {
+  if (!existsSync(root)) await mkdir(root, { recursive: true })
+  const getterFonts = []
+  for (const [key, value] of Object.entries(fonts)) {
+    const path = join(root, `/${key.replaceAll(' ', '-')}.${value.format}`)
+    if (!existsSync(path)) {
+      const font = (await fetch(value.src)).body
+      const buffer = await new Response(font).arrayBuffer()
+      const dataView = new DataView(buffer)
+      await writeFile(path, dataView)
+    }
+
+    getterFonts.push({
+      family: key,
+      buffer: path,
+      format: value.format,
+      variable: value.variable
+    })
+  }
+  return getterFonts
+}
 
 export const getImageData = async (url: string | null) => {
   if (!url) return null
@@ -49,15 +76,12 @@ type GenerateImageProps = {
 export async function generateImage(props: GenerateImageProps) {
   const { template, filterText, quality = 100 } = props
   const canvas = createCanvas(template.w, template.h)
-  const canvasSupport = createCanvas(MAX_WIDTH_CANVAS, MAX_WIDTH_CANVAS)
   const ctx = canvas.getContext('2d')
-  const ctxSupport = canvasSupport.getContext('2d')
   const { images } = await getImages(template.layers, filterText)
   const imageData = await getImageData(images[`${template.layer_cast_color}`]?.src)
   const castColor = template.layer_cast_color ? getPallete({ data: imageData?.data ?? null }) : undefined
   paintCanvas({
     ctx: ctx as unknown as CanvasRenderingContext2D,
-    ctxSupport: ctxSupport as unknown as CanvasRenderingContext2D,
     canvas: template,
     Path2D: Patch as unknown as typeof Path2D,
     images: images,

@@ -5,7 +5,6 @@ import { type Canvas, isShape, isText } from './schema.welcome.v1'
 
 interface PaintCanvasProps {
   ctx: CanvasRenderingContext2D
-  ctxSupport: CanvasRenderingContext2D
   canvas: Canvas
   Path2D: typeof Path2D
   images: Record<string, HTMLImageElement | undefined>
@@ -16,10 +15,9 @@ interface PaintCanvasProps {
  * Props.images is a Record<[id: sting], HTMLImageElement | undefined>
  */
 export default function paintCanvas(props: PaintCanvasProps) {
-  const { ctx, canvas, Path2D, filterText, images, castColor, ctxSupport } = props
+  const { ctx, canvas, Path2D, filterText, images, castColor } = props
   const { layers, ...base } = canvas
   ctx.clearRect(0, 0, base.w, base.h) // reset canvas in the Frontend
-  ctxSupport.clearRect(0, 0, base.w, base.h) // reset canvas in the Frontend
   ctx.save()
   if (base.bg_color) {
     // save the current state of the canvas
@@ -28,7 +26,7 @@ export default function paintCanvas(props: PaintCanvasProps) {
   }
   ctx.restore() // restore the previous state of the canvas
   for (const layer of layers) {
-    if (isShape(layer)) paintShape({ ctx, ctxSupport, layer, Path2D, image: images[layer.id], castColor })
+    if (isShape(layer)) paintShape({ ctx, layer, Path2D, image: images[layer.id], castColor })
     if (isText(layer)) paintText({ ctx, layer, filterText, castColor })
   }
   return ctx

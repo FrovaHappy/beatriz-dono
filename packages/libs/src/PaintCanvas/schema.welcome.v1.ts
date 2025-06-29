@@ -1,5 +1,5 @@
 import { ZodError, z } from 'zod'
-import { fontsFamily } from '@libs/getFonts'
+import { fontsFamily } from '@libs/constants/fonts'
 import re from '../regex'
 
 export const MAX_WIDTH_CANVAS = 2000
@@ -42,16 +42,18 @@ const textSchema = z.object({
     .number()
     .min(10)
     .max(MAX_WIDTH_CANVAS * 3)
-    .optional(),
+    .optional()
+    .default(16),
   family: z.custom<string>(val => fontsFamily.some(f => f === val), 'This Font is not available'),
   color: z.union([validateColor, z.literal('auto')]).optional(),
-  globalAlpha: z.number().min(0).max(1).multipleOf(0.01).optional(),
-  letterSpacing: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
+  globalAlpha: z.number().min(0).max(1).multipleOf(0.01).optional().default(1),
+  letterSpacing: z.number().min(0).max(MAX_WIDTH_CANVAS).optional().default(0),
   maxWidth: z.number().min(1).max(MAX_WIDTH_CANVAS).optional(),
-  weight: z.number().min(200).max(1000).step(100).optional(),
+  weight: z.number().min(200).max(1000).step(100).optional().default(400),
   align: z
     .union([z.literal('start'), z.literal('end'), z.literal('left'), z.literal('right'), z.literal('center')])
-    .optional(),
+    .optional()
+    .default('start'),
   baseline: z
     .union([
       z.literal('top'),
@@ -61,7 +63,8 @@ const textSchema = z.object({
       z.literal('ideographic'),
       z.literal('bottom')
     ])
-    .optional(),
+    .optional()
+    .default('alphabetic'),
   filter: filterSchema.optional()
 })
 const shapeSchema = z
@@ -137,17 +140,20 @@ export function isShape(layer: Text | Shape): layer is Shape {
 }
 
 export function validateCanvas(data: any) {
+  let canvas: Canvas | null = null
   try {
-    canvasSchema.parse(data)
+    canvas = canvasSchema.parse(data)
   } catch (error) {
     console.log(error)
     return {
       ok: false,
-      errors: error instanceof ZodError ? error.errors : undefined
+      errors: error instanceof ZodError ? error.errors : undefined,
+      data: null
     }
   }
   return {
     ok: true,
-    errors: undefined
+    errors: undefined,
+    data: canvas
   }
 }

@@ -1,7 +1,3 @@
-import { existsSync } from 'node:fs'
-import { mkdir, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
-
 // TODO: move to config to Database
 const fonts = {
   Roboto: {
@@ -67,39 +63,4 @@ const fonts = {
 }
 
 export const fontsFamily = Object.keys(fonts)
-
-export const getFonts = async (root: string) => {
-  if (!existsSync(root)) await mkdir(root, { recursive: true })
-  const getterFonts = []
-  for (const [key, value] of Object.entries(fonts)) {
-    const path = join(root, `/${key.replaceAll(' ', '-')}.${value.format}`)
-    if (!existsSync(path)) {
-      const font = (await fetch(value.src)).body
-      const buffer = await new Response(font).arrayBuffer()
-      const dataView = new DataView(buffer)
-      await writeFile(path, dataView)
-    }
-
-    getterFonts.push({
-      family: key,
-      buffer: path,
-      format: value.format,
-      variable: value.variable
-    })
-  }
-  return getterFonts
-}
-
-export const getCssFonts = () => {
-  let cssText = ''
-  for (const [key, value] of Object.entries(fonts)) {
-    cssText += `
-    @font-face {
-      font-family: '${key}';
-      src: url('${value.src}') format('${value.format}');
-      font-weight: ${value.variable ? '100' : '300 800'};
-      font-style: normal;
-    }
-    `
-  }
-}
+export default fonts

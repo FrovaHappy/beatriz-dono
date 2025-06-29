@@ -1,9 +1,8 @@
-import { getImageData, generateImage } from './server'
+import { getImageData, generateImage, getFonts } from './server'
 import { validateCanvas } from './PaintCanvas/schema.welcome.v1'
 import template from './PaintCanvas/template.welcome'
 import { join } from 'node:path'
 import { GlobalFonts } from '@napi-rs/canvas'
-import { getFonts } from './getFonts'
 import { createHash } from 'node:crypto'
 
 const filterText = {

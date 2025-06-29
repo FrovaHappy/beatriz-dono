@@ -3,7 +3,6 @@ import type { Shape } from './schema.welcome.v1'
 
 interface PaintShapeProps {
   ctx: CanvasRenderingContext2D
-  ctxSupport: CanvasRenderingContext2D
   layer: Shape
   image: HTMLImageElement | undefined
   castColor: string | undefined

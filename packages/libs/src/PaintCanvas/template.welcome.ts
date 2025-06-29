@@ -34,7 +34,10 @@ export default {
       family: 'Inter',
       weight: 500,
       baseline: 'middle',
-      color: 'auto'
+      color: 'auto',
+      align: 'start',
+      globalAlpha: 1,
+      letterSpacing: 0
     },
     {
       type: 'text',
@@ -46,7 +49,10 @@ export default {
       family: 'Inter',
       weight: 500,
       baseline: 'top',
-      color: '#fff'
+      color: '#fff',
+      align: 'start',
+      globalAlpha: 1,
+      letterSpacing: 0
     },
     {
       type: 'shape',
@@ -102,6 +108,9 @@ export default {
       color: '#fff',
       align: 'right',
       baseline: 'top',
+      globalAlpha: 1,
+      letterSpacing: 0,
+      weight: 400,
       filter: {
         dropShadow: {
           offsetX: 0,
