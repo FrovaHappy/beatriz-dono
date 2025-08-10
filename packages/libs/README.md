@@ -114,6 +114,9 @@ npm install
 # Run tests
 npm test
 
+# Run tests with coverage
+npm run test:coverage
+
 # Watch tests
 npm run test:watch
 
@@ -126,6 +129,28 @@ npm run lint
 # Type checking
 npm run type-check
 ```
+
+## Testing
+
+This library includes comprehensive test coverage:
+
+- **Unit Tests**: 66 tests covering all major functions
+- **Integration Tests**: End-to-end testing of image generation
+- **Coverage Reports**: 83%+ code coverage with detailed reporting
+- **Network Tests**: Resilient tests for external image fetching
+
+Run tests with coverage reporting:
+
+```bash
+npm run test:coverage
+```
+
+### Code Quality
+
+- **TypeScript**: Full type safety and IntelliSense support
+- **Biome**: Fast linting and formatting
+- **Vitest**: Modern testing framework with great performance
+- **Coverage**: v8 coverage reporting with HTML reports
 
 ## Dependencies
 

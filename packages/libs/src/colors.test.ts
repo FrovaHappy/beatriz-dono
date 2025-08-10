@@ -284,11 +284,11 @@ describe('colors: Edge Cases and Integration', () => {
       { r: 255, g: 255, b: 255 }
     ]
 
-    testColors.forEach(color => {
+    for (const color of testColors) {
       const hex = rgbToHex(color)
       const backToRgb = hexToRgb(hex)
       expect(backToRgb).toEqual(color)
-    })
+    }
   })
 
   it('should handle black color special case consistently', () => {

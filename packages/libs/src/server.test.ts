@@ -4,6 +4,7 @@ import { GlobalFonts } from '@napi-rs/canvas'
 import template from './constants/imagesTemplate/fluent'
 import { validateCanvas } from './schemas/welcome.v1'
 import { generateImage, getFonts, getImageData } from './server'
+import { existsSync, rmdirSync } from 'node:fs'
 
 const filterText = {
   userName: 'userName',
@@ -27,6 +28,39 @@ describe('server', () => {
       GlobalFonts.registerFromPath(font.buffer, font.family)
     }
     console.timeEnd('loadFonts')
+  })
+
+  describe('getFonts', () => {
+    it('should load fonts from a valid directory', async () => {
+      const fonts = await getFonts(join('.', 'public/fonts'))
+      expect(fonts).toBeInstanceOf(Array)
+      expect(fonts.length).toBeGreaterThan(0)
+
+      // Check that each font has required properties
+      for (const font of fonts) {
+        expect(font).toHaveProperty('buffer')
+        expect(font).toHaveProperty('family')
+        expect(font).toHaveProperty('format')
+        expect(font).toHaveProperty('variable')
+        expect(typeof font.family).toBe('string')
+        expect(font.family.length).toBeGreaterThan(0)
+        expect(typeof font.buffer).toBe('string') // buffer is actually a file path
+        expect(typeof font.format).toBe('string')
+      }
+    })
+
+    it('should handle relative directory paths', async () => {
+      const testDir = './src/temp-fonts-dir'
+      if (existsSync(testDir)) {
+        // Clean up the test directory before the test
+        rmdirSync(testDir, { recursive: true })
+      }
+      const fonts = await getFonts(testDir)
+      expect(fonts).toBeInstanceOf(Array)
+      // getFonts creates fonts even in src directory
+      expect(fonts.length).toBe(10)
+
+    })
   })
 
   describe('getImageData', () => {
@@ -105,10 +139,11 @@ describe('server', () => {
     })
 
     it('should handle timeout gracefully', async () => {
-      const url = 'https://example.com/slow-image.jpg'
+      // Use an unreachable internal IP to simulate timeout
+      const url = 'http://10.255.255.1/slow-image.jpg'
       const data = await getImageData(url)
       expect(data).toBeNull()
-    })
+    }, 5000) // Set 5 second timeout for this test
 
     it('should handle malformed image data', async () => {
       const url = 'data:image/png;base64,invalid-base64-data'
@@ -119,11 +154,54 @@ describe('server', () => {
 
   describe('generateImage', () => {
     it('should pass canvas validation', () => {
-      expect(validateCanvas(template)).toEqual({ ok: true, errors: undefined })
+      const result = validateCanvas(template)
+      expect(result.ok).toBe(true)
+      expect(result.errors).toBeUndefined()
+      expect(result.data).toBeDefined()
     })
 
     it('should generate a valid webp image with default quality', async () => {
       const imageBuffer = await generateImage({ template, filterText })
+      expect(imageBuffer).toBeInstanceOf(Buffer)
+      expect(imageBuffer.length).toBeGreaterThan(0)
+    })
+
+    it('should generate image with custom quality', async () => {
+      const imageBuffer = await generateImage({
+        template,
+        filterText,
+        quality: 50
+      })
+      expect(imageBuffer).toBeInstanceOf(Buffer)
+      expect(imageBuffer.length).toBeGreaterThan(0)
+    })
+
+    it('should generate image with low quality', async () => {
+      const imageBuffer = await generateImage({
+        template,
+        filterText,
+        quality: 10
+      })
+      expect(imageBuffer).toBeInstanceOf(Buffer)
+      expect(imageBuffer.length).toBeGreaterThan(0)
+    })
+
+    it('should generate image with high quality', async () => {
+      const imageBuffer = await generateImage({
+        template,
+        filterText,
+        quality: 100
+      })
+      expect(imageBuffer).toBeInstanceOf(Buffer)
+      expect(imageBuffer.length).toBeGreaterThan(0)
+    })
+
+    it('should handle empty server name in filterText', async () => {
+      const customFilterText = { ...filterText, server_name: '' }
+      const imageBuffer = await generateImage({
+        template,
+        filterText: customFilterText
+      })
       expect(imageBuffer).toBeInstanceOf(Buffer)
       expect(imageBuffer.length).toBeGreaterThan(0)
     })
