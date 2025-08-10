@@ -1,4 +1,4 @@
-import type { ColorsTempleteLatest } from './colorsTemplete'
+import type { ColorsTempleteLatest } from '@libs/schemas/colorsTemplete'
 
 const colors: ColorsTempleteLatest = {
   version: 'v1',

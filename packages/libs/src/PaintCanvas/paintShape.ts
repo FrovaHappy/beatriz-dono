@@ -1,5 +1,5 @@
 import { buildFilter } from './buildFilter'
-import type { Shape } from './schema.welcome.v1'
+import type { Shape } from '@libs/schemas/welcome.v1'
 
 interface PaintShapeProps {
   ctx: CanvasRenderingContext2D

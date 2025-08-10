@@ -1,6 +1,7 @@
 import { generateImage } from '@libs/browser'
 import { use, useEffect, useState } from 'react'
-import { template, filterTextExample, getCssFonts } from '@libs/browser'
+import { filterTextExample, getCssFonts } from '@libs/browser'
+import template from '@libs/constants/imagesTemplate/fluent'
 import { validateCanvas } from '@libs/PaintCanvas/schema.welcome.v1'
 
 export default function RenderImageCanvas() {

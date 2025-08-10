@@ -1,7 +1,7 @@
-import type { Canvas } from './schema.welcome.v1'
+import type { Canvas } from '@libs/schemas/welcome.v1'
 export default {
   version: '1',
-  title: 'default',
+  title: 'fluent',
   author: '653429940502659111',
   h: 280,
   w: 1000,
