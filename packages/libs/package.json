@@ -1,8 +1,63 @@
 {
   "name": "libs",
+  "version": "1.0.0",
+  "description": "Shared utilities library for beatriz-dono bot",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "build": "rollup -c",
-    "dev": " tsc --preserveWatchOutput --watch"
-  }
+    "dev": "tsc --preserveWatchOutput --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "biome check --write",
+    "lint:check": "biome check",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "utilities",
+    "canvas",
+    "colors",
+    "image-processing"
+  ],
+  "author": "frova_happy",
+  "license": "MIT",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.70",
+    "zod": "^3.25.64"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@rollup/plugin-commonjs": "^28.0.5",
+    "@rollup/plugin-json": "^6.1.0",
+    "@types/node": "^24.0.1",
+    "@vitest/ui": "^3.2.3",
+    "glob": "^11.0.3",
+    "rollup": "^4.43.0",
+    "rollup-plugin-typescript-paths": "^1.5.0",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.8.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FrovaHappy/beatriz-dono.git",
+    "directory": "packages/libs"
+  },
+  "bugs": {
+    "url": "https://github.com/FrovaHappy/beatriz-dono/issues"
+  },
+  "homepage": "https://github.com/FrovaHappy/beatriz-dono#readme"
 }
