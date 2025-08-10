@@ -49,13 +49,13 @@ export const findBiggestColorRange = (rgbValues: Color[]) => {
 
   // biome-ignore lint/complexity/noForEach: <explanation>
   rgbValues.forEach((pixel: { r: number; g: number; b: number }) => {
-    rMin = pixel.r
-    gMin = pixel.g
-    bMin = pixel.b
+    rMin = Math.min(rMin, pixel.r)
+    gMin = Math.min(gMin, pixel.g)
+    bMin = Math.min(bMin, pixel.b)
 
-    rMax = pixel.r
-    gMax = pixel.g
-    bMax = pixel.b
+    rMax = Math.max(rMax, pixel.r)
+    gMax = Math.max(gMax, pixel.g)
+    bMax = Math.max(bMax, pixel.b)
   })
 
   const rRange = rMax - rMin
@@ -117,10 +117,10 @@ export const hexToRgb = (hex: string): Color | null => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   return result
     ? {
-        r: Number.parseInt(result[1], 16),
-        g: Number.parseInt(result[2], 16),
-        b: Number.parseInt(result[3], 16)
-      }
+      r: Number.parseInt(result[1], 16),
+      g: Number.parseInt(result[2], 16),
+      b: Number.parseInt(result[3], 16)
+    }
     : null
 }
 
