@@ -1,5 +1,5 @@
 import { readCanvas, upsertCanvas } from './queries/canvas'
-import { deleteColors, insertColors, readColors, updateColorSetting, readColorsSettings } from './queries/colors'
+import { deleteColors, insertColors, readColors, readColorsSettings, updateColorSetting } from './queries/colors'
 import { getGuilds, readGuild } from './queries/guild'
 import { readWelcome } from './queries/welcome'
 

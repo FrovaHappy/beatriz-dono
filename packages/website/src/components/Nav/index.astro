@@ -1,15 +1,15 @@
 ---
-import LoginButton from "./LoginButton";
-import Logo from "./Logo.astro";
-import LinkDonate from "./LinkDonate.astro";
-import Button from "@components/Button.astro";
-import type { Urls } from "@utils/urls";
+import Button from '@components/Button.astro'
+import type { Urls } from '@utils/urls'
+import LinkDonate from './LinkDonate.astro'
+import LoginButton from './LoginButton'
+import Logo from './Logo.astro'
 
 interface Props {
-  urls: Urls;
+  urls: Urls
 }
 
-const { urls } = Astro.props as Props;
+const { urls } = Astro.props as Props
 ---
 
 <nav>

@@ -1,8 +1,8 @@
+import { validateCanvas } from '@libs/PaintCanvas/schema.welcome.v1'
 import { generateImage } from '@libs/browser'
-import { use, useEffect, useState } from 'react'
 import { filterTextExample, getCssFonts } from '@libs/browser'
 import template from '@libs/constants/imagesTemplate/fluent'
-import { validateCanvas } from '@libs/PaintCanvas/schema.welcome.v1'
+import { use, useEffect, useState } from 'react'
 
 export default function RenderImageCanvas() {
   const [imageUrl, setImageUrl] = useState<string>('')

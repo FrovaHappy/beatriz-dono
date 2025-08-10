@@ -1,10 +1,10 @@
-import { defineConfig } from 'rollup'
-import typescript from 'rollup-plugin-typescript2'
-import { typescriptPaths } from 'rollup-plugin-typescript-paths'
-import { globSync } from 'glob'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import commonjs from '@rollup/plugin-commonjs'
+import { globSync } from 'glob'
+import { defineConfig } from 'rollup'
+import { typescriptPaths } from 'rollup-plugin-typescript-paths'
+import typescript from 'rollup-plugin-typescript2'
 export default defineConfig({
   input: Object.fromEntries(
     globSync('src/**/*.ts', {

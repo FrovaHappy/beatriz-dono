@@ -1,6 +1,6 @@
 import { array, literal, object, string, z } from 'zod'
-import re from '../regex'
 import colors from '../constants/colorTemplete'
+import re from '../regex'
 
 const schemaColorsV1 = object({
   version: literal('v1'),

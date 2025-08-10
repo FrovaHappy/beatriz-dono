@@ -1,17 +1,17 @@
 ---
 interface Props {
-  text?: string;
+  text?: string
 }
 
-const { text = "" } = Astro.props as Props;
+const { text = '' } = Astro.props as Props
 
-const reColor = /({{)(.*?)(}})/;
-const matched: string[] = [];
+const reColor = /({{)(.*?)(}})/
+const matched: string[] = []
 
 const decoratedText = text.replace(reColor, (match, p1, p2, p3) => {
-  matched.push(p2);
-  return "%%__point__%%";
-});
+  matched.push(p2)
+  return '%%__point__%%'
+})
 ---
 
 <>

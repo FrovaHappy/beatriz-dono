@@ -1,5 +1,5 @@
-import { ZodError, z } from 'zod'
 import { fontsFamily } from '@libs/constants/fonts'
+import { ZodError, z } from 'zod'
 import re from '../regex'
 
 export const MAX_WIDTH_CANVAS = 2000

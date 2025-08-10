@@ -1,6 +1,6 @@
-import tsConfig from './tsconfig.json'
 import tsConfigPaths from 'tsconfig-paths'
-;(async () => {
+;
+import tsConfig from './tsconfig.json'(async () => {
   const baseUrl = './dist'
   const cleanup = tsConfigPaths.register({
     baseUrl,

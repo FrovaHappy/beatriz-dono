@@ -1,16 +1,16 @@
 import type { Color } from '@/database/queries/colors'
+import db from '@db'
+import re from '@libs/regex'
 import {
   type ChatInputCommandInteraction,
-  resolveColor,
   type GuildMemberRoleManager,
   type Interaction,
-  type Locale
+  type Locale,
+  resolveColor
 } from 'discord.js'
 import msgColorChanged from './msg.colorChanged'
 import msgColorIncorrect from './msg.colorIncorrect'
 import { removeRolesOfUser } from './removeRoles'
-import db from '@db'
-import re from '@libs/regex'
 
 interface CreateColorRoleProps<T> {
   hexColor: `#${string}`

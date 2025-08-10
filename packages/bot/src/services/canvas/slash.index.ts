@@ -1,8 +1,7 @@
 import BuildCommand from '@/core/build/BuildCommand'
+import db from '@db'
 import { SlashCommandBuilder } from 'discord.js'
 import msgShowMenu from './msg.index'
-import db from '@db'
-
 
 export default new BuildCommand({
   name: 'canvas',

@@ -3,12 +3,12 @@ import {
   ActionRowBuilder,
   type ButtonStyle,
   type Locale,
+  MessageFlags,
   ModalBuilder,
   type ModalSubmitInteraction,
   type PermissionResolvable,
   TextInputBuilder,
-  type TextInputStyle,
-  MessageFlags
+  type TextInputStyle
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import BuildButton, { type Button } from './BuildButtons'

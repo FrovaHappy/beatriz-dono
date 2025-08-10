@@ -1,9 +1,9 @@
-import paintCanvas from './PaintCanvas'
-import { type Canvas, isShape } from '@libs/schemas/welcome.v1'
-import { formatterTextUser } from '@libs/formatterText'
 import { getPallete } from '@libs/colors'
-import type { Guild, User } from '@libs/types'
 import fonts from '@libs/constants/fonts'
+import { formatterTextUser } from '@libs/formatterText'
+import { type Canvas, isShape } from '@libs/schemas/welcome.v1'
+import type { Guild, User } from '@libs/types'
+import paintCanvas from './PaintCanvas'
 
 export const getCssFonts = () => {
   let cssFont = ''

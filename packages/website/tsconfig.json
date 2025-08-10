@@ -6,27 +6,13 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@src/*": [
-        "src/*"
-      ],
-      "@layouts/*": [
-        "src/layouts/*"
-      ],
-      "@libs/*": [
-        "../libs/dist/*"
-      ]
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"],
+      "@src/*": ["src/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@libs/*": ["../libs/dist/*"]
     }
   }
 }

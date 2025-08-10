@@ -1,12 +1,12 @@
+import * as listImports from '@/listImports'
+import type { ClientEvents } from 'discord.js'
 import type BuildButton from './build/BuildButtons'
 import type BuildCommand from './build/BuildCommand'
+import type BuildEvent from './build/BuildEvent'
 import type BuildMenu from './build/BuildMenu'
 import type { SelectMenu } from './build/BuildMenu'
 import type BuildModal from './build/BuildModal'
-import * as listImports from '@/listImports'
 import defaultGenerics from './generics'
-import type BuildEvent from './build/BuildEvent'
-import type { ClientEvents } from 'discord.js'
 
 let buttons = {} as Record<string, BuildButton>
 let commands = {} as Record<string, BuildCommand>

@@ -1,5 +1,5 @@
 import '../../config'
-import { readGuild, getGuilds } from './guild'
+import { getGuilds, readGuild } from './guild'
 
 describe('test Guild Queries', () => {
   console.log('readGuild: should return an object')

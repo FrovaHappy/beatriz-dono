@@ -1,11 +1,11 @@
 import type { Canvas } from '@type/index'
 import '../../config'
-import cli from '../clientSQL'
-import { readGuild } from './guild'
+import crypto from 'node:crypto'
 import { LAST_VERSION } from '@libs/PaintCanvas/schema.welcome.v1'
 import { and, eq } from 'drizzle-orm'
-import crypto from 'node:crypto'
+import cli from '../clientSQL'
 import schemaCanvas from '../schemas/canvas'
+import { readGuild } from './guild'
 import { readUser } from './users'
 
 type InsertCanvas = {

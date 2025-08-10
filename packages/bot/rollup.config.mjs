@@ -1,9 +1,9 @@
-import { defineConfig } from 'rollup'
-import typescript from 'rollup-plugin-typescript2'
-import json from '@rollup/plugin-json'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
+import { defineConfig } from 'rollup'
+import typescript from 'rollup-plugin-typescript2'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 export default defineConfig({

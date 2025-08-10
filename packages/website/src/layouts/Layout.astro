@@ -1,18 +1,14 @@
 ---
-import Nav from "../components/Nav/index.astro";
-import urls from "@utils/urls";
+import urls from '@utils/urls'
+import Nav from '../components/Nav/index.astro'
 
 interface Props {
-  title: string;
-  description?: string;
-  showFooter?: boolean;
+  title: string
+  description?: string
+  showFooter?: boolean
 }
 
-const {
-  title,
-  showFooter = true,
-  description = "Best bot for Discord, Beatriz Dono.",
-} = Astro.props as Props;
+const { title, showFooter = true, description = 'Best bot for Discord, Beatriz Dono.' } = Astro.props as Props
 ---
 
 <!doctype html>

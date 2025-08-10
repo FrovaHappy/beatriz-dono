@@ -1,51 +1,27 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2024",
-      "DOM"
-    ],
+    "lib": ["es2024", "DOM"],
     "module": "ESNext",
     "target": "ES2022",
     "outDir": "dist",
-    "rootDirs": [
-      "src",
-      "../shared"
-    ],
+    "rootDirs": ["src", "../shared"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": [
-      "vitest/globals",
-      "./src/global"
-    ],
+    "types": ["vitest/globals", "./src/global"],
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@core/*": [
-        "src/core/*"
-      ],
-      "@libs/*": [
-        "../libs/dist/*"
-      ],
-      "@type/*": [
-        "../libs/src/types/*"
-      ],
-      "@db": [
-        "src/database/index.ts"
-      ]
+      "@/*": ["src/*"],
+      "@core/*": ["src/core/*"],
+      "@libs/*": ["../libs/dist/*"],
+      "@type/*": ["../libs/src/types/*"],
+      "@db": ["src/database/index.ts"]
     }
   },
-  "include": [
-    "src",
-    "fonts"
-  ],
-  "exclude": [
-    "dist"
-  ]
+  "include": ["src", "fonts"],
+  "exclude": ["dist"]
 }

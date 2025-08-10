@@ -2,10 +2,10 @@ import type { ClientEvents, Collection } from 'discord.js'
 import type { JsonResponse } from './api/types'
 import type { Config } from './config'
 import type { ButtonNames, CommandNames, MenuNames, ModalNames } from './const/interactionsNames'
+import type BuildEvent from './core/build/BuildEvent'
 import type { GetButton, GetMenu, GetModal } from './core/getServices'
 import type { Button } from './shared/BuildButtons'
 import type { Command } from './shared/BuildCommand'
-import type BuildEvent from './core/build/BuildEvent'
 
 declare global {
   var commands: Record<CommandNames | string, Command>

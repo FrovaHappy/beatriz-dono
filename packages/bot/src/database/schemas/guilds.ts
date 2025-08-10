@@ -1,4 +1,4 @@
-import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core'
+import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export default sqliteTable('Guilds', {
   id: text().primaryKey(),

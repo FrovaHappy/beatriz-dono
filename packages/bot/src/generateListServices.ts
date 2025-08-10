@@ -1,13 +1,13 @@
 import './config'
 import fs from 'node:fs'
 import path from 'node:path'
-import BuildEvent from './core/build/BuildEvent'
+import BuildButton from './core/build/BuildButtons'
 import BuildCommand from './core/build/BuildCommand'
+import BuildEvent from './core/build/BuildEvent'
 import BuildMenu from './core/build/BuildMenu'
 import BuildModal from './core/build/BuildModal'
-import BuildButton from './core/build/BuildButtons'
-import logger from './shared/logger'
 import { Timer } from './shared/general'
+import logger from './shared/logger'
 
 async function readAllFiles(path: string, arrayOfFiles: string[] = [], typeFiles: string[] = ['.ts']) {
   const files = fs.readdirSync(path)

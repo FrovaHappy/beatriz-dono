@@ -1,10 +1,10 @@
 import { regexHexColor, regexRole } from '@libs/regex'
+import { and, eq, inArray, isNull } from 'drizzle-orm'
 import client from '../clientSQL'
-import schemaColorsSettings from '../schemas/colorsSettings'
 import schemaColors from '../schemas/colors'
+import schemaColorsSettings from '../schemas/colorsSettings'
 import schemaGuilds from '../schemas/guilds'
 import { readGuild } from './guild'
-import { and, eq, inArray, isNull } from 'drizzle-orm'
 
 export interface Color {
   hex_color: string

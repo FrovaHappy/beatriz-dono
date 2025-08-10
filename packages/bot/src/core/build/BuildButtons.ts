@@ -5,8 +5,8 @@ import {
   type ButtonStyle,
   type ComponentEmojiResolvable,
   type Locale,
-  type PermissionResolvable,
-  MessageFlags
+  MessageFlags,
+  type PermissionResolvable
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import msgCaptureError from './msg.captureError'

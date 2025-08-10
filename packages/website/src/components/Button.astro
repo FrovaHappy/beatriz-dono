@@ -1,26 +1,26 @@
 ---
 interface Props {
-  text?: string;
-  id?: string;
-  type?: "primary" | "secondary" | "only-icon";
-  href?: string;
-  icon?: keyof typeof icons;
+  text?: string
+  id?: string
+  type?: 'primary' | 'secondary' | 'only-icon'
+  href?: string
+  icon?: keyof typeof icons
 }
 const icons = {
-  github: "ti ti-brand-github",
-  discord: "ti ti-brand-discord-filled",
-  kofi: "ti ti-cup",
-  moon: "ti ti-moon-filled",
-  apps: "ti ti-apps-filled",
-  link: "ti ti-link",
-};
+  github: 'ti ti-brand-github',
+  discord: 'ti ti-brand-discord-filled',
+  kofi: 'ti ti-cup',
+  moon: 'ti ti-moon-filled',
+  apps: 'ti ti-apps-filled',
+  link: 'ti ti-link'
+}
 
-const { text, href, icon, type = "primary", id } = Astro.props as Props;
+const { text, href, icon, type = 'primary', id } = Astro.props as Props
 
-let typeClass = "";
-if (type === "primary") typeClass = "button button--primary";
-if (type === "secondary") typeClass = "button button--secondary";
-if (type === "only-icon") typeClass = "button button--without-text";
+let typeClass = ''
+if (type === 'primary') typeClass = 'button button--primary'
+if (type === 'secondary') typeClass = 'button button--secondary'
+if (type === 'only-icon') typeClass = 'button button--without-text'
 ---
 
 {

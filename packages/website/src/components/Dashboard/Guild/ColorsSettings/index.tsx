@@ -1,9 +1,9 @@
 import Loader from '@components/General/Loader'
 import getSetting from '@hooks/getSetting'
+import type { Urls } from '@utils/urls'
 import { useMemo } from 'react'
 import cssButtonsEnabledInLine from '../ButtonsEnabledInLine.module.scss'
 import ColorsButton from '../Settings/ColorsButton'
-import type { Urls } from '@utils/urls'
 
 interface Props {
   urls: Urls

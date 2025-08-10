@@ -6,6 +6,7 @@ import {
   type ChannelSelectMenuInteraction,
   type ComponentEmojiResolvable,
   type Locale,
+  MessageFlags,
   type PermissionResolvable,
   RoleSelectMenuBuilder,
   type RoleSelectMenuInteraction,
@@ -13,8 +14,7 @@ import {
   StringSelectMenuBuilder,
   type StringSelectMenuInteraction,
   UserSelectMenuBuilder,
-  type UserSelectMenuInteraction,
-  MessageFlags
+  type UserSelectMenuInteraction
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT, PERMISSIONS_BASE_USER } from '../../const/PermissionsBase'
 import msgCaptureError from './msg.captureError'

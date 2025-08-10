@@ -1,7 +1,7 @@
+import { type Canvas, isShape, isText } from '@libs/schemas/welcome.v1'
 import type { Guild, User } from '@libs/types'
 import paintShape from './paintShape'
 import paintText from './paintText'
-import { type Canvas, isShape, isText } from '@libs/schemas/welcome.v1'
 
 interface PaintCanvasProps {
   ctx: CanvasRenderingContext2D

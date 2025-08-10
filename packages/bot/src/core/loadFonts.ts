@@ -1,8 +1,8 @@
 import { join } from 'node:path'
-import { GlobalFonts } from '@napi-rs/canvas'
 import { Timer } from '@/shared/general'
 import logger from '@/shared/logger'
 import { getFonts } from '@libs/server'
+import { GlobalFonts } from '@napi-rs/canvas'
 
 export default async function loadFonts() {
   const time = new Timer()

@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2024",
-      "DOM"
-    ],
+    "lib": ["es2024", "DOM"],
     "module": "ES2022",
     "target": "es2024",
     "strict": true,
@@ -12,15 +9,11 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": [
-      "vitest/globals"
-    ],
+    "types": ["vitest/globals"],
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   }
 }

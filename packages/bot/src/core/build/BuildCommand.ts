@@ -2,10 +2,10 @@ import type { MessageOptions, Resolve, Scope } from '@/types/main'
 import {
   type ChatInputCommandInteraction,
   MessageFlags,
+  type PermissionResolvable,
   type SlashCommandBuilder,
   type SlashCommandOptionsOnlyBuilder,
-  type SlashCommandSubcommandsOnlyBuilder,
-  type PermissionResolvable
+  type SlashCommandSubcommandsOnlyBuilder
 } from 'discord.js'
 import { PERMISSIONS_BASE_BOT } from '../../const/PermissionsBase'
 

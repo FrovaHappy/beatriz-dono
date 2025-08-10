@@ -6,13 +6,13 @@ import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { createCanvas, loadImage, Path2D as Patch } from '@napi-rs/canvas'
 import paintCanvas from '@libs/PaintCanvas'
-import { type Canvas, isShape } from '@libs/schemas/welcome.v1'
-import { formatterTextUser } from '@libs/formatterText'
 import { getPallete } from '@libs/colors'
-import type { Guild, User } from '@libs/types'
 import fonts from '@libs/constants/fonts'
+import { formatterTextUser } from '@libs/formatterText'
+import { type Canvas, isShape } from '@libs/schemas/welcome.v1'
+import type { Guild, User } from '@libs/types'
+import { Path2D as Patch, createCanvas, loadImage } from '@napi-rs/canvas'
 
 export const getFonts = async (root: string) => {
   if (!existsSync(root)) await mkdir(root, { recursive: true })

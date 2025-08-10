@@ -1,6 +1,6 @@
+import BuildButton from '@/core/build/BuildButtons'
 import BuildMenu from '@/core/build/BuildMenu'
 import { ButtonStyle } from 'discord.js'
-import BuildButton from '@/core/build/BuildButtons'
 import BuildModal from './build/BuildModal'
 
 const defaultMenu = new BuildMenu({

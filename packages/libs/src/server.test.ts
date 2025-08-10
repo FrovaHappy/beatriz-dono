@@ -1,9 +1,9 @@
-import { getImageData, generateImage, getFonts } from './server'
-import { validateCanvas } from './schemas/welcome.v1'
-import template from './constants/imagesTemplate/fluent'
+import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import { GlobalFonts } from '@napi-rs/canvas'
-import { createHash } from 'node:crypto'
+import template from './constants/imagesTemplate/fluent'
+import { validateCanvas } from './schemas/welcome.v1'
+import { generateImage, getFonts, getImageData } from './server'
 
 const filterText = {
   userName: 'userName',

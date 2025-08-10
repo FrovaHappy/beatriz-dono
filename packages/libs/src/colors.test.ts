@@ -1,5 +1,5 @@
+import { findBiggestColorRange, getPallete, hexToRgb, orderByLuminance, rgbToHex } from './colors'
 import { getImageData } from './server'
-import { getPallete, hexToRgb, rgbToHex, findBiggestColorRange, orderByLuminance } from './colors'
 
 const colorsUri = {
   red: {
@@ -205,9 +205,9 @@ describe('colors: findBiggestColorRange', () => {
 describe('colors: orderByLuminance', () => {
   it('should order colors by luminance (brightest first)', () => {
     const colors = [
-      { r: 0, g: 0, b: 0 },     // Black (lowest luminance)
+      { r: 0, g: 0, b: 0 }, // Black (lowest luminance)
       { r: 255, g: 255, b: 255 }, // White (highest luminance)
-      { r: 128, g: 128, b: 128 }  // Gray (middle luminance)
+      { r: 128, g: 128, b: 128 } // Gray (middle luminance)
     ]
 
     const ordered = orderByLuminance([...colors]) // Clone to avoid mutation
@@ -220,9 +220,9 @@ describe('colors: orderByLuminance', () => {
 
   it('should handle pure colors correctly', () => {
     const colors = [
-      { r: 255, g: 0, b: 0 },   // Red
-      { r: 0, g: 255, b: 0 },   // Green (higher luminance due to green weight)
-      { r: 0, g: 0, b: 255 }    // Blue (lowest luminance due to blue weight)
+      { r: 255, g: 0, b: 0 }, // Red
+      { r: 0, g: 255, b: 0 }, // Green (higher luminance due to green weight)
+      { r: 0, g: 0, b: 255 } // Blue (lowest luminance due to blue weight)
     ]
 
     const ordered = orderByLuminance([...colors])
@@ -248,7 +248,7 @@ describe('colors: orderByLuminance', () => {
   })
 
   it('should handle empty array', () => {
-    const colors: Array<{ r: number, g: number, b: number }> = []
+    const colors: Array<{ r: number; g: number; b: number }> = []
     const ordered = orderByLuminance(colors)
     expect(ordered).toEqual([])
   })
@@ -308,7 +308,7 @@ describe('colors: Edge Cases and Integration', () => {
     ]
     expect(findBiggestColorRange(colors1)).toBe('r') // r and g tied, r wins
 
-    // Test with green and blue tied, red different  
+    // Test with green and blue tied, red different
     const colors2 = [
       { r: 50, g: 0, b: 0 },
       { r: 60, g: 100, b: 100 }

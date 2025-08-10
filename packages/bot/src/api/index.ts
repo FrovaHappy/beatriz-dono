@@ -1,3 +1,4 @@
+import logger from '@/shared/logger'
 import cors from 'cors'
 import express from 'express'
 import { rateLimit } from 'express-rate-limit'
@@ -5,7 +6,6 @@ import session from 'express-session'
 import passport from 'passport'
 import discordStrategy from './discordStrategy'
 import routers from './routes'
-import logger from '@/shared/logger'
 
 const app = express()
 export default async function startApi() {

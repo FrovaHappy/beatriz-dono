@@ -1,37 +1,33 @@
 ---
 interface Props {
-  tag?: "p" | "span";
-  text: string;
-  size?: `${number}${"px" | "rem"}`;
+  tag?: 'p' | 'span'
+  text: string
+  size?: `${number}${'px' | 'rem'}`
   color?: {
-    text: "primary" | "secondary" | `#${string}`;
-    background: "primary" | "secondary" | `#${string}`;
-  };
+    text: 'primary' | 'secondary' | `#${string}`
+    background: 'primary' | 'secondary' | `#${string}`
+  }
 }
 
 const {
-  tag: T = "span",
+  tag: T = 'span',
   text,
-  size = "1rem",
+  size = '1rem',
   color = {
-    background: "secondary",
-    text: "black",
-  },
-} = Astro.props as Props;
-const reColor = /(primary)|(secondary)/;
-const colorText = reColor.test(color.text)
-  ? `var(--${color.text}-color)`
-  : color.text;
-const colorBackground = reColor.test(color.background)
-  ? `var(--${color.background}-color)`
-  : color.background;
+    background: 'secondary',
+    text: 'black'
+  }
+} = Astro.props as Props
+const reColor = /(primary)|(secondary)/
+const colorText = reColor.test(color.text) ? `var(--${color.text}-color)` : color.text
+const colorBackground = reColor.test(color.background) ? `var(--${color.background}-color)` : color.background
 
 const style: astroHTML.JSX.CSSProperties = {
   fontSize: size,
   padding: `calc(${size} / 5) calc(${size} * 1.15)`,
   color: colorText,
-  backgroundColor: colorBackground,
-};
+  backgroundColor: colorBackground
+}
 ---
 
 <T class=`tag` style={style}>{text}</T>

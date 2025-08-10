@@ -1,9 +1,9 @@
 import { toJson } from '@/shared/general'
-import client from '../clientSQL'
-import { readGuild } from './guild'
 import type { MessageOptions } from '@/types/main'
-import schemaWelcomes from '../schemas/welcomes'
 import { eq } from 'drizzle-orm'
+import client from '../clientSQL'
+import schemaWelcomes from '../schemas/welcomes'
+import { readGuild } from './guild'
 
 interface Welcome {
   guild_id: string

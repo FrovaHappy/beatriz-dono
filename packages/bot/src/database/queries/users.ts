@@ -1,6 +1,6 @@
+import { eq } from 'drizzle-orm'
 import cli from '../clientSQL'
 import schemaUsers from '../schemas/users'
-import { eq } from 'drizzle-orm'
 
 export async function readUser({ id }: { id: string }) {
   await cli.insert(schemaUsers).values({ id }).onConflictDoNothing()
