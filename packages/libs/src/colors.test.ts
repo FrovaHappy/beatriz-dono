@@ -4,16 +4,16 @@ import { getImageData } from './server'
 const colorsUri = {
   red: {
     hex: '#ff0000',
-    uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAA1BMVEX/AAAZ4gk3AAAAPUlEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvgyZwAABCrx9CgAAAABJRU5ErkJggg=='
+    uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAA1BMVEX/AAAZ4gk3AAAAPUlEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvgyZwAABCrx9CgAAAABJRU5ErkJggg==',
   },
   green: {
     hex: '#00ff00',
-    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvu_INDlD8hUsDSTN57PE0kYRw07rDTNfOcPySlIyDzw&s'
+    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvu_INDlD8hUsDSTN57PE0kYRw07rDTNfOcPySlIyDzw&s',
   },
   blue: {
     hex: '#295592',
-    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNRoEqICjVBoHd8uNTOYCtMPs7JcuwJ_fUUNVOO0HIaQTvDIx-HBJ8uQM&s'
-  }
+    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNRoEqICjVBoHd8uNTOYCtMPs7JcuwJ_fUUNVOO0HIaQTvDIx-HBJ8uQM&s',
+  },
 }
 
 describe('colors: getPallete', async () => {
@@ -23,6 +23,7 @@ describe('colors: getPallete', async () => {
   })
 
   it('should return empty array if the image data is undefined', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const color = getPallete({ data: undefined as any })
     expect(color).toEqual([])
   })
@@ -157,7 +158,7 @@ describe('colors: findBiggestColorRange', () => {
     const colors = [
       { r: 0, g: 100, b: 100 },
       { r: 255, g: 110, b: 110 }, // Red range: 255, Green range: 10, Blue range: 10
-      { r: 128, g: 105, b: 105 }
+      { r: 128, g: 105, b: 105 },
     ]
     expect(findBiggestColorRange(colors)).toBe('r')
   })
@@ -166,7 +167,7 @@ describe('colors: findBiggestColorRange', () => {
     const colors = [
       { r: 100, g: 0, b: 100 },
       { r: 110, g: 255, b: 110 }, // Red range: 10, Green range: 255, Blue range: 10
-      { r: 105, g: 128, b: 105 }
+      { r: 105, g: 128, b: 105 },
     ]
     expect(findBiggestColorRange(colors)).toBe('g')
   })
@@ -175,7 +176,7 @@ describe('colors: findBiggestColorRange', () => {
     const colors = [
       { r: 100, g: 100, b: 0 },
       { r: 110, g: 110, b: 255 }, // Red range: 10, Green range: 10, Blue range: 255
-      { r: 105, g: 105, b: 128 }
+      { r: 105, g: 105, b: 128 },
     ]
     expect(findBiggestColorRange(colors)).toBe('b')
   })
@@ -183,7 +184,7 @@ describe('colors: findBiggestColorRange', () => {
   it('should handle equal ranges (returns first match - "r")', () => {
     const colors = [
       { r: 0, g: 0, b: 0 },
-      { r: 100, g: 100, b: 100 }
+      { r: 100, g: 100, b: 100 },
     ]
     expect(findBiggestColorRange(colors)).toBe('r') // All ranges are equal, returns 'r' first
   })
@@ -196,7 +197,7 @@ describe('colors: findBiggestColorRange', () => {
   it('should handle edge values (0 and 255)', () => {
     const colors = [
       { r: 0, g: 0, b: 0 },
-      { r: 255, g: 255, b: 255 }
+      { r: 255, g: 255, b: 255 },
     ]
     expect(findBiggestColorRange(colors)).toBe('r') // All ranges are equal (255), returns 'r' first
   })
@@ -207,7 +208,7 @@ describe('colors: orderByLuminance', () => {
     const colors = [
       { r: 0, g: 0, b: 0 }, // Black (lowest luminance)
       { r: 255, g: 255, b: 255 }, // White (highest luminance)
-      { r: 128, g: 128, b: 128 } // Gray (middle luminance)
+      { r: 128, g: 128, b: 128 }, // Gray (middle luminance)
     ]
 
     const ordered = orderByLuminance([...colors]) // Clone to avoid mutation
@@ -222,7 +223,7 @@ describe('colors: orderByLuminance', () => {
     const colors = [
       { r: 255, g: 0, b: 0 }, // Red
       { r: 0, g: 255, b: 0 }, // Green (higher luminance due to green weight)
-      { r: 0, g: 0, b: 255 } // Blue (lowest luminance due to blue weight)
+      { r: 0, g: 0, b: 255 }, // Blue (lowest luminance due to blue weight)
     ]
 
     const ordered = orderByLuminance([...colors])
@@ -236,7 +237,7 @@ describe('colors: orderByLuminance', () => {
   it('should preserve original array and return new sorted array', () => {
     const original = [
       { r: 0, g: 0, b: 0 },
-      { r: 255, g: 255, b: 255 }
+      { r: 255, g: 255, b: 255 },
     ]
     const originalCopy = [...original]
 
@@ -281,7 +282,7 @@ describe('colors: Edge Cases and Integration', () => {
       { r: 0, g: 255, b: 0 },
       { r: 0, g: 0, b: 255 },
       { r: 128, g: 64, b: 192 },
-      { r: 255, g: 255, b: 255 }
+      { r: 255, g: 255, b: 255 },
     ]
 
     for (const color of testColors) {
@@ -304,14 +305,14 @@ describe('colors: Edge Cases and Integration', () => {
     // Test with red and green tied, blue different
     const colors1 = [
       { r: 0, g: 0, b: 50 },
-      { r: 100, g: 100, b: 60 }
+      { r: 100, g: 100, b: 60 },
     ]
     expect(findBiggestColorRange(colors1)).toBe('r') // r and g tied, r wins
 
     // Test with green and blue tied, red different
     const colors2 = [
       { r: 50, g: 0, b: 0 },
-      { r: 60, g: 100, b: 100 }
+      { r: 60, g: 100, b: 100 },
     ]
     expect(findBiggestColorRange(colors2)).toBe('g') // g and b tied, g wins
   })

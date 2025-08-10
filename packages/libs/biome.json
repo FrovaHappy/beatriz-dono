@@ -1,0 +1,164 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
+  "extends": [
+    "../../biome.json"
+  ],
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": [
+      "**/dist/**",
+      "**/coverage/**",
+      "**/node_modules/**",
+      "**/*.d.ts",
+      "**/test-fonts-dir/**",
+      "**/public/fonts/**"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 100,
+    "attributePosition": "auto",
+    "bracketSpacing": true
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "warn",
+        "noConsoleLog": "warn",
+        "noEmptyBlockStatements": "error",
+        "noFallthroughSwitchClause": "error"
+      },
+      "complexity": {
+        "noForEach": "warn",
+        "noUselessConstructor": "error",
+        "noUselessRename": "error",
+        "noUselessSwitchCase": "error"
+      },
+      "performance": {
+        "noAccumulatingSpread": "warn",
+        "noDelete": "error"
+      },
+      "correctness": {
+        "noConstAssign": "error",
+        "noInvalidConstructorSuper": "error",
+        "noUnreachable": "error",
+        "noUndeclaredVariables": "error",
+        "noUnusedVariables": "warn",
+        "useExhaustiveDependencies": "info"
+      },
+      "style": {
+        "noNonNullAssertion": "warn",
+        "useTemplate": "warn",
+        "useConst": "error",
+        "useDefaultSwitchClause": "warn",
+        "useExponentiationOperator": "warn",
+        "useFilenamingConvention": {
+          "level": "warn",
+          "options": {
+            "filenameCases": [
+              "camelCase",
+              "kebab-case",
+              "PascalCase"
+            ]
+          }
+        }
+      },
+      "nursery": {
+        "noCommonJs": "warn"
+      }
+    },
+    "ignore": []
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "es5",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "asNeeded",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true
+    },
+    "globals": [
+      "vitest",
+      "describe",
+      "it",
+      "expect",
+      "beforeAll",
+      "afterAll"
+    ]
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineEnding": "lf",
+      "lineWidth": 100,
+      "trailingCommas": "none"
+    }
+  },
+  "overrides": [
+    {
+      "include": [
+        "**/*.test.ts",
+        "**/*.spec.ts"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsoleLog": "off",
+            "noExplicitAny": "off"
+          },
+          "complexity": {
+            "noForEach": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "**/vite.config.mts",
+        "**/rollup.config.mjs"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "**/schemas/**/*.ts"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    }
+  ]
+}

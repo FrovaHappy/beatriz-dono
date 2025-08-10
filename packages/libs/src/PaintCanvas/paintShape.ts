@@ -19,7 +19,7 @@ export default function paintShape(props: PaintShapeProps) {
   // obtain dimensions and scale of the image
   const dimension = {
     h: layer.dh ?? image?.height ?? 100,
-    w: layer.dw ?? image?.width ?? 100
+    w: layer.dw ?? image?.width ?? 100,
   }
 
   if (filter) ctx.filter = filter
@@ -39,11 +39,11 @@ export default function paintShape(props: PaintShapeProps) {
       // Calculate image scaling to fit within the clip path dimensions
       const scaleImage = {
         w: (image.width * patch.w) / Math.min(image.width, image.height),
-        h: (image.height * patch.h) / Math.min(image.width, image.height)
+        h: (image.height * patch.h) / Math.min(image.width, image.height),
       }
       const middle = {
         w: Math.round((patch.w - scaleImage.w) / 2),
-        h: Math.round((patch.h - scaleImage.h) / 2)
+        h: Math.round((patch.h - scaleImage.h) / 2),
       }
       const aligns = {
         top: [middle.w, 0],
@@ -54,7 +54,7 @@ export default function paintShape(props: PaintShapeProps) {
         'top-left': [0, 0],
         'top-right': [patch.w - scaleImage.w, 0],
         'bottom-left': [0, patch.h - scaleImage.h],
-        'bottom-right': [patch.w - scaleImage.w, patch.h - scaleImage.h]
+        'bottom-right': [patch.w - scaleImage.w, patch.h - scaleImage.h],
       }
 
       ctx.drawImage(

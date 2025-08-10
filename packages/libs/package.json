@@ -19,8 +19,17 @@
     "test:coverage:ui": "vitest --ui --coverage",
     "lint": "biome check --write",
     "lint:check": "biome check",
+    "lint:fix": "biome check --write --unsafe",
+    "lint:ci": "biome ci",
+    "format": "biome format --write",
+    "format:check": "biome format",
+    "organize-imports": "biome check --write",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "type-check:watch": "tsc --noEmit --watch",
+    "validate": "npm run type-check && npm run lint:check && npm test",
+    "validate:quick": "npm run type-check && npm run lint:check",
+    "clean": "rm -rf dist coverage",
+    "clean:all": "npm run clean && rm -rf node_modules"
   },
   "keywords": [
     "discord",

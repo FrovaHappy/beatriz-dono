@@ -7,7 +7,7 @@ export const LAST_VERSION = '1'
 const reUrlImage = re.buildUrlImage(['imgur.com', 'media.discordapp.net', 'i.pinimg.com'])
 const validateColor = z.union([
   z.string().refine((val: string) => re.hexColor.test(val), 'the format has to be #RGB or #RRGGBB'),
-  z.literal('transparent')
+  z.literal('transparent'),
 ])
 
 const filterSchema = z.object({
@@ -19,7 +19,7 @@ const filterSchema = z.object({
       offsetX: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
       offsetY: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
       blurRadius: z.number().min(0).max(MAX_WIDTH_CANVAS).optional(),
-      color: validateColor
+      color: validateColor,
     })
     .optional(),
   grayscale: z.number().step(1).min(0).max(100).optional(),
@@ -27,7 +27,7 @@ const filterSchema = z.object({
   invert: z.number().step(1).min(0).max(100).optional(),
   opacity: z.number().step(1).min(0).max(100).optional(),
   saturate: z.number().step(1).min(-100).max(100).optional(),
-  sepia: z.number().step(1).min(0).max(100).optional()
+  sepia: z.number().step(1).min(0).max(100).optional(),
 })
 /* Features Futures
   - support for gradient
@@ -51,7 +51,13 @@ const textSchema = z.object({
   maxWidth: z.number().min(1).max(MAX_WIDTH_CANVAS).optional(),
   weight: z.number().min(200).max(1000).step(100).optional().default(400),
   align: z
-    .union([z.literal('start'), z.literal('end'), z.literal('left'), z.literal('right'), z.literal('center')])
+    .union([
+      z.literal('start'),
+      z.literal('end'),
+      z.literal('left'),
+      z.literal('right'),
+      z.literal('center'),
+    ])
     .optional()
     .default('start'),
   baseline: z
@@ -61,11 +67,11 @@ const textSchema = z.object({
       z.literal('middle'),
       z.literal('alphabetic'),
       z.literal('ideographic'),
-      z.literal('bottom')
+      z.literal('bottom'),
     ])
     .optional()
     .default('alphabetic'),
-  filter: filterSchema.optional()
+  filter: filterSchema.optional(),
 })
 const shapeSchema = z
   .object({
@@ -82,7 +88,7 @@ const shapeSchema = z
         z.literal('{{user_avatar}}'),
         z.literal('{{user_banner}}'),
         z.literal('{{server_avatar}}'),
-        z.literal('{{server_banner}}')
+        z.literal('{{server_banner}}'),
       ])
       .optional(),
     // imageSmoothingEnabled: z.boolean().optional(), // TODO: for implement
@@ -102,13 +108,13 @@ const shapeSchema = z
             z.literal('top-left'),
             z.literal('top-right'),
             z.literal('bottom-left'),
-            z.literal('bottom-right')
+            z.literal('bottom-right'),
           ])
-          .optional()
+          .optional(),
       })
       .strict()
       .optional(),
-    filter: filterSchema.optional()
+    filter: filterSchema.optional(),
   })
   .strict()
 
@@ -123,7 +129,7 @@ const canvasSchema = z.object({
   w: z.number().min(0).max(MAX_WIDTH_CANVAS),
   bg_color: validateColor.optional(),
   layer_cast_color: z.string().optional(),
-  layers: z.array(z.union([textSchema, shapeSchema])).max(50)
+  layers: z.array(z.union([textSchema, shapeSchema])).max(50),
 })
 
 // this canvas type is used to validate the canvas data input from the user
@@ -144,16 +150,15 @@ export function validateCanvas(data: any) {
   try {
     canvas = canvasSchema.parse(data)
   } catch (error) {
-    console.log(error)
     return {
       ok: false,
       errors: error instanceof ZodError ? error.errors : undefined,
-      data: null
+      data: null,
     }
   }
   return {
     ok: true,
     errors: undefined,
-    data: canvas
+    data: canvas,
   }
 }

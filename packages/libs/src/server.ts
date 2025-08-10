@@ -30,7 +30,7 @@ export const getFonts = async (root: string) => {
       family: key,
       buffer: path,
       format: value.format,
-      variable: value.variable
+      variable: value.variable,
     })
   }
   return getterFonts
@@ -39,7 +39,7 @@ export const getFonts = async (root: string) => {
 export const getImageData = async (url: string | null) => {
   if (!url) return null
 
-  const data = await loadImage(url, { requestOptions: { timeout: 10_000 } }).catch(e => null)
+  const data = await loadImage(url, { requestOptions: { timeout: 10_000 } }).catch(_e => null)
   if (!data) return null
   const canvas = createCanvas(data.width, data.height)
   const ctx = canvas.getContext('2d')
@@ -79,14 +79,16 @@ export async function generateImage(props: GenerateImageProps) {
   const ctx = canvas.getContext('2d')
   const { images } = await getImages(template.layers, filterText)
   const imageData = await getImageData(images[`${template.layer_cast_color}`]?.src)
-  const castColor = template.layer_cast_color ? getPallete({ data: imageData?.data ?? null }) : undefined
+  const castColor = template.layer_cast_color
+    ? getPallete({ data: imageData?.data ?? null })
+    : undefined
   paintCanvas({
     ctx: ctx as unknown as CanvasRenderingContext2D,
     canvas: template,
     Path2D: Patch as unknown as typeof Path2D,
     images: images,
     filterText,
-    castColor: castColor?.[0]
+    castColor: castColor?.[0],
   })
   const imageBuffer = await canvas.encode('webp', quality)
   return imageBuffer

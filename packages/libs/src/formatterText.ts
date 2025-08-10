@@ -1,7 +1,17 @@
 import type { Guild, User } from './types'
 
-type UserRules = '{{user_name}}' | '{{user_global}}' | '{{user_id}}' | '{{user_avatar}}' | '{{user_discriminator}}'
-type ServerRules = '{{server_name}}' | '{{server_id}}' | '{{server_icon}}' | '{{server_banner}}' | '{{server_count}}'
+type UserRules =
+  | '{{user_name}}'
+  | '{{user_global}}'
+  | '{{user_id}}'
+  | '{{user_avatar}}'
+  | '{{user_discriminator}}'
+type ServerRules =
+  | '{{server_name}}'
+  | '{{server_id}}'
+  | '{{server_icon}}'
+  | '{{server_banner}}'
+  | '{{server_count}}'
 type Slot = `{{${string}}}`
 
 export type Rules = Record<UserRules, string> & Record<Slot, string> & Record<ServerRules, string>
@@ -18,7 +28,7 @@ export function formatterTextUser(strToFormat: string, param: User & Guild): str
     '{{server_icon}}': param.guildAvatar,
     '{{server_name}}': param.guildName,
     '{{server_count}}': param.membersCount,
-    '{{server_id}}': param.guildId
+    '{{server_id}}': param.guildId,
   })
 }
 /**
@@ -42,7 +52,7 @@ export default function formatterText(strToFormat: string, formats: Partial<Rule
   const rulesRequired = {
     '\\n': '\n',
     '\\t': '\t',
-    '\\r': '\r'
+    '\\r': '\r',
   }
   const rulesReqKeys = Object.keys(rulesRequired) as Array<keyof typeof rulesRequired>
   for (const rrk of rulesReqKeys) {

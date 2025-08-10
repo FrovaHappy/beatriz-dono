@@ -12,7 +12,7 @@ function createPixelArray(imgData: Uint8ClampedArray<ArrayBufferLike>) {
     const rgb = {
       r: imgData[i],
       g: imgData[i + 1],
-      b: imgData[i + 2]
+      b: imgData[i + 2],
     }
 
     rgbValues.push(rgb)
@@ -99,7 +99,10 @@ const quantization = (rgbValues: Color[], depth: number): Color[] => {
   orderByBiggestColorRange(rgbValues)
 
   const mid = rgbValues.length / 2
-  return [...quantization(rgbValues.slice(0, mid), depth - 1), ...quantization(rgbValues.slice(mid + 1), depth - 1)]
+  return [
+    ...quantization(rgbValues.slice(0, mid), depth - 1),
+    ...quantization(rgbValues.slice(mid + 1), depth - 1),
+  ]
 }
 
 //  Convert each pixel value ( number ) to hexadecimal ( string ) with base 16
@@ -108,7 +111,8 @@ export function rgbToHex(pixel: Color) {
     const hex = c.toString(16)
     return hex.padStart(2, '0')
   }
-  const color = `#${componentToHex(pixel.r)}${componentToHex(pixel.g)}${componentToHex(pixel.b)}`.toLowerCase()
+  const color =
+    `#${componentToHex(pixel.r)}${componentToHex(pixel.g)}${componentToHex(pixel.b)}`.toLowerCase()
   if (color === '#000000') return '#000001'
   return color
 }
@@ -119,7 +123,7 @@ export const hexToRgb = (hex: string): Color | null => {
     ? {
         r: Number.parseInt(result[1], 16),
         g: Number.parseInt(result[2], 16),
-        b: Number.parseInt(result[3], 16)
+        b: Number.parseInt(result[3], 16),
       }
     : null
 }

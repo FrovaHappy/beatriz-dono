@@ -31,12 +31,13 @@ export const filterTextExample = {
   userDiscriminator: '1234',
   userDisplayName: 'userName',
   userAvatar: 'https://i.pinimg.com/236x/3c/6c/cb/3c6ccb83716d1e4fb91d3082f6b21d77.jpg',
-  userBanner: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsYWH3wSTqHXtfxqiXba2GpwxoBxyZDhfJ1g&s',
+  userBanner:
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsYWH3wSTqHXtfxqiXba2GpwxoBxyZDhfJ1g&s',
   membersCount: '343',
   guildAvatar: 'https://i.pinimg.com/474x/a2/26/c4/a226c48e2fae2c466194df90069299e7.jpg',
   guildBanner: 'https://i.pinimg.com/236x/06/35/bf/0635bf6e3bbbe6d85b0f167c3ade5614.jpg',
   guildName: 'Server Name',
-  guildId: '46234567890'
+  guildId: '46234567890',
 }
 
 const getImages = async (layers: Canvas['layers'], filterText: User & Guild) => {

@@ -10,8 +10,8 @@ const colors: ColorsTempleteLatest = {
     { label: 'Red', hex_color: '#ff0000', emoji: '<:paleteRed:1344776125347532820>' },
     { label: 'Yellow', hex_color: '#ffff00', emoji: '<:paleteYellow:1344776126907678802>' },
     { label: 'Fuchsia', hex_color: '#ff00ff', emoji: '<:paleteFucsia:1344776122214383707>' },
-    { label: 'Cyan', hex_color: '#00ffff', emoji: '<:paleteCian:1344776120704434177>' }
-  ]
+    { label: 'Cyan', hex_color: '#00ffff', emoji: '<:paleteCian:1344776120704434177>' },
+  ],
 }
 
 export default colors

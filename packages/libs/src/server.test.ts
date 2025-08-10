@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto'
+import { existsSync, rmdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { GlobalFonts } from '@napi-rs/canvas'
 import template from './constants/imagesTemplate/fluent'
 import { validateCanvas } from './schemas/welcome.v1'
 import { generateImage, getFonts, getImageData } from './server'
-import { existsSync, rmdirSync } from 'node:fs'
 
 const filterText = {
   userName: 'userName',
@@ -17,7 +17,7 @@ const filterText = {
   guildAvatar: 'https://i.pinimg.com/474x/a2/26/c4/a226c48e2fae2c466194df90069299e7.jpg',
   guildBanner: 'https://i.pinimg.com/236x/06/35/bf/0635bf6e3bbbe6d85b0f167c3ade5614.jpg',
   guildName: 'Server Name',
-  guildId: '46234567890'
+  guildId: '46234567890',
 }
 
 describe('server', () => {
@@ -59,7 +59,6 @@ describe('server', () => {
       expect(fonts).toBeInstanceOf(Array)
       // getFonts creates fonts even in src directory
       expect(fonts.length).toBe(10)
-
     })
   })
 
@@ -97,7 +96,8 @@ describe('server', () => {
     })
 
     it('should return an image data of a url png', async () => {
-      const url = 'https://upload.wikimedia.org/wikipedia/commons/2/24/Transparent_Square_Tiles_Texture.png'
+      const url =
+        'https://upload.wikimedia.org/wikipedia/commons/2/24/Transparent_Square_Tiles_Texture.png'
       const data = (await getImageData(url)) || null
 
       expect(data).not.toBeNull()
@@ -170,7 +170,7 @@ describe('server', () => {
       const imageBuffer = await generateImage({
         template,
         filterText,
-        quality: 50
+        quality: 50,
       })
       expect(imageBuffer).toBeInstanceOf(Buffer)
       expect(imageBuffer.length).toBeGreaterThan(0)
@@ -180,7 +180,7 @@ describe('server', () => {
       const imageBuffer = await generateImage({
         template,
         filterText,
-        quality: 10
+        quality: 10,
       })
       expect(imageBuffer).toBeInstanceOf(Buffer)
       expect(imageBuffer.length).toBeGreaterThan(0)
@@ -190,7 +190,7 @@ describe('server', () => {
       const imageBuffer = await generateImage({
         template,
         filterText,
-        quality: 100
+        quality: 100,
       })
       expect(imageBuffer).toBeInstanceOf(Buffer)
       expect(imageBuffer.length).toBeGreaterThan(0)
@@ -200,7 +200,7 @@ describe('server', () => {
       const customFilterText = { ...filterText, server_name: '' }
       const imageBuffer = await generateImage({
         template,
-        filterText: customFilterText
+        filterText: customFilterText,
       })
       expect(imageBuffer).toBeInstanceOf(Buffer)
       expect(imageBuffer.length).toBeGreaterThan(0)

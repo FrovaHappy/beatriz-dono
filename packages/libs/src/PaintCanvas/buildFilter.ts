@@ -2,7 +2,18 @@ import type { Filter } from '@libs/schemas/welcome.v1'
 
 export function buildFilter(filter: Filter | undefined) {
   if (!filter) return undefined
-  const { dropShadow, blur, brightness, contrast, grayscale, hueRotate, invert, opacity, saturate, sepia } = filter
+  const {
+    dropShadow,
+    blur,
+    brightness,
+    contrast,
+    grayscale,
+    hueRotate,
+    invert,
+    opacity,
+    saturate,
+    sepia,
+  } = filter
   const filterString = []
   if (dropShadow) {
     filterString.push(

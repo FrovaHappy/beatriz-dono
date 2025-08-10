@@ -9,9 +9,9 @@ const schemaColorsV1 = object({
       label: string(),
       hex_color: string().toLowerCase().regex(re.hexColor),
       emoji: string().regex(re.emoji).optional(),
-      description: string().optional()
+      description: string().optional(),
     })
-  )
+  ),
 })
 // const schemaColors = z.union([schemaColorsV1, schemaColorsV2])
 
@@ -39,10 +39,10 @@ export type validateResult =
 export const validate = (s: string | null): validateResult => {
   if (!s) return { error: false, data: { version: 'v1', colors: [] } }
   try {
-    const sdata = JSON.parse(s, (k, v) => {
+    const sdata = JSON.parse(s, (_k, v) => {
       try {
         return JSON.parse(v)
-      } catch (error) {
+      } catch (_error) {
         return v
       }
     })
@@ -55,17 +55,18 @@ export const validate = (s: string | null): validateResult => {
         error: true,
         data: {
           title: 'Data Invalid',
-          description: error.issues.map(issue => `${issue.path.join('.')} -> ${issue.message}`).join('\n')
-        }
+          description: error.issues
+            .map(issue => `${issue.path.join('.')} -> ${issue.message}`)
+            .join('\n'),
+        },
       }
     }
-    console.log(error)
     return {
       error: true,
       data: {
         title: 'Json failed to parse',
-        description: 'Please check the JSON format or contract and try again.'
-      }
+        description: 'Please check the JSON format or contract and try again.',
+      },
     }
   }
 }

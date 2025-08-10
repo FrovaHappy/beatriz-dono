@@ -21,8 +21,8 @@ export default defineConfig({
         '**/*.test.ts',
         '**/*.config.*',
         'vite.config.mts',
-        'rollup.config.mjs'
-      ]
-    }
-  }
+        'rollup.config.mjs',
+      ],
+    },
+  },
 })

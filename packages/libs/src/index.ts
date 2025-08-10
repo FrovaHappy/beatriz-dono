@@ -6,14 +6,14 @@ export {
   hexToRgb,
   rgbToHex,
   findBiggestColorRange,
-  orderByLuminance
+  orderByLuminance,
 } from './colors'
 
 // Server-side utilities (Canvas, Image processing)
 export {
   getFonts,
   getImageData,
-  generateImage
+  generateImage,
 } from './server'
 
 // Browser-side utilities

@@ -14,5 +14,5 @@ export default {
   role: regexRole,
   dispatch: regexDispatch,
   guildId: regexGuildId,
-  buildUrlImage: regexBuildUrlImage
+  buildUrlImage: regexBuildUrlImage,
 }

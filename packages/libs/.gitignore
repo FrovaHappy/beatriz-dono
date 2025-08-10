@@ -1,2 +1,15 @@
+# Build outputs
+dist/
 coverage/
+
+# Test artifacts
 temp-fonts-dir/
+test-fonts-dir/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp

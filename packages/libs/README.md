@@ -126,9 +126,55 @@ npm run build
 # Run linting
 npm run lint
 
+# Check linting without fixes
+npm run lint:check
+
+# Apply unsafe fixes
+npm run lint:fix
+
+# Format code
+npm run format
+
+# Organize imports
+npm run organize-imports
+
 # Type checking
 npm run type-check
+
+# Validate everything (type-check + lint + tests)
+npm run validate
+
+# Quick validation (type-check + lint only)
+npm run validate:quick
 ```
+
+## Code Quality & Linting
+
+This library uses **Biome** for ultra-fast linting, formatting, and import organization:
+
+### Linting Rules
+- **Strict TypeScript**: Enhanced type checking with minimal `any` usage
+- **Modern JavaScript**: ES2022+ features with proper error handling
+- **Performance Optimized**: Warnings for performance anti-patterns
+- **Import Organization**: Automatic import sorting and cleanup
+- **Consistent Formatting**: 100-character line width, 2-space indentation
+
+### Development Workflow
+```bash
+# Check code quality
+npm run validate:quick
+
+# Fix all auto-fixable issues
+npm run lint:fix
+
+# Format all files
+npm run format
+```
+
+### Configuration
+- **Custom Rules**: Tailored for library development
+- **File Overrides**: Different rules for tests vs source code
+- **CI Integration**: `biome ci` command for continuous integration
 
 ## Testing
 
