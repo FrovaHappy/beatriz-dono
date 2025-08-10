@@ -8,7 +8,7 @@ import { join } from 'node:path'
 
 import { createCanvas, loadImage, Path2D as Patch } from '@napi-rs/canvas'
 import paintCanvas from '@libs/PaintCanvas'
-import { type Canvas, isShape } from '@libs/PaintCanvas/schema.welcome.v1'
+import { type Canvas, isShape } from '@libs/schemas/welcome.v1'
 import { formatterTextUser } from '@libs/formatterText'
 import { getPallete } from '@libs/colors'
 import type { Guild, User } from '@libs/types'

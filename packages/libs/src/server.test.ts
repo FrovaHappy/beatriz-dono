@@ -1,6 +1,6 @@
 import { getImageData, generateImage, getFonts } from './server'
-import { validateCanvas } from './PaintCanvas/schema.welcome.v1'
-import template from './PaintCanvas/template.welcome'
+import { validateCanvas } from './schemas/welcome.v1'
+import template from './constants/imagesTemplate/fluent'
 import { join } from 'node:path'
 import { GlobalFonts } from '@napi-rs/canvas'
 import { createHash } from 'node:crypto'
