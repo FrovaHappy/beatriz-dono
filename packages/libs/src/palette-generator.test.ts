@@ -1,4 +1,4 @@
-import { findBiggestColorRange, getPallete, hexToRgb, orderByLuminance, rgbToHex } from './colors'
+import getPallete, { findBiggestColorRange, hexToRgb, orderByLuminance, rgbToHex } from './palette-generator'
 import { getImageData } from './server'
 
 const colorsUri = {

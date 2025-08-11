@@ -6,9 +6,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
+  "files": ["dist/**/*"],
   "scripts": {
     "build": "rollup -c",
     "dev": "tsc --preserveWatchOutput --watch",
@@ -31,14 +29,7 @@
     "clean": "rm -rf dist coverage",
     "clean:all": "npm run clean && rm -rf node_modules"
   },
-  "keywords": [
-    "discord",
-    "bot",
-    "utilities",
-    "canvas",
-    "colors",
-    "image-processing"
-  ],
+  "keywords": ["discord", "bot", "utilities", "canvas", "colors", "image-processing"],
   "author": "frova_happy",
   "license": "MIT",
   "dependencies": {

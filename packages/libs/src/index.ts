@@ -2,12 +2,12 @@
 
 // Color utilities
 export {
-  getPallete,
+  default as getPallete,
   hexToRgb,
   rgbToHex,
   findBiggestColorRange,
   orderByLuminance,
-} from './colors'
+} from './palette-generator'
 
 // Server-side utilities (Canvas, Image processing)
 export {

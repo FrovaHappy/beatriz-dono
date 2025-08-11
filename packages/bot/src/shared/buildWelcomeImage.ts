@@ -3,7 +3,7 @@
 
 // import PaintCanvas from '@libs/PaintCanvas'
 // import { isShape } from '@libs/PaintCanvas/schema.welcome.v1'
-// import { getPallete, rgbToHex } from '@libs/colors'
+// import getPallete, { rgbToHex } from '@libs/palette-generator'
 // import { formatterTextUser } from '@libs/formatterText'
 // import type { Canvas } from '@type/index'
 // import type { Guild, User } from '@type/index'

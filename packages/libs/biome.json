@@ -1,8 +1,6 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
-  "extends": [
-    "../../biome.json"
-  ],
+  "extends": ["../../biome.json"],
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -72,11 +70,7 @@
         "useFilenamingConvention": {
           "level": "warn",
           "options": {
-            "filenameCases": [
-              "camelCase",
-              "kebab-case",
-              "PascalCase"
-            ]
+            "filenameCases": ["camelCase", "kebab-case", "PascalCase"]
           }
         }
       },
@@ -98,14 +92,7 @@
       "attributePosition": "auto",
       "bracketSpacing": true
     },
-    "globals": [
-      "vitest",
-      "describe",
-      "it",
-      "expect",
-      "beforeAll",
-      "afterAll"
-    ]
+    "globals": ["vitest", "describe", "it", "expect", "beforeAll", "afterAll"]
   },
   "json": {
     "formatter": {
@@ -119,10 +106,7 @@
   },
   "overrides": [
     {
-      "include": [
-        "**/*.test.ts",
-        "**/*.spec.ts"
-      ],
+      "include": ["**/*.test.ts", "**/*.spec.ts"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -136,10 +120,7 @@
       }
     },
     {
-      "include": [
-        "**/vite.config.mts",
-        "**/rollup.config.mjs"
-      ],
+      "include": ["**/vite.config.mts", "**/rollup.config.mjs"],
       "linter": {
         "rules": {
           "style": {
@@ -149,9 +130,7 @@
       }
     },
     {
-      "include": [
-        "**/schemas/**/*.ts"
-      ],
+      "include": ["**/schemas/**/*.ts"],
       "linter": {
         "rules": {
           "suspicious": {

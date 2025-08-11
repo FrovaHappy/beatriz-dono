@@ -7,7 +7,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 import paintCanvas from '@libs/PaintCanvas'
-import { getPallete } from '@libs/colors'
+import getPallete from '@libs/palette-generator'
 import fonts from '@libs/constants/fonts'
 import { formatterTextUser } from '@libs/formatterText'
 import { type Canvas, isShape } from '@libs/schemas/welcome.v1'

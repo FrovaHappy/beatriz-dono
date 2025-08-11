@@ -21,7 +21,7 @@ npm install @beatriz-dono/libs
 ### Color Utilities
 
 ```typescript
-import { getPallete, hexToRgb, rgbToHex } from '@beatriz-dono/libs'
+import getPallete, { hexToRgb, rgbToHex } from '@beatriz-dono/libs'
 
 // Extract color palette from image
 const imageData = await getImageData('path/to/image.jpg')

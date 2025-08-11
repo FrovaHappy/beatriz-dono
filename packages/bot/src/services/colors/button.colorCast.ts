@@ -1,7 +1,7 @@
 import { getEmoji } from '@/const/emojis'
 import BuildButton from '@/core/build/BuildButtons'
 import db from '@db'
-import { getPallete, rgbToHex } from '@libs/colors'
+import getPallete, { rgbToHex } from '@libs/palette-generator'
 import { getImageData } from '@libs/server'
 import { ButtonStyle } from 'discord.js'
 import msgColorCastNotFound from './msg.ColorCastNotFound'
